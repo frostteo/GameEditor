@@ -4,6 +4,8 @@
 #include <string>
 #include "IShader.h"
 #include "TextureMaterial.h"
+#include "Logger.h"
+#include "FileProcessor.h"
 
 class TextureShader : public IShader
 {
@@ -23,8 +25,7 @@ private:
 protected:
   bool InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename);
   void ShutdownShader();
-  void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const std::wstring& shaderFilename); //TODO FHolod: need be overwritten to according to my error processing
-
+  void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const std::wstring& shaderFilename); 
   bool SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
     XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture);
   void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount);
@@ -34,8 +35,6 @@ public:
 
   bool Initialize(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename);
   void Shutdown();
-  /*bool Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-    XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture);*/
   virtual bool Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
     XMMATRIX projectionMatrix, IMaterial* material) override;
 };

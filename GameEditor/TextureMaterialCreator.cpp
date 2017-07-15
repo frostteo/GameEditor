@@ -16,7 +16,10 @@ IMaterial* TextureMaterialCreator::Get(const std::string& fileInStr, const std::
   {
     fileStrStream.get(input);
   }
-  fileStrStream >> type; //TODO FHolod: При неверном типе выбросить исключение
+  fileStrStream >> type; 
+
+  if (type != m_type)
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("It is not material with texture type", __FILE__, __LINE__));
 
   fileStrStream.get(input);
   while (input != ':')

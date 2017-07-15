@@ -28,6 +28,7 @@ bool Mesh::Initialize(ID3D11Device* device, const std::string& meshFileName)
   result = InitializeBuffers(device);
   if (!result)
   {
+    Logger::get().LogMessage("cant initializebuffers", __FILE__, __LINE__);
     return false;
   }
 

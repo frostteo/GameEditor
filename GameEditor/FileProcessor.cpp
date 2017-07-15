@@ -22,3 +22,9 @@ bool FileProcessor::GetFileAsString(const std::string& sourceFileName, std::stri
   in.close();
   return true;
 }
+
+std::string FileProcessor::UnicodeStrToByteStr(const std::wstring& unicodeStr)
+{
+  std::string byteStr(unicodeStr.begin(), unicodeStr.end());
+  return byteStr;
+}

@@ -5,6 +5,7 @@
 #include "TextureShaderCreator.h"
 #include "Singleton.h"
 #include "ShaderConfiguration.h"
+#include "Logger.h"
 
 class ShaderFactory : public Singleton<ShaderFactory>
 {

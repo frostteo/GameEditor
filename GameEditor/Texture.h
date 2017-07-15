@@ -5,6 +5,7 @@
 #include <memory>
 #include <sstream>
 #include "FileProcessor.h"
+#include "Logger.h"
 
 class Texture
 {

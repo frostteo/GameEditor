@@ -53,6 +53,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
   if (FAILED(result))
   {
+    Logger::get().LogMessage("can't create dxgi factory", __FILE__, __LINE__);
     return false;
   }
 
@@ -60,6 +61,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   result = factory->EnumAdapters(0, &adapter);
   if (FAILED(result))
   {
+    Logger::get().LogMessage("cant create an adapter for the primary graphics interface", __FILE__, __LINE__);
     return false;
   }
 
@@ -67,6 +69,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   result = adapter->EnumOutputs(0, &adapterOutput);
   if (FAILED(result))
   {
+    Logger::get().LogMessage("cant Enumerate the primary adapter output", __FILE__, __LINE__);
     return false;
   }
 
@@ -74,6 +77,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
   if (FAILED(result))
   {
+    Logger::get().LogMessage("cant get the number of modes that fit the DXGI_FORMAT_R8G8B8A8_UNORM", __FILE__, __LINE__);
     return false;
   }
 
@@ -81,6 +85,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   displayModeList = new DXGI_MODE_DESC[numModes];
   if (!displayModeList)
   {
+    Logger::get().LogMessage("cant create a list to hold all the possible display modes for this monitor/video card combination", __FILE__, __LINE__);
     return false;
   }
 
@@ -88,6 +93,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
   if (FAILED(result))
   {
+    Logger::get().LogMessage("cant fill the display mode list structures", __FILE__, __LINE__);
     return false;
   }
 
@@ -107,6 +113,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   result = adapter->GetDesc(&adapterDesc);
   if (FAILED(result))
   {
+    Logger::get().LogMessage("cant get the adapter (video card) description", __FILE__, __LINE__);
     return false;
   }
 

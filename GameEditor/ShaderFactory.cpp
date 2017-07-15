@@ -20,6 +20,10 @@ ShaderFactory::~ShaderFactory()
 IShader* ShaderFactory::Get(const std::string& shaderName)
 {
   std::string configuredShaderName = m_shaderConfiguration->GetConfiguredShaderName(shaderName);
+
+  if (configuredShaderName == "")
+    Logger::get().LogMessageWithExceptionDialog("There is no shader with name " + shaderName + " in system", __FILE__, __LINE__);
+  
   for (auto shaderCreator : m_shaderCreators)
   {
     if (shaderCreator->CanCreate(configuredShaderName))

@@ -5,7 +5,6 @@
 #include "ui_QtGameFrameworkTest.h"
 #include "Camera.h"
 #include "D3DConfigurer.h"
-#include "ModelClass.h"
 #include "TextureShader.h"
 #include "MeshFactory.h"
 #include "TextureFactory.h"

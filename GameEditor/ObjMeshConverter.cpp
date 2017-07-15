@@ -15,6 +15,7 @@ bool ObjMeshConverter::ConvertModel(const std::string& sourceFileName, const std
   result = GetFileAsString(sourceFileName, sourceFileContents);
   if (!result)
   {
+    Logger::get().LogMessageWithExceptionDialog(Logger::cantReadFile + sourceFileName, __FILE__, __LINE__);
     return false;
   }
 

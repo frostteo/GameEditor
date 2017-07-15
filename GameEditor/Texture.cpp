@@ -28,6 +28,7 @@ bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
   result = LoadTarga(height, width);
   if (!result)
   {
+    Logger::get().LogMessageWithExceptionDialog("Cant load texture with name " + filename, __FILE__, __LINE__);
     return false;
   }
 
@@ -87,6 +88,7 @@ bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
   hResult = device->CreateShaderResourceView(m_texture, &srvDesc, &m_textureView);
   if (FAILED(hResult))
   {
+    Logger::get().LogMessage("Cant create texture " + filename, __FILE__, __LINE__);
     return false;
   }
 
@@ -147,6 +149,7 @@ bool Texture::LoadTarga(int& height, int& width)
   result = FileProcessor::GetFileAsString(m_filename, fileInStr);
   if (!result)
   {
+    Logger::get().LogMessage("Cant read file " + m_filename, __FILE__, __LINE__);
     return false;
   }
 
@@ -161,7 +164,8 @@ bool Texture::LoadTarga(int& height, int& width)
   // Check that it is 32 bit and not 24 bit.
   if (bpp != tgbFormatBitCount)
   {
-    return false;
+    Logger::get().LogMessage("Texture " + m_filename + " is not 32 bit format", __FILE__, __LINE__);
+    return false; 
   }
 
   // Calculate the size of the 32 bit image data.

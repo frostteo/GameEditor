@@ -4,6 +4,7 @@
 #include <sstream>
 #include "IMeshConverter.h"
 #include <vector>
+#include "Logger.h"
 
 struct VertexObj
 {

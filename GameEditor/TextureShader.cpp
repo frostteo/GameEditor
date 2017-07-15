@@ -23,6 +23,7 @@ bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd, const std::wstri
   result = InitializeShader(device, hwnd, vsFilename, psFilename);
   if (!result)
   {
+    throw std::runtime_error("Faild shader creation");
     return false;
   }
 
@@ -42,7 +43,6 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
 
   D3D11_SAMPLER_DESC samplerDesc;
 
-
   // Initialize the pointers this function will use to null.
   errorMessage = nullptr;
   vertexShaderBuffer = nullptr;
@@ -55,14 +55,11 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   {
     // If the shader failed to compile it should have writen something to the error message.
     if (errorMessage)
-    {
       OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
-    }
+
     // If there was nothing in the error message then it simply could not find the shader file itself.
     else
-    {
-      MessageBox(hwnd, vsFilename.c_str(), L"Missing Shader File", MB_OK);
-    }
+      throw std::runtime_error("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(vsFilename));
 
     return false;
   }
@@ -74,14 +71,11 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   {
     // If the shader failed to compile it should have writen something to the error message.
     if (errorMessage)
-    {
       OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
-    }
+
     // If there was nothing in the error message then it simply could not find the file itself.
     else
-    {
-      MessageBox(hwnd, psFilename.c_str(), L"Missing Shader File", MB_OK);
-    }
+      throw std::runtime_error("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(psFilename));
 
     return false;
   }
@@ -90,6 +84,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
   {
+    throw std::runtime_error("failed shader creation " + FileProcessor::UnicodeStrToByteStr(vsFilename));
     return false;
   }
 
@@ -97,6 +92,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
   {
+    throw std::runtime_error("failed shader creation " + FileProcessor::UnicodeStrToByteStr(psFilename));
     return false;
   }
 
@@ -126,6 +122,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
   {
+    throw std::runtime_error("failed input layout creation " + FileProcessor::UnicodeStrToByteStr(vsFilename));
     return false;
   }
 
@@ -308,8 +305,6 @@ void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd
 {
   char* compileErrors;
   unsigned long long bufferSize, i;
-  std::ofstream fout;
-
 
   // Get a pointer to the error message text buffer.
   compileErrors = (char*)(errorMessage->GetBufferPointer());
@@ -317,24 +312,13 @@ void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd
   // Get the length of the message.
   bufferSize = errorMessage->GetBufferSize();
 
-  // Open a file to write the error message to.
-  fout.open("shader-error.txt");
-
-  // Write out the error message.
-  for (i = 0; i<bufferSize; i++)
-  {
-    fout << compileErrors[i];
-  }
-
-  // Close the file.
-  fout.close();
+  std::string compilingShaderError(compileErrors, bufferSize);
+  Logger::get().LogMessage(compilingShaderError);
 
   // Release the error message.
   errorMessage->Release();
   errorMessage = 0;
-
-  // Pop a message up on the screen to notify the user to check the text file for compile errors.
-  MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderFilename.c_str(), MB_OK);
+  throw std::runtime_error("Error compiling shader. " + FileProcessor::UnicodeStrToByteStr(shaderFilename) + "  Check " + Logger::get().GetLogFileName() + " for message.");
 
   return;
 }
