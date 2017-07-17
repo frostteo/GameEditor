@@ -59,6 +59,15 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   m_Camera->SetPosition(0.0f, 10.0f, -50.0f);
 
+  m_lightininigSystem = new LightininigSystem();
+  if (!m_lightininigSystem) 
+  {
+    return false;
+  }
+  m_lightininigSystem->SetDirectLightDirection(0.5f, 0.0f, 0.5f);
+  m_lightininigSystem->SetDirectLightColor(1.0f, 1.0f, 1.0f, 1.0f);
+  m_lightininigSystem->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+
   return true;
 }
 
@@ -83,6 +92,11 @@ void QtGameFrameworkTest::Shutdown()
     m_Camera = nullptr;
   }
 
+  if (m_lightininigSystem)
+  {
+    delete m_lightininigSystem;
+    m_lightininigSystem = nullptr;
+  }
   return;
 }
 
@@ -100,7 +114,7 @@ void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
 
   m_static.ChangeYRotation(1);
 
-  m_static.Render(m_Direct3D->GetDeviceContext(), viewMatrix, projectionMatrix);
+  m_static.Render(m_Direct3D->GetDeviceContext(), viewMatrix, projectionMatrix, m_lightininigSystem, m_Camera->GetPosition());
 
   // Present the rendered scene to the screen.
   m_Direct3D->EndScene();

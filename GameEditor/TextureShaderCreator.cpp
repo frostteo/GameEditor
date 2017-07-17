@@ -1,19 +1,15 @@
 #include "TextureShaderCreator.h"
 
 
-TextureShaderCreator::TextureShaderCreator(ID3D11Device* device, HWND hwnd) : IShaderCreator(device, hwnd)
+TextureShaderCreator::TextureShaderCreator()
 {
   m_shaderName = "texture";
-  m_shader = nullptr;
 }
 
 
 TextureShaderCreator::~TextureShaderCreator()
 {
-  if (m_shader) {
-    delete m_shader;
-    m_shader = nullptr;
-  }
+  
 }
 
 IShader* TextureShaderCreator::Get(const std::wstring& vertexShaderName, const std::wstring& pixelShaderName)

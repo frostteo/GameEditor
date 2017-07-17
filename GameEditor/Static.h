@@ -4,6 +4,7 @@
 #include "IMaterial.h"
 #include "IShader.h"
 #include "ShaderFactory.h"
+#include "LightininigSystem.h"
 
 class Static :
   public GameObject
@@ -19,6 +20,6 @@ public:
   void SetMaterial(IMaterial* material);
   void SetMesh(Mesh* mesh);
   void InitializeShader();
-  void Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix);
+  void Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion);
 };
 

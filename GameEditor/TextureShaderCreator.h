@@ -7,10 +7,8 @@
 class TextureShaderCreator :
   public IShaderCreator
 {
-private:
-  TextureShader* m_shader;
 public:
-  TextureShaderCreator(ID3D11Device* device, HWND hwnd);
+  TextureShaderCreator();
   virtual ~TextureShaderCreator();
   virtual IShader* Get(const std::wstring& vertexShaderName, const std::wstring& pixelShaderName) override;
 };

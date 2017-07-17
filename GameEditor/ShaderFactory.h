@@ -3,6 +3,7 @@
 #include <vector>
 #include "IShaderCreator.h"
 #include "TextureShaderCreator.h"
+#include "SingleDirectLightShaderCreator.h"
 #include "Singleton.h"
 #include "ShaderConfiguration.h"
 #include "Logger.h"

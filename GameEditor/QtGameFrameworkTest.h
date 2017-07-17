@@ -12,6 +12,7 @@
 #include "ShaderFactory.h"
 #include "MaterialFactory.h"
 #include "Static.h"
+#include "LightininigSystem.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -45,4 +46,5 @@ private:
   Camera* m_Camera;
   Static m_static;
   ShaderConfiguration* m_shaderConfiguration;
+  LightininigSystem* m_lightininigSystem;
 };

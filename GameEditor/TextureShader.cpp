@@ -15,23 +15,7 @@ TextureShader::~TextureShader()
   Shutdown();
 }
 
-bool TextureShader::Initialize(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
-{
-  bool result;
-
-  // Initialize the vertex and pixel shaders.
-  result = InitializeShader(device, hwnd, vsFilename, psFilename);
-  if (!result)
-  {
-    throw std::runtime_error("Faild shader creation");
-    return false;
-  }
-
-  return true;
-}
-
-
-bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
+void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -39,9 +23,8 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   ID3D10Blob* pixelShaderBuffer;
   D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
   unsigned int numElements;
-  D3D11_BUFFER_DESC matrixBufferDesc;
-
   D3D11_SAMPLER_DESC samplerDesc;
+  D3D11_BUFFER_DESC matrixBufferDesc;
 
   // Initialize the pointers this function will use to null.
   errorMessage = nullptr;
@@ -60,8 +43,6 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
     // If there was nothing in the error message then it simply could not find the shader file itself.
     else
       throw std::runtime_error("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(vsFilename));
-
-    return false;
   }
 
   // Compile the pixel shader code.
@@ -76,24 +57,20 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
     // If there was nothing in the error message then it simply could not find the file itself.
     else
       throw std::runtime_error("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(psFilename));
-
-    return false;
   }
 
   // Create the vertex shader from the buffer.
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed shader creation " + FileProcessor::UnicodeStrToByteStr(vsFilename));
-    return false;
+    throw std::runtime_error("failed vertex shader creation " + FileProcessor::UnicodeStrToByteStr(vsFilename));
   }
 
   // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed shader creation " + FileProcessor::UnicodeStrToByteStr(psFilename));
-    return false;
+    throw std::runtime_error("failed pixel shader creation " + FileProcessor::UnicodeStrToByteStr(psFilename));
   }
 
   // Create the vertex input layout description.
@@ -122,16 +99,15 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed input layout creation " + FileProcessor::UnicodeStrToByteStr(vsFilename));
-    return false;
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
   }
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
-  vertexShaderBuffer = 0;
+  vertexShaderBuffer = nullptr;
 
   pixelShaderBuffer->Release();
-  pixelShaderBuffer = 0;
+  pixelShaderBuffer = nullptr;
 
   // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
   matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -145,7 +121,7 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
   {
-    return false;
+    throw std::runtime_error("failed input create matrix buffer " + FileProcessor::UnicodeStrToByteStr(vsFilename));
   }
 
   // Create a texture sampler state description.
@@ -167,10 +143,9 @@ bool TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
   if (FAILED(result))
   {
-    return false;
+    throw std::runtime_error("failed create sample state for texture " + FileProcessor::UnicodeStrToByteStr(vsFilename));
   }
 
-  return true;
 }
 
 void TextureShader::ShutdownShader()
@@ -222,7 +197,7 @@ void TextureShader::Shutdown()
 }
 
 bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
   bool result;
 
@@ -301,24 +276,3 @@ void TextureShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCo
   return;
 }
 
-void TextureShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const std::wstring& shaderFilename)
-{
-  char* compileErrors;
-  unsigned long long bufferSize, i;
-
-  // Get a pointer to the error message text buffer.
-  compileErrors = (char*)(errorMessage->GetBufferPointer());
-
-  // Get the length of the message.
-  bufferSize = errorMessage->GetBufferSize();
-
-  std::string compilingShaderError(compileErrors, bufferSize);
-  Logger::get().LogMessage(compilingShaderError);
-
-  // Release the error message.
-  errorMessage->Release();
-  errorMessage = 0;
-  throw std::runtime_error("Error compiling shader. " + FileProcessor::UnicodeStrToByteStr(shaderFilename) + "  Check " + Logger::get().GetLogFileName() + " for message.");
-
-  return;
-}

@@ -4,7 +4,8 @@ void ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, ShaderConfigurat
 {
   m_shaderConfiguration = shaderConfiguration;
 
-  m_shaderCreators.push_back(new TextureShaderCreator(device, hwnd));
+  m_shaderCreators.push_back((new TextureShaderCreator())->Initialize(device, hwnd));
+  m_shaderCreators.push_back((new SingleDirectLightShaderCreator())->Initialize(device, hwnd));
 }
 
 
