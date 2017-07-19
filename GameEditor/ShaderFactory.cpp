@@ -6,6 +6,7 @@ void ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, ShaderConfigurat
 
   m_shaderCreators.push_back((new TextureShaderCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new SingleDirectLightShaderCreator())->Initialize(device, hwnd));
+  m_shaderCreators.push_back((new SpecularSingleDirLightShaderCreator())->Initialize(device, hwnd));
 }
 
 
@@ -31,5 +32,5 @@ IShader* ShaderFactory::Get(const std::string& shaderName)
       return shaderCreator->Get(m_shaderConfiguration->GetVertexShaderFileName(configuredShaderName), m_shaderConfiguration->GetPixelShaderFileName(configuredShaderName));
   }
 
-  return nullptr;
+  throw new std::runtime_error(Logger::get().GetErrorTraceMessage("there is no shader with name: " + shaderName + " in system", __FILE__, __LINE__));
 }

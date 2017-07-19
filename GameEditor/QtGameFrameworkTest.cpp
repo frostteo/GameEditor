@@ -97,6 +97,7 @@ void QtGameFrameworkTest::Shutdown()
     delete m_lightininigSystem;
     m_lightininigSystem = nullptr;
   }
+
   return;
 }
 
@@ -112,9 +113,12 @@ void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
   m_Camera->GetViewMatrix(viewMatrix);
   m_Camera->GetProjectionMatrix(projectionMatrix);
 
-  m_static.ChangeYRotation(1);
+  m_static.ChangeYRotation(0.5);
 
   m_static.Render(m_Direct3D->GetDeviceContext(), viewMatrix, projectionMatrix, m_lightininigSystem, m_Camera->GetPosition());
+
+  XMMATRIX world;
+  m_static.GetWorldMatrix(world);
 
   // Present the rendered scene to the screen.
   m_Direct3D->EndScene();

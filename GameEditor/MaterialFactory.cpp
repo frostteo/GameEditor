@@ -18,6 +18,7 @@ MaterialFactory::~MaterialFactory()
 void MaterialFactory::Initialize()
 {
   m_materialCreators.push_back(new TextureMaterialCreator());
+  m_materialCreators.push_back(new SpecularMaterialCreator());
 }
 
 IMaterial* MaterialFactory::GetNewResource(const std::string& filename)

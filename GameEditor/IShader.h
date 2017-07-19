@@ -26,7 +26,7 @@ protected:
 public:
   IShader();
   virtual ~IShader();
-  virtual bool Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+  virtual void Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
     XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition) = 0;
   void Initialize(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename);
 };

@@ -7,6 +7,7 @@
 #include "IMaterial.h"
 #include "IMaterialCreator.h"
 #include "TextureMaterialCreator.h"
+#include "SpecularMaterialCreator.h"
 #include "FileProcessor.h"
 #include "Logger.h"
 

@@ -7,8 +7,10 @@ class TextureMaterial :
 {
 public:
   Texture* m_texture;
+  static const std::string textureMaterialType;
 public:
-  TextureMaterial(const std::string& name, const std::string& type, Texture* texture) : IMaterial(name, type) { m_texture = texture; }
+  TextureMaterial(const std::string& name, Texture* texture) : IMaterial(name) { m_texture = texture; }
   virtual ~TextureMaterial();
+  virtual const std::string& GetType() override { return TextureMaterial::textureMaterialType; }
 };
 

@@ -17,7 +17,8 @@ void ShaderConfiguration::Configure()
   m_pathToPixelShader = L"../GameEditor/shaders/[shadername].ps";
 
   //m_shaderNameMap.insert(shaderNameMap::value_type("texture", "texture"));
-  m_shaderNameMap.insert(shaderNameMap::value_type("texture", "singleDirectLight"));
+
+  m_shaderNameMap.insert(shaderNameMap::value_type("specular", "specularSingleDirLight"));
 }
 
 std::wstring ShaderConfiguration::GetVertexShaderFileName(const std::string& shaderName)

@@ -1,2 +1,4 @@
-type: texture
+type: specular
 textureFileName: ../GameEditor/texture/iron1.tga
+specularColor: 1.0 1.0 1.0 1.0
+specularPower: 32.0

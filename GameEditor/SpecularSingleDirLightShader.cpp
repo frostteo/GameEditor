@@ -1,16 +1,18 @@
-#include "SingleDirectLightShader.h"
+#include "SpecularSingleDirLightShader.h"
 
 
-SingleDirectLightShader::SingleDirectLightShader()
+SpecularSingleDirLightShader::SpecularSingleDirLightShader()
 {
+  m_cameraBuffer = nullptr;
   m_lightBuffer = nullptr;
 }
 
-SingleDirectLightShader::~SingleDirectLightShader()
+
+SpecularSingleDirLightShader::~SpecularSingleDirLightShader()
 {
 }
 
-void SingleDirectLightShader::ShutdownShader()
+void SpecularSingleDirLightShader::ShutdownShader()
 {
   TextureShader::ShutdownShader();
   // Release the light constant buffer.
@@ -19,18 +21,37 @@ void SingleDirectLightShader::ShutdownShader()
     m_lightBuffer->Release();
     m_lightBuffer = nullptr;
   }
+
+  if (m_cameraBuffer)
+  {
+    m_cameraBuffer->Release();
+    m_cameraBuffer = nullptr;
+  }
 }
 
-void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
+void SpecularSingleDirLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+{
+  SpecularMaterial* specMaterial = (SpecularMaterial *)material;
+  
+  ID3D11ShaderResourceView* texture = specMaterial->m_texture->GetTexture();
+  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), specMaterial->m_specularColor, specMaterial->m_specularPower, cameraPosition);
+
+  RenderShader(deviceContext, indexCount);
+}
+
+void SpecularSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
   ID3D10Blob* vertexShaderBuffer;
   ID3D10Blob* pixelShaderBuffer;
+
   D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
   unsigned int numElements;
   D3D11_SAMPLER_DESC samplerDesc;
   D3D11_BUFFER_DESC matrixBufferDesc;
+  D3D11_BUFFER_DESC cameraBufferDesc;
   D3D11_BUFFER_DESC lightBufferDesc;
 
   // Initialize the pointers this function will use to null.
@@ -39,42 +60,43 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   pixelShaderBuffer = nullptr;
 
   // Compile the vertex shader code.
-  result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, "SingleLightVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+  result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, "LightVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
     &vertexShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
     if (errorMessage)
+    {
       OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
-
+    }
     else
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    {
+      throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no file: " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    }
   }
 
   // Compile the pixel shader code.
-  result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, "SingleLightPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
-    &pixelShaderBuffer, &errorMessage);
+  result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, "LightPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
     if (errorMessage)
+    {
       OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
-
+    }
     else
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(psFilename), __FILE__, __LINE__));
+    {
+      throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no file: " + FileProcessor::UnicodeStrToByteStr(psFilename), __FILE__, __LINE__));
+    }
   }
 
   // Create the vertex shader from the buffer.
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
-  {
-   throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed vertex shader creation " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
-  }
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the vertex shader from the buffer", __FILE__, __LINE__));
 
   // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed pixel shader creation " + FileProcessor::UnicodeStrToByteStr(psFilename), __FILE__, __LINE__));
-  }
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the pixel shader from the buffer", __FILE__, __LINE__));
 
   // Create the vertex input layout description.
   // This setup needs to match the VertexType stucture in the ModelClass and in the shader.
@@ -102,38 +124,20 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
   polygonLayout[2].InstanceDataStepRate = 0;
 
-  // Get a count of the elements in the layout.
   numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
   // Create the vertex input layout.
   result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
     &m_layout);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
-  }
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the vertex input layout", __FILE__, __LINE__));
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
-  vertexShaderBuffer = nullptr;
+  vertexShaderBuffer = 0;
 
   pixelShaderBuffer->Release();
-  pixelShaderBuffer = nullptr;
-
-  // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
-  matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-  matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
-  matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-  matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-  matrixBufferDesc.MiscFlags = 0;
-  matrixBufferDesc.StructureByteStride = 0;
-
-  // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-  result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
-  if (FAILED(result))
-  {
-   throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input create matrix buffer " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
-  }
+  pixelShaderBuffer = 0;
 
   // Create a texture sampler state description.
   samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -150,18 +154,36 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   samplerDesc.MinLOD = 0;
   samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-  // Create the texture sampler state.
-  result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
-  if (FAILED(result))
-  {
-   throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create sample state for texture " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
-  }
+  // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
+  matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+  matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+  matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+  matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+  matrixBufferDesc.MiscFlags = 0;
+  matrixBufferDesc.StructureByteStride = 0;
 
-  
+  // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+  result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
+  if (FAILED(result))
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the constant buffer pointer", __FILE__, __LINE__));
+
+  // Setup the description of the camera dynamic constant buffer that is in the vertex shader.
+  cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+  cameraBufferDesc.ByteWidth = sizeof(CameraBufferType);
+  cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+  cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+  cameraBufferDesc.MiscFlags = 0;
+  cameraBufferDesc.StructureByteStride = 0;
+
+  // Create the camera constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+  result = device->CreateBuffer(&cameraBufferDesc, NULL, &m_cameraBuffer);
+  if (FAILED(result))
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the camera constant buffer pointer", __FILE__, __LINE__));
+
   // Setup the description of the light dynamic constant buffer that is in the pixel shader.
   // Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
   lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-  lightBufferDesc.ByteWidth = sizeof(LightBufferType);
+  lightBufferDesc.ByteWidth = sizeof(LightBufferSpecularType);
   lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
   lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
   lightBufferDesc.MiscFlags = 0;
@@ -170,20 +192,19 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
   if (FAILED(result))
-  {
-   throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for lights " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
-  }
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the light constant buffer pointer", __FILE__, __LINE__));
 }
 
-void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+void SpecularSingleDirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
-  XMVECTOR diffuseColor) //TODO FHolod: function can be written simpler by using parent's function
+  XMVECTOR diffuseColor, XMVECTOR specularColor, float specularPower, XMFLOAT3 cameraPosition)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;
   unsigned int bufferNumber;
   MatrixBufferType* dataPtr;
-  LightBufferType* dataPtr2;
+  LightBufferSpecularType* dataPtr2;
+  CameraBufferType* dataPtr3;
 
   // Transpose the matrices to prepare them for the shader.
   worldMatrix = XMMatrixTranspose(worldMatrix);
@@ -193,7 +214,7 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
   // Lock the constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the matrix constant buffer", __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the constant buffer", __FILE__, __LINE__));
 
   // Get a pointer to the data in the constant buffer.
   dataPtr = (MatrixBufferType*)mappedResource.pData;
@@ -212,22 +233,44 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
   // Now set the constant buffer in the vertex shader with the updated values.
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
+  // Lock the camera constant buffer so it can be written to.
+  result = deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+  if (FAILED(result))
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the camera constant buffer ", __FILE__, __LINE__));
+
+  // Get a pointer to the data in the constant buffer.
+  dataPtr3 = (CameraBufferType*)mappedResource.pData;
+
+  // Copy the camera position into the constant buffer.
+  dataPtr3->cameraPosition = cameraPosition;
+  dataPtr3->padding = 0.0f;
+
+  // Unlock the camera constant buffer.
+  deviceContext->Unmap(m_cameraBuffer, 0);
+
+  // Set the position of the camera constant buffer in the vertex shader.
+  bufferNumber = 1;
+
+  // Now set the camera constant buffer in the vertex shader with the updated values.
+  deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_cameraBuffer);
+
   // Set shader texture resource in the pixel shader.
   deviceContext->PSSetShaderResources(0, 1, &texture);
 
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the light constant buffer ", __FILE__, __LINE__));
-  
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the light constant buffer", __FILE__, __LINE__));
+
   // Get a pointer to the data in the constant buffer.
-  dataPtr2 = (LightBufferType*)mappedResource.pData;
+  dataPtr2 = (LightBufferSpecularType*)mappedResource.pData;
 
   // Copy the lighting variables into the constant buffer.
   dataPtr2->ambientColor = ambientColor;
   dataPtr2->diffuseColor = diffuseColor;
   dataPtr2->lightDirection = lightDirection;
-  dataPtr2->padding = 0.0f;
+  dataPtr2->specularColor = specularColor;
+  dataPtr2->specularPower = specularPower;
 
   // Unlock the constant buffer.
   deviceContext->Unmap(m_lightBuffer, 0);
@@ -237,14 +280,4 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
 
   // Finally set the light constant buffer in the pixel shader with the updated values.
   deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
-}
-
-void SingleDirectLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
-{
-  //TODO FHolod: пока выставлю данные тут
-  ID3D11ShaderResourceView* texture = ((TextureMaterial *)material)->m_texture->GetTexture();
-  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor());
-
-  RenderShader(deviceContext, indexCount);
 }

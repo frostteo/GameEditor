@@ -3,3 +3,5 @@
 TextureMaterial::~TextureMaterial()
 {
 }
+
+const std::string TextureMaterial::textureMaterialType = "texture";

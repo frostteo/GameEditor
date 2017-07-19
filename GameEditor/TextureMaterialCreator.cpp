@@ -29,6 +29,6 @@ IMaterial* TextureMaterialCreator::Get(const std::string& fileInStr, const std::
   fileStrStream >> texturePath;
 
   Texture* texture = TextureFactory::get().GetResource(texturePath);
-  TextureMaterial* material = new TextureMaterial(fileName, type, texture);
+  TextureMaterial* material = new TextureMaterial(fileName, texture);
   return material;
 }

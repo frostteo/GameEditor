@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IShaderCreator.h"
-#include "ShaderConfiguration.h"
 #include "SingleDirectLightShader.h"
 
 class SingleDirectLightShaderCreator :

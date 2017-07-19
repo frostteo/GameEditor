@@ -196,25 +196,16 @@ void TextureShader::Shutdown()
   return;
 }
 
-bool TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+void TextureShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
-  bool result;
-
   ID3D11ShaderResourceView* texture =((TextureMaterial *)material)->m_texture->GetTexture();
-  result = SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture);
-
-  if (!result)
-  {
-    return false;
-  }
+  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture);
 
   RenderShader(deviceContext, indexCount);
-  
-  return true;
 }
 
-bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+void TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture)
 {
   HRESULT result;
@@ -231,9 +222,7 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
   // Lock the constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-  {
-    return false;
-  }
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the matrix constant buffer", __FILE__, __LINE__));
 
   // Get a pointer to the data in the constant buffer.
   dataPtr = (MatrixBufferType*)mappedResource.pData;
@@ -254,8 +243,6 @@ bool TextureShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMA
 
   // Set shader texture resource in the pixel shader.
   deviceContext->PSSetShaderResources(0, 1, &texture);
-
-  return true;
 }
 
 void TextureShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)

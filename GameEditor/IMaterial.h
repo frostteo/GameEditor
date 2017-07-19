@@ -6,12 +6,9 @@ class IMaterial
 {
 protected:
   std::string m_name;
-  std::string m_type;
 public:
-  IMaterial(const std::string& name, const std::string& type) { m_name = name; m_type = type; }
+  IMaterial(const std::string& name) { m_name = name; }
   virtual ~IMaterial();
-  const std::string& GetType() { 
-    return m_type;
-  }
+  virtual const std::string& GetType() = 0;
 };
 

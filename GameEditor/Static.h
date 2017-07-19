@@ -9,7 +9,7 @@
 class Static :
   public GameObject
 {
-protected:
+public:
   IMaterial* m_material;
   Mesh* m_mesh;
   IShader* m_shader;
