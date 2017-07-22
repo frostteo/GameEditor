@@ -10,5 +10,6 @@ public:
   IMaterial(const std::string& name) { m_name = name; }
   virtual ~IMaterial();
   virtual const std::string& GetType() = 0;
+  virtual int GetTextureCount() { return 0; }
 };
 

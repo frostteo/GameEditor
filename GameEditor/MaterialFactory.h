@@ -8,6 +8,9 @@
 #include "IMaterialCreator.h"
 #include "TextureMaterialCreator.h"
 #include "SpecularMaterialCreator.h"
+#include "BumpMaterialCreator.h"
+#include "BumpSpecMaterialCreator.h"
+#include "BumpSpecMapMaterialCreator.h"
 #include "FileProcessor.h"
 #include "Logger.h"
 

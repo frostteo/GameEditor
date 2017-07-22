@@ -19,6 +19,9 @@ void MaterialFactory::Initialize()
 {
   m_materialCreators.push_back(new TextureMaterialCreator());
   m_materialCreators.push_back(new SpecularMaterialCreator());
+  m_materialCreators.push_back(new BumpMaterialCreator());
+  m_materialCreators.push_back(new BumpSpecMaterialCreator());
+  m_materialCreators.push_back(new BumpSpecMapMaterialCreator());
 }
 
 IMaterial* MaterialFactory::GetNewResource(const std::string& filename)
@@ -50,5 +53,5 @@ IMaterial* MaterialFactory::GetNewResource(const std::string& filename)
       return materialCreator->Get(fileInStr, filename);
   }
 
-  return nullptr;
+  throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no material creator for: " + type, __FILE__, __LINE__));
 }

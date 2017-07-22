@@ -134,10 +134,10 @@ void SpecularSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND h
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
-  vertexShaderBuffer = 0;
+  vertexShaderBuffer = nullptr;
 
   pixelShaderBuffer->Release();
-  pixelShaderBuffer = 0;
+  pixelShaderBuffer = nullptr;
 
   // Create a texture sampler state description.
   samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -153,6 +153,11 @@ void SpecularSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND h
   samplerDesc.BorderColor[3] = 0;
   samplerDesc.MinLOD = 0;
   samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+  // Create the texture sampler state.
+  result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
+  if (FAILED(result))
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create  texture sampler state", __FILE__, __LINE__));
 
   // Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
   matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;

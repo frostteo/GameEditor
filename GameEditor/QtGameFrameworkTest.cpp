@@ -48,7 +48,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   ShaderFactory::get().Initialize(m_Direct3D->GetDevice(), hwnd, m_shaderConfiguration);
   MaterialFactory::get().Initialize();
 
-  m_static.Initialize(MeshFactory::get().GetResource("../GameEditor/models/cube4.txt"), MaterialFactory::get().GetResource("../GameEditor/materials/woodBox.mat"));
+  m_static.Initialize(MeshFactory::get().GetResource("../GameEditor/models/cube4.txt"), MaterialFactory::get().GetResource("../GameEditor/materials/woodBoxBumpSpec.mat"));
 
   // Create the camera object.
   m_Camera = new Camera(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
@@ -64,7 +64,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   {
     return false;
   }
-  m_lightininigSystem->SetDirectLightDirection(0.5f, 0.0f, 0.5f);
+  m_lightininigSystem->SetDirectLightDirection(0.0f, 0.0f, 1.0f);
   m_lightininigSystem->SetDirectLightColor(1.0f, 1.0f, 1.0f, 1.0f);
   m_lightininigSystem->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 

@@ -7,6 +7,9 @@ void ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, ShaderConfigurat
   m_shaderCreators.push_back((new TextureShaderCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new SingleDirectLightShaderCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new SpecularSingleDirLightShaderCreator())->Initialize(device, hwnd));
+  m_shaderCreators.push_back((new BumpSingleDirLightShaderCreator())->Initialize(device, hwnd));
+  m_shaderCreators.push_back((new BumpSpecSingleLightShCreator())->Initialize(device, hwnd));
+  m_shaderCreators.push_back((new BumpSpecMapShaderCreator())->Initialize(device, hwnd));
 }
 
 
