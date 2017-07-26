@@ -11,8 +11,8 @@ GameObject::GameObject()
   m_rotationY = 0;
   m_rotationZ = 0;
  
-  m_needRebuildRotationMatrix = true;
   m_needRebuildTranslationMatrix = true;
+  m_needRebuildRotationMatrix = true;
 }
 
 
@@ -109,8 +109,6 @@ void GameObject::ChangeZRotation(float angle)
 
 void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
 {
-
-
   if (m_needRebuildRotationMatrix || m_needRebuildTranslationMatrix)
   {
     if (m_needRebuildRotationMatrix)
@@ -124,6 +122,13 @@ void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
   }
 
   worldMatrix = m_worldMatrix;
+}
+
+void GameObject::SetWorldMatrix(XMMATRIX worldMatrix)
+{
+  m_worldMatrix = worldMatrix;
+  m_needRebuildRotationMatrix = false;
+  m_needRebuildTranslationMatrix = false;
 }
 
 

@@ -49,6 +49,7 @@ private:
   VertexObj CalculateTangentOrBinormal(float textureVector[2], float modelVectorFirst[3], float modelVectorSecond[3], const float& denominator);
   void Normalize(VertexObj& vertex);
   VertexObj CrossProduct(const VertexObj& first, const VertexObj& second);
+  void CenterToCoordCenter();
 protected:
   void ReadFileCounts(const std::string& fileInStr, int& vertexCount, int& textureCoordCount, int& normalCount, int& faceCount);
   bool LoadDataStructures(const std::string& fileInStr, int vertexCount, int textureCount, int normalCount, int faceCount);

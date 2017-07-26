@@ -32,13 +32,62 @@ bool ObjMeshConverter::ConvertModel(const std::string& sourceFileName, const std
     return false;
   }
 
+  CenterToCoordCenter();
+
   result = SaveModel(destinationFileName);
+
   if (!result)
   {
     return false;
   }
 
   return true;
+}
+
+void ObjMeshConverter::CenterToCoordCenter()
+{
+  float minX, minY, minZ, maxX, maxY, maxZ;
+  float xCenter, yCenter, zCenter;
+
+  minX = m_txtVertices[0].coord.x;
+  maxX = minX;
+  minY = m_txtVertices[0].coord.y;
+  maxY = minY;
+  minZ = m_txtVertices[0].coord.z;
+  maxZ = minZ;
+
+  for (auto &txtVertex : m_txtVertices)
+  {
+    if (txtVertex.coord.x < minX)
+      minX = txtVertex.coord.x;
+
+    if (txtVertex.coord.y < minY)
+      minY = txtVertex.coord.y;
+
+    if (txtVertex.coord.z < minZ)
+      minZ = txtVertex.coord.z;
+
+
+    if (txtVertex.coord.x > maxX)
+      maxX = txtVertex.coord.x;
+
+    if (txtVertex.coord.y > maxY)
+      maxY = txtVertex.coord.y;
+
+    if (txtVertex.coord.z > maxZ)
+      maxZ = txtVertex.coord.z;
+  }
+
+  xCenter = (maxX - minX) / 2.0f + minX;
+  yCenter = (maxY - minY) / 2.0f + minY;
+  zCenter = (maxZ - minZ) / 2.0f + minZ;
+
+  for (auto &txtVertex : m_txtVertices)
+  {
+    txtVertex.coord.x -= xCenter;
+    txtVertex.coord.y -= yCenter;
+    txtVertex.coord.z -= zCenter;
+  }
 }
 
 bool ObjMeshConverter::SaveModel(const std::string& destinationFileName)

@@ -13,6 +13,10 @@
 #include "MaterialFactory.h"
 #include "Static.h"
 #include "LightininigSystem.h"
+#include "GraphicSystem.h"
+#include "InputSystem.h"
+#include "PreviewGameObject.h"
+#include "HighPerformanceTimer.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -42,9 +46,10 @@ protected:
   /** paints the scene */
   void paintEvent(QPaintEvent* pEvent);
 private:
-  D3DConfigurer* m_Direct3D;
+  InputSystem* m_inputSystem;
   Camera* m_Camera;
   Static m_static;
   ShaderConfiguration* m_shaderConfiguration;
   LightininigSystem* m_lightininigSystem;
+  std::unique_ptr<GraphicSystem> m_graphicSystem;
 };

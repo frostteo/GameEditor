@@ -16,7 +16,7 @@ Logger::~Logger()
     delete m_platformDependentLoggerPart;
 }
 
-void Logger::LogMessage(std::string& message)
+void Logger::LogMessage(const std::string& message)
 {
   m_logFile << "time: " << m_timer.getCurrentTime() << ", info: " << message << std::endl;
 }

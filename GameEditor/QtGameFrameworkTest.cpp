@@ -31,24 +31,21 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 {
   bool result;
 
+  HighPerformanceTimer::get().Initialize();
+  HighPerformanceTimer::get().Frame();
+ /* ObjMeshConverter objConverter;
+  objConverter.ConvertModel("../GameEditor/models/CubeFromMax.obj", "../GameEditor/models/centeredCube.txt");*/
+
   m_shaderConfiguration = new ShaderConfiguration();
   m_shaderConfiguration->Configure();
 
-  // Create the Direct3D object.
-  m_Direct3D = new D3DConfigurer; 
-  m_Direct3D->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN);
-  if (!m_Direct3D)
-  {
+  m_graphicSystem = std::unique_ptr<GraphicSystem>(new GraphicSystem);
+  if (!m_graphicSystem)
     return false;
-  }
 
-  //factory initializing
-  MeshFactory::get().SetDevice(m_Direct3D->GetDevice());
-  TextureFactory::get().Initialize(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());
-  ShaderFactory::get().Initialize(m_Direct3D->GetDevice(), hwnd, m_shaderConfiguration);
-  MaterialFactory::get().Initialize();
+  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration);
 
-  m_static.Initialize(MeshFactory::get().GetResource("../GameEditor/models/cube4.txt"), MaterialFactory::get().GetResource("../GameEditor/materials/woodBoxBumpSpec.mat"));
+  m_static.Initialize(MeshFactory::get().GetResource("../GameEditor/models/centeredCube.txt"), MaterialFactory::get().GetResource("../GameEditor/materials/woodBoxBumpSpec.mat"));
 
   // Create the camera object.
   m_Camera = new Camera(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
@@ -57,16 +54,24 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
     return false;
   }
 
-  m_Camera->SetPosition(0.0f, 10.0f, -50.0f);
+  m_Camera->SetPosition(0.0f, 0.0f, -50.0f);
 
   m_lightininigSystem = new LightininigSystem();
   if (!m_lightininigSystem) 
   {
     return false;
   }
-  m_lightininigSystem->SetDirectLightDirection(0.0f, 0.0f, 1.0f);
+  m_lightininigSystem->SetDirectLightDirection(1.0f, 0.0f, 1.0f);
   m_lightininigSystem->SetDirectLightColor(1.0f, 1.0f, 1.0f, 1.0f);
   m_lightininigSystem->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+
+  m_inputSystem = new InputSystem();
+  m_inputSystem->Initialize(GetModuleHandle(NULL), hwnd);
+
+  PreviewGameObject* previewGameObject = new PreviewGameObject();
+  previewGameObject->SetCamera(m_Camera);
+  previewGameObject->SetStatic(&m_static);
+  m_inputSystem->AddInputListener(previewGameObject);
 
   return true;
 }
@@ -77,12 +82,6 @@ void QtGameFrameworkTest::Shutdown()
   {
     delete m_shaderConfiguration;
     m_shaderConfiguration = nullptr;
-  }
-
-  if (m_Direct3D)
-  {
-    delete m_Direct3D;
-    m_Direct3D = nullptr;
   }
 
   // Release the camera object.
@@ -98,30 +97,23 @@ void QtGameFrameworkTest::Shutdown()
     m_lightininigSystem = nullptr;
   }
 
+  if (m_inputSystem) 
+  {
+    delete m_inputSystem;
+    m_inputSystem = nullptr;
+  }
+
   return;
 }
 
 
 void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
-  XMMATRIX viewMatrix, projectionMatrix;
-  bool renderModel, result;
+  HighPerformanceTimer::get().Frame();
 
-  // Clear the buffers to begin the scene.
-  m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
-
-  // Generate the view matrix based on the camera's position.
-  m_Camera->GetViewMatrix(viewMatrix);
-  m_Camera->GetProjectionMatrix(projectionMatrix);
-
-  m_static.ChangeYRotation(0.5);
-
-  m_static.Render(m_Direct3D->GetDeviceContext(), viewMatrix, projectionMatrix, m_lightininigSystem, m_Camera->GetPosition());
-
-  XMMATRIX world;
-  m_static.GetWorldMatrix(world);
-
-  // Present the rendered scene to the screen.
-  m_Direct3D->EndScene();
+  m_inputSystem->Frame();
+  std::vector<Static*> renderedStaticGO;
+  renderedStaticGO.push_back(&m_static);
+  m_graphicSystem->DrawStatics(renderedStaticGO, m_Camera, m_lightininigSystem);
 
   // trigger another update as soon as possible 
   update();

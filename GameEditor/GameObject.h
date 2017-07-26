@@ -34,5 +34,6 @@ public:
   void MoveForwardBackwardInLocalCord(float distance);
   void MoveLeftRightInLocalCord(float distance);
   void GetWorldMatrix(XMMATRIX& worldMatrix);
+  void SetWorldMatrix(XMMATRIX worldMatrix);
 };
 

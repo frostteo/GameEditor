@@ -64,7 +64,7 @@ float4 BumpMapSpecularPixelShader(PixelInputType input) : SV_TARGET
 	bumpMap *= bumpDepth;
 
     // Calculate the normal from the data in the bump map.
-    bumpNormal = bumpMap.x * input.tangent + bumpMap.y * input.binormal + input.normal; //Here are differences with rastertek tutorial
+    bumpNormal = bumpMap.x * input.tangent + bumpMap.y * input.binormal + input.normal;
 	
     // Normalize the resulting bump normal.
     bumpNormal = normalize(bumpNormal);

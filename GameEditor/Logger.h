@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include "IPlatformDependentLoggerPart.h"
+#include <stdexcept>
 
 class Logger : public Singleton<Logger>
 {
@@ -21,7 +22,7 @@ public:
   Logger();
   virtual ~Logger();
   std::string GetErrorTraceMessage(const std::string& info, const std::string& filename, const int lineNumber);
-  void LogMessage(std::string& message);
+  void LogMessage(const std::string& message);
   void LogMessage(const std::string& info, const std::string& filename, const int lineNumber);
   void LogMessageWithExceptionDialog(const std::string& info, const std::string& filename, const int lineNumber);
   void ShowCriticalMessage(const std::string& message);
