@@ -13,17 +13,18 @@
 #include "BumpSpecMapMaterialCreator.h"
 #include "FileProcessor.h"
 #include "Logger.h"
+#include "TextureFactory.h"
 
-class MaterialFactory : public SharedResourcesFactory<IMaterial>, public Singleton<MaterialFactory>
+class MaterialFactory : public SharedResourcesFactory<IMaterial>
 {
-  friend class Singleton<MaterialFactory>;
 private:
   std::vector<IMaterialCreator* > m_materialCreators;
 protected:
-  MaterialFactory();
-  virtual ~MaterialFactory();
   IMaterial* GetNewResource(const std::string& filename) override;
 public:
-  void Initialize();
+  MaterialFactory();
+  virtual ~MaterialFactory();
+  MaterialFactory* Initialize(TextureFactory* textureFactory);
+  void Shutdown();
 };
 

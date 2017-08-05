@@ -10,10 +10,12 @@ TextureFactory::~TextureFactory()
 {
 }
 
-void TextureFactory::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+TextureFactory* TextureFactory::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
+  Shutdown();
   m_device = device;
   m_deviceContext = deviceContext;
+  return this;
 }
 
 Texture* TextureFactory::GetNewResource(const std::string& filename)

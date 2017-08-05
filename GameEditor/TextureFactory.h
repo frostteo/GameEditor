@@ -5,18 +5,16 @@
 #include "Singleton.h"
 #include "SharedResourcesFactory.h"
 
-class TextureFactory : public SharedResourcesFactory<Texture>, public Singleton<TextureFactory>
+class TextureFactory : public SharedResourcesFactory<Texture>
 {
-  friend class Singleton<TextureFactory>;
 private:
   ID3D11Device* m_device;
   ID3D11DeviceContext* m_deviceContext;
 protected:
-  TextureFactory();
-  virtual ~TextureFactory();
   Texture* GetNewResource(const std::string& filename) override;
 public:
- 
-  void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+  TextureFactory* Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+  TextureFactory();
+  virtual ~TextureFactory();
 };
 

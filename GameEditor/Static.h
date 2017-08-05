@@ -5,6 +5,7 @@
 #include "IShader.h"
 #include "ShaderFactory.h"
 #include "LightininigSystem.h"
+#include "ShaderFactory.h"
 
 class Static :
   public GameObject
@@ -16,10 +17,10 @@ public:
 public:
   Static();
   virtual ~Static();
-  void Initialize(Mesh* mesh, IMaterial* material) { m_mesh = mesh; m_material = material; InitializeShader(); }
-  void SetMaterial(IMaterial* material);
+  void Initialize(Mesh* mesh, IMaterial* material, ShaderFactory* shaderFactory) { m_mesh = mesh; m_material = material; InitializeShader(shaderFactory); }
+  void SetMaterial(IMaterial* material, ShaderFactory* shaderFactory);
   void SetMesh(Mesh* mesh);
-  void InitializeShader();
+  void InitializeShader(ShaderFactory* shaderFactory);
   void Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion);
 };
 

@@ -10,6 +10,7 @@ BumpSpecSingleLightSh::BumpSpecSingleLightSh()
 
 BumpSpecSingleLightSh::~BumpSpecSingleLightSh()
 {
+  ShutdownShader();
 }
 
 void BumpSpecSingleLightSh::ShutdownShader()

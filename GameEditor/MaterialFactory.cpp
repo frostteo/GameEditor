@@ -5,23 +5,32 @@ MaterialFactory::MaterialFactory()
 {
 }
 
-
-MaterialFactory::~MaterialFactory()
+void MaterialFactory::Shutdown()
 {
   for (auto materialCreator : m_materialCreators)
   {
     delete materialCreator;
     materialCreator = nullptr;
   }
+  m_materialCreators.clear();
+  SharedResourcesFactory<IMaterial>::Shutdown();
 }
 
-void MaterialFactory::Initialize()
+MaterialFactory::~MaterialFactory()
 {
-  m_materialCreators.push_back(new TextureMaterialCreator());
-  m_materialCreators.push_back(new SpecularMaterialCreator());
-  m_materialCreators.push_back(new BumpMaterialCreator());
-  m_materialCreators.push_back(new BumpSpecMaterialCreator());
-  m_materialCreators.push_back(new BumpSpecMapMaterialCreator());
+  Shutdown();
+}
+
+MaterialFactory* MaterialFactory::Initialize(TextureFactory* textureFactory)
+{
+  Shutdown();
+  m_materialCreators.push_back((new TextureMaterialCreator())->SetTextureFactory(textureFactory));
+  m_materialCreators.push_back((new SpecularMaterialCreator())->SetTextureFactory(textureFactory));
+  m_materialCreators.push_back((new BumpMaterialCreator())->SetTextureFactory(textureFactory));
+  m_materialCreators.push_back((new BumpSpecMaterialCreator())->SetTextureFactory(textureFactory));
+  m_materialCreators.push_back((new BumpSpecMapMaterialCreator())->SetTextureFactory(textureFactory));
+
+  return this;
 }
 
 IMaterial* MaterialFactory::GetNewResource(const std::string& filename)

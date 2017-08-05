@@ -2,11 +2,13 @@
 
 #include <string>
 #include "IMaterial.h"
+#include "TextureFactory.h"
 
 class IMaterialCreator
 {
 protected:
   std::string m_type;
+  TextureFactory* m_textureFactory = nullptr;
 public:
   IMaterialCreator();
   virtual ~IMaterialCreator();
@@ -14,5 +16,6 @@ public:
   virtual IMaterial* Get(const std::string& fileInStr, const std::string& fileName) {
     return nullptr;
   }
+  IMaterialCreator* SetTextureFactory(TextureFactory* textureFactory) { m_textureFactory = textureFactory; return this; }
 };
 

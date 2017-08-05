@@ -23,7 +23,17 @@ QList<StaticGameObject> StaticGOService::GetStaticGameObjects()
   return qListGameObjects;
 }
 
-void StaticGOService::CreateStaticGameObject(const StaticGameObject& gameObject)
+void StaticGOService::CreateStaticGameObject(StaticGameObject& gameObject)
 {
   m_unitOfWork->GetStaticGORepository()->Create(gameObject);
+}
+
+void StaticGOService::UpdateStaticGameObject(StaticGameObject& gameObject)
+{
+  m_unitOfWork->GetStaticGORepository()->Update(gameObject);
+}
+
+void StaticGOService::DeleteStaticGameObject(int id)
+{
+  m_unitOfWork->GetStaticGORepository()->Delete(id);
 }

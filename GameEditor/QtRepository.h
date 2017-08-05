@@ -32,8 +32,8 @@ public:
   virtual std::vector<T> GetAll() override;
   virtual T Get(int id) override;
   virtual void Delete(int id) override;
-  virtual void Update(T entity) override;
-  virtual void Create(const T& entity) override;
+  virtual void Update(T& entity) override;
+  virtual void Create(T& entity) override;
 };
 
 template <class T>
@@ -114,7 +114,7 @@ void QtRepository<T>::Delete(int id)
 }
 
 template <class T>
-void QtRepository<T>::Update(T entity)
+void QtRepository<T>::Update(T& entity)
 {
   QSqlQuery query(GetDatabase());
 
@@ -136,7 +136,7 @@ void QtRepository<T>::Update(T entity)
 }
 
 template <class T>
-void  QtRepository<T>::Create(const T& entity)
+void  QtRepository<T>::Create(T& entity)
 {
   QSqlQuery query(GetDatabase());
 

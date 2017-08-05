@@ -8,6 +8,7 @@ SingleDirectLightShader::SingleDirectLightShader()
 
 SingleDirectLightShader::~SingleDirectLightShader()
 {
+  ShutdownShader();
 }
 
 void SingleDirectLightShader::ShutdownShader()

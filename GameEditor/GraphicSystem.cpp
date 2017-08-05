@@ -12,16 +12,34 @@ GraphicSystem::~GraphicSystem()
 
 void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnabled, HWND hwnd, bool fullScreen, ShaderConfiguration* shaderConfiguration)
 {
+  bool result;
   m_direct3D = std::unique_ptr<D3DConfigurer>(new D3DConfigurer);
-  m_direct3D->Initialize(screenWidth, screenHeight, vsyncEnabled, hwnd, fullScreen);
-  if (!m_direct3D)
+  result = m_direct3D->Initialize(screenWidth, screenHeight, vsyncEnabled, hwnd, fullScreen);
+  if (!result)
     throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant initialize direct 3D", __FILE__, __LINE__));
 
   //factory initializing
-  MeshFactory::get().SetDevice(m_direct3D->GetDevice());
-  TextureFactory::get().Initialize(m_direct3D->GetDevice(), m_direct3D->GetDeviceContext());
-  ShaderFactory::get().Initialize(m_direct3D->GetDevice(), hwnd, shaderConfiguration);
-  MaterialFactory::get().Initialize();
+  m_meshFactory = std::unique_ptr<MeshFactory>((new MeshFactory())->SetDevice(m_direct3D->GetDevice()));
+  m_textureFactory = std::unique_ptr<TextureFactory>((new TextureFactory())->Initialize(m_direct3D->GetDevice(), m_direct3D->GetDeviceContext()));
+  m_shaderFactory = std::unique_ptr<ShaderFactory>((new ShaderFactory())->Initialize(m_direct3D->GetDevice(), hwnd, shaderConfiguration));
+  m_materialFactory = std::unique_ptr<MaterialFactory>((new MaterialFactory())->Initialize(m_textureFactory.get()));
+}
+
+MeshFactory* GraphicSystem::GetMeshFactory()
+{
+  return m_meshFactory.get();
+}
+TextureFactory* GraphicSystem::GetTextureFactory()
+{
+  return m_textureFactory.get();
+}
+ShaderFactory* GraphicSystem::GetShaderFactory()
+{
+  return m_shaderFactory.get();
+}
+MaterialFactory* GraphicSystem::GetMaterialFactory()
+{
+  return m_materialFactory.get();
 }
 
 void GraphicSystem::DrawStatics(std::vector<Static*>& staticGameObjects, Camera* camera, LightininigSystem* lightiningSystem)

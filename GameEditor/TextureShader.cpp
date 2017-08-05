@@ -12,7 +12,7 @@ TextureShader::TextureShader()
 
 TextureShader::~TextureShader()
 {
-  Shutdown();
+  ShutdownShader();
 }
 
 void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
@@ -184,14 +184,6 @@ void TextureShader::ShutdownShader()
     m_vertexShader->Release();
     m_vertexShader = nullptr;
   }
-
-  return;
-}
-
-void TextureShader::Shutdown()
-{
-  // Shutdown the vertex and pixel shaders as well as the related objects.
-  ShutdownShader();
 
   return;
 }

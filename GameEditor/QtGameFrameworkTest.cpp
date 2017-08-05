@@ -1,7 +1,7 @@
 #include "QtGameFrameworkTest.h"
 
 QtGameFrameworkTest::QtGameFrameworkTest(QWidget *parent)
-    : QWidget(parent)
+  : QWidget(parent)
 {
     setupUi(this);
 
@@ -45,7 +45,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration);
 
-  m_static.Initialize(MeshFactory::get().GetResource("../GameEditor/models/centeredCube.txt"), MaterialFactory::get().GetResource("../GameEditor/materials/woodBoxBumpSpec.mat"));
+  m_static.Initialize(m_graphicSystem->GetMeshFactory()->GetResource("../GameEditor/models/centeredCube.txt"), m_graphicSystem->GetMaterialFactory()->GetResource("../GameEditor/materials/woodBoxBumpSpec.mat"), m_graphicSystem->GetShaderFactory());
 
   // Create the camera object.
   m_Camera = new Camera(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);

@@ -50,3 +50,20 @@ void AddStaticGameObjectDialog::done(int result)
     QDialog::done(result);
   }
 }
+
+
+void AddStaticGameObjectDialog::SetStaticGameObject(StaticGameObject gameObject)
+{
+  m_gameObject = gameObject;
+  this->staticGONameEdit->setText(m_gameObject.name);
+  this->staticGOModelEdit->setText(m_gameObject.modelFileName);
+  this->staticGOMaterialEdit->setText(m_gameObject.materialFileName);
+}
+
+StaticGameObject AddStaticGameObjectDialog::GetStaticGameObject()
+{
+  m_gameObject.name = this->staticGONameEdit->text();
+  m_gameObject.modelFileName = this->staticGOModelEdit->text();
+  m_gameObject.materialFileName = this->staticGOMaterialEdit->text();
+  return m_gameObject;
+}

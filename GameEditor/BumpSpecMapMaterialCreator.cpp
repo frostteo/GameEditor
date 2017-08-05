@@ -6,6 +6,9 @@ BumpSpecMapMaterialCreator::~BumpSpecMapMaterialCreator()
 
 IMaterial* BumpSpecMapMaterialCreator::Get(const std::string& fileInStr, const std::string& fileName)
 {
+  if (!m_textureFactory)
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Texture factory was not initialized!", __FILE__, __LINE__));
+
   char input;
   std::string type;
   std::string texturePath;
@@ -68,9 +71,9 @@ IMaterial* BumpSpecMapMaterialCreator::Get(const std::string& fileInStr, const s
   }
   fileStrStream >> specularPower;
 
-  Texture* texture = TextureFactory::get().GetResource(texturePath);
-  Texture* normalMap = TextureFactory::get().GetResource(normalMapPath);
-  Texture* specularMap = TextureFactory::get().GetResource(specularMapPath);
+  Texture* texture = m_textureFactory->GetResource(texturePath);
+  Texture* normalMap = m_textureFactory->GetResource(normalMapPath);
+  Texture* specularMap = m_textureFactory->GetResource(specularMapPath);
   BumpSpecMapMaterial* material = new BumpSpecMapMaterial(fileName, texture, normalMap, specularMap, bumpDepth, XMVectorSet(rSpec, gSpec, bSpec, aSpec), specularPower);
   return material;
 }

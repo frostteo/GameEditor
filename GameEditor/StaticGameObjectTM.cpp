@@ -14,7 +14,9 @@ StaticGameObjectTM::~StaticGameObjectTM()
 
 void StaticGameObjectTM::UpdateData()
 {
+  this->beginResetModel();
   m_data = m_staticGOService->GetStaticGameObjects();
+  this->endResetModel();
 }
 
 QVariant StaticGameObjectTM::data(const QModelIndex &index, int role) const
@@ -44,10 +46,27 @@ QVariant StaticGameObjectTM::headerData(int section, Qt::Orientation orientation
   }
 }
 
-void StaticGameObjectTM::append(const StaticGameObject& gameObject)
+void StaticGameObjectTM::append(StaticGameObject& gameObject)
 {
   beginInsertRows({}, m_data.count(), m_data.count());
   m_staticGOService->CreateStaticGameObject(gameObject);
   UpdateData();
   endInsertRows();
+}
+
+void StaticGameObjectTM::edit(StaticGameObject& gameObject)
+{
+  m_staticGOService->UpdateStaticGameObject(gameObject);
+  UpdateData();
+}
+
+void StaticGameObjectTM::remove(int id)
+{
+  m_staticGOService->DeleteStaticGameObject(id);
+  UpdateData();
+}
+
+StaticGameObject StaticGameObjectTM::GetStaticGameObject(int rowNumber)
+{
+  return m_data.at(rowNumber);
 }

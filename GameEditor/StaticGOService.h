@@ -15,6 +15,8 @@ public:
   StaticGOService();
   virtual ~StaticGOService();
   virtual QList<StaticGameObject> GetStaticGameObjects() override;
-  virtual void CreateStaticGameObject(const StaticGameObject& gameObject) override;
+  virtual void CreateStaticGameObject(StaticGameObject& gameObject) override;
+  virtual void UpdateStaticGameObject(StaticGameObject& gameObject) override;
+  virtual void DeleteStaticGameObject(int id) override;
 };
 

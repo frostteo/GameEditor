@@ -6,6 +6,9 @@ TextureMaterialCreator::~TextureMaterialCreator()
 
 IMaterial* TextureMaterialCreator::Get(const std::string& fileInStr, const std::string& fileName)
 {
+  if (!m_textureFactory)
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Texture factory was not initialized!", __FILE__, __LINE__));
+
   char input;
   std::string type;
   std::string texturePath;
@@ -28,7 +31,7 @@ IMaterial* TextureMaterialCreator::Get(const std::string& fileInStr, const std::
   }
   fileStrStream >> texturePath;
 
-  Texture* texture = TextureFactory::get().GetResource(texturePath);
+  Texture* texture = m_textureFactory->GetResource(texturePath);
   TextureMaterial* material = new TextureMaterial(fileName, texture);
   return material;
 }

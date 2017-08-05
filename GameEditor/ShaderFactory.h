@@ -12,17 +12,16 @@
 #include "ShaderConfiguration.h"
 #include "Logger.h"
 
-class ShaderFactory : public Singleton<ShaderFactory>
+class ShaderFactory
 {
-  friend class Singleton<ShaderFactory>;
 private:
   std::vector<IShaderCreator* > m_shaderCreators;
   ShaderConfiguration* m_shaderConfiguration;
-protected:
+public:
+  ShaderFactory* Initialize(ID3D11Device* device, HWND hwnd, ShaderConfiguration* shaderConfiguration);
+  void Shutdown();
+  IShader* Get(const std::string& shaderName);
   ShaderFactory() { }
   virtual ~ShaderFactory();
-public:
-  void Initialize(ID3D11Device* device, HWND hwnd, ShaderConfiguration* shaderConfiguration);
-  IShader* Get(const std::string& shaderName);
 };
 

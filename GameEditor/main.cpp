@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     try {
       GameEditor w;
       w.show();
-     /* QtGameFrameworkTest w;
+ /*     QtGameFrameworkTest w;
       w.show();*/
       return a.exec();
     }

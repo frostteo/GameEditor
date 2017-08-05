@@ -16,6 +16,7 @@ public:
   SharedResourcesFactory();
   virtual ~SharedResourcesFactory();
   T* GetResource(const std::string& filename);
+  void Shutdown();
 };
 
 
@@ -24,14 +25,22 @@ SharedResourcesFactory<T>::SharedResourcesFactory()
 {
 }
 
+
 template <typename T>
-SharedResourcesFactory<T>::~SharedResourcesFactory()
+void SharedResourcesFactory<T>::Shutdown()
 {
   for (auto& element : m_resource_map)
   {
     delete element.second;
     element.second = nullptr;
   }
+  m_resource_map.clear();
+}
+
+template <typename T>
+SharedResourcesFactory<T>::~SharedResourcesFactory()
+{
+  Shutdown();
 }
 
 template <typename T>

@@ -12,10 +12,10 @@ Static::~Static()
 {
 }
 
-void Static::SetMaterial(IMaterial* material)
+void Static::SetMaterial(IMaterial* material, ShaderFactory* shaderFactory)
 {
   m_material = material;
-  InitializeShader();
+  InitializeShader(shaderFactory);
 }
 
 void Static::SetMesh(Mesh* mesh)
@@ -23,9 +23,9 @@ void Static::SetMesh(Mesh* mesh)
   m_mesh = mesh;
 }
 
-void Static::InitializeShader()
+void Static::InitializeShader(ShaderFactory* shaderFactory)
 {
-  m_shader = ShaderFactory::get().Get(m_material->GetType());
+  m_shader = shaderFactory->Get(m_material->GetType());
 }
 
 void Static::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion)

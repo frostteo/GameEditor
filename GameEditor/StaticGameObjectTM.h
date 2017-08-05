@@ -20,6 +20,9 @@ public:
   int columnCount(const QModelIndex &) const override { return 4; }
   QVariant data(const QModelIndex &index, int role) const override;
   QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
-  void append(const StaticGameObject& gameObject);
+  void append(StaticGameObject& gameObject);
+  void edit(StaticGameObject& gameObject);
+  void remove(int id);
+  StaticGameObject GetStaticGameObject(int rowNumber);
 };
 

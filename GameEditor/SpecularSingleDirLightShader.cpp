@@ -10,6 +10,7 @@ SpecularSingleDirLightShader::SpecularSingleDirLightShader()
 
 SpecularSingleDirLightShader::~SpecularSingleDirLightShader()
 {
+  ShutdownShader();
 }
 
 void SpecularSingleDirLightShader::ShutdownShader()

@@ -6,6 +6,9 @@ BumpMaterialCreator::~BumpMaterialCreator()
 
 IMaterial* BumpMaterialCreator::Get(const std::string& fileInStr, const std::string& fileName)
 {
+  if (!m_textureFactory)
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Texture factory was not initialized!", __FILE__, __LINE__));
+
   char input;
   std::string type;
   std::string texturePath;
@@ -44,8 +47,8 @@ IMaterial* BumpMaterialCreator::Get(const std::string& fileInStr, const std::str
   }
   fileStrStream >> bumpDepth;
 
-  Texture* texture = TextureFactory::get().GetResource(texturePath);
-  Texture* normalMap = TextureFactory::get().GetResource(normalMapPath);
+  Texture* texture = m_textureFactory->GetResource(texturePath);
+  Texture* normalMap = m_textureFactory->GetResource(normalMapPath);
   BumpMaterial* material = new BumpMaterial(fileName, texture, normalMap, bumpDepth);
   return material;
 }
