@@ -8,6 +8,8 @@
 class QtUtils
 {
 public:
+    static const char fileSeparator = '/';
+public:
   QtUtils();
   ~QtUtils();
   static std::string SqlErrorToStr(QSqlError& error) { return error.text().toLocal8Bit().constData(); }

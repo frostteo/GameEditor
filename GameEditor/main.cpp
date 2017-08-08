@@ -4,8 +4,6 @@
 #include "Logger.h"
 #include <qmessagebox.h>
 #include "QtLoggerPart.h"
-#include "QtUnitOfWork.h"
-#include "IUnitOfWork.h"
 
 int main(int argc, char *argv[])
 {

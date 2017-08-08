@@ -344,8 +344,13 @@ void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTx
   tuVector[1] = third.tu - first.tu;
   tvVector[1] = second.tv - first.tv;
 
+
   // Calculate the denominator of the tangent/binormal equation.
-  den = 1.0f / (tuVector[0] * tvVector[0] - tuVector[1] * tvVector[1]);
+  float textCoordDiff = tuVector[0] * tvVector[0] - tuVector[1] * tvVector[1];
+  if (textCoordDiff == 0)
+    den = 1.0f;
+  else 
+    den = 1.0f / textCoordDiff;
 
   tangent = CalculateTangentOrBinormal(tvVector, vector1, vector2, den);
   binormal = CalculateTangentOrBinormal(tuVector, vector2, vector1, den);
@@ -386,10 +391,12 @@ void ObjMeshConverter::Normalize(VertexObj& vertex)
   // Calculate the length
   length = sqrt((vertex.x * vertex.x) + (vertex.y * vertex.y) + (vertex.z * vertex.z));
 
-  // Normalize vector
-  vertex.x = vertex.x / length;
-  vertex.y = vertex.y / length;
-  vertex.z = vertex.z / length;
+  if (length != 0) {
+    // Normalize vector
+    vertex.x = vertex.x / length;
+    vertex.y = vertex.y / length;
+    vertex.z = vertex.z / length;
+  }
 }
 
 VertexObj ObjMeshConverter::CrossProduct(const VertexObj& first, const VertexObj& second)

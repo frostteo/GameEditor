@@ -26,7 +26,6 @@ class PreviewStaticGOWidget : public QDialog, public Ui::PreviewStaticGOWidget
 {
     Q_OBJECT
 private:
-  const char m_filePathSeparator = '/';
   std::string m_pathToMaterials;
   std::string m_pathToModels;
 

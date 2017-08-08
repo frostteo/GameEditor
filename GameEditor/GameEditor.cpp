@@ -84,3 +84,12 @@ void GameEditor::StaticGameObjectBtnsStateConfigure()
   ui.deleteStaticGOBtn->setEnabled(hasSelection);
   ui.previewStaticGOBtn->setEnabled(hasSelection);
 }
+
+void GameEditor::on_actionObjConverter_triggered()
+{
+  ObjConverterDialog objConverterDialog;
+  objConverterDialog.SetPathToGEModels(m_pathToModels);
+  objConverterDialog.SetPathToObjModels(m_pathToObjModels);
+
+  objConverterDialog.exec();
+}

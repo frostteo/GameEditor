@@ -18,6 +18,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
@@ -32,6 +33,7 @@ QT_BEGIN_NAMESPACE
 class Ui_GameEditorClass
 {
 public:
+    QAction *actionObjConverter;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QGridLayout *gridLayout_3;
@@ -49,6 +51,8 @@ public:
     QWidget *tab_12;
     QWidget *widget;
     QMenuBar *menuBar;
+    QMenu *menuFile;
+    QMenu *menuMeshConverter;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
 
@@ -57,6 +61,8 @@ public:
         if (GameEditorClass->objectName().isEmpty())
             GameEditorClass->setObjectName(QStringLiteral("GameEditorClass"));
         GameEditorClass->resize(601, 400);
+        actionObjConverter = new QAction(GameEditorClass);
+        actionObjConverter->setObjectName(QStringLiteral("actionObjConverter"));
         centralWidget = new QWidget(GameEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -137,6 +143,10 @@ public:
         menuBar = new QMenuBar(GameEditorClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 601, 21));
+        menuFile = new QMenu(menuBar);
+        menuFile->setObjectName(QStringLiteral("menuFile"));
+        menuMeshConverter = new QMenu(menuBar);
+        menuMeshConverter->setObjectName(QStringLiteral("menuMeshConverter"));
         GameEditorClass->setMenuBar(menuBar);
         statusBar = new QStatusBar(GameEditorClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -144,6 +154,10 @@ public:
         mainToolBar = new QToolBar(GameEditorClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         GameEditorClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
+
+        menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuMeshConverter->menuAction());
+        menuMeshConverter->addAction(actionObjConverter);
 
         retranslateUi(GameEditorClass);
 
@@ -153,6 +167,7 @@ public:
     void retranslateUi(QMainWindow *GameEditorClass)
     {
         GameEditorClass->setWindowTitle(QApplication::translate("GameEditorClass", "GameEditor", Q_NULLPTR));
+        actionObjConverter->setText(QApplication::translate("GameEditorClass", ".obj convert", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("GameEditorClass", "\320\240\320\265\320\264\320\260\320\272\321\202\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265", Q_NULLPTR));
         addStaticGOBtn->setText(QApplication::translate("GameEditorClass", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", Q_NULLPTR));
         editStaticGOBtn->setText(QApplication::translate("GameEditorClass", "\320\240\320\265\320\264\320\260\320\272\321\202\320\270\321\200\320\276\320\262\320\260\321\202\321\214", Q_NULLPTR));
@@ -160,6 +175,8 @@ public:
         previewStaticGOBtn->setText(QApplication::translate("GameEditorClass", "\320\237\321\200\320\276\321\201\320\274\320\276\321\202\321\200", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_11), QApplication::translate("GameEditorClass", "\320\241\321\202\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\270\320\265 \320\270\320\263\321\200\320\276\320\262\321\213\320\265 \320\276\320\261\321\212\320\265\320\272\321\202\321\213", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_12), QApplication::translate("GameEditorClass", "Tab 2", Q_NULLPTR));
+        menuFile->setTitle(QApplication::translate("GameEditorClass", "File", Q_NULLPTR));
+        menuMeshConverter->setTitle(QApplication::translate("GameEditorClass", "Mesh converter", Q_NULLPTR));
     } // retranslateUi
 
 };

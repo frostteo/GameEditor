@@ -105,6 +105,19 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuMeshConverter">
+    <property name="title">
+     <string>Mesh converter</string>
+    </property>
+    <addaction name="actionObjConverter"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuMeshConverter"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
@@ -115,6 +128,11 @@
     <bool>false</bool>
    </attribute>
   </widget>
+  <action name="actionObjConverter">
+   <property name="text">
+    <string>.obj convert</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

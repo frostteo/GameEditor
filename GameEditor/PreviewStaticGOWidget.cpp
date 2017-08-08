@@ -35,7 +35,7 @@ PreviewStaticGOWidget::~PreviewStaticGOWidget()
 void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObject staticGameObject)
 {
   m_static = Static();
-  m_static.Initialize(m_graphicSystem->GetMeshFactory()->GetResource(m_pathToModels + m_filePathSeparator + QtUtils::QStringToStdStr(staticGameObject.modelFileName)), m_graphicSystem->GetMaterialFactory()->GetResource(m_pathToMaterials + m_filePathSeparator + QtUtils::QStringToStdStr(staticGameObject.materialFileName)), m_graphicSystem->GetShaderFactory());
+  m_static.Initialize(m_graphicSystem->GetMeshFactory()->GetResource(m_pathToModels + QtUtils::fileSeparator + QtUtils::QStringToStdStr(staticGameObject.modelFileName)), m_graphicSystem->GetMaterialFactory()->GetResource(m_pathToMaterials + QtUtils::fileSeparator + QtUtils::QStringToStdStr(staticGameObject.materialFileName)), m_graphicSystem->GetShaderFactory());
 }
 
 bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
@@ -44,8 +44,6 @@ bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND h
 
   HighPerformanceTimer::get().Initialize();
   HighPerformanceTimer::get().Frame();
-  /* ObjMeshConverter objConverter;
-  objConverter.ConvertModel("../GameEditor/models/CubeFromMax.obj", "../GameEditor/models/centeredCube.txt");*/
 
   m_shaderConfiguration = std::unique_ptr<ShaderConfiguration>(new ShaderConfiguration());
   m_shaderConfiguration->Configure();

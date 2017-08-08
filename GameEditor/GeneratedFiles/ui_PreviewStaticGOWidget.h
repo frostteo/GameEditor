@@ -35,7 +35,7 @@ public:
 
     void retranslateUi(QWidget *PreviewStaticGOWidget)
     {
-        PreviewStaticGOWidget->setWindowTitle(QApplication::translate("PreviewStaticGOWidget", "PreviewStaticGOWidget", Q_NULLPTR));
+        PreviewStaticGOWidget->setWindowTitle(QApplication::translate("PreviewStaticGOWidget", "Preview", Q_NULLPTR));
     } // retranslateUi
 
 };

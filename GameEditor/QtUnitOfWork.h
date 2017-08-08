@@ -5,7 +5,8 @@
 #include "IUnitOfWork.h"
 #include "Logger.h"
 #include "QtUtils.h"
-#include "StaticGORepository.h"
+#include "IRepository.h"
+#include "StaticGameObject.h"
 #include "DALDependencyResolver.h"
 
 class QtUnitOfWork :
@@ -14,7 +15,7 @@ class QtUnitOfWork :
 protected:
   std::string m_connectionName;
   QSqlDatabase m_db;
-  std::unique_ptr<StaticGORepository> m_staticGORepository;
+  std::unique_ptr<IRepository<StaticGameObject>> m_staticGORepository;
 public:
   QtUnitOfWork();
   virtual ~QtUnitOfWork();
