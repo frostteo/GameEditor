@@ -10,5 +10,5 @@ class DALDependencyResolver
 public:
   DALDependencyResolver();
   virtual ~DALDependencyResolver();
-  static IRepository<StaticGameObject>* GetStaticGameObjectRepository() { return new StaticGORepository(); }
+  static StaticGORepository* GetStaticGameObjectRepository() { return new StaticGORepository(); }
 };

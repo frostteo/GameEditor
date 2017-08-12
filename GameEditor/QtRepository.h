@@ -5,6 +5,7 @@
 #include "qstring.h"
 #include "Logger.h"
 #include "QtUtils.h"
+#include <math.h>
 
 template <class T>
 class QtRepository :
@@ -14,6 +15,7 @@ protected:
   std::string m_connectionName;
   QString m_tableName;
   QString m_keyColumnName;
+  QString m_defaultOrderField = "id";
   std::vector<QString> m_columnNames;
 
   QString m_insertQueryStr = QString();
@@ -30,6 +32,7 @@ public:
 
   virtual IRepository<T>* Initialize(std::string connectionName) { m_connectionName = connectionName; return this; }
   virtual std::vector<T> GetAll() override;
+  virtual std::vector<T> GetAll(GetParameters& parameters, PagingInfo& pagingInfo) override;
   virtual T Get(int id) override;
   virtual void Delete(int id) override;
   virtual void Update(T& entity) override;
@@ -85,6 +88,56 @@ std::vector<T> QtRepository<T>::GetAll()
     throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(query.lastError()), __FILE__, __LINE__));
 
   return QueryToEntities(&query);
+}
+
+template <class T>
+std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pagingInfo)
+{
+  QString orderField;
+  QString orderDirection = parameters.orderDirection == OrderDirection::ASC ? "ASC" : "DESC";
+  QString whereCondition = QString::fromStdString(parameters.whereCondition);
+  QSqlQuery countQuery(GetDatabase());
+  QSqlQuery selectQuery(GetDatabase());
+  int allRowCount;
+  int offset;
+
+  if (parameters.orderFieldName.empty())
+  {
+    orderField = m_defaultOrderField;
+    pagingInfo.orderFieldName = QtUtils::QStringToStdStr(m_defaultOrderField);
+  }
+  else
+  {
+    orderField = QString::fromStdString(parameters.orderFieldName);
+    pagingInfo.orderFieldName = parameters.orderFieldName;
+  }
+
+  countQuery.prepare(QString("SELECT COUNT(*) FROM %1 WHERE %2").arg(m_tableName, whereCondition));
+  if (countQuery.exec()) {
+    countQuery.next();
+    allRowCount = countQuery.value(0).toInt();
+  }
+   
+  else {
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(countQuery.lastError()), __FILE__, __LINE__));
+  }
+
+  pagingInfo.pageCount = ceil(allRowCount / parameters.onPage);
+
+  if (pagingInfo.pageCount == 0) pagingInfo.pageCount = 1;
+  if ((parameters.pageNumber - 1) * parameters.onPage >= allRowCount) parameters.pageNumber = pagingInfo.pageCount;
+  if (parameters.pageNumber - 1 < 0) parameters.pageNumber = 1;
+  offset = (parameters.pageNumber - 1) * parameters.onPage;
+ 
+  pagingInfo.pageNumber = parameters.pageNumber;
+  pagingInfo.orderDirection = parameters.orderDirection;
+
+  selectQuery.prepare(QString("SELECT * FROM %1 WHERE %2 ORDER BY %3 %4 LIMIT %5, %6").arg(m_tableName, whereCondition, orderField, orderDirection, QString::number(offset), QString::number(parameters.onPage)));
+
+  if (!selectQuery.exec())
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(selectQuery.lastError()), __FILE__, __LINE__));
+
+  return QueryToEntities(&selectQuery);
 }
 
 template <class T>

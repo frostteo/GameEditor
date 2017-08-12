@@ -8,6 +8,7 @@
 #include "IRepository.h"
 #include "StaticGameObject.h"
 #include "DALDependencyResolver.h"
+#include "StaticGORepository.h"
 
 class QtUnitOfWork :
   public IUnitOfWork
@@ -15,11 +16,11 @@ class QtUnitOfWork :
 protected:
   std::string m_connectionName;
   QSqlDatabase m_db;
-  std::unique_ptr<IRepository<StaticGameObject>> m_staticGORepository;
+  std::unique_ptr<StaticGORepository> m_staticGORepository;
 public:
   QtUnitOfWork();
   virtual ~QtUnitOfWork();
   virtual void Initialize(std::string hostName, std::string databaseName, std::string connectionName) override;
-  virtual IRepository<StaticGameObject>* GetStaticGORepository() override;
+  virtual StaticGORepository* GetStaticGORepository() override;
 };
 
