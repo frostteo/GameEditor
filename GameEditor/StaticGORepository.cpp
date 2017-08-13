@@ -64,23 +64,3 @@ QString StaticGORepository::GetFieldByName(const StaticGameObject& entity, QStri
 
   throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::QStringToStdStr("There is no field with name = " + name + " in entity"), __FILE__, __LINE__));
 }
-
-std::vector<StaticGameObject> StaticGORepository::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name, std::string model, std::string material)
-{
-  std::vector<std::string> whereParams;
-  std::string whereParamsGlue = " AND ";
-  parameters.whereCondition = "";
-  int index = 0;
-
-  if (!name.empty())
-    whereParams.push_back(" name LIKE '%" + name + "%' ");
- 
-  if (!model.empty())
-    whereParams.push_back(" modelFileName LIKE '%" + model + "%' ");
-
-  if (!material.empty())
-    whereParams.push_back(" materialFileName LIKE '%" + material + "%' ");
-
-  parameters.whereCondition = Utils::Join(whereParams, whereParamsGlue);
-  return GetAll(parameters, pagingInfo);
-}

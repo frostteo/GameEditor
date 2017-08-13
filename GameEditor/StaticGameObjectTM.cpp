@@ -15,8 +15,21 @@ StaticGameObjectTM::~StaticGameObjectTM()
 void StaticGameObjectTM::UpdateData()
 {
   this->beginResetModel();
-  m_data = m_staticGOService->GetStaticGameObjects();
+  m_data = m_staticGOService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_modelFileNameFilter, m_materialFileNameFilter);
   this->endResetModel();
+}
+
+void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter, QString SGOModelFilenameFilter, QString SGOMaterialFilenameFilter)
+{
+  m_getParameters.pageNumber = pageNumber;
+  m_getParameters.onPage = onPage;
+  m_getParameters.orderFieldName = QtUtils::QStringToStdStr(OrderFieldName);
+  m_getParameters.orderDirection = orderDirection == "ASC" ? OrderDirection::ASC : OrderDirection::DESC;
+
+  m_SGONameFilter = QtUtils::QStringToStdStr(SGONameFilter);
+  m_modelFileNameFilter = QtUtils::QStringToStdStr(SGOModelFilenameFilter);
+  m_materialFileNameFilter = QtUtils::QStringToStdStr(SGOMaterialFilenameFilter);
+  UpdateData();
 }
 
 QVariant StaticGameObjectTM::data(const QModelIndex &index, int role) const
@@ -39,9 +52,9 @@ QVariant StaticGameObjectTM::headerData(int section, Qt::Orientation orientation
   if (orientation != Qt::Horizontal || role != Qt::DisplayRole) return{};
   switch (section) {
     case 0: return "Id";
-    case 1: return QtUtils::ToRussian("Имя");
-    case 2: return QtUtils::ToRussian("Файл модели");
-    case 3: return QtUtils::ToRussian("Файл материала");
+    case 1: return tr("Name");
+    case 2: return tr("Model filename");
+    case 3: return tr("Material filename");
     default: return{};
   }
 }

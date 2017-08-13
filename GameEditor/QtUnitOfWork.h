@@ -16,11 +16,11 @@ class QtUnitOfWork :
 protected:
   std::string m_connectionName;
   QSqlDatabase m_db;
-  std::unique_ptr<StaticGORepository> m_staticGORepository;
+  std::unique_ptr<IRepository<StaticGameObject>> m_staticGORepository;
 public:
   QtUnitOfWork();
   virtual ~QtUnitOfWork();
   virtual void Initialize(std::string hostName, std::string databaseName, std::string connectionName) override;
-  virtual StaticGORepository* GetStaticGORepository() override;
+  virtual IRepository<StaticGameObject>* GetStaticGORepository() override;
 };
 

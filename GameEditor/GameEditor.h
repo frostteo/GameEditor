@@ -25,9 +25,13 @@ private:
   QString m_pathToModels = "../GameEditor/models";
   QString m_pathToMaterials = "../GameEditor/materials";
   QString m_pathToObjModels = "../GameEditor/obj models";
+
+  std::map<int, std::string> m_SGOTableOrderFieldMap;
+  std::map<int, std::string> m_SGOTableOnPageCountMap;
 private:
   void createUI();
   void StaticGameObjectBtnsStateConfigure();
+  void fillComboBoxFromMap(QComboBox* comboBox, std::map<int, std::string>& map);
 private slots:
   void on_addStaticGOBtn_clicked();
   void on_editStaticGOBtn_clicked();
@@ -35,6 +39,22 @@ private slots:
   void on_previewStaticGOBtn_clicked();
   void staticGameObjectTableRowSelected(const QItemSelection& selected, const QItemSelection& deselected);
   void on_actionObjConverter_triggered();
+
+  void on_SGOTableFirstPageBtn_clicked();
+  void on_SGOTablePrevPageBtn_clicked();
+  void on_SGOTableNextBtn_clicked();
+  void on_SGOTableLastBtn_clicked();
+  void on_SGOTablePageTxt_editingFinished();
+  void on_SGOTableOrdrerDir_currentIndexChanged(int index);
+  void on_SGOTableSortField_currentIndexChanged(int index);
+  void on_SGOTableOnPage_currentIndexChanged(int index);
+
+  void on_filterSGONameTxt_editingFinished();
+  void on_filterSGOModelTxt_editingFinished();
+  void on_filterSGOMaterialTxt_editingFinished();
+protected:
+  void updateSGOTable();
+  void updateSGOTablePagingInfo();
 public:
     GameEditor(QWidget *parent = Q_NULLPTR);
     ~GameEditor() { }
