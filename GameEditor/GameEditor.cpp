@@ -143,6 +143,7 @@ void GameEditor::on_actionObjConverter_triggered()
   ObjConverterDialog objConverterDialog;
   objConverterDialog.SetPathToGEModels(m_pathToModels);
   objConverterDialog.SetPathToObjModels(m_pathToObjModels);
+  objConverterDialog.SetPathToGEMaterials(m_pathToMaterials.toStdString());
 
   objConverterDialog.exec();
 }

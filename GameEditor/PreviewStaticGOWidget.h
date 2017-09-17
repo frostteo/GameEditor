@@ -64,8 +64,8 @@ public:
   /** a hint to Qt that we take care of the drawing for ourselves, thankyouverymuch */
   QPaintEngine *paintEngine() const { return NULL; }
 
-  void SetPathToModels(QString pathToModels) { m_pathToModels = QtUtils::QStringToStdStr(pathToModels); }
-  void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = QtUtils::QStringToStdStr(pathToMaterials); }
+  void SetPathToModels(QString pathToModels) { m_pathToModels = pathToModels.toStdString(); }
+  void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = pathToMaterials.toStdString(); }
 
   void SetStaticGameObject(StaticGameObject staticGameObject);
 };

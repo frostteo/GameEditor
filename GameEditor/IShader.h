@@ -8,6 +8,7 @@
 #include "Logger.h"
 #include "FileProcessor.h"
 #include "LightininigSystem.h"
+#include "Utils.h"
 
 using namespace DirectX;
 
@@ -21,7 +22,7 @@ protected:
     XMMATRIX projection;
   };
 protected:
-  void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const std::wstring& shaderFilename);
+  void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const std::string& shaderFilename);
   virtual void InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename) = 0;
 public:
   IShader();

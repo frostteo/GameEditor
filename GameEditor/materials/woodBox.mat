@@ -1,4 +1,4 @@
-type: specular
-textureFileName: ../GameEditor/texture/iron1.tga
-specularColor: 1.0 1.0 1.0 1.0
-specularPower: 32.0
+type: bump
+textureFileName: ../GameEditor/texture/yachik3.tga
+normalMap: ../GameEditor/texture/yashikNM2.tga
+bumpDepth: 0.1

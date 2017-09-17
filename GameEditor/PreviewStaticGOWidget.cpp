@@ -35,7 +35,7 @@ PreviewStaticGOWidget::~PreviewStaticGOWidget()
 void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObject staticGameObject)
 {
   m_static = Static();
-  m_static.Initialize(m_graphicSystem->GetMeshFactory()->GetResource(m_pathToModels + QtUtils::fileSeparator + QtUtils::QStringToStdStr(staticGameObject.modelFileName)), m_graphicSystem->GetMaterialFactory()->GetResource(m_pathToMaterials + QtUtils::fileSeparator + QtUtils::QStringToStdStr(staticGameObject.materialFileName)), m_graphicSystem->GetShaderFactory());
+  m_static.Initialize(m_graphicSystem->GetMeshFactory()->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + staticGameObject.modelFileName.toStdString()), m_graphicSystem->GetMaterialFactory()->GetResource(m_pathToMaterials + FileProcessor::FILE_SEPARATOR + staticGameObject.materialFileName.toStdString()), m_graphicSystem->GetShaderFactory());
 }
 
 bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)

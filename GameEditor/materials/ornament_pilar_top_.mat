@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps\pilar ornament flowers.tga
+normalMap: maps\Map__49_Normal Bump.tga
+bumpDepth: 0.3

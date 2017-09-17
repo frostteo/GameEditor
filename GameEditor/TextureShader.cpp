@@ -25,6 +25,8 @@ void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   unsigned int numElements;
   D3D11_SAMPLER_DESC samplerDesc;
   D3D11_BUFFER_DESC matrixBufferDesc;
+  std::string vsFilenameStdStr = Utils::UnicodeStrToByteStr(vsFilename);
+  std::string psFilenameStdStr = Utils::UnicodeStrToByteStr(psFilename);
 
   // Initialize the pointers this function will use to null.
   errorMessage = nullptr;
@@ -38,11 +40,11 @@ void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   {
     // If the shader failed to compile it should have writen something to the error message.
     if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
+      OutputShaderErrorMessage(errorMessage, hwnd, vsFilenameStdStr);
 
     // If there was nothing in the error message then it simply could not find the shader file itself.
     else
-      throw std::runtime_error("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(vsFilename));
+      throw std::runtime_error("Missing Shader File " + vsFilenameStdStr);
   }
 
   // Compile the pixel shader code.
@@ -52,25 +54,25 @@ void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   {
     // If the shader failed to compile it should have writen something to the error message.
     if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
+      OutputShaderErrorMessage(errorMessage, hwnd, psFilenameStdStr);
 
     // If there was nothing in the error message then it simply could not find the file itself.
     else
-      throw std::runtime_error("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(psFilename));
+      throw std::runtime_error("Missing Shader File " + psFilenameStdStr);
   }
 
   // Create the vertex shader from the buffer.
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed vertex shader creation " + FileProcessor::UnicodeStrToByteStr(vsFilename));
+    throw std::runtime_error("failed vertex shader creation " + vsFilenameStdStr);
   }
 
   // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed pixel shader creation " + FileProcessor::UnicodeStrToByteStr(psFilename));
+    throw std::runtime_error("failed pixel shader creation " + psFilenameStdStr);
   }
 
   // Create the vertex input layout description.
@@ -99,7 +101,7 @@ void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + vsFilenameStdStr, __FILE__, __LINE__));
   }
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
@@ -121,7 +123,7 @@ void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed input create matrix buffer " + FileProcessor::UnicodeStrToByteStr(vsFilename));
+    throw std::runtime_error("failed input create matrix buffer " + vsFilenameStdStr);
   }
 
   // Create a texture sampler state description.
@@ -143,7 +145,7 @@ void TextureShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std:
   result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed create sample state for texture " + FileProcessor::UnicodeStrToByteStr(vsFilename));
+    throw std::runtime_error("failed create sample state for texture " + vsFilenameStdStr);
   }
 
 }

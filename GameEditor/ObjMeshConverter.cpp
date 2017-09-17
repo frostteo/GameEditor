@@ -22,11 +22,11 @@ bool ObjMeshConverter::ConvertModel(const std::string& sourceFileName, const std
   int vertexCount;
   int textureCoordCount;
   int normalCount;
-  int faceCount;
 
-  ReadFileCounts(sourceFileContents, vertexCount, textureCoordCount, normalCount, faceCount);
+  std::map<std::string, int> materialFacesCountMap;
+  ReadFileCounts(sourceFileContents, vertexCount, textureCoordCount, normalCount, materialFacesCountMap);
 
-  result = LoadDataStructures(sourceFileContents, vertexCount, textureCoordCount, normalCount, faceCount);
+  result = LoadDataStructures(sourceFileContents, vertexCount, textureCoordCount, normalCount, materialFacesCountMap);
   if (!result)
   {
     return false;
@@ -46,47 +46,50 @@ bool ObjMeshConverter::ConvertModel(const std::string& sourceFileName, const std
 
 void ObjMeshConverter::CenterToCoordCenter()
 {
-  float minX, minY, minZ, maxX, maxY, maxZ;
-  float xCenter, yCenter, zCenter;
-
-  minX = m_txtVertices[0].coord.x;
-  maxX = minX;
-  minY = m_txtVertices[0].coord.y;
-  maxY = minY;
-  minZ = m_txtVertices[0].coord.z;
-  maxZ = minZ;
-
-  for (auto &txtVertex : m_txtVertices)
+  for (auto &submeshVertexInfo : m_submeshVertexesInfo)
   {
-    if (txtVertex.coord.x < minX)
-      minX = txtVertex.coord.x;
+    float minX, minY, minZ, maxX, maxY, maxZ;
+    float xCenter, yCenter, zCenter;
 
-    if (txtVertex.coord.y < minY)
-      minY = txtVertex.coord.y;
+    minX = submeshVertexInfo.second[0].coord.x;
+    maxX = minX;
+    minY = submeshVertexInfo.second[0].coord.y;
+    maxY = minY;
+    minZ = submeshVertexInfo.second[0].coord.z;
+    maxZ = minZ;
 
-    if (txtVertex.coord.z < minZ)
-      minZ = txtVertex.coord.z;
+    for (auto &txtVertex : submeshVertexInfo.second)
+    {
+      if (txtVertex.coord.x < minX)
+        minX = txtVertex.coord.x;
+
+      if (txtVertex.coord.y < minY)
+        minY = txtVertex.coord.y;
+
+      if (txtVertex.coord.z < minZ)
+        minZ = txtVertex.coord.z;
 
 
-    if (txtVertex.coord.x > maxX)
-      maxX = txtVertex.coord.x;
+      if (txtVertex.coord.x > maxX)
+        maxX = txtVertex.coord.x;
 
-    if (txtVertex.coord.y > maxY)
-      maxY = txtVertex.coord.y;
+      if (txtVertex.coord.y > maxY)
+        maxY = txtVertex.coord.y;
 
-    if (txtVertex.coord.z > maxZ)
-      maxZ = txtVertex.coord.z;
-  }
+      if (txtVertex.coord.z > maxZ)
+        maxZ = txtVertex.coord.z;
+    }
 
-  xCenter = (maxX - minX) / 2.0f + minX;
-  yCenter = (maxY - minY) / 2.0f + minY;
-  zCenter = (maxZ - minZ) / 2.0f + minZ;
+    xCenter = (maxX - minX) / 2.0f + minX;
+    yCenter = (maxY - minY) / 2.0f + minY;
+    zCenter = (maxZ - minZ) / 2.0f + minZ;
 
-  for (auto &txtVertex : m_txtVertices)
-  {
-    txtVertex.coord.x -= xCenter;
-    txtVertex.coord.y -= yCenter;
-    txtVertex.coord.z -= zCenter;
+    for (auto &txtVertex : submeshVertexInfo.second)
+    {
+      txtVertex.coord.x -= xCenter;
+      txtVertex.coord.y -= yCenter;
+      txtVertex.coord.z -= zCenter;
+    }
   }
 }
 
@@ -97,22 +100,25 @@ bool ObjMeshConverter::SaveModel(const std::string& destinationFileName)
   if (outputFileStream.fail())
     return false;
 
-  outputFileStream << "Vertex Count: " << m_txtVertices.size() << std::endl;
-
-  for (auto &txtVertex : m_txtVertices) // access by reference to avoid copying
+  for (const auto& submeshInfo : m_submeshVertexesInfo)
   {
-    outputFileStream << txtVertex.coord.x << space << txtVertex.coord.y << space << txtVertex.coord.z << space <<
-      txtVertex.tu << space << txtVertex.tv << space <<
-      txtVertex.normal.x << space << txtVertex.normal.y << space << txtVertex.normal.z << space <<
-      txtVertex.tangent.x << space << txtVertex.tangent.y << space << txtVertex.tangent.z << space <<
-      txtVertex.binormal.x << space << txtVertex.binormal.y << space << txtVertex.binormal.z << std::endl;
-  }
+    outputFileStream << "Material name: " << submeshInfo.first << std::endl;
+    outputFileStream << "Vertex Count: " << submeshInfo.second.size() << std::endl;
+    for (const auto& txtVertex : submeshInfo.second)
+    {
+      outputFileStream << txtVertex.coord.x << space << txtVertex.coord.y << space << txtVertex.coord.z << space <<
+        txtVertex.tu << space << txtVertex.tv << space <<
+        txtVertex.normal.x << space << txtVertex.normal.y << space << txtVertex.normal.z << space <<
+        txtVertex.tangent.x << space << txtVertex.tangent.y << space << txtVertex.tangent.z << space <<
+        txtVertex.binormal.x << space << txtVertex.binormal.y << space << txtVertex.binormal.z << std::endl;
+    }
 
-  outputFileStream << std::endl;
-  outputFileStream << "Index count: " << m_indexes.size() << std::endl;
-  for (auto &index : m_indexes)
-  {
-    outputFileStream << index << std::endl;
+    outputFileStream << "Index count: " << m_submeshIndexesInfo[submeshInfo.first].size() << std::endl;
+
+    for (auto &index : m_submeshIndexesInfo[submeshInfo.first])
+    {
+      outputFileStream << index << std::endl;
+    }
   }
 
   outputFileStream.close();
@@ -121,7 +127,7 @@ bool ObjMeshConverter::SaveModel(const std::string& destinationFileName)
   return true;
 }
 
-void ObjMeshConverter::ReadFileCounts(const std::string& fileInStr, int& vertexCount, int& textureCoordCount, int& normalCount, int& faceCount)
+void ObjMeshConverter::ReadFileCounts(const std::string& fileInStr, int& vertexCount, int& textureCoordCount, int& normalCount, std::map<std::string, int>& materialFacesCountMap)
 {
   char input;
   std::stringstream fileStrStream(fileInStr);
@@ -129,7 +135,8 @@ void ObjMeshConverter::ReadFileCounts(const std::string& fileInStr, int& vertexC
   vertexCount = 0;
   textureCoordCount = 0;
   normalCount = 0;
-  faceCount = 0;
+  materialFacesCountMap.clear();
+  std::string lastUsedMaterialName;
 
   // Read from the file and continue to read until the end of the file is reached.
   fileStrStream.get(input);
@@ -144,12 +151,20 @@ void ObjMeshConverter::ReadFileCounts(const std::string& fileInStr, int& vertexC
       if (input == 'n') { ++normalCount; }
     }
 
-    // If the line starts with 'f' then increment the face count.
-    if (input == 'f')
+    if (input == 'u')
     {
-      fileStrStream.get(input);
-      if (input == ' ') { ++faceCount; }
+      std::string continueOfWord;
+      fileStrStream >> continueOfWord;
+      if (continueOfWord == "semtl") //submesh description
+      {
+        std::string materialName;
+        fileStrStream >> materialName;
+        lastUsedMaterialName = materialName;
+      }
     }
+
+    if (input == 'f')
+      ++materialFacesCountMap[lastUsedMaterialName];
 
     // Otherwise read in the remainder of the line.
     while (input != '\n')
@@ -162,25 +177,32 @@ void ObjMeshConverter::ReadFileCounts(const std::string& fileInStr, int& vertexC
   }
 }
 
-bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vertexCount, int textureCount, int normalCount, int faceCount)
+bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vertexCount, int textureCount, int normalCount, std::map<std::string, int>& materialFacesCountMap)
 {
   std::stringstream sourceFileStrStream(fileInStr);
   std::vector<VertexObj> vertices(vertexCount);
   std::vector<VertexObj> texcoords(textureCount);
   std::vector<VertexObj> normals(normalCount);
-  std::vector<FaceObj> faces(faceCount);
+  std::map<std::string, std::vector<FaceObj>> subMeshesInfo;
+  std::string lastUsedMaterialName;
+
+  FreeMemory();
+  for (const auto &materialFaceCount : materialFacesCountMap) {
+    subMeshesInfo[materialFaceCount.first] = std::vector<FaceObj>();
+    subMeshesInfo[materialFaceCount.first].reserve(materialFaceCount.second);
+
+    m_submeshVertexesInfo[materialFaceCount.first] = std::vector<VertexTxt>();
+    m_submeshVertexesInfo[materialFaceCount.first].reserve(materialFaceCount.second * VERTEX_IN_FACE_OBJ);
+
+    m_submeshIndexesInfo[materialFaceCount.first] = std::vector<int>();
+    m_submeshIndexesInfo[materialFaceCount.first].reserve(materialFaceCount.second * VERTEX_IN_FACE_OBJ);
+  }
+
   int vertexIndex = 0;
   int texcoordIndex = 0;
   int normalIndex = 0;
-  int faceIndex = 0;
   int vIndex, tIndex, nIndex;
-  char input, input2;
-
-  m_txtVertices = std::vector<VertexTxt>();
-  m_txtVertices.reserve(vertexCount);
-
-  m_indexes = std::vector<int>();
-  m_indexes.reserve(vertexCount);
+  char input;
 
   sourceFileStrStream.get(input);
   while (!sourceFileStrStream.eof())
@@ -220,18 +242,34 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
       }
     }
 
+    if (input == 'u')
+    {
+      std::string continueOfWord;
+      sourceFileStrStream >> continueOfWord;
+      if (continueOfWord == "semtl") //submesh description
+      {
+        std::string materialName;
+        sourceFileStrStream >> materialName;
+        lastUsedMaterialName = materialName;
+      }
+    }
+
     // Read in the faces.
     if (input == 'f')
     {
       sourceFileStrStream.get(input);
       if (input == ' ')
       {
+        FaceObj face;
         // Read the face data in backwards to convert it to a left hand system from right hand system.
         for (int i = VERTEX_IN_FACE_OBJ - 1; i >= 0; --i) {
-          sourceFileStrStream >> faces[faceIndex].vertexIndexes.index[i] >> input2 >> faces[faceIndex].textCoordIndexes.index[i] >> input2 >> faces[faceIndex].normalIndexes.index[i];
+          sourceFileStrStream >> face.vertexIndexes.index[i];
+          sourceFileStrStream.ignore();
+          sourceFileStrStream >> face.textCoordIndexes.index[i];
+          sourceFileStrStream.ignore();
+          sourceFileStrStream >> face.normalIndexes.index[i];
         }
-
-        faceIndex++;
+        subMeshesInfo[lastUsedMaterialName].push_back(face);
       }
     }
 
@@ -245,80 +283,81 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
     sourceFileStrStream.get(input);
   }
 
-
-  for (int i = 0; i < faceCount; i++)
+  for (const auto &subMesheInfo : subMeshesInfo)
   {
+    for (int i = 0; i < subMesheInfo.second.size(); ++i)
+    {
+      vIndex = subMesheInfo.second[i].vertexIndexes.index[0] - 1;
+      tIndex = subMesheInfo.second[i].textCoordIndexes.index[0] - 1;
+      nIndex = subMesheInfo.second[i].normalIndexes.index[0] - 1;
 
-    vIndex = faces[i].vertexIndexes.index[0] - 1;
-    tIndex = faces[i].textCoordIndexes.index[0] - 1;
-    nIndex = faces[i].normalIndexes.index[0] - 1;
+      VertexTxt vertexTxt;
+      vertexTxt.coord.x = vertices[vIndex].x;
+      vertexTxt.coord.y = vertices[vIndex].y;
+      vertexTxt.coord.z = vertices[vIndex].z;
+      vertexTxt.tu = texcoords[tIndex].x;
+      vertexTxt.tv = texcoords[tIndex].y;
+      vertexTxt.normal.x = normals[nIndex].x;
+      vertexTxt.normal.y = normals[nIndex].y;
+      vertexTxt.normal.z = normals[nIndex].z;
 
-    VertexTxt vertexTxt;
-    vertexTxt.coord.x = vertices[vIndex].x;
-    vertexTxt.coord.y = vertices[vIndex].y;
-    vertexTxt.coord.z = vertices[vIndex].z;
-    vertexTxt.tu = texcoords[tIndex].x;
-    vertexTxt.tv = texcoords[tIndex].y;
-    vertexTxt.normal.x = normals[nIndex].x;
-    vertexTxt.normal.y = normals[nIndex].y;
-    vertexTxt.normal.z = normals[nIndex].z;
-    //TODO FHolod: calculation of tangent and binormal nust be almost here
+      vIndex = subMesheInfo.second[i].vertexIndexes.index[1] - 1;
+      tIndex = subMesheInfo.second[i].textCoordIndexes.index[1] - 1;
+      nIndex = subMesheInfo.second[i].normalIndexes.index[1] - 1;
 
-    vIndex = faces[i].vertexIndexes.index[1] - 1;
-    tIndex = faces[i].textCoordIndexes.index[1] - 1;
-    nIndex = faces[i].normalIndexes.index[1] - 1;
+      VertexTxt vertexTxt2;
+      vertexTxt2.coord.x = vertices[vIndex].x;
+      vertexTxt2.coord.y = vertices[vIndex].y;
+      vertexTxt2.coord.z = vertices[vIndex].z;
+      vertexTxt2.tu = texcoords[tIndex].x;
+      vertexTxt2.tv = texcoords[tIndex].y;
+      vertexTxt2.normal.x = normals[nIndex].x;
+      vertexTxt2.normal.y = normals[nIndex].y;
+      vertexTxt2.normal.z = normals[nIndex].z;
 
-    VertexTxt vertexTxt2;
-    vertexTxt2.coord.x = vertices[vIndex].x;
-    vertexTxt2.coord.y = vertices[vIndex].y;
-    vertexTxt2.coord.z = vertices[vIndex].z;
-    vertexTxt2.tu = texcoords[tIndex].x;
-    vertexTxt2.tv = texcoords[tIndex].y;
-    vertexTxt2.normal.x = normals[nIndex].x;
-    vertexTxt2.normal.y = normals[nIndex].y;
-    vertexTxt2.normal.z = normals[nIndex].z;
+      vIndex = subMesheInfo.second[i].vertexIndexes.index[2] - 1;
+      tIndex = subMesheInfo.second[i].textCoordIndexes.index[2] - 1;
+      nIndex = subMesheInfo.second[i].normalIndexes.index[2] - 1;
 
-    vIndex = faces[i].vertexIndexes.index[2] - 1;
-    tIndex = faces[i].textCoordIndexes.index[2] - 1;
-    nIndex = faces[i].normalIndexes.index[2] - 1;
+      VertexTxt vertexTxt3;
+      vertexTxt3.coord.x = vertices[vIndex].x;
+      vertexTxt3.coord.y = vertices[vIndex].y;
+      vertexTxt3.coord.z = vertices[vIndex].z;
+      vertexTxt3.tu = texcoords[tIndex].x;
+      vertexTxt3.tv = texcoords[tIndex].y;
+      vertexTxt3.normal.x = normals[nIndex].x;
+      vertexTxt3.normal.y = normals[nIndex].y;
+      vertexTxt3.normal.z = normals[nIndex].z;
 
-    VertexTxt vertexTxt3;
-    vertexTxt3.coord.x = vertices[vIndex].x;
-    vertexTxt3.coord.y = vertices[vIndex].y;
-    vertexTxt3.coord.z = vertices[vIndex].z;
-    vertexTxt3.tu = texcoords[tIndex].x;
-    vertexTxt3.tv = texcoords[tIndex].y;
-    vertexTxt3.normal.x = normals[nIndex].x;
-    vertexTxt3.normal.y = normals[nIndex].y;
-    vertexTxt3.normal.z = normals[nIndex].z;
+      CalculateNormalTangentBinormal(vertexTxt, vertexTxt2, vertexTxt3);
 
-    CalculateNormalTangentBinormal(vertexTxt, vertexTxt2, vertexTxt3);
-
-    AddVertex(vertexTxt);
-    AddVertex(vertexTxt2);
-    AddVertex(vertexTxt3);
+      AddVertex(vertexTxt, subMesheInfo.first);
+      AddVertex(vertexTxt2, subMesheInfo.first);
+      AddVertex(vertexTxt3, subMesheInfo.first);
+    }
   }
+
   return true;
 }
 
-void ObjMeshConverter::AddVertex(const VertexTxt& vertexTxt)
+void ObjMeshConverter::AddVertex(const VertexTxt& vertexTxt, const std::string& materialName)
 {
   int newIndex = -1;
 
-  const size_t txtVerticesCount = m_txtVertices.size();
+  const size_t txtVerticesCount = m_submeshVertexesInfo[materialName].size();
   for (size_t k = 0; k < txtVerticesCount; k++)
-    if (vertexTxt == m_txtVertices[k]) {
+    if (vertexTxt == m_submeshVertexesInfo[materialName][k]) {
       newIndex = k; // vertext was found, add index
       break;
     }
 
   if (newIndex == -1) // vertex was not found
   {
-    m_txtVertices.push_back(vertexTxt);
-    newIndex = m_txtVertices.size() - 1;
+    m_submeshVertexesInfo[materialName].push_back(vertexTxt);
+    newIndex = m_submeshVertexesInfo[materialName].size() - 1;
   }
 
-  m_indexes.push_back(newIndex);
+  m_submeshIndexesInfo[materialName].push_back(newIndex);
 }
 
 void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTxt& second, VertexTxt& third)
@@ -412,6 +451,6 @@ VertexObj ObjMeshConverter::CrossProduct(const VertexObj& first, const VertexObj
 
 void ObjMeshConverter::FreeMemory()
 {
-  m_txtVertices = std::vector<VertexTxt>();
-  m_indexes = std::vector<int>();
+  m_submeshVertexesInfo = std::map<std::string, std::vector<VertexTxt>>();
+  m_submeshIndexesInfo = std::map<std::string, std::vector<int>>();
 }

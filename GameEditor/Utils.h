@@ -10,6 +10,8 @@ public:
 
   template <class T>
   static std::string Join(const T& container, const std::string& glue);
+  static std::string UnicodeStrToByteStr(const std::wstring& unicodeStr);
+  static std::string Trim(const std::string& str);
 };
 
 template <class T>

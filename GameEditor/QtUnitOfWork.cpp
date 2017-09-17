@@ -18,7 +18,7 @@ void QtUnitOfWork::Initialize(std::string hostName, std::string databaseName, st
   m_db.setDatabaseName(databaseName.c_str());
 
   if (!m_db.open())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(m_db.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(m_db.lastError().text().toStdString(), __FILE__, __LINE__));
 
   m_staticGORepository = std::unique_ptr<IRepository<StaticGameObject>>(
     DALDependencyResolver::GetStaticGameObjectRepository()->Initialize(connectionName)

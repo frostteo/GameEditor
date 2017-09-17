@@ -85,7 +85,7 @@ std::vector<T> QtRepository<T>::GetAll()
   query.prepare(QString("SELECT * FROM %1").arg(m_tableName));
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(query.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
 
   return QueryToEntities(&query);
 }
@@ -104,7 +104,7 @@ std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pa
   if (parameters.orderFieldName.empty())
   {
     orderField = m_defaultOrderField;
-    pagingInfo.orderFieldName = QtUtils::QStringToStdStr(m_defaultOrderField);
+    pagingInfo.orderFieldName = m_defaultOrderField.toStdString();
   }
   else
   {
@@ -119,7 +119,7 @@ std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pa
   }
    
   else {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(countQuery.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(countQuery.lastError().text().toStdString(), __FILE__, __LINE__));
   }
 
   pagingInfo.pageCount = ceil(allRowCount / parameters.onPage);
@@ -135,7 +135,7 @@ std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pa
   selectQuery.prepare(QString("SELECT * FROM %1 WHERE %2 ORDER BY %3 %4 LIMIT %5, %6").arg(m_tableName, whereCondition, orderField, orderDirection, QString::number(offset), QString::number(parameters.onPage)));
 
   if (!selectQuery.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(selectQuery.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(selectQuery.lastError().text().toStdString(), __FILE__, __LINE__));
 
   return QueryToEntities(&selectQuery);
 }
@@ -149,7 +149,7 @@ T QtRepository<T>::Get(int id)
   query.bindValue(":" + m_keyColumnName, id);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(query.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
 
   return QueryToEntities(&query)[0];
 }
@@ -163,7 +163,7 @@ void QtRepository<T>::Delete(int id)
   query.bindValue(":" + m_keyColumnName, id);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(query.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
 }
 
 template <class T>
@@ -185,7 +185,7 @@ void QtRepository<T>::Update(T& entity)
   query.bindValue(":" + m_keyColumnName, value);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(query.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
 }
 
 template <class T>
@@ -206,5 +206,5 @@ void  QtRepository<T>::Create(T& entity)
   }
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(query.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
 }

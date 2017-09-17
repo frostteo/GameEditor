@@ -24,7 +24,7 @@ IRepository<StaticGameObject>* StaticGORepository::Initialize(std::string connec
     arg(m_tableName, m_keyColumnName, m_columnNames[0], m_columnNames[1], m_columnNames[2]));
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::SqlErrorToStr(query.lastError()), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
   
   return this;
 }
@@ -62,5 +62,5 @@ QString StaticGORepository::GetFieldByName(const StaticGameObject& entity, QStri
   if (name == m_keyColumnName)
     return QString::number(entity.id);
 
-  throw std::runtime_error(Logger::get().GetErrorTraceMessage(QtUtils::QStringToStdStr("There is no field with name = " + name + " in entity"), __FILE__, __LINE__));
+  throw std::runtime_error(Logger::get().GetErrorTraceMessage(("There is no field with name = " + name + " in entity").toStdString(), __FILE__, __LINE__));
 }

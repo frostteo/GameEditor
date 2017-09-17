@@ -23,12 +23,12 @@ void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, QString OrderFi
 {
   m_getParameters.pageNumber = pageNumber;
   m_getParameters.onPage = onPage;
-  m_getParameters.orderFieldName = QtUtils::QStringToStdStr(OrderFieldName);
+  m_getParameters.orderFieldName = OrderFieldName.toStdString();
   m_getParameters.orderDirection = orderDirection == "ASC" ? OrderDirection::ASC : OrderDirection::DESC;
 
-  m_SGONameFilter = QtUtils::QStringToStdStr(SGONameFilter);
-  m_modelFileNameFilter = QtUtils::QStringToStdStr(SGOModelFilenameFilter);
-  m_materialFileNameFilter = QtUtils::QStringToStdStr(SGOMaterialFilenameFilter);
+  m_SGONameFilter = SGONameFilter.toStdString();
+  m_modelFileNameFilter = SGOModelFilenameFilter.toStdString();
+  m_materialFileNameFilter = SGOMaterialFilenameFilter.toStdString();
   UpdateData();
 }
 

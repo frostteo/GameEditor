@@ -10,7 +10,7 @@ IShader::~IShader()
 {
 }
 
-void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const std::wstring& shaderFilename)
+void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, const std::string& shaderFilename)
 {
   char* compileErrors;
   unsigned long long bufferSize, i;
@@ -27,7 +27,7 @@ void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, cons
   // Release the error message.
   errorMessage->Release();
   errorMessage = 0;
-  throw std::runtime_error("Error compiling shader. " + FileProcessor::UnicodeStrToByteStr(shaderFilename) + "  Check " + Logger::get().GetLogFileName() + " for message.");
+  throw std::runtime_error("Error compiling shader. " + shaderFilename + "  Check " + Logger::get().GetLogFileName() + " for message.");
 
   return;
 }

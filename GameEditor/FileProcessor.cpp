@@ -23,8 +23,22 @@ bool FileProcessor::GetFileAsString(const std::string& sourceFileName, std::stri
   return true;
 }
 
-std::string FileProcessor::UnicodeStrToByteStr(const std::wstring& unicodeStr)
+bool FileProcessor::FileExists(const std::string& filename)
 {
-  std::string byteStr(unicodeStr.begin(), unicodeStr.end());
-  return byteStr;
+  if (std::fstream(filename))
+    return true;
+
+  return false;
+}
+
+std::string FileProcessor::GetFileNameWithoutExtension(const std::string& fileName)
+{
+  int lastPointOccurenceIndex = fileName.rfind('.');
+  return fileName.substr(0, lastPointOccurenceIndex);
+}
+
+std::string FileProcessor::GetFileExtension(const std::string& fileName)
+{
+  int lastPointOccurenceIndex = fileName.rfind('.');
+  return fileName.substr(lastPointOccurenceIndex + 1);
 }

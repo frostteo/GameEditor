@@ -2,7 +2,6 @@
 
 #include "StaticGameObject.h"
 #include "QtRepository.h"
-#include "Utils.h"
 
 class StaticGORepository :
   public QtRepository<StaticGameObject>

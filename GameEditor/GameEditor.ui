@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>656</width>
+    <width>792</width>
     <height>399</height>
    </rect>
   </property>
@@ -58,7 +58,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>612</width>
+               <width>748</width>
                <height>26</height>
               </rect>
              </property>
@@ -123,14 +123,14 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>612</width>
+               <width>748</width>
                <height>26</height>
               </rect>
              </property>
              <attribute name="label">
               <string>Filter</string>
              </attribute>
-             <widget class="QWidget" name="">
+             <widget class="QWidget" name="layoutWidget">
               <property name="geometry">
                <rect>
                 <x>10</x>
@@ -431,7 +431,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>656</width>
+     <width>792</width>
      <height>21</height>
     </rect>
    </property>
@@ -442,7 +442,7 @@
    </widget>
    <widget class="QMenu" name="menuMeshConverter">
     <property name="title">
-     <string>Mesh converter</string>
+     <string>Model converter</string>
     </property>
     <addaction name="actionObjConverter"/>
    </widget>

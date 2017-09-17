@@ -5,15 +5,11 @@
 #include <qstring.h>
 #include <qtextcodec.h>
 
-class QtUtils
+class QtUtils //TODO FHolod: maybe later delete this class
 {
-public:
-    static const char fileSeparator = '/';
 public:
   QtUtils();
   ~QtUtils();
-  static std::string SqlErrorToStr(QSqlError& error) { return error.text().toLocal8Bit().constData(); }
-  static std::string QStringToStdStr(QString str) { return str.toLocal8Bit().constData(); }
   static QString ToRussian(const char* str){
     return QTextCodec::codecForName("CP1251")->toUnicode(str);
   }

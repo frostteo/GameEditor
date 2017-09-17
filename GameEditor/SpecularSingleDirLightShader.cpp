@@ -54,6 +54,8 @@ void SpecularSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND h
   D3D11_BUFFER_DESC matrixBufferDesc;
   D3D11_BUFFER_DESC cameraBufferDesc;
   D3D11_BUFFER_DESC lightBufferDesc;
+  std::string vsFilenameStdStr = Utils::UnicodeStrToByteStr(vsFilename);
+  std::string psFilenameStdStr = Utils::UnicodeStrToByteStr(psFilename);
 
   // Initialize the pointers this function will use to null.
   errorMessage = nullptr;
@@ -67,11 +69,11 @@ void SpecularSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND h
   {
     if (errorMessage)
     {
-      OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
+      OutputShaderErrorMessage(errorMessage, hwnd, vsFilenameStdStr);
     }
     else
     {
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no file: " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+      throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no file: " + vsFilenameStdStr, __FILE__, __LINE__));
     }
   }
 
@@ -81,11 +83,11 @@ void SpecularSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND h
   {
     if (errorMessage)
     {
-      OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
+      OutputShaderErrorMessage(errorMessage, hwnd, psFilenameStdStr);
     }
     else
     {
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no file: " + FileProcessor::UnicodeStrToByteStr(psFilename), __FILE__, __LINE__));
+      throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no file: " + psFilenameStdStr, __FILE__, __LINE__));
     }
   }
 

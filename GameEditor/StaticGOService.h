@@ -5,6 +5,7 @@
 #include "IStaticGOService.h"
 #include "BLLDependencyResolver.h"
 #include "IUnitOfWork.h"
+#include "Utils.h"
 
 class StaticGOService
   : public IStaticGOService

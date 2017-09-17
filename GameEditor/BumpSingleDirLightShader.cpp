@@ -22,7 +22,8 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   D3D11_BUFFER_DESC matrixBufferDesc;
   D3D11_SAMPLER_DESC samplerDesc;
   D3D11_BUFFER_DESC lightBufferDesc;
-
+  std::string vsFilenameStdStr = Utils::UnicodeStrToByteStr(vsFilename);
+  std::string psFilenameStdStr = Utils::UnicodeStrToByteStr(psFilename);
 
   // Initialize the pointers this function will use to null.
   errorMessage = nullptr;
@@ -35,10 +36,10 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   if (FAILED(result))
   {
     if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
+      OutputShaderErrorMessage(errorMessage, hwnd, vsFilenameStdStr);
     
     else
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + vsFilenameStdStr, __FILE__, __LINE__));
   }
 
   // Compile the pixel shader code.
@@ -47,10 +48,10 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   if (FAILED(result))
   {
     if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
+      OutputShaderErrorMessage(errorMessage, hwnd, psFilenameStdStr);
 
     else
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + FileProcessor::UnicodeStrToByteStr(psFilename), __FILE__, __LINE__));
+      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + psFilenameStdStr, __FILE__, __LINE__));
   }
 
   // Create the vertex shader from the buffer.
@@ -58,7 +59,7 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
     &m_vertexShader);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed vertex shader creation " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed vertex shader creation " + vsFilenameStdStr, __FILE__, __LINE__));
   }
 
   // Create the vertex shader from the buffer.
@@ -66,7 +67,7 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
     &m_pixelShader);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed pixel shader creation " + FileProcessor::UnicodeStrToByteStr(psFilename), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed pixel shader creation " + psFilenameStdStr, __FILE__, __LINE__));
   }
 
   // Create the vertex input layout description.
@@ -118,7 +119,7 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(),
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + vsFilenameStdStr, __FILE__, __LINE__));
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
@@ -139,7 +140,7 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input create matrix buffer " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input create matrix buffer " + vsFilenameStdStr, __FILE__, __LINE__));
   }
 
   // Create a texture sampler state description.
@@ -161,7 +162,7 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create sample state for texture " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create sample state for texture " + vsFilenameStdStr, __FILE__, __LINE__));
   }
 
   // Setup the description of the light dynamic constant buffer that is in the pixel shader.
@@ -176,7 +177,7 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   result = device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for lights " + FileProcessor::UnicodeStrToByteStr(vsFilename), __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for lights " + vsFilenameStdStr, __FILE__, __LINE__));
   }
 }
 

@@ -52,7 +52,7 @@ public:
     QPushButton *deleteStaticGOBtn;
     QPushButton *previewStaticGOBtn;
     QWidget *filterToolPageSGOTable;
-    QWidget *widget;
+    QWidget *layoutWidget1;
     QHBoxLayout *horizontalLayout_3;
     QLabel *filterSGONameLbl;
     QLineEdit *filterSGONameTxt;
@@ -76,7 +76,7 @@ public:
     QLabel *SGOTableOnPageLbl;
     QComboBox *SGOTableOnPage;
     QWidget *tab_12;
-    QWidget *widget1;
+    QWidget *widget;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuMeshConverter;
@@ -87,7 +87,7 @@ public:
     {
         if (GameEditorClass->objectName().isEmpty())
             GameEditorClass->setObjectName(QStringLiteral("GameEditorClass"));
-        GameEditorClass->resize(656, 399);
+        GameEditorClass->resize(792, 399);
         actionObjConverter = new QAction(GameEditorClass);
         actionObjConverter->setObjectName(QStringLiteral("actionObjConverter"));
         centralWidget = new QWidget(GameEditorClass);
@@ -123,7 +123,7 @@ public:
         toolBox->setMaximumSize(QSize(16777215, 80));
         editToolPageSGOTable = new QWidget();
         editToolPageSGOTable->setObjectName(QStringLiteral("editToolPageSGOTable"));
-        editToolPageSGOTable->setGeometry(QRect(0, 0, 612, 26));
+        editToolPageSGOTable->setGeometry(QRect(0, 0, 748, 26));
         layoutWidget = new QWidget(editToolPageSGOTable);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
         layoutWidget->setGeometry(QRect(0, 0, 332, 25));
@@ -159,41 +159,41 @@ public:
         toolBox->addItem(editToolPageSGOTable, QStringLiteral("Edit"));
         filterToolPageSGOTable = new QWidget();
         filterToolPageSGOTable->setObjectName(QStringLiteral("filterToolPageSGOTable"));
-        filterToolPageSGOTable->setGeometry(QRect(0, 0, 612, 26));
-        widget = new QWidget(filterToolPageSGOTable);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(10, 0, 523, 22));
-        horizontalLayout_3 = new QHBoxLayout(widget);
+        filterToolPageSGOTable->setGeometry(QRect(0, 0, 748, 26));
+        layoutWidget1 = new QWidget(filterToolPageSGOTable);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(10, 0, 523, 22));
+        horizontalLayout_3 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        filterSGONameLbl = new QLabel(widget);
+        filterSGONameLbl = new QLabel(layoutWidget1);
         filterSGONameLbl->setObjectName(QStringLiteral("filterSGONameLbl"));
 
         horizontalLayout_3->addWidget(filterSGONameLbl);
 
-        filterSGONameTxt = new QLineEdit(widget);
+        filterSGONameTxt = new QLineEdit(layoutWidget1);
         filterSGONameTxt->setObjectName(QStringLiteral("filterSGONameTxt"));
 
         horizontalLayout_3->addWidget(filterSGONameTxt);
 
-        filterSGOModelLbl = new QLabel(widget);
+        filterSGOModelLbl = new QLabel(layoutWidget1);
         filterSGOModelLbl->setObjectName(QStringLiteral("filterSGOModelLbl"));
 
         horizontalLayout_3->addWidget(filterSGOModelLbl);
 
-        filterSGOModelTxt = new QLineEdit(widget);
+        filterSGOModelTxt = new QLineEdit(layoutWidget1);
         filterSGOModelTxt->setObjectName(QStringLiteral("filterSGOModelTxt"));
 
         horizontalLayout_3->addWidget(filterSGOModelTxt);
 
-        filterSGOMaterialLbl = new QLabel(widget);
+        filterSGOMaterialLbl = new QLabel(layoutWidget1);
         filterSGOMaterialLbl->setObjectName(QStringLiteral("filterSGOMaterialLbl"));
 
         horizontalLayout_3->addWidget(filterSGOMaterialLbl);
 
-        filterSGOMaterialTxt = new QLineEdit(widget);
+        filterSGOMaterialTxt = new QLineEdit(layoutWidget1);
         filterSGOMaterialTxt->setObjectName(QStringLiteral("filterSGOMaterialTxt"));
 
         horizontalLayout_3->addWidget(filterSGOMaterialTxt);
@@ -329,10 +329,10 @@ public:
 
         gridLayout_3->addWidget(tabWidget, 1, 0, 1, 1);
 
-        widget1 = new QWidget(centralWidget);
-        widget1->setObjectName(QStringLiteral("widget1"));
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
 
-        gridLayout_3->addWidget(widget1, 0, 0, 1, 1);
+        gridLayout_3->addWidget(widget, 0, 0, 1, 1);
 
 
         gridLayout->addLayout(gridLayout_3, 0, 0, 1, 1);
@@ -340,7 +340,7 @@ public:
         GameEditorClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(GameEditorClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 656, 21));
+        menuBar->setGeometry(QRect(0, 0, 792, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuMeshConverter = new QMenu(menuBar);
@@ -401,7 +401,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab_11), QApplication::translate("GameEditorClass", "\320\241\321\202\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\270\320\265 \320\270\320\263\321\200\320\276\320\262\321\213\320\265 \320\276\320\261\321\212\320\265\320\272\321\202\321\213", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_12), QApplication::translate("GameEditorClass", "Tab 2", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("GameEditorClass", "File", Q_NULLPTR));
-        menuMeshConverter->setTitle(QApplication::translate("GameEditorClass", "Mesh converter", Q_NULLPTR));
+        menuMeshConverter->setTitle(QApplication::translate("GameEditorClass", "Model converter", Q_NULLPTR));
     } // retranslateUi
 
 };
