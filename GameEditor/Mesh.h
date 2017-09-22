@@ -13,7 +13,7 @@
 
 using namespace DirectX;
 
-class SubMesh
+class Mesh
 {
 public:
   struct VertexInBuffer
@@ -36,7 +36,7 @@ protected:
   void ShutdownBuffers();
   int GetIndexCount() { return m_indexCount; } //FHolod: later will be removed
 public:
-  SubMesh(ID3D11Device* device,
+  Mesh(ID3D11Device* device,
     std::string gameObjectName, 
     std::string materialName,
     std::vector<VertexInBuffer>& vertices, 
@@ -48,6 +48,6 @@ public:
   void SetMaterial(std::string materialName, MaterialFactory* materialFactory);
   void InitializeShader(ShaderFactory* shaderFactory);
   void Render(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion);
-  virtual ~SubMesh();
+  virtual ~Mesh();
 };
 

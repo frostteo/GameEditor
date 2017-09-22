@@ -26,10 +26,10 @@ void Model::LoadData(
 
   std::stringstream fileStrStream(fileInStr);
   while (!fileStrStream.eof())
-    LoadSubMesh(fileStrStream, device, materialFactory, shaderFactory);
+    LoadMesh(fileStrStream, device, materialFactory, shaderFactory);
 }
 
-void Model::LoadSubMesh(
+void Model::LoadMesh(
   std::stringstream& stream,
   ID3D11Device* device,
   MaterialFactory* materialFactory,
@@ -40,10 +40,10 @@ void Model::LoadSubMesh(
   std::string materialName;
   int vertexCount;
   int indexCount;
-  std::vector<SubMesh::VertexInBuffer> vertexes;
+  std::vector<Mesh::VertexInBuffer> vertexes;
   std::vector<unsigned long> indexes;
   VertexTxt vertexTxt;
-  SubMesh::VertexInBuffer vertexInBuffer;
+  Mesh::VertexInBuffer vertexInBuffer;
   unsigned long index;
 
   stream.get(input);
@@ -100,8 +100,8 @@ void Model::LoadSubMesh(
     indexes.push_back(index);
   }
 
-  SubMesh* submesh = new SubMesh(device, m_fileName, materialName, vertexes, indexes, materialFactory, shaderFactory);
-  m_submeshes.push_back(submesh);
+  Mesh* mesh = new Mesh(device, m_fileName, materialName, vertexes, indexes, materialFactory, shaderFactory);
+  m_meshes.push_back(mesh);
 }
 
 void Model::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion)
@@ -109,15 +109,15 @@ void Model::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMM
   XMMATRIX worldMatrix;
   this->GetWorldMatrix(worldMatrix);
 
-  for (auto submesh : m_submeshes)
-    submesh->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining, cameraPostion);
+  for (auto mesh : m_meshes)
+    mesh->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining, cameraPostion);
 }
 
 Model::~Model()
 {
-  for (auto submesh : m_submeshes)
+  for (auto mesh : m_meshes)
   {
-    delete submesh;
-    submesh = nullptr;
+    delete mesh;
+    mesh = nullptr;
   }
 }

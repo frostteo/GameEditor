@@ -1,6 +1,6 @@
-#include "SubMesh.h"
+#include "Mesh.h"
 
-SubMesh::SubMesh(ID3D11Device* device,
+Mesh::Mesh(ID3D11Device* device,
   std::string gameObjectName,
   std::string materialName,
   std::vector<VertexInBuffer>& vertices,
@@ -14,7 +14,7 @@ SubMesh::SubMesh(ID3D11Device* device,
   InitializeBuffers(device, vertices, indexes);
 }
 
-void SubMesh::InitializeBuffers(ID3D11Device* device, std::vector<VertexInBuffer>& vertices, std::vector<unsigned long>& indexes)
+void Mesh::InitializeBuffers(ID3D11Device* device, std::vector<VertexInBuffer>& vertices, std::vector<unsigned long>& indexes)
 {
   D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
   D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -38,7 +38,7 @@ void SubMesh::InitializeBuffers(ID3D11Device* device, std::vector<VertexInBuffer
   // Now create the vertex buffer.
   result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create vertex buffer for submesh of " + m_gameObjectName + " with material " + m_materialName, __FILE__, __LINE__));
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create vertex buffer for mesh of " + m_gameObjectName + " with material " + m_materialName, __FILE__, __LINE__));
 
   // Set up the description of the static index buffer.
   indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -59,18 +59,18 @@ void SubMesh::InitializeBuffers(ID3D11Device* device, std::vector<VertexInBuffer
     throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create index buffer" + m_gameObjectName + " with material " + m_materialName, __FILE__, __LINE__));
 }
 
-void SubMesh::SetMaterial(std::string materialName, MaterialFactory* materialFactory)
+void Mesh::SetMaterial(std::string materialName, MaterialFactory* materialFactory)
 {
   m_materialName = materialName;
   m_material = materialFactory->GetResource(materialName);
 }
 
-void SubMesh::InitializeShader(ShaderFactory* shaderFactory)
+void Mesh::InitializeShader(ShaderFactory* shaderFactory)
 {
   m_shader = shaderFactory->Get(m_material->GetType());
 }
 
-void SubMesh::ShutdownBuffers()
+void Mesh::ShutdownBuffers()
 {
   // Release the index buffer.
   if (m_indexBuffer)
@@ -87,7 +87,7 @@ void SubMesh::ShutdownBuffers()
   }
 }
 
-void SubMesh::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion)
+void Mesh::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion)
 {
   unsigned int stride;
   unsigned int offset;
@@ -108,7 +108,7 @@ void SubMesh::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, 
   m_shader->Render(deviceContext,this->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_material, lightining, cameraPostion);
 }
 
-SubMesh::~SubMesh()
+Mesh::~Mesh()
 {
   ShutdownBuffers();
 }

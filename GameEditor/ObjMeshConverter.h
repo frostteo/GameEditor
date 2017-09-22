@@ -45,8 +45,8 @@ private:
   };
  
 private:
-  std::map<std::string, std::vector<VertexTxt>> m_submeshVertexesInfo;
-  std::map<std::string, std::vector<int>> m_submeshIndexesInfo;
+  std::map<std::string, std::vector<VertexTxt>> m_meshVertexesInfo;
+  std::map<std::string, std::vector<int>> m_meshIndexesInfo;
 private:
   VertexObj CalculateTangentOrBinormal(float textureVector[2], float modelVectorFirst[3], float modelVectorSecond[3], const float& denominator);
   void Normalize(VertexObj& vertex);

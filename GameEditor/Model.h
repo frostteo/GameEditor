@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SubMesh.h"
+#include "Mesh.h"
 #include "GameObject.h"
 #include "FileProcessor.h"
 #include "ObjMeshConverter.h"
@@ -9,7 +9,7 @@ class Model : public GameObject
 {
 protected:
   std::string m_fileName;
-  std::vector<SubMesh*> m_submeshes;
+  std::vector<Mesh*> m_meshes;
 protected:
   void LoadData(
     ID3D11Device* device,
@@ -17,7 +17,7 @@ protected:
     ShaderFactory* shaderFactory
     );
 
-  void LoadSubMesh(
+  void LoadMesh(
     std::stringstream& stream,
     ID3D11Device* device,
     MaterialFactory* materialFactory,
