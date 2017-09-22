@@ -33,8 +33,11 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   HighPerformanceTimer::get().Initialize();
   HighPerformanceTimer::get().Frame();
- /* ObjMeshConverter objConverter;
-  objConverter.ConvertModel("../GameEditor/models/CubeFromMax.obj", "../GameEditor/models/centeredCube.txt");*/
+  ObjMeshConverter objConverter;
+  MtlMatLibConverter matConverter("../GameEditor/materials");
+  //objConverter.ConvertModel("../GameEditor/obj models/egypt col2.obj", "../GameEditor/models/test column.txt");
+  //std::string material = "../GameEditor/obj models/egypt col2.mtl";
+  //matConverter.ConvertMtlMaterials(material);
 
   m_shaderConfiguration = new ShaderConfiguration();
   m_shaderConfiguration->Configure();
@@ -43,18 +46,18 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   if (!m_graphicSystem)
     return false;
 
-  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration);
+  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration, "../GameEditor/materials");
 
-  m_static.Initialize(m_graphicSystem->GetMeshFactory()->GetResource("../GameEditor/models/centeredCube.txt"), m_graphicSystem->GetMaterialFactory()->GetResource("../GameEditor/materials/woodBoxBumpSpec.mat"), m_graphicSystem->GetShaderFactory());
+  m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/test column.txt");
 
   // Create the camera object.
-  m_Camera = new Camera(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
+  m_Camera = new Camera(screenWidth, screenHeight, SCREEN_NEAR, 5000.0F);
   if (!m_Camera)
   {
     return false;
   }
 
-  m_Camera->SetPosition(0.0f, 0.0f, -50.0f);
+  m_Camera->SetPosition(0.0f, 0.0f, -800.0f);
 
   m_lightininigSystem = new LightininigSystem();
   if (!m_lightininigSystem) 
@@ -70,7 +73,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   PreviewGameObject* previewGameObject = new PreviewGameObject();
   previewGameObject->SetCamera(m_Camera);
-  previewGameObject->SetStatic(&m_static);
+  previewGameObject->SetModel(m_model);
   m_inputSystem->AddInputListener(previewGameObject);
 
   return true;
@@ -111,9 +114,9 @@ void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
   HighPerformanceTimer::get().Frame();
 
   m_inputSystem->Frame();
-  std::vector<Static*> renderedStaticGO;
-  renderedStaticGO.push_back(&m_static);
-  m_graphicSystem->DrawStatics(renderedStaticGO, m_Camera, m_lightininigSystem);
+  std::vector<Model*> renderedModels;
+  renderedModels.push_back(m_model);
+  m_graphicSystem->DrawModels(renderedModels, m_Camera, m_lightininigSystem);
 
   // trigger another update as soon as possible 
   update();

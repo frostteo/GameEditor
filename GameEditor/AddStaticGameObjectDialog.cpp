@@ -52,7 +52,7 @@ void AddStaticGameObjectDialog::done(int result)
 }
 
 
-void AddStaticGameObjectDialog::SetStaticGameObject(StaticGameObject gameObject)
+void AddStaticGameObjectDialog::SetStaticGameObject(StaticGameObjectDbInfo gameObject)
 {
   m_gameObject = gameObject;
   this->staticGONameEdit->setText(m_gameObject.name);
@@ -60,7 +60,7 @@ void AddStaticGameObjectDialog::SetStaticGameObject(StaticGameObject gameObject)
   this->staticGOMaterialEdit->setText(m_gameObject.materialFileName);
 }
 
-StaticGameObject AddStaticGameObjectDialog::GetStaticGameObject()
+StaticGameObjectDbInfo AddStaticGameObjectDialog::GetStaticGameObject()
 {
   m_gameObject.name = this->staticGONameEdit->text();
   m_gameObject.modelFileName = this->staticGOModelEdit->text();

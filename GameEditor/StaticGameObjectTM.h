@@ -14,7 +14,7 @@ class StaticGameObjectTM
 {
 protected:
   IStaticGOService* m_staticGOService;
-  QList<StaticGameObject> m_data;
+  QList<StaticGameObjectDbInfo> m_data;
   GetParameters m_getParameters;
   PagingInfo m_pagingInfo;
 
@@ -30,10 +30,10 @@ public:
   int columnCount(const QModelIndex &) const override { return 4; }
   QVariant data(const QModelIndex &index, int role) const override;
   QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
-  void append(StaticGameObject& gameObject);
-  void edit(StaticGameObject& gameObject);
+  void append(StaticGameObjectDbInfo& gameObject);
+  void edit(StaticGameObjectDbInfo& gameObject);
   void remove(int id);
-  StaticGameObject GetStaticGameObject(int rowNumber);
+  StaticGameObjectDbInfo GetStaticGameObject(int rowNumber);
   PagingInfo GetPagingInfo() { return m_pagingInfo; }
   void UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter = "", QString SGOModelFilenameFilter = "", QString SGOMaterialFilenameFilter = "");
 };

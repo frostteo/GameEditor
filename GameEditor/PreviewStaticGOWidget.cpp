@@ -18,7 +18,7 @@ PreviewStaticGOWidget::PreviewStaticGOWidget(QString pathToModels, QString pathT
     SetPathToModels(pathToModels);
     SetPathToMaterials(pathToMaterials);
 
-    bool result = Initialize(width(), height(), (HWND)winId());
+    bool result = Initialize(width(), height(), (HWND)winId(), m_pathToMaterials);
     if (!result) {
       QMessageBox::critical(this,
         "ERROR",
@@ -32,13 +32,12 @@ PreviewStaticGOWidget::~PreviewStaticGOWidget()
   Shutdown();
 }
 
-void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObject staticGameObject)
+void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGameObject)
 {
-  m_static = Static();
-  m_static.Initialize(m_graphicSystem->GetMeshFactory()->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + staticGameObject.modelFileName.toStdString()), m_graphicSystem->GetMaterialFactory()->GetResource(m_pathToMaterials + FileProcessor::FILE_SEPARATOR + staticGameObject.materialFileName.toStdString()), m_graphicSystem->GetShaderFactory());
+  m_model = m_graphicSystem->GetModelFactory()->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + staticGameObject.modelFileName.toStdString());
 }
 
-bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
+bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials)
 {
   bool result;
 
@@ -52,7 +51,7 @@ bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND h
   if (!m_graphicSystem)
     return false;
 
-  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration.get());
+  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration.get(), pathToMaterials);
 
   // Create the camera object.
   m_Camera = std::unique_ptr<Camera>(new Camera(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH));
@@ -77,7 +76,7 @@ bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND h
 
   PreviewGameObject* previewGameObject = new PreviewGameObject();
   previewGameObject->SetCamera(m_Camera.get());
-  previewGameObject->SetStatic(&m_static);
+  previewGameObject->SetModel(m_model);
   m_inputSystem->AddInputListener(previewGameObject);
 
   return true;
@@ -92,9 +91,9 @@ void PreviewStaticGOWidget::paintEvent(QPaintEvent* evt) {
   HighPerformanceTimer::get().Frame();
 
   m_inputSystem->Frame();
-  std::vector<Static*> renderedStaticGO;
-  renderedStaticGO.push_back(&m_static);
-  m_graphicSystem->DrawStatics(renderedStaticGO, m_Camera.get(), m_lightininigSystem.get());
+  std::vector<Model*> renderedModels;
+  renderedModels.push_back(m_model);
+  m_graphicSystem->DrawModels(renderedModels, m_Camera.get(), m_lightininigSystem.get());
 
   // trigger another update as soon as possible 
   update();

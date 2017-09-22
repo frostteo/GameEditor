@@ -1,4 +1,4 @@
 type: bump
-textureFileName: maps\peschanic prod more bright.tga
-normalMap: maps\Map__46_Normal Bump.tga
+textureFileName: maps/peschanic prod more bright.tga
+normalMap: maps/Map__46_Normal Bump.tga
 bumpDepth: 0.3

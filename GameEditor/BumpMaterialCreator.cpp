@@ -31,14 +31,16 @@ IMaterial* BumpMaterialCreator::Get(const std::string& fileInStr, const std::str
   {
     fileStrStream.get(input);
   }
-  fileStrStream >> texturePath;
+  std::getline(fileStrStream, texturePath);
+  texturePath = Utils::Trim(texturePath);
 
   fileStrStream.get(input);
   while (input != ':')
   {
     fileStrStream.get(input);
   }
-  fileStrStream >> normalMapPath;
+  std::getline(fileStrStream, normalMapPath);
+  normalMapPath = Utils::Trim(normalMapPath);
 
   fileStrStream.get(input);
   while (input != ':')

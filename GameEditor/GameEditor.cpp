@@ -93,7 +93,7 @@ void GameEditor::on_addStaticGOBtn_clicked()
 void GameEditor::on_editStaticGOBtn_clicked()
 {
   int selectedRow = ui.staticGOTableView->selectionModel()->currentIndex().row();
-  StaticGameObject gameObject = m_gameObjectTableModel->GetStaticGameObject(selectedRow);
+  StaticGameObjectDbInfo gameObject = m_gameObjectTableModel->GetStaticGameObject(selectedRow);
 
   AddStaticGameObjectDialog dialog(this);
   dialog.SetPathToModels(m_pathToModels);
@@ -118,7 +118,7 @@ void GameEditor::on_deleteStaticGOBtn_clicked()
 void GameEditor::on_previewStaticGOBtn_clicked()
 {
   int selectedRow = ui.staticGOTableView->selectionModel()->currentIndex().row();
-  StaticGameObject gameObject = m_gameObjectTableModel->GetStaticGameObject(selectedRow);
+  StaticGameObjectDbInfo gameObject = m_gameObjectTableModel->GetStaticGameObject(selectedRow);
 
   PreviewStaticGOWidget previewStaticGOWidget(m_pathToModels, m_pathToMaterials);
   previewStaticGOWidget.SetStaticGameObject(gameObject);

@@ -10,7 +10,7 @@ GraphicSystem::~GraphicSystem()
 {
 }
 
-void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnabled, HWND hwnd, bool fullScreen, ShaderConfiguration* shaderConfiguration)
+void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnabled, HWND hwnd, bool fullScreen, ShaderConfiguration* shaderConfiguration, std::string pathToMaterials)
 {
   bool result;
   m_direct3D = std::unique_ptr<D3DConfigurer>(new D3DConfigurer);
@@ -19,15 +19,15 @@ void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnab
     throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant initialize direct 3D", __FILE__, __LINE__));
 
   //factory initializing
-  m_meshFactory = std::unique_ptr<MeshFactory>((new MeshFactory())->SetDevice(m_direct3D->GetDevice()));
-  m_textureFactory = std::unique_ptr<TextureFactory>((new TextureFactory())->Initialize(m_direct3D->GetDevice(), m_direct3D->GetDeviceContext()));
+  m_textureFactory = std::unique_ptr<TextureFactory>((new TextureFactory())->Initialize(m_direct3D->GetDevice(), m_direct3D->GetDeviceContext(), pathToMaterials));
   m_shaderFactory = std::unique_ptr<ShaderFactory>((new ShaderFactory())->Initialize(m_direct3D->GetDevice(), hwnd, shaderConfiguration));
-  m_materialFactory = std::unique_ptr<MaterialFactory>((new MaterialFactory())->Initialize(m_textureFactory.get()));
+  m_materialFactory = std::unique_ptr<MaterialFactory>((new MaterialFactory())->Initialize(m_textureFactory.get(), pathToMaterials)); //TODO FHolod: later give this as parameter
+  m_modelFactory = std::unique_ptr<ModelFactory>((new ModelFactory())->Initialize(m_direct3D->GetDevice(), m_shaderFactory.get(), m_materialFactory.get()));
 }
 
-MeshFactory* GraphicSystem::GetMeshFactory()
+ModelFactory* GraphicSystem::GetModelFactory()
 {
-  return m_meshFactory.get();
+  return m_modelFactory.get();
 }
 TextureFactory* GraphicSystem::GetTextureFactory()
 {
@@ -42,7 +42,7 @@ MaterialFactory* GraphicSystem::GetMaterialFactory()
   return m_materialFactory.get();
 }
 
-void GraphicSystem::DrawStatics(std::vector<Static*>& staticGameObjects, Camera* camera, LightininigSystem* lightiningSystem)
+void GraphicSystem::DrawModels(std::vector<Model*>& models, Camera* camera, LightininigSystem* lightiningSystem)
 {
   XMMATRIX viewMatrix, projectionMatrix;
 
@@ -53,8 +53,8 @@ void GraphicSystem::DrawStatics(std::vector<Static*>& staticGameObjects, Camera*
   camera->GetViewMatrix(viewMatrix);
   camera->GetProjectionMatrix(projectionMatrix);
 
-  for (auto staticGameObject : staticGameObjects)
-    staticGameObject->Render(m_direct3D->GetDeviceContext(), viewMatrix, projectionMatrix, lightiningSystem, camera->GetPosition());
+  for (auto model : models)
+    model->Render(m_direct3D->GetDeviceContext(), viewMatrix, projectionMatrix, lightiningSystem, camera->GetPosition());
 
   // Present the rendered scene to the screen.
   m_direct3D->EndScene();

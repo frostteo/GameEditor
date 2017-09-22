@@ -11,11 +11,11 @@ StaticGOService::~StaticGOService()
 {
 }
 
-QList<StaticGameObject> StaticGOService::GetStaticGameObjects()
+QList<StaticGameObjectDbInfo> StaticGOService::GetStaticGameObjects()
 {
-  std::vector<StaticGameObject> gameObjects = m_unitOfWork->GetStaticGORepository()->GetAll();
+  std::vector<StaticGameObjectDbInfo> gameObjects = m_unitOfWork->GetStaticGORepository()->GetAll();
 
-  QList<StaticGameObject> qListGameObjects;
+  QList<StaticGameObjectDbInfo> qListGameObjects;
   qListGameObjects.reserve(gameObjects.size());
 
   std::copy(gameObjects.begin(), gameObjects.end(), std::back_inserter(qListGameObjects));
@@ -23,12 +23,12 @@ QList<StaticGameObject> StaticGOService::GetStaticGameObjects()
   return qListGameObjects;
 }
 
-void StaticGOService::CreateStaticGameObject(StaticGameObject& gameObject)
+void StaticGOService::CreateStaticGameObject(StaticGameObjectDbInfo& gameObject)
 {
   m_unitOfWork->GetStaticGORepository()->Create(gameObject);
 }
 
-void StaticGOService::UpdateStaticGameObject(StaticGameObject& gameObject)
+void StaticGOService::UpdateStaticGameObject(StaticGameObjectDbInfo& gameObject)
 {
   m_unitOfWork->GetStaticGORepository()->Update(gameObject);
 }
@@ -38,15 +38,15 @@ void StaticGOService::DeleteStaticGameObject(int id)
   m_unitOfWork->GetStaticGORepository()->Delete(id);
 }
 
-QList<StaticGameObject> StaticGOService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name, std::string model, std::string material)
+QList<StaticGameObjectDbInfo> StaticGOService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name, std::string model, std::string material)
 {
   std::vector<std::string> whereParams;
   std::string whereParamsGlue = " AND ";
   parameters.whereCondition = "";
   int index = 0;
   bool filteringIsEnabled = false;
-  std::vector<StaticGameObject> gameObjects;
-  QList<StaticGameObject> qListGameObjects;
+  std::vector<StaticGameObjectDbInfo> gameObjects;
+  QList<StaticGameObjectDbInfo> qListGameObjects;
 
   if (!name.empty()) {
     whereParams.push_back(" name LIKE '%" + name + "%' ");

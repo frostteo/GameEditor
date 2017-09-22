@@ -9,7 +9,7 @@
 #include "StaticGameObjectTM.h"
 #include "BLLDependencyResolver.h"
 #include "AddStaticGameObjectDialog.h"
-#include "StaticGameObject.h"
+#include "StaticGameObjectDbInfo.h"
 #include "PreviewStaticGOWidget.h"
 #include "ObjConverterDialog.h"
 

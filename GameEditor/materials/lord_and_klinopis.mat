@@ -1,4 +1,4 @@
 type: bump
-textureFileName: maps\lord and klinopis.tga
-normalMap: maps\Map__52_Normal Bump.tga
+textureFileName: maps/lord and klinopis.tga
+normalMap: maps/Map__52_Normal Bump.tga
 bumpDepth: 0.3

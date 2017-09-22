@@ -21,8 +21,10 @@ MaterialFactory::~MaterialFactory()
   Shutdown();
 }
 
-MaterialFactory* MaterialFactory::Initialize(TextureFactory* textureFactory)
+MaterialFactory* MaterialFactory::Initialize(TextureFactory* textureFactory, std::string pathToMaterials)
 {
+  m_pathToMaterials = pathToMaterials;
+
   Shutdown();
   m_materialCreators.push_back((new TextureMaterialCreator())->SetTextureFactory(textureFactory));
   m_materialCreators.push_back((new SpecularMaterialCreator())->SetTextureFactory(textureFactory));
@@ -41,7 +43,7 @@ IMaterial* MaterialFactory::GetNewResource(const std::string& filename)
   std::string texturePath;
   char input;
 
-  result = FileProcessor::GetFileAsString(filename, fileInStr);
+  result = FileProcessor::GetFileAsString(m_pathToMaterials + FileProcessor::FILE_SEPARATOR + filename, fileInStr);
   if (!result) {
     Logger::get().LogMessageWithExceptionDialog(Logger::cantReadFile + filename, __FILE__, __LINE__);
     //TODO FHolod: подставить здесь стандартный материал

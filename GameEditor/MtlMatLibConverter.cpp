@@ -107,6 +107,10 @@ void MtlMatLibConverter::readMtlMaterial(std::stringstream& strStream, MtlMateri
   strStream >> space >> space >> material.bumpPower;
   std::getline(strStream, material.map_bump);
   material.map_bump = Utils::Trim(material.map_bump);
+
+  std::replace(material.map_Ka.begin(), material.map_Ka.end(), MtlMatLibConverter::MTL_FILE_SEPARATOR, FileProcessor::FILE_SEPARATOR);
+  std::replace(material.map_Kd.begin(), material.map_Kd.end(), MtlMatLibConverter::MTL_FILE_SEPARATOR, FileProcessor::FILE_SEPARATOR);
+  std::replace(material.map_bump.begin(), material.map_bump.end(), MtlMatLibConverter::MTL_FILE_SEPARATOR, FileProcessor::FILE_SEPARATOR);
 }
 
 void MtlMatLibConverter::saveMaterial(const std::string& materialName, const MtlMaterial& material, bool needReplaceIfExists)

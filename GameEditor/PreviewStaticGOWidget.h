@@ -2,24 +2,22 @@
 
 #include <QDialog>
 #include "ui_PreviewStaticGOWidget.h"
-
 #include <QMessageBox>
 #include <memory>
 #include "Camera.h"
 #include "D3DConfigurer.h"
 #include "TextureShader.h"
-#include "MeshFactory.h"
 #include "TextureFactory.h"
 #include "ShaderConfiguration.h"
 #include "ShaderFactory.h"
 #include "MaterialFactory.h"
-#include "Static.h"
+#include "Model.h"
 #include "LightininigSystem.h"
 #include "GraphicSystem.h"
 #include "InputSystem.h"
 #include "PreviewGameObject.h"
 #include "HighPerformanceTimer.h"
-#include "StaticGameObject.h"
+#include "StaticGameObjectDbInfo.h"
 #include "QtUtils.h"
 
 class PreviewStaticGOWidget : public QDialog, public Ui::PreviewStaticGOWidget
@@ -44,10 +42,10 @@ private:
   std::unique_ptr<LightininigSystem> m_lightininigSystem;
   std::unique_ptr<GraphicSystem> m_graphicSystem;
 
-  Static m_static;
+  Model* m_model;
 protected:
   /** Initialized the D3D environment */
-  bool Initialize(int screenWidth, int screenHeight, HWND hwnd);
+  bool Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials);
 
   /** Destroys the D3D environment */
   void Shutdown();
@@ -67,5 +65,5 @@ public:
   void SetPathToModels(QString pathToModels) { m_pathToModels = pathToModels.toStdString(); }
   void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = pathToMaterials.toStdString(); }
 
-  void SetStaticGameObject(StaticGameObject staticGameObject);
+  void SetStaticGameObject(StaticGameObjectDbInfo staticGameObject);
 };

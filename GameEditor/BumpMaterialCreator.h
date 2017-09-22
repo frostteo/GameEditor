@@ -3,6 +3,7 @@
 #include "IMaterialCreator.h"
 #include "TextureFactory.h"
 #include "BumpMaterial.h"
+#include "Utils.h"
 
 class BumpMaterialCreator :
   public IMaterialCreator

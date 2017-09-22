@@ -1,0 +1,4 @@
+type: bump
+textureFileName: ../GameEditor/materials/maps/round pilar panel.tga
+normalMap: ../GameEditor/materials/maps/Map__61_Normal Bump.tga
+bumpDepth: 0.7

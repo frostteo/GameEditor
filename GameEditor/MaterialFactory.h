@@ -19,12 +19,13 @@ class MaterialFactory : public SharedResourcesFactory<IMaterial>
 {
 private:
   std::vector<IMaterialCreator* > m_materialCreators;
+  std::string m_pathToMaterials;
 protected:
   IMaterial* GetNewResource(const std::string& filename) override;
 public:
   MaterialFactory();
   virtual ~MaterialFactory();
-  MaterialFactory* Initialize(TextureFactory* textureFactory);
+  MaterialFactory* Initialize(TextureFactory* textureFactory, std::string pathToMaterials);
   void Shutdown();
 };
 

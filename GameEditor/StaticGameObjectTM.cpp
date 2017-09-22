@@ -59,7 +59,7 @@ QVariant StaticGameObjectTM::headerData(int section, Qt::Orientation orientation
   }
 }
 
-void StaticGameObjectTM::append(StaticGameObject& gameObject)
+void StaticGameObjectTM::append(StaticGameObjectDbInfo& gameObject)
 {
   beginInsertRows({}, m_data.count(), m_data.count());
   m_staticGOService->CreateStaticGameObject(gameObject);
@@ -67,7 +67,7 @@ void StaticGameObjectTM::append(StaticGameObject& gameObject)
   endInsertRows();
 }
 
-void StaticGameObjectTM::edit(StaticGameObject& gameObject)
+void StaticGameObjectTM::edit(StaticGameObjectDbInfo& gameObject)
 {
   m_staticGOService->UpdateStaticGameObject(gameObject);
   UpdateData();
@@ -79,7 +79,7 @@ void StaticGameObjectTM::remove(int id)
   UpdateData();
 }
 
-StaticGameObject StaticGameObjectTM::GetStaticGameObject(int rowNumber)
+StaticGameObjectDbInfo StaticGameObjectTM::GetStaticGameObject(int rowNumber)
 {
   return m_data.at(rowNumber);
 }

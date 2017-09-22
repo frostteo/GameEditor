@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "Logger.h"
+#include "MtlMatLibConverter.h"
 
 struct VertexObj
 {
@@ -31,6 +32,7 @@ class ObjMeshConverter :
 {
 private:
   static const int VERTEX_IN_FACE_OBJ = 3;
+  static const std::string m_materialExtension;
   struct FaceObjIndexes
   {
     int index[VERTEX_IN_FACE_OBJ];
@@ -58,7 +60,7 @@ protected:
   void AddVertex(const VertexTxt& vertexTxt, const std::string& materialName);
   void FreeMemory();
 public:
-  ObjMeshConverter()  { m_fileExtension = "obj"; }
+  ObjMeshConverter() { m_fileExtension = "obj"; }
   virtual ~ObjMeshConverter();
   virtual bool ConvertModel(const std::string& sourceFileName, const std::string& destinationFileName) override;
 };

@@ -2,7 +2,7 @@
 
 #include <memory>
 #include "IRepository.h"
-#include "StaticGameObject.h"
+#include "StaticGameObjectDbInfo.h"
 #include "StaticGORepository.h"
 
 class DALDependencyResolver
@@ -10,5 +10,5 @@ class DALDependencyResolver
 public:
   DALDependencyResolver();
   virtual ~DALDependencyResolver();
-  static IRepository<StaticGameObject>* GetStaticGameObjectRepository() { return new StaticGORepository(); }
+  static IRepository<StaticGameObjectDbInfo>* GetStaticGameObjectRepository() { return new StaticGORepository(); }
 };

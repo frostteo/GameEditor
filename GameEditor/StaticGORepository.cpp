@@ -9,10 +9,10 @@ StaticGORepository::~StaticGORepository()
 {
 }
 
-IRepository<StaticGameObject>* StaticGORepository::Initialize(std::string connectionName)
+IRepository<StaticGameObjectDbInfo>* StaticGORepository::Initialize(std::string connectionName)
 {
   m_connectionName = connectionName;
-  m_tableName = "StaticGameObject";
+  m_tableName = "StaticGameObjectDbInfo";
   m_columnNames.push_back("name");
   m_columnNames.push_back("modelFileName");
   m_columnNames.push_back("materialFileName");
@@ -29,14 +29,14 @@ IRepository<StaticGameObject>* StaticGORepository::Initialize(std::string connec
   return this;
 }
 
-std::vector<StaticGameObject> StaticGORepository::QueryToEntities(QSqlQuery* query)
+std::vector<StaticGameObjectDbInfo> StaticGORepository::QueryToEntities(QSqlQuery* query)
 {
   QSqlRecord record = query->record();
 
-  std::vector<StaticGameObject> result;
+  std::vector<StaticGameObjectDbInfo> result;
   while (query->next())
   {
-    StaticGameObject gameObject;
+    StaticGameObjectDbInfo gameObject;
 
     gameObject.id = query->value(record.indexOf(m_keyColumnName)).toInt();
     gameObject.name = query->value(record.indexOf(m_columnNames[0])).toString();
@@ -48,7 +48,7 @@ std::vector<StaticGameObject> StaticGORepository::QueryToEntities(QSqlQuery* que
   return result;
 }
 
-QString StaticGORepository::GetFieldByName(const StaticGameObject& entity, QString name)
+QString StaticGORepository::GetFieldByName(const StaticGameObjectDbInfo& entity, QString name)
 {
   if (name == m_columnNames[0])
     return entity.name;

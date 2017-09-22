@@ -1,17 +1,17 @@
 #pragma once
 
-#include "StaticGameObject.h"
+#include "StaticGameObjectDbInfo.h"
 #include "QtRepository.h"
 
 class StaticGORepository :
-  public QtRepository<StaticGameObject>
+  public QtRepository<StaticGameObjectDbInfo>
 {
 protected:
-  virtual std::vector<StaticGameObject> QueryToEntities(QSqlQuery* query) override;
-  virtual QString GetFieldByName(const StaticGameObject& entity, QString name) override;
+  virtual std::vector<StaticGameObjectDbInfo> QueryToEntities(QSqlQuery* query) override;
+  virtual QString GetFieldByName(const StaticGameObjectDbInfo& entity, QString name) override;
 public:
   StaticGORepository();
   virtual ~StaticGORepository();
-  virtual IRepository<StaticGameObject>* Initialize(std::string connectionName) override;
+  virtual IRepository<StaticGameObjectDbInfo>* Initialize(std::string connectionName) override;
 };
 

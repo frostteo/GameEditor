@@ -3,7 +3,7 @@
 #include <string>
 #include <qstring.h>
 
-struct StaticGameObject {
+struct StaticGameObjectDbInfo {
   int id;
   QString name;
   QString modelFileName;

@@ -1,5 +1,7 @@
 #include "ObjMeshConverter.h"
 
+const std::string ObjMeshConverter::m_materialExtension = MtlMatLibConverter::GE_MAT_EXT;
+
 ObjMeshConverter::~ObjMeshConverter()
 {
 }
@@ -46,18 +48,18 @@ bool ObjMeshConverter::ConvertModel(const std::string& sourceFileName, const std
 
 void ObjMeshConverter::CenterToCoordCenter()
 {
+  float minX, minY, minZ, maxX, maxY, maxZ;
+  float xCenter, yCenter, zCenter;
+
+  minX = m_submeshVertexesInfo.begin()->second[0].coord.x;
+  maxX = minX;
+  minY = m_submeshVertexesInfo.begin()->second[0].coord.y;
+  maxY = minY;
+  minZ = m_submeshVertexesInfo.begin()->second[0].coord.z;
+  maxZ = minZ;
+
   for (auto &submeshVertexInfo : m_submeshVertexesInfo)
   {
-    float minX, minY, minZ, maxX, maxY, maxZ;
-    float xCenter, yCenter, zCenter;
-
-    minX = submeshVertexInfo.second[0].coord.x;
-    maxX = minX;
-    minY = submeshVertexInfo.second[0].coord.y;
-    maxY = minY;
-    minZ = submeshVertexInfo.second[0].coord.z;
-    maxZ = minZ;
-
     for (auto &txtVertex : submeshVertexInfo.second)
     {
       if (txtVertex.coord.x < minX)
@@ -79,11 +81,14 @@ void ObjMeshConverter::CenterToCoordCenter()
       if (txtVertex.coord.z > maxZ)
         maxZ = txtVertex.coord.z;
     }
+  }
 
-    xCenter = (maxX - minX) / 2.0f + minX;
-    yCenter = (maxY - minY) / 2.0f + minY;
-    zCenter = (maxZ - minZ) / 2.0f + minZ;
+  xCenter = (maxX - minX) / 2.0f + minX;
+  yCenter = (maxY - minY) / 2.0f + minY;
+  zCenter = (maxZ - minZ) / 2.0f + minZ;
 
+  for (auto &submeshVertexInfo : m_submeshVertexesInfo)
+  {
     for (auto &txtVertex : submeshVertexInfo.second)
     {
       txtVertex.coord.x -= xCenter;
@@ -102,7 +107,7 @@ bool ObjMeshConverter::SaveModel(const std::string& destinationFileName)
 
   for (const auto& submeshInfo : m_submeshVertexesInfo)
   {
-    outputFileStream << "Material name: " << submeshInfo.first << std::endl;
+    outputFileStream << "Material name: " << submeshInfo.first + ObjMeshConverter::m_materialExtension << std::endl;
     outputFileStream << "Vertex Count: " << submeshInfo.second.size() << std::endl;
     for (const auto& txtVertex : submeshInfo.second)
     {
@@ -362,6 +367,7 @@ void ObjMeshConverter::AddVertex(const VertexTxt& vertexTxt, const std::string& 
 
 void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTxt& second, VertexTxt& third)
 {
+  //TODO FHolod: I can rewrite this method because the algorithm is not exact
   float vector1[3], vector2[3];
   float tuVector[2], tvVector[2];
   float den;
@@ -398,10 +404,6 @@ void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTx
   Normalize(binormal);
   normal = CrossProduct(tangent, binormal);
   Normalize(normal);
-
-  first.normal = normal;
-  second.normal = normal;
-  third.normal = normal;
 
   first.tangent = tangent;
   second.tangent = tangent;

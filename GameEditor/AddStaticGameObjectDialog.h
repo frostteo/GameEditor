@@ -5,7 +5,7 @@
 #include <QFileInfo>
 #include "ui_AddStaticGameObjectDialog.h"
 #include "QtUtils.h"
-#include "StaticGameObject.h"
+#include "StaticGameObjectDbInfo.h"
 
 class AddStaticGameObjectDialog : public QDialog, public Ui::AddStaticGameObjectDialog
 {
@@ -16,13 +16,13 @@ private slots:
 protected:
   QString m_pathToModels;
   QString m_pathToMaterials;
-  StaticGameObject m_gameObject;
+  StaticGameObjectDbInfo m_gameObject;
 public:
     void done(int result) override;
     AddStaticGameObjectDialog(QWidget *parent = Q_NULLPTR);
     ~AddStaticGameObjectDialog();
-    void SetStaticGameObject(StaticGameObject gameObject);
-    StaticGameObject GetStaticGameObject();
+    void SetStaticGameObject(StaticGameObjectDbInfo gameObject);
+    StaticGameObjectDbInfo GetStaticGameObject();
     void SetPathToModels(QString pathToModels) { m_pathToModels = pathToModels; }
     void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = pathToMaterials; }
 };

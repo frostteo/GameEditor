@@ -6,17 +6,17 @@
 #include "Camera.h"
 #include "D3DConfigurer.h"
 #include "TextureShader.h"
-#include "MeshFactory.h"
+#include "ModelFactory.h"
 #include "TextureFactory.h"
 #include "ShaderConfiguration.h"
 #include "ShaderFactory.h"
 #include "MaterialFactory.h"
-#include "Static.h"
 #include "LightininigSystem.h"
 #include "GraphicSystem.h"
 #include "InputSystem.h"
 #include "PreviewGameObject.h"
 #include "HighPerformanceTimer.h"
+#include "Model.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -48,7 +48,7 @@ protected:
 private:
   InputSystem* m_inputSystem;
   Camera* m_Camera;
-  Static m_static;
+  Model* m_model;
   ShaderConfiguration* m_shaderConfiguration;
   LightininigSystem* m_lightininigSystem;
   std::unique_ptr<GraphicSystem> m_graphicSystem;
