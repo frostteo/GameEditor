@@ -253,7 +253,5 @@ void TextureShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCo
 
   // Render the triangle.
   deviceContext->DrawIndexed(indexCount, 0, 0);
-
-  return;
 }
 

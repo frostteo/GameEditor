@@ -6,6 +6,7 @@ ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, Shader
 
   m_shaderConfiguration = shaderConfiguration;
 
+  m_shaderCreators.push_back((new ColorShaderCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new TextureShaderCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new SingleDirectLightShaderCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new SpecularSingleDirLightShaderCreator())->Initialize(device, hwnd));

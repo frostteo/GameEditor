@@ -26,6 +26,7 @@ MaterialFactory* MaterialFactory::Initialize(TextureFactory* textureFactory, std
   m_pathToMaterials = pathToMaterials;
 
   Shutdown();
+  m_materialCreators.push_back((new ColorMaterialCreator()));
   m_materialCreators.push_back((new TextureMaterialCreator())->SetTextureFactory(textureFactory));
   m_materialCreators.push_back((new SpecularMaterialCreator())->SetTextureFactory(textureFactory));
   m_materialCreators.push_back((new BumpMaterialCreator())->SetTextureFactory(textureFactory));

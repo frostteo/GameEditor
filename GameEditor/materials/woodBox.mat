@@ -1,4 +1,4 @@
 type: bump
-textureFileName: ../GameEditor/texture/yachik3.tga
-normalMap: ../GameEditor/texture/yashikNM2.tga
-bumpDepth: 0.1
+textureFileName: maps/yachik3.tga
+normalMap: maps/yashikNM2.tga
+bumpDepth: 1.0

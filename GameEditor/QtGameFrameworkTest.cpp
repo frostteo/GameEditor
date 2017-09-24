@@ -34,10 +34,10 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   HighPerformanceTimer::get().Initialize();
   HighPerformanceTimer::get().Frame();
   ObjMeshConverter objConverter;
-  MtlMatLibConverter matConverter("../GameEditor/materials");
-  //objConverter.ConvertModel("../GameEditor/obj models/egypt col2.obj", "../GameEditor/models/test column.txt");
-  //std::string material = "../GameEditor/obj models/egypt col2.mtl";
-  //matConverter.ConvertMtlMaterials(material);
+  //MtlMatLibConverter matConverter("../GameEditor/materials");
+  //objConverter.ConvertModel("../GameEditor/obj models/lamp.obj", "../GameEditor/models/lamp.txt");
+  //std::string material = "../GameEditor/obj models/lamp.mtl";
+  //matConverter.ConvertMtlMaterials(material, true);
 
   m_shaderConfiguration = new ShaderConfiguration();
   m_shaderConfiguration->Configure();
@@ -48,7 +48,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration, "../GameEditor/materials");
 
-  m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/test column.txt");
+  m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/lamp.txt");
 
   // Create the camera object.
   m_Camera = new Camera(screenWidth, screenHeight, SCREEN_NEAR, 5000.0F);
@@ -57,7 +57,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
     return false;
   }
 
-  m_Camera->SetPosition(0.0f, 0.0f, -800.0f);
+  m_Camera->SetPosition(0.0f, 0.0f, -100.0f);
 
   m_lightininigSystem = new LightininigSystem();
   if (!m_lightininigSystem) 

@@ -6,6 +6,7 @@
 #include "SharedResourcesFactory.h"
 #include "IMaterial.h"
 #include "IMaterialCreator.h"
+#include "ColorMaterialCreator.h"
 #include "TextureMaterialCreator.h"
 #include "SpecularMaterialCreator.h"
 #include "BumpMaterialCreator.h"

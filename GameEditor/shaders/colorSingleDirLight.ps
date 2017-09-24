@@ -1,0 +1,77 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: light.ps
+////////////////////////////////////////////////////////////////////////////////
+
+cbuffer LightBuffer
+{
+    float4 ambientLightColor;
+    float4 diffuseLightColor;
+    float3 lightDirection;
+};
+
+cbuffer MaterialBuffer
+{
+    float4 diffuseColor;
+    float4 specularColor;
+	float4 selfIluminationColor;
+    float specularPower;
+	int subtype;
+};
+
+//////////////
+// TYPEDEFS //
+//////////////
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float2 tex : TEXCOORD0;
+    float3 normal : NORMAL;
+    float3 viewDirection : TEXCOORD1;
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Pixel Shader
+////////////////////////////////////////////////////////////////////////////////
+float4 ColorPixelShader(PixelInputType input) : SV_TARGET
+{
+    float4 color;
+	float3 lightDir;
+    float lightIntensity;
+	float3 reflection;
+	float4 specular;
+	
+    // Set the default output color to the ambient light value for all pixels.
+    color = ambientLightColor;
+	
+	// Initialize the specular color.
+    specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	
+    // Invert the light direction for calculations.
+    lightDir = -lightDirection;
+	
+	 // Calculate the amount of light on this pixel.
+    lightIntensity = saturate(dot(input.normal, lightDir));
+	
+	if(lightIntensity > 0.0f)
+    {
+        // Determine the final diffuse color based on the diffuse color and the amount of light intensity.
+        color += (diffuseLightColor * lightIntensity);
+		
+		if (subtype) {
+			// Calculate the reflection vector based on the light intensity, normal vector, and light direction.
+			reflection = normalize(2 * lightIntensity * input.normal - lightDir); 
+			specular = specularColor * pow(saturate(dot(reflection, input.viewDirection)), specularPower);
+		}
+    }
+	color *= diffuseColor;
+	color = color + specular;
+	
+	if (subtype == 2)
+		color += selfIluminationColor;
+		
+	color = saturate(color);
+	
+    return color;
+}

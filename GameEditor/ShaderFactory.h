@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "IShaderCreator.h"
+#include "ColorShaderCreator.h"
 #include "TextureShaderCreator.h"
 #include "SingleDirectLightShaderCreator.h"
 #include "SpecularSingleDirLightShaderCreator.h"

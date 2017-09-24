@@ -208,6 +208,8 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
   int normalIndex = 0;
   int vIndex, tIndex, nIndex;
   char input;
+  const char slash = '/';
+  const int emptyIndex = 0;
 
   sourceFileStrStream.get(input);
   while (!sourceFileStrStream.eof())
@@ -270,7 +272,12 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
         for (int i = VERTEX_IN_FACE_OBJ - 1; i >= 0; --i) {
           sourceFileStrStream >> face.vertexIndexes.index[i];
           sourceFileStrStream.ignore();
-          sourceFileStrStream >> face.textCoordIndexes.index[i];
+
+          if (sourceFileStrStream.peek() == slash)
+            face.textCoordIndexes.index[i] = emptyIndex;
+          else
+            sourceFileStrStream >> face.textCoordIndexes.index[i];
+
           sourceFileStrStream.ignore();
           sourceFileStrStream >> face.normalIndexes.index[i];
         }
@@ -297,11 +304,19 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
       nIndex = mesheInfo.second[i].normalIndexes.index[0] - 1;
 
       VertexTxt vertexTxt;
+      bool faceHasTextureCoords = true;
       vertexTxt.coord.x = vertices[vIndex].x;
       vertexTxt.coord.y = vertices[vIndex].y;
       vertexTxt.coord.z = vertices[vIndex].z;
-      vertexTxt.tu = texcoords[tIndex].x;
-      vertexTxt.tv = texcoords[tIndex].y;
+
+      if (tIndex > 0) {
+        vertexTxt.tu = texcoords[tIndex].x;
+        vertexTxt.tv = texcoords[tIndex].y;
+      }
+      else {
+        faceHasTextureCoords = false;
+      }
+
       vertexTxt.normal.x = normals[nIndex].x;
       vertexTxt.normal.y = normals[nIndex].y;
       vertexTxt.normal.z = normals[nIndex].z;
@@ -314,8 +329,15 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
       vertexTxt2.coord.x = vertices[vIndex].x;
       vertexTxt2.coord.y = vertices[vIndex].y;
       vertexTxt2.coord.z = vertices[vIndex].z;
-      vertexTxt2.tu = texcoords[tIndex].x;
-      vertexTxt2.tv = texcoords[tIndex].y;
+
+      if (tIndex > 0) {
+        vertexTxt2.tu = texcoords[tIndex].x;
+        vertexTxt2.tv = texcoords[tIndex].y;
+      }
+      else {
+        faceHasTextureCoords = false;
+      }
+
       vertexTxt2.normal.x = normals[nIndex].x;
       vertexTxt2.normal.y = normals[nIndex].y;
       vertexTxt2.normal.z = normals[nIndex].z;
@@ -328,13 +350,21 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
       vertexTxt3.coord.x = vertices[vIndex].x;
       vertexTxt3.coord.y = vertices[vIndex].y;
       vertexTxt3.coord.z = vertices[vIndex].z;
-      vertexTxt3.tu = texcoords[tIndex].x;
-      vertexTxt3.tv = texcoords[tIndex].y;
+
+      if (tIndex > 0) {
+        vertexTxt3.tu = texcoords[tIndex].x;
+        vertexTxt3.tv = texcoords[tIndex].y;
+      }
+      else {
+        faceHasTextureCoords = false;
+      }
+
       vertexTxt3.normal.x = normals[nIndex].x;
       vertexTxt3.normal.y = normals[nIndex].y;
       vertexTxt3.normal.z = normals[nIndex].z;
 
-      CalculateNormalTangentBinormal(vertexTxt, vertexTxt2, vertexTxt3);
+      if (faceHasTextureCoords)
+        CalculateNormalTangentBinormal(vertexTxt, vertexTxt2, vertexTxt3);
 
       AddVertex(vertexTxt, mesheInfo.first);
       AddVertex(vertexTxt2, mesheInfo.first);
