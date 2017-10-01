@@ -34,10 +34,10 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   HighPerformanceTimer::get().Initialize();
   HighPerformanceTimer::get().Frame();
   ObjMeshConverter objConverter;
-  //MtlMatLibConverter matConverter("../GameEditor/materials");
-  //objConverter.ConvertModel("../GameEditor/obj models/lamp.obj", "../GameEditor/models/lamp.txt");
-  //std::string material = "../GameEditor/obj models/lamp.mtl";
-  //matConverter.ConvertMtlMaterials(material, true);
+ /* MtlMatLibConverter matConverter("../GameEditor/materials");
+  objConverter.ConvertModel("../GameEditor/obj models/testCube.obj", "../GameEditor/models/cube.txt");
+  std::string material = "../GameEditor/obj models/testCube.mtl";
+  matConverter.ConvertMtlMaterials(material, true);*/
 
   m_shaderConfiguration = new ShaderConfiguration();
   m_shaderConfiguration->Configure();
@@ -48,10 +48,16 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration, "../GameEditor/materials");
 
-  m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/lamp.txt");
+  //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/lamp.txt");
+  //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/healthPotion.txt");
+  m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/test column.txt");
+  //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/cube.txt");
+
+  m_model->GetBoundingBox()->InitializeBuffers(m_graphicSystem->GetDevice());
 
   // Create the camera object.
-  m_Camera = new Camera(screenWidth, screenHeight, SCREEN_NEAR, 5000.0F);
+  m_Camera = new Camera();
+  m_Camera->Initialize(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
   if (!m_Camera)
   {
     return false;
@@ -114,10 +120,18 @@ void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
   HighPerformanceTimer::get().Frame();
 
   m_inputSystem->Frame();
-  std::vector<Model*> renderedModels;
-  renderedModels.push_back(m_model);
-  m_graphicSystem->DrawModels(renderedModels, m_Camera, m_lightininigSystem);
+  m_graphicSystem->AddModelToRenderList(m_model);
+  m_graphicSystem->AddGridToRenderList(m_model->GetBoundingBox());
+  m_graphicSystem->Render(m_Camera, m_lightininigSystem);
 
   // trigger another update as soon as possible 
   update();
+}
+
+void QtGameFrameworkTest::resizeEvent(QResizeEvent* evt)
+{
+  //TODO FHolod: update resource which depends on aspect ration
+  float width = this->width();
+  float height = this->height();
+  m_Camera->Initialize(width, height, SCREEN_NEAR, SCREEN_DEPTH);
 }

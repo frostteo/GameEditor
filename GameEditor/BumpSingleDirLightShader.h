@@ -9,8 +9,7 @@ class BumpSingleDirLightShader
 protected:
   virtual void InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename) override;
   void SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix,
-    XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
-    ID3D11ShaderResourceView** textureArray, int textureCount, XMFLOAT3 lightDirection,
+    XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 lightDirection,
     XMVECTOR ambientColor, XMVECTOR diffuseColor, float bumpDepth);
 public:
   BumpSingleDirLightShader();

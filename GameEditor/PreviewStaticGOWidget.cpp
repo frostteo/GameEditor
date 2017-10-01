@@ -54,7 +54,8 @@ bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND h
   m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration.get(), pathToMaterials);
 
   // Create the camera object.
-  m_Camera = std::unique_ptr<Camera>(new Camera(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH));
+  m_Camera = std::unique_ptr<Camera>(new Camera());
+  m_Camera->Initialize(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
   if (!m_Camera)
   {
     return false;
@@ -93,7 +94,9 @@ void PreviewStaticGOWidget::paintEvent(QPaintEvent* evt) {
   m_inputSystem->Frame();
   std::vector<Model*> renderedModels;
   renderedModels.push_back(m_model);
-  m_graphicSystem->DrawModels(renderedModels, m_Camera.get(), m_lightininigSystem.get());
+  //m_graphicSystem->DrawModels(renderedModels, m_Camera.get(), m_lightininigSystem.get());
+
+  throw std::runtime_error("Need be overwrite here old graphic call");
 
   // trigger another update as soon as possible 
   update();

@@ -7,25 +7,11 @@
 #include <map>
 #include "Logger.h"
 #include "MtlMatLibConverter.h"
+#include "VertexTxt.h"
+#include "BoundingBox.h"
 
-struct VertexObj
-{
-  float x, y, z;
-  bool operator== (const VertexObj& another) const { return this->x == another.x && this->y == another.y && this->z == another.z; }
-};
 
-struct VertexTxt
-{
-  VertexObj coord;
-  VertexObj normal;
-  VertexObj tangent;
-  VertexObj binormal;
-  float tv, tu;
-  bool operator== (const VertexTxt& other) const {
-    return this->coord == other.coord && this->tangent == other.tangent && this->binormal == other.binormal && this->tv == other.tv &&
-      this->tu == other.tu;
-  }
-};
+
 
 class ObjMeshConverter :
   public IMeshConverter
@@ -47,6 +33,7 @@ private:
 private:
   std::map<std::string, std::vector<VertexTxt>> m_meshVertexesInfo;
   std::map<std::string, std::vector<int>> m_meshIndexesInfo;
+  BoundingBox m_modelBoundingBox;
 private:
   VertexObj CalculateTangentOrBinormal(float textureVector[2], float modelVectorFirst[3], float modelVectorSecond[3], const float& denominator);
   void Normalize(VertexObj& vertex);

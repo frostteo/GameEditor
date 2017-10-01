@@ -15,7 +15,8 @@ private:
   XMMATRIX m_orthoMatrix;
   XMMATRIX m_projectionMatrix;
 public:
-  Camera(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView = XM_PIDIV4);
+  Camera();
+  void Initialize(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView = XM_PIDIV4);
   virtual ~Camera();
   void GetViewMatrix(XMMATRIX& viewMatrix);
   void GetOrthoMatrix(XMMATRIX& orthoMatrix);

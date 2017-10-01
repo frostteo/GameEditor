@@ -22,6 +22,7 @@ void ShaderConfiguration::Configure()
   m_shaderNameMap.insert(shaderNameMap::value_type("bump", "bump"));
   m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpec", "bumpSpec"));
   m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpecMap", "bumpSpecMap"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("grid", "grid"));
 }
 
 std::wstring ShaderConfiguration::GetVertexShaderFileName(const std::string& shaderName)

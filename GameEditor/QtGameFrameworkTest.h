@@ -17,10 +17,12 @@
 #include "PreviewGameObject.h"
 #include "HighPerformanceTimer.h"
 #include "Model.h"
+#include "ObjMeshConverter.h"
+#include "MtlMatLibConverter.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
-const float SCREEN_DEPTH = 1000.0f;
+const float SCREEN_DEPTH = 5000.0f;
 const float SCREEN_NEAR = 0.1f;
 
 class QtGameFrameworkTest : public QWidget, public Ui::QtGameFrameworkTest
@@ -45,6 +47,7 @@ protected:
 
   /** paints the scene */
   void paintEvent(QPaintEvent* pEvent);
+  virtual void resizeEvent(QResizeEvent* evt);
 private:
   InputSystem* m_inputSystem;
   Camera* m_Camera;

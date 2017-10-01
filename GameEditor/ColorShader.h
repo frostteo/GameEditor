@@ -27,9 +27,6 @@ protected:
     int subtype;
   };
 protected:
-  ID3D11VertexShader* m_vertexShader;
-  ID3D11PixelShader* m_pixelShader;
-  ID3D11InputLayout* m_layout;
   ID3D11Buffer* m_matrixBuffer;
   ID3D11Buffer* m_cameraBuffer;
   ID3D11Buffer* m_lightBuffer;

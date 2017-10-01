@@ -2,7 +2,12 @@
 #include "Camera.h"
 
 
-Camera::Camera(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView)
+Camera::Camera()
+{
+ 
+}
+
+void Camera::Initialize(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView)
 {
   m_screenWidth = screenWidth;
   m_screenHeight = screenHeight;
@@ -14,8 +19,6 @@ Camera::Camera(float screenWidth, float screenHeight, float screenNear, float sc
   m_projectionMatrix = XMMatrixPerspectiveFovLH(m_fieldOfView, screenAspect, screenNear, screenDepth);
   m_orthoMatrix = XMMatrixOrthographicLH(screenWidth, screenHeight, screenNear, screenDepth);
 }
-
-
 Camera::~Camera()
 {
 }

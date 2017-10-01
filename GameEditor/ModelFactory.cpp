@@ -10,11 +10,10 @@ ModelFactory::~ModelFactory()
 {
 }
 
-ModelFactory* ModelFactory::Initialize(ID3D11Device* device, ShaderFactory* shaderFactory, MaterialFactory* materialFactory)
+ModelFactory* ModelFactory::Initialize(ID3D11Device* device, MaterialFactory* materialFactory)
 {
   Shutdown();
   m_device = device;
-  m_shaderFactory = shaderFactory;
   m_materialFactory = materialFactory;
   return this;
 }
@@ -22,6 +21,6 @@ ModelFactory* ModelFactory::Initialize(ID3D11Device* device, ShaderFactory* shad
 Model* ModelFactory::GetNewResource(const std::string& filename)
 {
   bool result;
-  Model* newModel = new Model(filename, m_device, m_materialFactory, m_shaderFactory);
+  Model* newModel = new Model(filename, m_device, m_materialFactory);
   return newModel;
 }

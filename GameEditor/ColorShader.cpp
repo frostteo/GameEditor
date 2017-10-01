@@ -20,32 +20,13 @@ ColorShader::~ColorShader()
 
 void ColorShader::ShutdownShader()
 {
-  // Release the matrix constant buffer.
+  IShader::ShutdownShader();
+
+  // Release the matrix constant buffer
   if (m_matrixBuffer)
   {
     m_matrixBuffer->Release();
     m_matrixBuffer = nullptr;
-  }
-
-  // Release the layout.
-  if (m_layout)
-  {
-    m_layout->Release();
-    m_layout = nullptr;
-  }
-
-  // Release the pixel shader.
-  if (m_pixelShader)
-  {
-    m_pixelShader->Release();
-    m_pixelShader = nullptr;
-  }
-
-  // Release the vertex shader.
-  if (m_vertexShader)
-  {
-    m_vertexShader->Release();
-    m_vertexShader = nullptr;
   }
 
   if (m_lightBuffer)
@@ -331,13 +312,6 @@ void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 
 void ColorShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
-  // Set the vertex input layout.
-  deviceContext->IASetInputLayout(m_layout);
-
-  // Set the vertex and pixel shaders that will be used to render this triangle.
-  deviceContext->VSSetShader(m_vertexShader, NULL, 0);
-  deviceContext->PSSetShader(m_pixelShader, NULL, 0);
-
   // Render the triangle.
   deviceContext->DrawIndexed(indexCount, 0, 0);
 }

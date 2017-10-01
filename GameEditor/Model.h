@@ -3,36 +3,39 @@
 #include "Mesh.h"
 #include "GameObject.h"
 #include "FileProcessor.h"
-#include "ObjMeshConverter.h"
+#include "VertexTxt.h"
+#include "BoundingBox.h"
+
+class BoundingBox;
 
 class Model : public GameObject
 {
 protected:
   std::string m_fileName;
   std::vector<Mesh*> m_meshes;
+  BoundingBox m_boundingBox;
 protected:
   void LoadData(
     ID3D11Device* device,
-    MaterialFactory* materialFactory,
-    ShaderFactory* shaderFactory
+    MaterialFactory* materialFactory
     );
 
   void LoadMesh(
     std::stringstream& stream,
     ID3D11Device* device,
-    MaterialFactory* materialFactory,
-    ShaderFactory* shaderFactory
+    MaterialFactory* materialFactory
     );
 
 public:
   Model(
     std::string fileName,
     ID3D11Device* device,
-    MaterialFactory* materialFactory,
-    ShaderFactory* shaderFactory
+    MaterialFactory* materialFactory
     );
 
-  void Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion);
+  Mesh* GetMesh(int index) { return m_meshes[index]; }
+  const int GetMeshCount() { return m_meshes.size(); }
+  BoundingBox* GetBoundingBox() { return &m_boundingBox; }
   virtual ~Model();
 };
 

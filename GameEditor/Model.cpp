@@ -1,21 +1,19 @@
 #include "Model.h"
-
+#include "BoundingBox.h"
 
 Model::Model(
   std::string fileName,
   ID3D11Device* device,
-  MaterialFactory* materialFactory,
-  ShaderFactory* shaderFactory
+  MaterialFactory* materialFactory
   )
 {
   m_fileName = fileName;
-  LoadData(device, materialFactory, shaderFactory);
+  LoadData(device, materialFactory);
 }
 
 void Model::LoadData(
   ID3D11Device* device,
-  MaterialFactory* materialFactory,
-  ShaderFactory* shaderFactory
+  MaterialFactory* materialFactory
   )
 {
   std::string fileInStr;
@@ -25,15 +23,16 @@ void Model::LoadData(
     throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't read file " + m_fileName, __FILE__, __LINE__));
 
   std::stringstream fileStrStream(fileInStr);
+  m_boundingBox.Deserialize(fileStrStream);
+  m_boundingBox.SetModel(this);
   while (!fileStrStream.eof())
-    LoadMesh(fileStrStream, device, materialFactory, shaderFactory);
+    LoadMesh(fileStrStream, device, materialFactory);
 }
 
 void Model::LoadMesh(
   std::stringstream& stream,
   ID3D11Device* device,
-  MaterialFactory* materialFactory,
-  ShaderFactory* shaderFactory
+  MaterialFactory* materialFactory
   )
 {
   char input;
@@ -100,17 +99,8 @@ void Model::LoadMesh(
     indexes.push_back(index);
   }
 
-  Mesh* mesh = new Mesh(device, m_fileName, materialName, vertexes, indexes, materialFactory, shaderFactory);
+  Mesh* mesh = new Mesh(device, m_fileName, materialName, vertexes, indexes, materialFactory);
   m_meshes.push_back(mesh);
-}
-
-void Model::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion)
-{
-  XMMATRIX worldMatrix;
-  this->GetWorldMatrix(worldMatrix);
-
-  for (auto mesh : m_meshes)
-    mesh->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining, cameraPostion);
 }
 
 Model::~Model()

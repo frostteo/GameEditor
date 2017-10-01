@@ -1,5 +1,6 @@
 #include "GraphicSystem.h"
 
+const std::string GraphicSystem::GRID_SHADER_NAME = "grid";
 
 GraphicSystem::GraphicSystem()
 {
@@ -8,6 +9,7 @@ GraphicSystem::GraphicSystem()
 
 GraphicSystem::~GraphicSystem()
 {
+  
 }
 
 void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnabled, HWND hwnd, bool fullScreen, ShaderConfiguration* shaderConfiguration, std::string pathToMaterials)
@@ -22,7 +24,7 @@ void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnab
   m_textureFactory = std::unique_ptr<TextureFactory>((new TextureFactory())->Initialize(m_direct3D->GetDevice(), m_direct3D->GetDeviceContext(), pathToMaterials));
   m_shaderFactory = std::unique_ptr<ShaderFactory>((new ShaderFactory())->Initialize(m_direct3D->GetDevice(), hwnd, shaderConfiguration));
   m_materialFactory = std::unique_ptr<MaterialFactory>((new MaterialFactory())->Initialize(m_textureFactory.get(), pathToMaterials)); //TODO FHolod: later give this as parameter
-  m_modelFactory = std::unique_ptr<ModelFactory>((new ModelFactory())->Initialize(m_direct3D->GetDevice(), m_shaderFactory.get(), m_materialFactory.get()));
+  m_modelFactory = std::unique_ptr<ModelFactory>((new ModelFactory())->Initialize(m_direct3D->GetDevice(), m_materialFactory.get()));
 }
 
 ModelFactory* GraphicSystem::GetModelFactory()
@@ -42,7 +44,20 @@ MaterialFactory* GraphicSystem::GetMaterialFactory()
   return m_materialFactory.get();
 }
 
-void GraphicSystem::DrawModels(std::vector<Model*>& models, Camera* camera, LightininigSystem* lightiningSystem)
+void GraphicSystem::AddModelToRenderList(Model* model)
+{
+  XMMATRIX modelWorldMatrix;
+  model->GetWorldMatrix(modelWorldMatrix);
+
+  for (int i = 0; i < model->GetMeshCount(); ++i)
+  {
+    Mesh* mesh = model->GetMesh(i);
+    std::pair<XMMATRIX, Mesh*> renderInfo(modelWorldMatrix, mesh);
+    m_modelRenderList[mesh->GetMaterialType()][mesh->GetMaterialName()].push_back(renderInfo);
+  }
+}
+
+void GraphicSystem::Render(Camera* camera, LightininigSystem* lightiningSystem)
 {
   XMMATRIX viewMatrix, projectionMatrix;
 
@@ -53,9 +68,59 @@ void GraphicSystem::DrawModels(std::vector<Model*>& models, Camera* camera, Ligh
   camera->GetViewMatrix(viewMatrix);
   camera->GetProjectionMatrix(projectionMatrix);
 
-  for (auto model : models)
-    model->Render(m_direct3D->GetDeviceContext(), viewMatrix, projectionMatrix, lightiningSystem, camera->GetPosition());
-
-  // Present the rendered scene to the screen.
+  DrawModels(viewMatrix, projectionMatrix, lightiningSystem, camera->GetPosition());
+  DrawGrids(viewMatrix, projectionMatrix);
   m_direct3D->EndScene();
+}
+
+void GraphicSystem::DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightiningSystem, XMFLOAT3 cameraPosition)
+{
+  ID3D11DeviceContext* deviceContext = m_direct3D->GetDeviceContext();
+
+  // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
+  deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+  for (auto shaderInfo : m_modelRenderList)
+  {
+    IShader* shader = m_shaderFactory->Get(shaderInfo.first);
+    shader->EnableShader(deviceContext);
+
+    for (auto materialInfo : shaderInfo.second)
+    {
+      IMaterial* material = materialInfo.second[0].second->GetMaterial();
+      if (material->GetTexturesCount() > 0)
+        shader->SetTextures(deviceContext, material->GetTextures(), material->GetTexturesCount());
+
+      for (auto meshInfo : materialInfo.second)
+      {
+        meshInfo.second->PrepareToRender(deviceContext);
+        shader->Render(deviceContext, meshInfo.second->GetIndexCount(), meshInfo.first, viewMatrix, projectionMatrix, material, lightiningSystem, cameraPosition);
+      }
+
+    }
+  }
+  m_modelRenderList.clear();
+}
+
+void GraphicSystem::DrawGrids(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix)
+{
+  XMFLOAT3 nothing;
+  auto deviceContext = m_direct3D->GetDeviceContext();
+  deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+  IShader* shader = GetShaderFactory()->Get(GRID_SHADER_NAME);
+  shader->EnableShader(deviceContext);
+  for (auto* grid : m_gridObjectRenderList)
+  {
+    XMMATRIX worldMatrix;
+    grid->GetWorldMatrix(worldMatrix);
+    grid->PrepareToRender(deviceContext);
+    shader->Render(deviceContext, grid->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, nullptr, nullptr, nothing);
+  }
+  m_gridObjectRenderList.clear();
+}
+
+void GraphicSystem::AddGridToRenderList(GridObject* gridObject)
+{
+  m_gridObjectRenderList.push_back(gridObject);
 }

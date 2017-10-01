@@ -9,6 +9,9 @@ using namespace DirectX;
 class BumpSpecMaterial :
   public BumpMaterial
 {
+private:
+  static const int TEXTURES_COUNT = 2;
+  ID3D11ShaderResourceView* textures[TEXTURES_COUNT];
 public:
   XMVECTOR m_specularColor;
   float m_specularPower;
@@ -19,9 +22,12 @@ public:
   {
     m_specularColor = specularColor;
     m_specularPower = specularPower;
+    textures[0] = m_texture->GetTexture();
+    textures[1] = m_normalMap->GetTexture();
   }
   virtual ~BumpSpecMaterial();
   virtual const std::string& GetType() override { return BumpSpecMaterial::bumpSpecMaterialType; }
-  virtual int GetTextureCount() override { return 2; }
+  virtual ID3D11ShaderResourceView** GetTextures() { return textures; }
+  virtual int GetTexturesCount() { return TEXTURES_COUNT; }
 };
 

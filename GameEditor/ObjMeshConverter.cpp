@@ -82,7 +82,7 @@ void ObjMeshConverter::CenterToCoordCenter()
         maxZ = txtVertex.coord.z;
     }
   }
-
+ 
   xCenter = (maxX - minX) / 2.0f + minX;
   yCenter = (maxY - minY) / 2.0f + minY;
   zCenter = (maxZ - minZ) / 2.0f + minZ;
@@ -96,6 +96,14 @@ void ObjMeshConverter::CenterToCoordCenter()
       txtVertex.coord.z -= zCenter;
     }
   }
+
+  minX -= xCenter;
+  minY -= yCenter;
+  minZ -= zCenter;
+  maxX -= xCenter;
+  maxY -= yCenter;
+  maxZ -= zCenter;
+  m_modelBoundingBox.Initialize(minX, minY, minZ, maxX, maxY, maxZ);
 }
 
 bool ObjMeshConverter::SaveModel(const std::string& destinationFileName)
@@ -104,6 +112,8 @@ bool ObjMeshConverter::SaveModel(const std::string& destinationFileName)
   std::ofstream outputFileStream(destinationFileName.c_str());
   if (outputFileStream.fail())
     return false;
+
+  m_modelBoundingBox.Serialize(outputFileStream);
 
   for (const auto& meshInfo : m_meshVertexesInfo)
   {

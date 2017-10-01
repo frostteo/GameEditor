@@ -35,8 +35,7 @@ void SpecularSingleDirLightShader::Render(ID3D11DeviceContext* deviceContext, in
 {
   SpecularMaterial* specMaterial = (SpecularMaterial *)material;
   
-  ID3D11ShaderResourceView* texture = specMaterial->m_texture->GetTexture();
-  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), specMaterial->m_specularColor, specMaterial->m_specularPower, cameraPosition);
+  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), specMaterial->m_specularColor, specMaterial->m_specularPower, cameraPosition);
 
   RenderShader(deviceContext, indexCount);
 }
@@ -204,7 +203,7 @@ void SpecularSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND h
 }
 
 void SpecularSingleDirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
+  XMMATRIX projectionMatrix, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
   XMVECTOR diffuseColor, XMVECTOR specularColor, float specularPower, XMFLOAT3 cameraPosition)
 {
   HRESULT result;
@@ -261,9 +260,6 @@ void SpecularSingleDirLightShader::SetShaderParameters(ID3D11DeviceContext* devi
 
   // Now set the camera constant buffer in the vertex shader with the updated values.
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_cameraBuffer);
-
-  // Set shader texture resource in the pixel shader.
-  deviceContext->PSSetShaderResources(0, 1, &texture);
 
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

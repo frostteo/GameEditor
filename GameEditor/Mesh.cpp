@@ -5,12 +5,10 @@ Mesh::Mesh(ID3D11Device* device,
   std::string materialName,
   std::vector<VertexInBuffer>& vertices,
   std::vector<unsigned long>& indexes,
-  MaterialFactory* materialFactory,
-  ShaderFactory* shaderFactory)
+  MaterialFactory* materialFactory)
 {
   m_gameObjectName = gameObjectName;
   SetMaterial(materialName, materialFactory);
-  InitializeShader(shaderFactory);
   InitializeBuffers(device, vertices, indexes);
 }
 
@@ -63,11 +61,7 @@ void Mesh::SetMaterial(std::string materialName, MaterialFactory* materialFactor
 {
   m_materialName = materialName;
   m_material = materialFactory->GetResource(materialName);
-}
-
-void Mesh::InitializeShader(ShaderFactory* shaderFactory)
-{
-  m_shader = shaderFactory->Get(m_material->GetType());
+  m_materialType = m_material->GetType();
 }
 
 void Mesh::ShutdownBuffers()
@@ -87,7 +81,7 @@ void Mesh::ShutdownBuffers()
   }
 }
 
-void Mesh::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightining, XMFLOAT3& cameraPostion)
+void Mesh::PrepareToRender(ID3D11DeviceContext* deviceContext)
 {
   unsigned int stride;
   unsigned int offset;
@@ -101,11 +95,6 @@ void Mesh::Render(ID3D11DeviceContext* deviceContext, XMMATRIX& worldMatrix, XMM
 
   // Set the index buffer to active in the input assembler so it can be rendered.
   deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-  // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
-  deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-  m_shader->Render(deviceContext,this->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_material, lightining, cameraPostion);
 }
 
 Mesh::~Mesh()

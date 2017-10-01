@@ -33,7 +33,7 @@ public:
   void MoveVerticalInLocalCord(float distance);
   void MoveForwardBackwardInLocalCord(float distance);
   void MoveLeftRightInLocalCord(float distance);
-  void GetWorldMatrix(XMMATRIX& worldMatrix);
+  void virtual GetWorldMatrix(XMMATRIX& worldMatrix);
   void SetWorldMatrix(XMMATRIX worldMatrix);
 };
 

@@ -235,7 +235,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
 }
 
 void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, ID3D11ShaderResourceView** textureArray, int textureCount, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
+  XMMATRIX projectionMatrix, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
   XMVECTOR diffuseColor, XMVECTOR specularColor, float specularPower, XMFLOAT3 cameraPosition, float bumpDepth)
 {
   HRESULT result;
@@ -293,9 +293,6 @@ void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceConte
   // Now set the camera constant buffer in the vertex shader with the updated values.
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_cameraBuffer);
 
-  // Set shader texture array resource in the pixel shader.
-  deviceContext->PSSetShaderResources(0, textureCount, textureArray);
-
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
@@ -345,11 +342,8 @@ void BumpSpecSingleLightSh::Render(ID3D11DeviceContext* deviceContext, int index
   XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
   BumpSpecMaterial* bumpMaterial = (BumpSpecMaterial*)material;
-  ID3D11ShaderResourceView* textures[2];
-  textures[0] = bumpMaterial->m_texture->GetTexture();
-  textures[1] = bumpMaterial->m_normalMap->GetTexture();
 
-  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, textures, bumpMaterial->GetTextureCount(), lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), bumpMaterial->m_specularColor, bumpMaterial->m_specularPower, cameraPosition, bumpMaterial->m_bumpDepth);
+  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), bumpMaterial->m_specularColor, bumpMaterial->m_specularPower, cameraPosition, bumpMaterial->m_bumpDepth);
 
   RenderShader(deviceContext, indexCount);
 }

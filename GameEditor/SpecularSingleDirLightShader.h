@@ -27,7 +27,7 @@ protected:
   virtual void ShutdownShader() override;
   virtual void InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename) override;
   void SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-    XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
+    XMMATRIX projectionMatrix, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
     XMVECTOR diffuseColor, XMVECTOR specularColor, float specularPower, XMFLOAT3 cameraPosition);
 public:
   SpecularSingleDirLightShader();

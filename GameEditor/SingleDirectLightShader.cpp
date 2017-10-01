@@ -179,7 +179,7 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
 }
 
 void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
+  XMMATRIX projectionMatrix, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
   XMVECTOR diffuseColor) //TODO FHolod: function can be written simpler by using parent's function
 {
   HRESULT result;
@@ -215,9 +215,6 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
   // Now set the constant buffer in the vertex shader with the updated values.
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
-  // Set shader texture resource in the pixel shader.
-  deviceContext->PSSetShaderResources(0, 1, &texture);
-
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
@@ -245,9 +242,7 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
 void SingleDirectLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
-  //TODO FHolod: пока выставлю данные тут
-  ID3D11ShaderResourceView* texture = ((TextureMaterial *)material)->m_texture->GetTexture();
-  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, texture, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor());
+  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor());
 
   RenderShader(deviceContext, indexCount);
 }

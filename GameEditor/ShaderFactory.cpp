@@ -13,6 +13,7 @@ ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, Shader
   m_shaderCreators.push_back((new BumpSingleDirLightShaderCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new BumpSpecSingleLightShCreator())->Initialize(device, hwnd));
   m_shaderCreators.push_back((new BumpSpecMapShaderCreator())->Initialize(device, hwnd));
+  m_shaderCreators.push_back((new GridShaderCreator())->Initialize(device, hwnd));
 
   return this;
 }

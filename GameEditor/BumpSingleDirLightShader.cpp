@@ -182,8 +182,7 @@ void BumpSingleDirLightShader::InitializeShader(ID3D11Device* device, HWND hwnd,
 }
 
 void BumpSingleDirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix,
-  XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
-  ID3D11ShaderResourceView** textureArray, int textureCount, XMFLOAT3 lightDirection,
+  XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 lightDirection,
   XMVECTOR ambientColor, XMVECTOR diffuseColor, float bumpDepth)
 {
   HRESULT result;
@@ -220,9 +219,6 @@ void BumpSingleDirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
   // Now set the matrix constant buffer in the vertex shader with the updated values.
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
-  // Set shader texture array resource in the pixel shader.
-  deviceContext->PSSetShaderResources(0, textureCount, textureArray);
-
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
@@ -251,11 +247,8 @@ void BumpSingleDirLightShader::Render(ID3D11DeviceContext* deviceContext, int in
   XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
   BumpMaterial* bumpMaterial = (BumpMaterial*)material;
-  ID3D11ShaderResourceView* textures[2];
-  textures[0] = bumpMaterial->m_texture->GetTexture();
-  textures[1] = bumpMaterial->m_normalMap->GetTexture();
 
-  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, textures, bumpMaterial->GetTextureCount(), lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), bumpMaterial->m_bumpDepth);
+  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), bumpMaterial->m_bumpDepth);
 
   RenderShader(deviceContext, indexCount);
 }
