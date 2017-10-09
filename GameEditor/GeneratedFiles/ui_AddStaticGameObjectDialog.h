@@ -29,25 +29,22 @@ class Ui_AddStaticGameObjectDialog
 public:
     QDialogButtonBox *buttonBox;
     QLabel *errorsMsg;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QGridLayout *gridLayout;
     QLabel *label;
     QLineEdit *staticGONameEdit;
     QLabel *label_2;
     QLineEdit *staticGOModelEdit;
     QPushButton *chooseModelFileBtn;
-    QLabel *label_3;
-    QLineEdit *staticGOMaterialEdit;
-    QPushButton *chooseMaterialFileBtn;
 
     void setupUi(QDialog *AddStaticGameObjectDialog)
     {
         if (AddStaticGameObjectDialog->objectName().isEmpty())
             AddStaticGameObjectDialog->setObjectName(QStringLiteral("AddStaticGameObjectDialog"));
-        AddStaticGameObjectDialog->resize(403, 212);
+        AddStaticGameObjectDialog->resize(395, 124);
         buttonBox = new QDialogButtonBox(AddStaticGameObjectDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(230, 170, 156, 23));
+        buttonBox->setGeometry(QRect(230, 90, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         buttonBox->setCenterButtons(false);
@@ -68,31 +65,31 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush2);
         palette.setBrush(QPalette::Disabled, QPalette::Text, brush2);
         errorsMsg->setPalette(palette);
-        widget = new QWidget(AddStaticGameObjectDialog);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(10, 20, 371, 80));
-        gridLayout = new QGridLayout(widget);
+        layoutWidget = new QWidget(AddStaticGameObjectDialog);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(10, 20, 371, 61));
+        gridLayout = new QGridLayout(layoutWidget);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         gridLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget);
+        label = new QLabel(layoutWidget);
         label->setObjectName(QStringLiteral("label"));
 
         gridLayout->addWidget(label, 0, 0, 1, 1);
 
-        staticGONameEdit = new QLineEdit(widget);
+        staticGONameEdit = new QLineEdit(layoutWidget);
         staticGONameEdit->setObjectName(QStringLiteral("staticGONameEdit"));
         staticGONameEdit->setMaxLength(256);
 
         gridLayout->addWidget(staticGONameEdit, 0, 1, 1, 1);
 
-        label_2 = new QLabel(widget);
+        label_2 = new QLabel(layoutWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
 
         gridLayout->addWidget(label_2, 1, 0, 1, 1);
 
-        staticGOModelEdit = new QLineEdit(widget);
+        staticGOModelEdit = new QLineEdit(layoutWidget);
         staticGOModelEdit->setObjectName(QStringLiteral("staticGOModelEdit"));
         staticGOModelEdit->setEnabled(true);
         staticGOModelEdit->setMaxLength(256);
@@ -100,27 +97,10 @@ public:
 
         gridLayout->addWidget(staticGOModelEdit, 1, 1, 1, 1);
 
-        chooseModelFileBtn = new QPushButton(widget);
+        chooseModelFileBtn = new QPushButton(layoutWidget);
         chooseModelFileBtn->setObjectName(QStringLiteral("chooseModelFileBtn"));
 
         gridLayout->addWidget(chooseModelFileBtn, 1, 2, 1, 1);
-
-        label_3 = new QLabel(widget);
-        label_3->setObjectName(QStringLiteral("label_3"));
-
-        gridLayout->addWidget(label_3, 2, 0, 1, 1);
-
-        staticGOMaterialEdit = new QLineEdit(widget);
-        staticGOMaterialEdit->setObjectName(QStringLiteral("staticGOMaterialEdit"));
-        staticGOMaterialEdit->setMaxLength(256);
-        staticGOMaterialEdit->setReadOnly(true);
-
-        gridLayout->addWidget(staticGOMaterialEdit, 2, 1, 1, 1);
-
-        chooseMaterialFileBtn = new QPushButton(widget);
-        chooseMaterialFileBtn->setObjectName(QStringLiteral("chooseMaterialFileBtn"));
-
-        gridLayout->addWidget(chooseMaterialFileBtn, 2, 2, 1, 1);
 
 
         retranslateUi(AddStaticGameObjectDialog);
@@ -137,8 +117,6 @@ public:
         label->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265", Q_NULLPTR));
         label_2->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\244\320\260\320\271\320\273 \320\274\320\276\320\264\320\265\320\273\320\270", Q_NULLPTR));
         chooseModelFileBtn->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214", Q_NULLPTR));
-        label_3->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\244\320\260\320\271\320\273 \320\274\320\260\321\202\320\265\321\200\320\270\320\260\320\273\320\260", Q_NULLPTR));
-        chooseMaterialFileBtn->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214", Q_NULLPTR));
     } // retranslateUi
 
 };

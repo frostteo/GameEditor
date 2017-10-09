@@ -58,8 +58,6 @@ public:
     QLineEdit *filterSGONameTxt;
     QLabel *filterSGOModelLbl;
     QLineEdit *filterSGOModelTxt;
-    QLabel *filterSGOMaterialLbl;
-    QLineEdit *filterSGOMaterialTxt;
     QWidget *paginationWidget;
     QGridLayout *gridLayout_2;
     QHBoxLayout *horizontalLayout_2;
@@ -187,16 +185,6 @@ public:
         filterSGOModelTxt->setObjectName(QStringLiteral("filterSGOModelTxt"));
 
         horizontalLayout_3->addWidget(filterSGOModelTxt);
-
-        filterSGOMaterialLbl = new QLabel(layoutWidget1);
-        filterSGOMaterialLbl->setObjectName(QStringLiteral("filterSGOMaterialLbl"));
-
-        horizontalLayout_3->addWidget(filterSGOMaterialLbl);
-
-        filterSGOMaterialTxt = new QLineEdit(layoutWidget1);
-        filterSGOMaterialTxt->setObjectName(QStringLiteral("filterSGOMaterialTxt"));
-
-        horizontalLayout_3->addWidget(filterSGOMaterialTxt);
 
         toolBox->addItem(filterToolPageSGOTable, QStringLiteral("Filter"));
 
@@ -377,7 +365,6 @@ public:
         toolBox->setItemText(toolBox->indexOf(editToolPageSGOTable), QApplication::translate("GameEditorClass", "Edit", Q_NULLPTR));
         filterSGONameLbl->setText(QApplication::translate("GameEditorClass", "name", Q_NULLPTR));
         filterSGOModelLbl->setText(QApplication::translate("GameEditorClass", "model", Q_NULLPTR));
-        filterSGOMaterialLbl->setText(QApplication::translate("GameEditorClass", "material", Q_NULLPTR));
         toolBox->setItemText(toolBox->indexOf(filterToolPageSGOTable), QApplication::translate("GameEditorClass", "Filter", Q_NULLPTR));
         SGOTableFirstPageBtn->setText(QApplication::translate("GameEditorClass", "first", Q_NULLPTR));
         SGOTablePrevPageBtn->setText(QApplication::translate("GameEditorClass", "prev", Q_NULLPTR));

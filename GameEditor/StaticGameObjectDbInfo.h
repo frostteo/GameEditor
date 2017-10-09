@@ -1,11 +1,10 @@
 #pragma once
 
-#include <string>
 #include <qstring.h>
 
-struct StaticGameObjectDbInfo {
+class StaticGameObjectDbInfo {
+public:
   int id;
   QString name;
   QString modelFileName;
-  QString materialFileName;
 };

@@ -160,16 +160,6 @@
                <item>
                 <widget class="QLineEdit" name="filterSGOModelTxt"/>
                </item>
-               <item>
-                <widget class="QLabel" name="filterSGOMaterialLbl">
-                 <property name="text">
-                  <string>material</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="filterSGOMaterialTxt"/>
-               </item>
               </layout>
              </widget>
             </widget>

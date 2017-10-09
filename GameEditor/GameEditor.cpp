@@ -11,14 +11,15 @@ GameEditor::GameEditor(QWidget *parent)
     m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(0, "id"));
     m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(1, "name"));
     m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(2, "modelFileName"));
-    m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(3, "materialFileName"));
 
     m_SGOTableOnPageCountMap.insert(std::pair<int, std::string>(0, "10"));
     m_SGOTableOnPageCountMap.insert(std::pair<int, std::string>(1, "25"));
     m_SGOTableOnPageCountMap.insert(std::pair<int, std::string>(2, "50"));
-    m_SGOTableOnPageCountMap.insert(std::pair<int, std::string>(3, "100"));
 
     this->createUI();
+
+    m_previewStaticGOWidget = std::unique_ptr<PreviewStaticGOWidget>(new PreviewStaticGOWidget(m_pathToModels, m_pathToMaterials));
+    m_previewStaticGOWidget->setWindowModality(Qt::WindowModality::ApplicationModal);
 }
 
 void GameEditor::createUI()
@@ -32,6 +33,10 @@ void GameEditor::createUI()
   ui.staticGOTableView->resizeColumnsToContents();
   ui.staticGOTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
   ui.staticGOTableView->horizontalHeader()->setStretchLastSection(true);
+
+  ui.staticGOTableView->horizontalHeader()->setSortIndicatorShown(true);
+  ui.staticGOTableView->horizontalHeader()->setSortIndicator(1, Qt::AscendingOrder);
+
   connect(ui.staticGOTableView->selectionModel(),
     SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
     SLOT(staticGameObjectTableRowSelected(const QItemSelection &, const QItemSelection &)));
@@ -41,6 +46,22 @@ void GameEditor::createUI()
   ui.SGOTableOrdrerDir->setCurrentIndex(0);
   ui.SGOTableSortField->setCurrentIndex(1);
 
+
+  this->setStyleSheet(
+    "QPushButton#SGOTableFirstPageBtn {"
+    "background-color: red;"
+    "border-style: outset;"
+    "border-width: 2px;"
+    "border-radius: 10px;"
+    "border-color: beige;"
+    "font: bold 14px;"
+    "min-width: 10em;"
+    "padding: 6px; "
+    "icon: backward-icon"
+    "}"
+    );
+  //ui.SGOTableFirstPageBtn->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward
+    //));
   updateSGOTable();
 }
 
@@ -74,8 +95,7 @@ void GameEditor::updateSGOTable()
     m_SGOTableOrderFieldMap[ui.SGOTableSortField->currentIndex()].c_str(),
     ui.SGOTableOrdrerDir->currentIndex() == 0? "ASC": "DESC",
     ui.filterSGONameTxt->text().trimmed(),
-    ui.filterSGOModelTxt->text().trimmed(),
-    ui.filterSGOMaterialTxt->text().trimmed());
+    ui.filterSGOModelTxt->text().trimmed());
 
   updateSGOTablePagingInfo();
 }
@@ -120,9 +140,8 @@ void GameEditor::on_previewStaticGOBtn_clicked()
   int selectedRow = ui.staticGOTableView->selectionModel()->currentIndex().row();
   StaticGameObjectDbInfo gameObject = m_gameObjectTableModel->GetStaticGameObject(selectedRow);
 
-  PreviewStaticGOWidget previewStaticGOWidget(m_pathToModels, m_pathToMaterials);
-  previewStaticGOWidget.SetStaticGameObject(gameObject);
-  previewStaticGOWidget.exec();
+  m_previewStaticGOWidget->SetStaticGameObject(gameObject);
+  m_previewStaticGOWidget->show();
 }
 
 void GameEditor::staticGameObjectTableRowSelected(const QItemSelection& selected, const QItemSelection& deselected)
@@ -209,8 +228,7 @@ void GameEditor::on_filterSGOModelTxt_editingFinished()
   updateSGOTable();
 }
 
-void GameEditor::on_filterSGOMaterialTxt_editingFinished()
+void GameEditor::show()
 {
-  updateSGOTable();
+  QMainWindow::show();
 }
-

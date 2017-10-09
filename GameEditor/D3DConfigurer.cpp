@@ -300,14 +300,14 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
   // Setup the raster description which will determine how and what polygons will be drawn.
-  rasterDesc.AntialiasedLineEnable = false;
+  rasterDesc.AntialiasedLineEnable = true;
   rasterDesc.CullMode = D3D11_CULL_BACK;
   rasterDesc.DepthBias = 0;
   rasterDesc.DepthBiasClamp = 0.0f;
   rasterDesc.DepthClipEnable = true;
   rasterDesc.FillMode = D3D11_FILL_SOLID;
   rasterDesc.FrontCounterClockwise = false;
-  rasterDesc.MultisampleEnable = false;
+  rasterDesc.MultisampleEnable = true;
   rasterDesc.ScissorEnable = false;
   rasterDesc.SlopeScaledDepthBias = 0.0f;
 

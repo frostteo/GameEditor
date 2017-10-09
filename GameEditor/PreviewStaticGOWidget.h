@@ -19,51 +19,23 @@
 #include "HighPerformanceTimer.h"
 #include "StaticGameObjectDbInfo.h"
 #include "QtUtils.h"
+#include "QtDirectXWidget.h"
 
-class PreviewStaticGOWidget : public QDialog, public Ui::PreviewStaticGOWidget
+class PreviewStaticGOWidget : public QtDirectXWidget, public Ui::PreviewStaticGOWidget
 {
     Q_OBJECT
 private:
-  std::string m_pathToMaterials;
-  std::string m_pathToModels;
-
-  const bool FULL_SCREEN = false;
-  const bool VSYNC_ENABLED = true;
-  const float SCREEN_DEPTH = 1000.0f;
-  const float SCREEN_NEAR = 0.1f;
-
-  int m_minWidth = 800;
-  int m_minHeight = 600;
-
-  std::unique_ptr<InputSystem> m_inputSystem;
-  std::unique_ptr<Camera> m_Camera;
-  
-  std::unique_ptr<ShaderConfiguration> m_shaderConfiguration;
-  std::unique_ptr<LightininigSystem> m_lightininigSystem;
-  std::unique_ptr<GraphicSystem> m_graphicSystem;
-
   Model* m_model;
 protected:
-  /** Initialized the D3D environment */
-  bool Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials);
-
   /** Destroys the D3D environment */
   void Shutdown();
 
   /** paints the scene */
-  void paintEvent(QPaintEvent* pEvent);
+  virtual void paintEvent(QPaintEvent* pEvent);
 public:
   PreviewStaticGOWidget(QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~PreviewStaticGOWidget();
-
-  /** a hint to Qt to give the widget as much space as possible */
-  QSizePolicy sizePolicy() const { return QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); }
-
-  /** a hint to Qt that we take care of the drawing for ourselves, thankyouverymuch */
-  QPaintEngine *paintEngine() const { return NULL; }
-
-  void SetPathToModels(QString pathToModels) { m_pathToModels = pathToModels.toStdString(); }
-  void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = pathToMaterials.toStdString(); }
-
+  /** Initialized the D3D environment */
+  bool Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials);
   void SetStaticGameObject(StaticGameObjectDbInfo staticGameObject);
 };

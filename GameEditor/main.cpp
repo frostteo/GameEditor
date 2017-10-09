@@ -10,10 +10,12 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     Logger::get().SetPlatformDependentLoggerPart(new QtLoggerPart());
     try {
-     /* GameEditor w;
-      w.show();*/
-      QtGameFrameworkTest w;
+    
+      GameEditor w;
+
       w.show();
+     /* QtGameFrameworkTest w2;
+      w2.show();*/
       return a.exec();
     }
     catch (std::runtime_error& e)

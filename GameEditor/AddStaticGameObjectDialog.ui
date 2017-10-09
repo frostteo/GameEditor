@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>403</width>
-    <height>212</height>
+    <width>395</width>
+    <height>124</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>170</y>
+     <y>90</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -109,13 +109,13 @@
     <string/>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>20</y>
      <width>371</width>
-     <height>80</height>
+     <height>61</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -155,30 +155,6 @@
     </item>
     <item row="1" column="2">
      <widget class="QPushButton" name="chooseModelFileBtn">
-      <property name="text">
-       <string>Выбрать</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Файл материала</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="staticGOMaterialEdit">
-      <property name="maxLength">
-       <number>256</number>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QPushButton" name="chooseMaterialFileBtn">
       <property name="text">
        <string>Выбрать</string>
       </property>

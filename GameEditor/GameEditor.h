@@ -13,6 +13,8 @@
 #include "PreviewStaticGOWidget.h"
 #include "ObjConverterDialog.h"
 
+#include "QtGameFrameworkTest.h"
+
 class GameEditor : public QMainWindow
 {
     Q_OBJECT
@@ -28,6 +30,8 @@ private:
 
   std::map<int, std::string> m_SGOTableOrderFieldMap;
   std::map<int, std::string> m_SGOTableOnPageCountMap;
+
+  std::unique_ptr<PreviewStaticGOWidget> m_previewStaticGOWidget;
 private:
   void createUI();
   void StaticGameObjectBtnsStateConfigure();
@@ -51,11 +55,11 @@ private slots:
 
   void on_filterSGONameTxt_editingFinished();
   void on_filterSGOModelTxt_editingFinished();
-  void on_filterSGOMaterialTxt_editingFinished();
 protected:
   void updateSGOTable();
   void updateSGOTablePagingInfo();
 public:
     GameEditor(QWidget *parent = Q_NULLPTR);
     ~GameEditor() { }
+    virtual void show();
 };

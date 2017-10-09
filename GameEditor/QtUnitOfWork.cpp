@@ -23,9 +23,18 @@ void QtUnitOfWork::Initialize(std::string hostName, std::string databaseName, st
   m_staticGORepository = std::unique_ptr<IRepository<StaticGameObjectDbInfo>>(
     DALDependencyResolver::GetStaticGameObjectRepository()->Initialize(connectionName)
     );
+
+  m_SGOOnMapRepository = std::unique_ptr<IRepository<SGOOnMapDbInfo>>(
+    DALDependencyResolver::GetSGOOnMapRepository()->Initialize(connectionName)
+    );
 }
 
 IRepository<StaticGameObjectDbInfo>* QtUnitOfWork::GetStaticGORepository()
 {
   return m_staticGORepository.get();
+}
+
+IRepository<SGOOnMapDbInfo>* QtUnitOfWork::GetSGOOnMapRepository()
+{
+  return m_SGOOnMapRepository.get();
 }

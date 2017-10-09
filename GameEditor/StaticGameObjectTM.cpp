@@ -15,11 +15,11 @@ StaticGameObjectTM::~StaticGameObjectTM()
 void StaticGameObjectTM::UpdateData()
 {
   this->beginResetModel();
-  m_data = m_staticGOService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_modelFileNameFilter, m_materialFileNameFilter);
+  m_data = m_staticGOService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_modelFileNameFilter);
   this->endResetModel();
 }
 
-void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter, QString SGOModelFilenameFilter, QString SGOMaterialFilenameFilter)
+void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter, QString SGOModelFilenameFilter)
 {
   m_getParameters.pageNumber = pageNumber;
   m_getParameters.onPage = onPage;
@@ -28,7 +28,6 @@ void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, QString OrderFi
 
   m_SGONameFilter = SGONameFilter.toStdString();
   m_modelFileNameFilter = SGOModelFilenameFilter.toStdString();
-  m_materialFileNameFilter = SGOMaterialFilenameFilter.toStdString();
   UpdateData();
 }
 
@@ -42,7 +41,6 @@ QVariant StaticGameObjectTM::data(const QModelIndex &index, int role) const
     case 0: return gameObject.id;
     case 1: return gameObject.name;
     case 2: return gameObject.modelFileName;
-    case 3: return gameObject.materialFileName;
     default: return{};
   }
 }
@@ -54,7 +52,6 @@ QVariant StaticGameObjectTM::headerData(int section, Qt::Orientation orientation
     case 0: return "Id";
     case 1: return tr("Name");
     case 2: return tr("Model filename");
-    case 3: return tr("Material filename");
     default: return{};
   }
 }

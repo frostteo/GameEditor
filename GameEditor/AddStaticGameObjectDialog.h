@@ -12,7 +12,6 @@ class AddStaticGameObjectDialog : public QDialog, public Ui::AddStaticGameObject
     Q_OBJECT
 private slots:
     void on_chooseModelFileBtn_clicked();
-    void on_chooseMaterialFileBtn_clicked();
 protected:
   QString m_pathToModels;
   QString m_pathToMaterials;

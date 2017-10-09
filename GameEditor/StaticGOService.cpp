@@ -38,29 +38,23 @@ void StaticGOService::DeleteStaticGameObject(int id)
   m_unitOfWork->GetStaticGORepository()->Delete(id);
 }
 
-QList<StaticGameObjectDbInfo> StaticGOService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name, std::string model, std::string material)
+QList<StaticGameObjectDbInfo> StaticGOService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name, std::string model)
 {
   std::vector<std::string> whereParams;
   std::string whereParamsGlue = " AND ";
   parameters.whereCondition = "";
-  int index = 0;
   bool filteringIsEnabled = false;
   std::vector<StaticGameObjectDbInfo> gameObjects;
   QList<StaticGameObjectDbInfo> qListGameObjects;
 
   if (!name.empty()) {
-    whereParams.push_back(" name LIKE '%" + name + "%' ");
+    whereParams.push_back(" StaticGameObjectDbInfo_name LIKE '%" + name + "%' ");
     filteringIsEnabled = true;
   }
 
 
   if (!model.empty()) {
-    whereParams.push_back(" modelFileName LIKE '%" + model + "%' ");
-    filteringIsEnabled = true;
-  }
-
-  if (!material.empty()) {
-    whereParams.push_back(" materialFileName LIKE '%" + material + "%' ");
+    whereParams.push_back(" StaticGameObjectDbInfo_modelFileName LIKE '%" + model + "%' ");
     filteringIsEnabled = true;
   }
 

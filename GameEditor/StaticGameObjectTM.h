@@ -20,14 +20,13 @@ protected:
 
   std::string m_SGONameFilter = "";
   std::string m_modelFileNameFilter = "";
-  std::string m_materialFileNameFilter = "";
 protected:
   void UpdateData();
 public:
   StaticGameObjectTM(QObject * parent = {});
   virtual ~StaticGameObjectTM();
   int rowCount(const QModelIndex &) const override { return m_data.count(); }
-  int columnCount(const QModelIndex &) const override { return 4; }
+  int columnCount(const QModelIndex &) const override { return 3; }
   QVariant data(const QModelIndex &index, int role) const override;
   QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
   void append(StaticGameObjectDbInfo& gameObject);
@@ -35,6 +34,6 @@ public:
   void remove(int id);
   StaticGameObjectDbInfo GetStaticGameObject(int rowNumber);
   PagingInfo GetPagingInfo() { return m_pagingInfo; }
-  void UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter = "", QString SGOModelFilenameFilter = "", QString SGOMaterialFilenameFilter = "");
+  void UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter = "", QString SGOModelFilenameFilter = "");
 };
 
