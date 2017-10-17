@@ -1,9 +1,13 @@
 #include "StaticGameObjectTM.h"
 
 
-StaticGameObjectTM::StaticGameObjectTM(QObject * parent) : QAbstractTableModel{ parent }
+StaticGameObjectTM::StaticGameObjectTM(int onPage, QObject * parent) : QAbstractTableModel{ parent }
 {
   m_staticGOService = DependencyResolver::GetStaticGOService();
+  m_getParameters.onPage = onPage;
+  m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(0, "id"));
+  m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(1, "name"));
+  m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(2, "modelFileName"));
   UpdateData();
 }
 
@@ -17,14 +21,16 @@ void StaticGameObjectTM::UpdateData()
   this->beginResetModel();
   m_data = m_staticGOService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_modelFileNameFilter);
   this->endResetModel();
+  emit TableDataChanged();
+  emit PagingInfoChanged(m_pagingInfo);
 }
 
-void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter, QString SGOModelFilenameFilter)
+void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter, QString SGOModelFilenameFilter)
 {
   m_getParameters.pageNumber = pageNumber;
   m_getParameters.onPage = onPage;
-  m_getParameters.orderFieldName = OrderFieldName.toStdString();
-  m_getParameters.orderDirection = orderDirection == "ASC" ? OrderDirection::ASC : OrderDirection::DESC;
+  m_getParameters.orderFieldName = m_SGOTableOrderFieldMap[orderFieldIndex];
+  m_getParameters.orderDirection = orderDirection == Qt::SortOrder::AscendingOrder ? OrderDirection::ASC : OrderDirection::DESC;
 
   m_SGONameFilter = SGONameFilter.toStdString();
   m_modelFileNameFilter = SGOModelFilenameFilter.toStdString();

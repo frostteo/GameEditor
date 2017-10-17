@@ -12,6 +12,7 @@
 class StaticGameObjectTM 
   : public QAbstractTableModel
 {
+  Q_OBJECT
 protected:
   IStaticGOService* m_staticGOService;
   QList<StaticGameObjectDbInfo> m_data;
@@ -20,10 +21,11 @@ protected:
 
   std::string m_SGONameFilter = "";
   std::string m_modelFileNameFilter = "";
+  std::map<int, std::string> m_SGOTableOrderFieldMap;
 protected:
   void UpdateData();
 public:
-  StaticGameObjectTM(QObject * parent = {});
+  StaticGameObjectTM(int onPage = 10, QObject * parent = {});
   virtual ~StaticGameObjectTM();
   int rowCount(const QModelIndex &) const override { return m_data.count(); }
   int columnCount(const QModelIndex &) const override { return 3; }
@@ -34,6 +36,10 @@ public:
   void remove(int id);
   StaticGameObjectDbInfo GetStaticGameObject(int rowNumber);
   PagingInfo GetPagingInfo() { return m_pagingInfo; }
-  void UpdateTable(int pageNumber, int onPage, QString OrderFieldName, QString orderDirection, QString SGONameFilter = "", QString SGOModelFilenameFilter = "");
+  void UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter = "", QString SGOModelFilenameFilter = "");
+ 
+signals:
+  void TableDataChanged();
+  void PagingInfoChanged(PagingInfo pagingInfo);
 };
 

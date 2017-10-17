@@ -6,12 +6,12 @@
 struct PagingInfo
 {
 public:
-  int pageNumber;
-  int pageCount;
+  int pageNumber = 1;
+  int pageCount = 1;
   std::string orderFieldName;
   OrderDirection orderDirection;
 public:
-  PagingInfo() {}
+  PagingInfo() { }
   virtual ~PagingInfo() {}
 };
 
