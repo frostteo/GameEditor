@@ -6,15 +6,10 @@
 #include <memory>
 #include "ui_GameEditor.h"
 #include "QtUtils.h"
-#include "StaticGameObjectTM.h"
-#include "BLLDependencyResolver.h"
-#include "AddStaticGameObjectDialog.h"
-#include "StaticGameObjectDbInfo.h"
-#include "PreviewStaticGOWidget.h"
 #include "ObjConverterDialog.h"
+#include "MapEditorData.h"
+#include "MapEditor.h"
 #include "SGOTableWidget.h"
-
-#include "QtGameFrameworkTest.h"
 
 class GameEditor : public QMainWindow
 {
@@ -29,10 +24,13 @@ private:
   QString m_pathToObjModels = "../GameEditor/obj models";
 
   std::unique_ptr<SGOTableWidget> m_SGOTableWidget;
+  std::unique_ptr<MapEditorData> m_mapEditorData;
+  std::unique_ptr<MapEditor> m_mapEditor;
 private:
-  void createUI();
+  void configureUI();
 private slots:
   void on_actionObjConverter_triggered();
+  void AddSGOToMap(StaticGameObjectDbInfo& gameObject);
 public:
     GameEditor(QWidget *parent = Q_NULLPTR);
     ~GameEditor() { }

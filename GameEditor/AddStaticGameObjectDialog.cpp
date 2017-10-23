@@ -20,7 +20,7 @@ void AddStaticGameObjectDialog::on_chooseModelFileBtn_clicked()
 
 void AddStaticGameObjectDialog::done(int result)
 {
-  if (result == QDialog::Accepted)  // ok was pressed
+  if (result == QDialog::Accepted)
   {
     QString errorMsg = "";
     if (this->staticGONameEdit->text().trimmed().isEmpty())

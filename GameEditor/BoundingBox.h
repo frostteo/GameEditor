@@ -5,8 +5,6 @@
 #include "Logger.h"
 #include "GridObject.h"
 
-class Model;
-
 /*
    Order of bounding box building: bottom square, then top square by clockwise
 */
@@ -30,7 +28,6 @@ protected:
   std::vector<VertexPosition> m_vertices;
   ID3D11Buffer* m_vertexBuffer;
   ID3D11Buffer* m_indexBuffer;
-  Model* m_model;
 public:
   const int INDEX_COUNT = 24;
   /*
@@ -50,8 +47,6 @@ public:
   void InitializeBuffers(ID3D11Device* device);
   void ShutdownBuffers();
   virtual void PrepareToRender(ID3D11DeviceContext* deviceContext) override;
-  void SetModel(Model* model) { m_model = model; }
-  virtual void GetWorldMatrix(XMMATRIX& worldMatrix) override;
   virtual int GetIndexCount() override { return INDEX_COUNT; }
 };
 

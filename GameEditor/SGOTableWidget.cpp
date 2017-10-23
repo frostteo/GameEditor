@@ -36,6 +36,7 @@ void SGOTableWidget::configureTable()
   connect(m_SGOToolBox->ui.editSGOBtn, SIGNAL(clicked()), this, SLOT(on_editSGOBtn_clicked()));
   connect(m_SGOToolBox->ui.deleteSGOBtn, SIGNAL(clicked()), this, SLOT(on_deleteSGOBtn_clicked()));
   connect(m_SGOToolBox->ui.previewSGOBtn, SIGNAL(clicked()), this, SLOT(on_previewSGOBtn_clicked()));
+  connect(m_SGOToolBox->ui.addToMapBtn, SIGNAL(clicked()), this, SLOT(on_addToMapBtn_clicked()));
 
   connect(m_SGOTable->selectionModel(),
     SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -83,7 +84,7 @@ void SGOTableWidget::configureUI()
 void SGOTableWidget::on_previewSGOBtn_clicked()
 {
   int selectedRow = m_SGOTable->selectionModel()->currentIndex().row();
-  StaticGameObjectDbInfo gameObject = m_SGOTableModel->GetStaticGameObject(selectedRow);
+  StaticGameObjectDbInfo gameObject = m_SGOTableModel->GetEntity(selectedRow);
 
   m_previewStaticGOWidget->SetStaticGameObject(gameObject);
   m_previewStaticGOWidget->show();
@@ -102,7 +103,7 @@ void SGOTableWidget::on_addSGOBtn_clicked()
 void SGOTableWidget::on_editSGOBtn_clicked()
 {
   int selectedRow = m_SGOTable->selectionModel()->currentIndex().row();
-  StaticGameObjectDbInfo gameObject = m_SGOTableModel->GetStaticGameObject(selectedRow);
+  StaticGameObjectDbInfo gameObject = m_SGOTableModel->GetEntity(selectedRow);
 
   AddStaticGameObjectDialog dialog(this);
   dialog.SetPathToModels(m_pathToModels);
@@ -110,7 +111,9 @@ void SGOTableWidget::on_editSGOBtn_clicked()
   dialog.SetStaticGameObject(gameObject);
 
   if (dialog.exec() == QDialog::Accepted) {
+    auto gameObject = dialog.GetStaticGameObject();
     m_SGOTableModel->edit(dialog.GetStaticGameObject());
+    emit SGOEdited(gameObject);
   }
 }
 
@@ -119,6 +122,7 @@ void SGOTableWidget::on_deleteSGOBtn_clicked()
   int selectedRow = m_SGOTable->selectionModel()->currentIndex().row();
   int id = m_SGOTableModel->index(selectedRow, 0).data().toInt();
   m_SGOTableModel->remove(id);
+  emit SGODeleted(id);
 }
 
 void SGOTableWidget::editBtnsStateConfigure()
@@ -127,6 +131,7 @@ void SGOTableWidget::editBtnsStateConfigure()
   m_SGOToolBox->ui.editSGOBtn->setEnabled(hasSelection);
   m_SGOToolBox->ui.deleteSGOBtn->setEnabled(hasSelection);
   m_SGOToolBox->ui.previewSGOBtn->setEnabled(hasSelection);
+  m_SGOToolBox->ui.addToMapBtn->setEnabled(hasSelection);
 }
 
 void SGOTableWidget::SGOtableRowSelected(const QItemSelection& selected, const QItemSelection& deselected)
@@ -152,4 +157,18 @@ void SGOTableWidget::UpdateTable()
     m_SGOTable->horizontalHeader()->sortIndicatorOrder(),
     m_SGOToolBox->GetSGONameFilter(),
     m_SGOToolBox->GetSGOModelFilter());
+}
+
+void SGOTableWidget::on_addToMapBtn_clicked()
+{
+  int selectedRow = m_SGOTable->selectionModel()->currentIndex().row();
+  StaticGameObjectDbInfo gameObject = m_SGOTableModel->GetEntity(selectedRow);
+  emit AddToMap(gameObject);
+}
+
+void SGOTableWidget::on_SGODeletedFromMap(int id)
+{
+  StaticGameObjectDbInfo gameObject = m_SGOTableModel->GetEntityByKey(id);
+  gameObject.countOnMap -= 1;
+  m_SGOTableModel->edit(gameObject);
 }

@@ -22,11 +22,11 @@ void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGam
 {
   m_inputSystem->ClearListenersList();
 
-  m_model = m_graphicSystem->GetModelFactory()->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + staticGameObject.modelFileName.toStdString());
+  m_sgo.SetModel(GetModel(staticGameObject.modelFileName.toStdString()));
 
   PreviewGameObject* previewGameObject = new PreviewGameObject();
   previewGameObject->SetCamera(m_Camera.get());
-  previewGameObject->SetModel(m_model);
+  previewGameObject->SetSGO(&m_sgo);
   m_inputSystem->AddInputListener(previewGameObject);
 }
 
@@ -36,7 +36,9 @@ void PreviewStaticGOWidget::Shutdown()
 }
 
 void PreviewStaticGOWidget::paintEvent(QPaintEvent* evt) {
-  m_graphicSystem->AddModelToRenderList(m_model);
+  XMMATRIX worldMatrix;
+  m_sgo.GetWorldMatrix(worldMatrix);
+  m_graphicSystem->AddModelToRenderList(m_sgo.GetModel(), worldMatrix);
 
   QtDirectXWidget::paintEvent(evt);
 }

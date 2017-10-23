@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Mesh.h"
-#include "GameObject.h"
 #include "FileProcessor.h"
 #include "VertexTxt.h"
 #include "BoundingBox.h"
 
 class BoundingBox;
 
-class Model : public GameObject
+class Model
 {
 protected:
   std::string m_fileName;

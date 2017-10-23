@@ -44,15 +44,12 @@ MaterialFactory* GraphicSystem::GetMaterialFactory()
   return m_materialFactory.get();
 }
 
-void GraphicSystem::AddModelToRenderList(Model* model)
+void GraphicSystem::AddModelToRenderList(Model* model, XMMATRIX& worldMatrix)
 {
-  XMMATRIX modelWorldMatrix;
-  model->GetWorldMatrix(modelWorldMatrix);
-
   for (int i = 0; i < model->GetMeshCount(); ++i)
   {
     Mesh* mesh = model->GetMesh(i);
-    std::pair<XMMATRIX, Mesh*> renderInfo(modelWorldMatrix, mesh);
+    std::pair<XMMATRIX, Mesh*> renderInfo(worldMatrix, mesh);
     m_modelRenderList[mesh->GetMaterialType()][mesh->GetMaterialName()].push_back(renderInfo);
   }
 }
@@ -110,17 +107,15 @@ void GraphicSystem::DrawGrids(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix)
 
   IShader* shader = GetShaderFactory()->Get(GRID_SHADER_NAME);
   shader->EnableShader(deviceContext);
-  for (auto* grid : m_gridObjectRenderList)
+  for (auto& gridAndWorldMatrix : m_gridObjectRenderList)
   {
-    XMMATRIX worldMatrix;
-    grid->GetWorldMatrix(worldMatrix);
-    grid->PrepareToRender(deviceContext);
-    shader->Render(deviceContext, grid->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, nullptr, nullptr, nothing);
+    gridAndWorldMatrix.second->PrepareToRender(deviceContext);
+    shader->Render(deviceContext, gridAndWorldMatrix.second->GetIndexCount(), gridAndWorldMatrix.first, viewMatrix, projectionMatrix, nullptr, nullptr, nothing);
   }
   m_gridObjectRenderList.clear();
 }
 
-void GraphicSystem::AddGridToRenderList(GridObject* gridObject)
+void GraphicSystem::AddGridToRenderList(GridObject* gridObject, XMMATRIX& worldMatrix)
 {
-  m_gridObjectRenderList.push_back(gridObject);
+  m_gridObjectRenderList.push_back(std::pair<XMMATRIX, GridObject*>(worldMatrix, gridObject));
 }

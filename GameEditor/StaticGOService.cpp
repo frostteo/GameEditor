@@ -11,6 +11,11 @@ StaticGOService::~StaticGOService()
 {
 }
 
+StaticGameObjectDbInfo StaticGOService::GetStaticGameObject(int id)
+{
+  return m_unitOfWork->GetStaticGORepository()->Get(id);
+}
+
 QList<StaticGameObjectDbInfo> StaticGOService::GetStaticGameObjects()
 {
   std::vector<StaticGameObjectDbInfo> gameObjects = m_unitOfWork->GetStaticGORepository()->GetAll();
@@ -23,9 +28,11 @@ QList<StaticGameObjectDbInfo> StaticGOService::GetStaticGameObjects()
   return qListGameObjects;
 }
 
-void StaticGOService::CreateStaticGameObject(StaticGameObjectDbInfo& gameObject)
+int StaticGOService::CreateStaticGameObject(StaticGameObjectDbInfo& gameObject)
 {
-  m_unitOfWork->GetStaticGORepository()->Create(gameObject);
+  int entityId = m_unitOfWork->GetStaticGORepository()->Create(gameObject);
+  gameObject.id = entityId;
+  return entityId;
 }
 
 void StaticGOService::UpdateStaticGameObject(StaticGameObjectDbInfo& gameObject)

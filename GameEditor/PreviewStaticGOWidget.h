@@ -4,19 +4,7 @@
 #include "ui_PreviewStaticGOWidget.h"
 #include <QMessageBox>
 #include <memory>
-#include "Camera.h"
-#include "D3DConfigurer.h"
-#include "TextureShader.h"
-#include "TextureFactory.h"
-#include "ShaderConfiguration.h"
-#include "ShaderFactory.h"
-#include "MaterialFactory.h"
-#include "Model.h"
-#include "LightininigSystem.h"
-#include "GraphicSystem.h"
-#include "InputSystem.h"
 #include "PreviewGameObject.h"
-#include "HighPerformanceTimer.h"
 #include "StaticGameObjectDbInfo.h"
 #include "QtUtils.h"
 #include "QtDirectXWidget.h"
@@ -25,13 +13,13 @@ class PreviewStaticGOWidget : public QtDirectXWidget, public Ui::PreviewStaticGO
 {
     Q_OBJECT
 private:
-  Model* m_model;
+  StaticGameObject m_sgo;
 protected:
   /** Destroys the D3D environment */
   void Shutdown();
 
   /** paints the scene */
-  virtual void paintEvent(QPaintEvent* pEvent);
+  virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
   PreviewStaticGOWidget(QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~PreviewStaticGOWidget();

@@ -11,14 +11,17 @@ class SGOOnMapService : public ISGOOnMapService
 protected:
   IUnitOfWork* m_unitOfWork;
   SGOMetadata m_SGOMetadata;
+protected:
+  void IncrementSGOCount(int id);
+  void DecrementSGOCount(int id);
 public:
   SGOOnMapService();
   virtual ~SGOOnMapService();
-  virtual SGOOnMapBLL Get(int id) override;
+  virtual SGOOnMapDbInfo Get(int id) override;
   virtual QList<SGOOnMapDbInfo> GetAll() override;
-  virtual void Create(SGOOnMapDbInfo& gameObject) override;
+  virtual int Create(SGOOnMapDbInfo& gameObject) override;
   virtual void Update(SGOOnMapDbInfo& gameObject) override;
   virtual void Delete(int id) override;
-  virtual QList<SGOOnMapBLL> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "") override;
+  virtual QList<SGOOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "") override;
 };
 

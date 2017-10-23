@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include "D3DConfigurer.h"
 #include "Logger.h"
-#include "Model.h"
 #include "Camera.h"
 #include "LightininigSystem.h"
 #include "ShaderConfiguration.h"
@@ -15,6 +14,7 @@
 #include "TextureFactory.h"
 #include "ShaderFactory.h"
 #include "GridObject.h"
+#include "StaticGameObject.h"
 
 class GraphicSystem
 {
@@ -28,7 +28,7 @@ private:
   std::unique_ptr<MaterialFactory> m_materialFactory;
 
   std::map<std::string, std::map<std::string, std::vector<std::pair<XMMATRIX, Mesh*>>>> m_modelRenderList;
-  std::vector<GridObject* > m_gridObjectRenderList;
+  std::vector<std::pair<XMMATRIX, GridObject*> > m_gridObjectRenderList;
 protected:
   void DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightiningSystem, XMFLOAT3 cameraPosition);
   void DrawGrids(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix);
@@ -41,8 +41,8 @@ public:
   ShaderFactory* GetShaderFactory();
   MaterialFactory* GetMaterialFactory();
 
-  void AddModelToRenderList(Model* model);
-  void AddGridToRenderList(GridObject* gridObject);
+  void AddModelToRenderList(Model* model, XMMATRIX& worldMatrix);
+  void AddGridToRenderList(GridObject* gridObject, XMMATRIX& worldMatrix);
   void Render(Camera* camera, LightininigSystem* lightiningSystem);
   ID3D11Device* GetDevice() { return m_direct3D->GetDevice(); }
 };

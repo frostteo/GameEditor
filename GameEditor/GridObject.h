@@ -1,15 +1,17 @@
 #pragma once
 
-#include "GameObject.h"
+#include <d3d11.h>
+#include <directxmath.h>
 
-class GridObject : public GameObject
+using namespace DirectX;
+
+class GridObject
 {
 public:
   GridObject();
   virtual ~GridObject();
 
   virtual void PrepareToRender(ID3D11DeviceContext* deviceContext) = 0;
-  virtual void GetWorldMatrix(XMMATRIX& worldMatrix) { GameObject::GetWorldMatrix(worldMatrix); }
   virtual int GetIndexCount() = 0;
 };
 

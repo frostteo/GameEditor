@@ -7,4 +7,5 @@ public:
   int id;
   QString name;
   QString modelFileName;
+  int countOnMap = 0;
 };

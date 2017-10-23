@@ -42,6 +42,7 @@ protected:
 
   /** paints the scene */
   virtual void paintEvent(QPaintEvent* pEvent);
+  Model* GetModel(std::string& modelName);
 public:
   QtDirectXWidget(QWidget *parent = Q_NULLPTR);
   QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);

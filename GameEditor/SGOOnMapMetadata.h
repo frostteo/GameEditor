@@ -16,5 +16,6 @@ public:
   virtual void InitializeFromQuery(SGOOnMapDbInfo& entity, QSqlQuery* query, std::vector<QString>* joinTableNames = nullptr) override;
   virtual QVariant GetFieldByName(const SGOOnMapDbInfo& entity, QString name) override;
   virtual QString GetSelectColumnString(std::vector<QString>* joinTableNames = nullptr) override;
+  virtual QString GetRelationShipAlias(QString tableName, int columnIndex) override;
 };
 

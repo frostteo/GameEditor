@@ -16,9 +16,9 @@
 #include "InputSystem.h"
 #include "PreviewGameObject.h"
 #include "HighPerformanceTimer.h"
-#include "Model.h"
 #include "ObjMeshConverter.h"
 #include "MtlMatLibConverter.h"
+#include "StaticGameObject.h"
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
@@ -51,7 +51,7 @@ protected:
 private:
   InputSystem* m_inputSystem;
   Camera* m_Camera;
-  Model* m_model;
+  StaticGameObject m_sgo;
   ShaderConfiguration* m_shaderConfiguration;
   LightininigSystem* m_lightininigSystem;
   std::unique_ptr<GraphicSystem> m_graphicSystem;

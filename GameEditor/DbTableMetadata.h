@@ -5,6 +5,7 @@
 #include <qvariant.h>
 #include <vector>
 #include <map>
+#include "Logger.h"
 
 #include "GetParameters.h"
 
@@ -36,7 +37,6 @@ protected:
   QString m_insertQueryStr;
   QString m_updateQueryStr;
   QString m_deleteQueryStr;
-  QString m_selectAllStr;
 protected:
   void BuildSelectInfos();
   virtual void BuildSelectColumnsStr();
@@ -44,7 +44,6 @@ protected:
   void BuildUpdateQueryStr();
   void BuildDeleteQueryStr();
   void BuildJoinConditions();
-  void BuildSelectAllStr();
   virtual void AddRelationShip(QString tableName, QString thisTableForeignKey, QString otherTablePrimaryKey);
   QString JoinOpToString(JoinOperator joinOperator);
 public:
@@ -59,13 +58,15 @@ public:
   virtual QString GetInsertQueryString() { if (m_insertQueryStr.isEmpty()) BuildInsertQueryStr(); return m_insertQueryStr; }
   virtual QString GetUpdateQueryString() { if (m_updateQueryStr.isEmpty()) BuildUpdateQueryStr(); return m_updateQueryStr; }
   virtual QString GetDeleteQueryString() { if (m_deleteQueryStr.isEmpty()) BuildDeleteQueryStr(); return m_deleteQueryStr; }
-  virtual QString GetSelectAllString() { if (m_selectAllStr.isEmpty()) BuildSelectAllStr(); return m_selectAllStr; }
   virtual QString GetDefaultOrderString() { return GetColumnNames()[0]; }
   virtual std::map<QString, QString> GetJoinConditions() { if (m_joinConditions.size() == 0) BuildJoinConditions(); return m_joinConditions; };
   
   virtual void InitializeFromQuery(T& entity, QSqlQuery* query, std::vector<QString>* joinTableNames = nullptr) = 0;
   virtual QVariant GetFieldByName(const T& entity, QString name) = 0;
   virtual std::map<QString, RelationshipData> GetRelationShips() { return m_relationships; }
+
+  virtual QString GetAlias(int columnIndex) { return GetSelectInfos()[GetColumnNames()[columnIndex]].aliasColumnName; }
+  virtual QString GetRelationShipAlias(QString tableName, int columnIndex) { RUNTIME_ERROR("this method not implemented or there are no relationships.") }
 };
 
 template <class T>
@@ -166,12 +167,6 @@ template <class T>
 void DbTableMetadata<T>::BuildDeleteQueryStr()
 {
   m_deleteQueryStr = QString("DELETE FROM %1 WHERE %2 = :%2").arg(GetTableName(), GetKeyColumnName());
-}
-
-template <class T>
-void DbTableMetadata<T>::BuildSelectAllStr()
-{
-  m_selectAllStr = QString("SELECT %1 FROM %2").arg(GetSelectColumnString(), GetTableName());
 }
 
 template <class T>

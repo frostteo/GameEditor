@@ -50,10 +50,10 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/lamp.txt");
   //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/healthPotion.txt");
-  m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/test column.txt");
+  m_sgo.SetModel(m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/test column.txt"));
   //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/cube.txt");
 
-  m_model->GetBoundingBox()->InitializeBuffers(m_graphicSystem->GetDevice());
+  m_sgo.GetModel()->GetBoundingBox()->InitializeBuffers(m_graphicSystem->GetDevice());
 
   // Create the camera object.
   m_Camera = new Camera();
@@ -79,7 +79,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   PreviewGameObject* previewGameObject = new PreviewGameObject();
   previewGameObject->SetCamera(m_Camera);
-  previewGameObject->SetModel(m_model);
+  previewGameObject->SetSGO(&m_sgo);
   m_inputSystem->AddInputListener(previewGameObject);
 
   return true;
@@ -120,8 +120,10 @@ void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
   HighPerformanceTimer::get().Frame();
 
   m_inputSystem->Frame();
-  m_graphicSystem->AddModelToRenderList(m_model);
-  m_graphicSystem->AddGridToRenderList(m_model->GetBoundingBox());
+  XMMATRIX worldMatrix;
+  m_sgo.GetWorldMatrix(worldMatrix);
+  m_graphicSystem->AddModelToRenderList(m_sgo.GetModel(), worldMatrix);
+  m_graphicSystem->AddGridToRenderList(m_sgo.GetModel()->GetBoundingBox(), worldMatrix);
   m_graphicSystem->Render(m_Camera, m_lightininigSystem);
 
   // trigger another update as soon as possible 

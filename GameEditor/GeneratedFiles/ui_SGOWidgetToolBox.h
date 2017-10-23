@@ -35,6 +35,7 @@ public:
     QPushButton *editSGOBtn;
     QPushButton *deleteSGOBtn;
     QPushButton *previewSGOBtn;
+    QPushButton *addToMapBtn;
     QWidget *SGOFilterTool;
     QLabel *nameLbl;
     QLineEdit *SGONameFilterTxt;
@@ -45,13 +46,13 @@ public:
     {
         if (SGOWidgetToolBox->objectName().isEmpty())
             SGOWidgetToolBox->setObjectName(QStringLiteral("SGOWidgetToolBox"));
-        SGOWidgetToolBox->resize(150, 190);
+        SGOWidgetToolBox->resize(150, 215);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(SGOWidgetToolBox->sizePolicy().hasHeightForWidth());
         SGOWidgetToolBox->setSizePolicy(sizePolicy);
-        SGOWidgetToolBox->setMinimumSize(QSize(150, 190));
+        SGOWidgetToolBox->setMinimumSize(QSize(150, 215));
         verticalLayout_2 = new QVBoxLayout(SGOWidgetToolBox);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -60,10 +61,10 @@ public:
         SGOToolBox->setObjectName(QStringLiteral("SGOToolBox"));
         EditSGOTool = new QWidget();
         EditSGOTool->setObjectName(QStringLiteral("EditSGOTool"));
-        EditSGOTool->setGeometry(QRect(0, 0, 132, 118));
+        EditSGOTool->setGeometry(QRect(0, 0, 132, 143));
         layoutWidget = new QWidget(EditSGOTool);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 0, 77, 112));
+        layoutWidget->setGeometry(QRect(10, 0, 77, 141));
         verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
@@ -92,10 +93,16 @@ public:
 
         verticalLayout->addWidget(previewSGOBtn);
 
+        addToMapBtn = new QPushButton(layoutWidget);
+        addToMapBtn->setObjectName(QStringLiteral("addToMapBtn"));
+        addToMapBtn->setEnabled(false);
+
+        verticalLayout->addWidget(addToMapBtn);
+
         SGOToolBox->addItem(EditSGOTool, QStringLiteral("Edit"));
         SGOFilterTool = new QWidget();
         SGOFilterTool->setObjectName(QStringLiteral("SGOFilterTool"));
-        SGOFilterTool->setGeometry(QRect(0, 0, 132, 118));
+        SGOFilterTool->setGeometry(QRect(0, 0, 132, 143));
         nameLbl = new QLabel(SGOFilterTool);
         nameLbl->setObjectName(QStringLiteral("nameLbl"));
         nameLbl->setGeometry(QRect(1, 1, 26, 16));
@@ -109,10 +116,6 @@ public:
         SGOModelFilterTxt->setObjectName(QStringLiteral("SGOModelFilterTxt"));
         SGOModelFilterTxt->setGeometry(QRect(1, 65, 121, 20));
         SGOToolBox->addItem(SGOFilterTool, QStringLiteral("Filter"));
-        nameLbl->raise();
-        SGONameFilterTxt->raise();
-        modelLbl->raise();
-        SGOModelFilterTxt->raise();
 
         verticalLayout_2->addWidget(SGOToolBox);
 
@@ -132,6 +135,7 @@ public:
         editSGOBtn->setText(QApplication::translate("SGOWidgetToolBox", "edit", Q_NULLPTR));
         deleteSGOBtn->setText(QApplication::translate("SGOWidgetToolBox", "delete", Q_NULLPTR));
         previewSGOBtn->setText(QApplication::translate("SGOWidgetToolBox", "preview", Q_NULLPTR));
+        addToMapBtn->setText(QApplication::translate("SGOWidgetToolBox", "add to map", Q_NULLPTR));
         SGOToolBox->setItemText(SGOToolBox->indexOf(EditSGOTool), QApplication::translate("SGOWidgetToolBox", "Edit", Q_NULLPTR));
         nameLbl->setText(QApplication::translate("SGOWidgetToolBox", "name", Q_NULLPTR));
         modelLbl->setText(QApplication::translate("SGOWidgetToolBox", "model", Q_NULLPTR));

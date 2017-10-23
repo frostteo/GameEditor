@@ -24,7 +24,6 @@ void Model::LoadData(
 
   std::stringstream fileStrStream(fileInStr);
   m_boundingBox.Deserialize(fileStrStream);
-  m_boundingBox.SetModel(this);
   while (!fileStrStream.eof())
     LoadMesh(fileStrStream, device, materialFactory);
 }

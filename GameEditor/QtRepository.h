@@ -35,12 +35,13 @@ public:
   virtual ~QtRepository<T>() {}
 
   virtual IRepository<T>* Initialize(std::string connectionName);
-  virtual std::vector<T> GetAll() override;
+  virtual std::vector<T> GetAll(std::vector<JoinInfo>* joinInfos = nullptr) override;
   virtual std::vector<T> GetAll(GetParameters& parameters, PagingInfo& pagingInfo) override;
   virtual T Get(int id, std::vector<JoinInfo>* joinInfos = nullptr) override;
   virtual void Delete(int id) override;
   virtual void Update(T& entity) override;
-  virtual void Create(T& entity) override;
+  virtual int Create(T& entity) override;
+  virtual void DeleteWhere(std::string& whereCondition);
 };
 
 template <class T>
@@ -78,6 +79,10 @@ template <class T>
 IRepository<T>* QtRepository<T>::Initialize(std::string connectionName)
 {
   m_connectionName = connectionName; 
+  QSqlQuery query(GetDatabase());
+  query.prepare("PRAGMA foreign_keys=on;"); //foreign key constrains enable
+  if (!query.exec()) 
+    RUNTIME_ERROR(query.lastError().text().toStdString())
   return this;
 }
 
@@ -88,15 +93,23 @@ QSqlDatabase QtRepository<T>::GetDatabase()
 }
 
 template <class T>
-std::vector<T> QtRepository<T>::GetAll()
+std::vector<T> QtRepository<T>::GetAll(std::vector<JoinInfo>* joinInfos = nullptr)
 {
   QSqlQuery query(GetDatabase());
-  query.prepare(m_tableMetadata->GetSelectAllString());
+  QString allJoinConditionStr = "";
+  std::vector<QString> joinTableNames;
+  if (joinInfos) {
+    allJoinConditionStr = GetAllJoinsConditionStr((*joinInfos));
+    joinTableNames = GetJoinTableNames((*joinInfos));
+  }
+
+  QString selectAllStr = QString("SELECT %1 FROM %2 %3").arg(m_tableMetadata->GetSelectColumnString(&joinTableNames), m_tableMetadata->GetTableName(), allJoinConditionStr);
+  query.prepare(selectAllStr);
 
   if (!query.exec())
     throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
 
-  return QueryToEntities(&query);
+  return QueryToEntities(&query, &joinTableNames);
 }
 
 template <class T>
@@ -148,7 +161,8 @@ std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pa
     pagingInfo.orderFieldName = parameters.orderFieldName;
   }
 
-  countQuery.prepare(QString("SELECT COUNT(*), %1 FROM %2 %3 WHERE %4").arg(selectColumnStr, m_tableMetadata->GetTableName(), allJoinCondition, whereCondition));
+  QString countQueryString = QString("SELECT COUNT(*), %1 FROM %2 %3 WHERE %4").arg(selectColumnStr, m_tableMetadata->GetTableName(), allJoinCondition, whereCondition);
+  countQuery.prepare(countQueryString);
   if (countQuery.exec()) {
     countQuery.next();
     allRowCount = countQuery.value(0).toInt();
@@ -181,8 +195,12 @@ template <class T>
 T QtRepository<T>::Get(int id, std::vector<JoinInfo>* joinInfos)
 {
   QSqlQuery query(GetDatabase());
-  QString allJoinConditionStr = GetAllJoinsConditionStr((*joinInfos));
-  std::vector<QString> joinTableNames = GetJoinTableNames((*joinInfos));
+  QString allJoinConditionStr = "";
+  std::vector<QString> joinTableNames;
+  if (joinInfos) {
+    allJoinConditionStr = GetAllJoinsConditionStr((*joinInfos));
+    joinTableNames = GetJoinTableNames((*joinInfos));
+  }
   QString idColumnFullName = m_tableMetadata->GetSelectInfos()[m_tableMetadata->GetKeyColumnName()].fullColumnName;
   QString getSqlStr = QString("SELECT %1 FROM %2 %3 WHERE %4 = :%5").arg(m_tableMetadata->GetSelectColumnString(&joinTableNames), m_tableMetadata->GetTableName(), allJoinConditionStr, idColumnFullName, "id");
 
@@ -226,10 +244,14 @@ void QtRepository<T>::Update(T& entity)
 }
 
 template <class T>
-void  QtRepository<T>::Create(T& entity)
+int QtRepository<T>::Create(T& entity)
 {
   QSqlQuery query(GetDatabase());
   QString insertQueryStr = m_tableMetadata->GetInsertQueryString();
+
+  int lastInsertRowId;
+  QString lastInsertRowIdQueryStr = "SELECT last_insert_rowid()";
+  QSqlQuery lastInsertRowIdQuery(GetDatabase());
 
   query.prepare(insertQueryStr);
   for (const auto &columnName : m_tableMetadata->GetColumnNames())
@@ -240,6 +262,19 @@ void  QtRepository<T>::Create(T& entity)
 
   if (!query.exec())
     throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
+ 
+  lastInsertRowIdQuery.prepare(lastInsertRowIdQueryStr);
+
+  if (lastInsertRowIdQuery.exec()) {
+    lastInsertRowIdQuery.next();
+    lastInsertRowId = lastInsertRowIdQuery.value(0).toInt();
+    return lastInsertRowId;
+  }
+
+  else {
+    RUNTIME_ERROR(lastInsertRowIdQuery.lastError().text().toStdString())
+  }
+
 }
 
 template <class T>
@@ -255,4 +290,11 @@ std::vector<T> QtRepository<T>::QueryToEntities(QSqlQuery* query, std::vector<QS
     result.push_back(entity);
   }
   return result;
+}
+
+template <class T>
+void QtRepository<T>::DeleteWhere(std::string& whereCondition)
+{
+  QSqlQuery query(GetDatabase());
+  QString lastInsertRowIdQueryStr = "Test";
 }

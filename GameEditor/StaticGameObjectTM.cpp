@@ -1,35 +1,35 @@
 #include "StaticGameObjectTM.h"
 
 
-StaticGameObjectTM::StaticGameObjectTM(int onPage, QObject * parent) : QAbstractTableModel{ parent }
+StaticGameObjectTM::StaticGameObjectTM(int onPage, QObject * parent) : GETable<StaticGameObjectDbInfo>(parent)
 {
   m_staticGOService = DependencyResolver::GetStaticGOService();
-  m_getParameters.onPage = onPage;
-  m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(0, "id"));
-  m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(1, "name"));
-  m_SGOTableOrderFieldMap.insert(std::pair<int, std::string>(2, "modelFileName"));
-  UpdateData();
+  Initialize(onPage);
 }
 
+void StaticGameObjectTM::FillOrderFieldMap()
+{
+  SGOMetadata metadata;
+  m_orderFieldMap.insert(std::pair<int, std::string>(0, metadata.GetKeyColumnName().toStdString()));
+
+  for (int i = 0; i < metadata.GetColumnNames().size(); ++i)
+    m_orderFieldMap.insert(std::pair<int, std::string>(i + 1, metadata.GetAlias(i).toStdString()));
+}
 
 StaticGameObjectTM::~StaticGameObjectTM()
 {
 }
 
-void StaticGameObjectTM::UpdateData()
+void StaticGameObjectTM::GetData()
 {
-  this->beginResetModel();
   m_data = m_staticGOService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_modelFileNameFilter);
-  this->endResetModel();
-  emit TableDataChanged();
-  emit PagingInfoChanged(m_pagingInfo);
 }
 
 void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter, QString SGOModelFilenameFilter)
 {
   m_getParameters.pageNumber = pageNumber;
   m_getParameters.onPage = onPage;
-  m_getParameters.orderFieldName = m_SGOTableOrderFieldMap[orderFieldIndex];
+  m_getParameters.orderFieldName = m_orderFieldMap[orderFieldIndex];
   m_getParameters.orderDirection = orderDirection == Qt::SortOrder::AscendingOrder ? OrderDirection::ASC : OrderDirection::DESC;
 
   m_SGONameFilter = SGONameFilter.toStdString();
@@ -39,6 +39,9 @@ void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, int orderFieldI
 
 QVariant StaticGameObjectTM::data(const QModelIndex &index, int role) const
 {
+  if (index.column() == 3 && role == Qt::TextAlignmentRole)
+    return Qt::AlignRight;
+
   if (role != Qt::DisplayRole && role != Qt::EditRole) return{};
   const auto & gameObject = m_data[index.row()];
 
@@ -47,6 +50,7 @@ QVariant StaticGameObjectTM::data(const QModelIndex &index, int role) const
     case 0: return gameObject.id;
     case 1: return gameObject.name;
     case 2: return gameObject.modelFileName;
+    case 3: return gameObject.countOnMap;
     default: return{};
   }
 }
@@ -58,31 +62,27 @@ QVariant StaticGameObjectTM::headerData(int section, Qt::Orientation orientation
     case 0: return "Id";
     case 1: return tr("Name");
     case 2: return tr("Model filename");
+    case 3: return tr("Count");
     default: return{};
   }
 }
 
-void StaticGameObjectTM::append(StaticGameObjectDbInfo& gameObject)
+void StaticGameObjectTM::appendEntity(StaticGameObjectDbInfo& gameObject)
 {
-  beginInsertRows({}, m_data.count(), m_data.count());
   m_staticGOService->CreateStaticGameObject(gameObject);
-  UpdateData();
-  endInsertRows();
 }
 
-void StaticGameObjectTM::edit(StaticGameObjectDbInfo& gameObject)
+void StaticGameObjectTM::editEntity(StaticGameObjectDbInfo& gameObject)
 {
   m_staticGOService->UpdateStaticGameObject(gameObject);
-  UpdateData();
 }
 
-void StaticGameObjectTM::remove(int id)
+void StaticGameObjectTM::removeEntity(int id)
 {
   m_staticGOService->DeleteStaticGameObject(id);
-  UpdateData();
 }
 
-StaticGameObjectDbInfo StaticGameObjectTM::GetStaticGameObject(int rowNumber)
+StaticGameObjectDbInfo StaticGameObjectTM::GetEntityByKey(int id)
 {
-  return m_data.at(rowNumber);
+  return m_staticGOService->GetStaticGameObject(id);
 }

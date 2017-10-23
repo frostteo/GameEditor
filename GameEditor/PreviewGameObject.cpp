@@ -23,7 +23,7 @@ void PreviewGameObject::ProcessUserInput(InputState* inputState)
   if (inputState->IsKeyDown(DIK_TAB))
   {
     m_rotateSwicher = false;
-    m_model->SetWorldMatrix(XMMatrixIdentity());
+    m_sgo->SetWorldMatrix(XMMatrixIdentity());
   }
   
   
@@ -33,7 +33,7 @@ void PreviewGameObject::ProcessUserInput(InputState* inputState)
 
   if (m_rotateSwicher)
   {
-    m_model->ChangeYRotation(0.5);
+    m_sgo->ChangeYRotation(0.5);
     return;
   }
 
@@ -43,7 +43,7 @@ void PreviewGameObject::ProcessUserInput(InputState* inputState)
     int deltaY = inputState->m_mouseState.lY;
 
     XMMATRIX worldMatrix;
-    m_model->GetWorldMatrix(worldMatrix);
+    m_sgo->GetWorldMatrix(worldMatrix);
 
     if (abs(deltaX) > abs(deltaY)) {
       worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationNormal(XMVectorSet(0, 1, 0, 1), deltaX * m_rotateCoef));
@@ -52,6 +52,6 @@ void PreviewGameObject::ProcessUserInput(InputState* inputState)
       worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationNormal(XMVectorSet(1, 0, 0, 1), deltaY * m_rotateCoef));
     }
 
-    m_model->SetWorldMatrix(worldMatrix);
+    m_sgo->SetWorldMatrix(worldMatrix);
   }
 }

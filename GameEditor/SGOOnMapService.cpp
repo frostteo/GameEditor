@@ -13,7 +13,9 @@ SGOOnMapService::~SGOOnMapService()
 
 QList<SGOOnMapDbInfo> SGOOnMapService::GetAll()
 {
-  std::vector<SGOOnMapDbInfo> gameObjects = m_unitOfWork->GetSGOOnMapRepository()->GetAll();
+  std::vector<JoinInfo> joinInfos;
+  joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  std::vector<SGOOnMapDbInfo> gameObjects = m_unitOfWork->GetSGOOnMapRepository()->GetAll(&joinInfos);
 
   QList<SGOOnMapDbInfo> qListGameObjects;
   qListGameObjects.reserve(gameObjects.size());
@@ -23,9 +25,12 @@ QList<SGOOnMapDbInfo> SGOOnMapService::GetAll()
   return  qListGameObjects;
 }
 
-void SGOOnMapService::Create(SGOOnMapDbInfo& gameObject)
+int SGOOnMapService::Create(SGOOnMapDbInfo& gameObject)
 {
-  m_unitOfWork->GetSGOOnMapRepository()->Create(gameObject);
+  int entityId = m_unitOfWork->GetSGOOnMapRepository()->Create(gameObject);
+  IncrementSGOCount(gameObject.staticGameObjectId);
+  gameObject.id = entityId;
+  return entityId;
 }
 
 void SGOOnMapService::Update(SGOOnMapDbInfo& gameObject)
@@ -35,17 +40,19 @@ void SGOOnMapService::Update(SGOOnMapDbInfo& gameObject)
 
 void SGOOnMapService::Delete(int id)
 {
+  auto gameObject = m_unitOfWork->GetSGOOnMapRepository()->Get(id);
+  DecrementSGOCount(gameObject.staticGameObjectId);
   m_unitOfWork->GetSGOOnMapRepository()->Delete(id);
 }
 
-QList<SGOOnMapBLL> SGOOnMapService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName, std::string instanceName)
+QList<SGOOnMapDbInfo> SGOOnMapService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName, std::string instanceName)
 {
   std::vector<std::string> whereParams;
   std::string whereParamsGlue = " AND ";
   parameters.whereCondition = "";
   bool filteringIsEnabled = false;
   std::vector<SGOOnMapDbInfo> gameObjects;
-  QList<SGOOnMapBLL> qListGameObjects;
+  QList<SGOOnMapDbInfo> qListGameObjects;
  
 
   if (!SGOName.empty()) {
@@ -65,35 +72,35 @@ QList<SGOOnMapBLL> SGOOnMapService::GetFiltered(GetParameters& parameters, Pagin
   else
     parameters.whereCondition = "1";
 
-  
+  parameters.joinInfos.clear();
   parameters.joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   gameObjects = m_unitOfWork->GetSGOOnMapRepository()->GetAll(parameters, pagingInfo);
   qListGameObjects.reserve(gameObjects.size());
-  for (auto& gameObject : gameObjects)
-  {
-    SGOOnMapBLL SGOOnMapBLL;
-    SGOOnMapBLL.id = gameObject.id;
-    SGOOnMapBLL.instanceName = gameObject.instanceName;
-    SGOOnMapBLL.SGOName = gameObject.staticGameObjectDbInfo.name;
-    SGOOnMapBLL.staticGameObjectId = gameObject.staticGameObjectId;
 
-    qListGameObjects.push_back(SGOOnMapBLL);
-  }
+  std::copy(gameObjects.begin(), gameObjects.end(), std::back_inserter(qListGameObjects));
 
   return qListGameObjects;
 }
 
-SGOOnMapBLL SGOOnMapService::Get(int id)
+SGOOnMapDbInfo SGOOnMapService::Get(int id)
 {
   std::vector<JoinInfo> joinInfos;
   joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   SGOOnMapDbInfo gameObject = m_unitOfWork->GetSGOOnMapRepository()->Get(id, &joinInfos);
 
-  SGOOnMapBLL SGOOnMapBLL;
-  SGOOnMapBLL.id = gameObject.id;
-  SGOOnMapBLL.instanceName = gameObject.instanceName;
-  SGOOnMapBLL.SGOName = gameObject.staticGameObjectDbInfo.name;
-  SGOOnMapBLL.staticGameObjectId = gameObject.staticGameObjectId;
+  return gameObject;
+}
 
-  return SGOOnMapBLL;
+void SGOOnMapService::IncrementSGOCount(int id)
+{
+  auto gameObject = m_unitOfWork->GetStaticGORepository()->Get(id);
+  gameObject.countOnMap += 1;
+  m_unitOfWork->GetStaticGORepository()->Update(gameObject);
+}
+
+void SGOOnMapService::DecrementSGOCount(int id)
+{
+  auto gameObject = m_unitOfWork->GetStaticGORepository()->Get(id);
+  gameObject.countOnMap -= 1;
+  m_unitOfWork->GetStaticGORepository()->Update(gameObject);
 }

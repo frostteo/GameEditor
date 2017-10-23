@@ -5,6 +5,8 @@
 #include <qmessagebox.h>
 #include "QtLoggerPart.h"
 
+#include "DependencyResolver.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -13,7 +15,13 @@ int main(int argc, char *argv[])
     
       GameEditor w;
 
-      w.show();
+      //GetParameters getParameters;
+      //PagingInfo pagingInfo;
+      //auto test = DependencyResolver::GetSGOOnMapService()->GetFiltered(getParameters, pagingInfo);
+
+
+      //auto test2 = DependencyResolver::GetSGOOnMapService()->GetAll();
+      w.showMaximized();
      /* QtGameFrameworkTest w2;
       w2.show();*/
       return a.exec();

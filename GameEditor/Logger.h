@@ -8,6 +8,10 @@
 #include "IPlatformDependentLoggerPart.h"
 #include <stdexcept>
 
+class Logger;
+
+#define RUNTIME_ERROR(Message) throw std::runtime_error(Logger::get().GetErrorTraceMessage(Message, __FILE__, __LINE__));
+
 class Logger : public Singleton<Logger>
 {
   friend class Singleton<Logger>;

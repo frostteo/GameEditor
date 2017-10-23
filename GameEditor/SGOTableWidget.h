@@ -2,9 +2,9 @@
 
 #include <memory>
 #include <QWidget>
+#include <qtableview.h>
 #include <qboxlayout.h>
 #include "ui_SGOTableWidget.h"
-#include "qtableview.h"
 #include "SGOWidgetToolBox.h"
 #include "StaticGameObjectTM.h"
 #include "AddStaticGameObjectDialog.h"
@@ -32,15 +32,24 @@ protected slots:
   void SGOtableRowSelected(const QItemSelection& selected, const QItemSelection& deselected);
   void PaginatorPageChanged(int pageNumber, int onPage);
   void HeaderSectionClicked(int sectionIndex);
-  void UpdateTable();
+  
   void on_previewSGOBtn_clicked();
+  void on_addToMapBtn_clicked();
+  void on_SGODeletedFromMap(int id);
 protected:
   void configureTable();
   void configureUI();
   void configurePaginator();
+public slots:
+  void UpdateTable();
 public:
     SGOTableWidget(QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
     ~SGOTableWidget();
     void SetPathToModels(QString& path) { m_pathToModels = path; }
     void SetPathToMaterials(QString& path) { m_pathToMaterials = path; }
+    StaticGameObjectTM* GetTableModel() { return m_SGOTableModel.get(); }
+signals:
+    void AddToMap(StaticGameObjectDbInfo& gameObject);
+    void SGODeleted(int sgoId);
+    void SGOEdited(StaticGameObjectDbInfo& gameObject);
 };

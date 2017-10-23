@@ -1,5 +1,4 @@
 #include "BoundingBox.h"
-#include "Model.h"
 
 const char BoundingBox::BOUNDING_BOX_SERIALIZE_NAME[BOUNDING_BOX_SERIALIZE_NAME_LENGTH] = "bounding box: ";
 
@@ -192,9 +191,4 @@ void BoundingBox::PrepareToRender(ID3D11DeviceContext* deviceContext)
 
   // Set the index buffer to active in the input assembler so it can be rendered.
   deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-}
-//
-void BoundingBox::GetWorldMatrix(XMMATRIX& worldMatrix)
-{
-  m_model->GetWorldMatrix(worldMatrix);
 }

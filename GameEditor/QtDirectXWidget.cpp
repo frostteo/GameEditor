@@ -33,6 +33,7 @@ QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, 
 
 QtDirectXWidget::~QtDirectXWidget()
 {
+  Shutdown();
 }
 
 bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials)
@@ -91,4 +92,9 @@ void QtDirectXWidget::resizeEvent(QResizeEvent* evt)
   float width = this->width();
   float height = this->height();
   m_Camera->Initialize(width, height, SCREEN_NEAR, SCREEN_DEPTH);
+}
+
+Model* QtDirectXWidget::GetModel(std::string& modelName)
+{
+  return m_graphicSystem->GetModelFactory()->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + modelName);
 }
