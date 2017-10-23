@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Добавить статический игровой объект</string>
+   <string>Add/Edit static game object</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -24,6 +24,9 @@
    </property>
    <property name="layoutDirection">
     <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="locale">
+    <locale language="English" country="UnitedStates"/>
    </property>
    <property name="standardButtons">
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -122,7 +125,7 @@
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Название</string>
+       <string>Name</string>
       </property>
      </widget>
     </item>
@@ -136,7 +139,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>Файл модели</string>
+       <string>Model file name</string>
       </property>
      </widget>
     </item>
@@ -156,7 +159,7 @@
     <item row="1" column="2">
      <widget class="QPushButton" name="chooseModelFileBtn">
       <property name="text">
-       <string>Выбрать</string>
+       <string>select</string>
       </property>
      </widget>
     </item>

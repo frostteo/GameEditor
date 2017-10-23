@@ -9,6 +9,7 @@
 #ifndef UI_ADDSTATICGAMEOBJECTDIALOG_H
 #define UI_ADDSTATICGAMEOBJECTDIALOG_H
 
+#include <QtCore/QLocale>
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
@@ -46,6 +47,7 @@ public:
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
         buttonBox->setGeometry(QRect(230, 90, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
+        buttonBox->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         buttonBox->setCenterButtons(false);
         errorsMsg = new QLabel(AddStaticGameObjectDialog);
@@ -112,11 +114,11 @@ public:
 
     void retranslateUi(QDialog *AddStaticGameObjectDialog)
     {
-        AddStaticGameObjectDialog->setWindowTitle(QApplication::translate("AddStaticGameObjectDialog", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214 \321\201\321\202\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \320\270\320\263\321\200\320\276\320\262\320\276\320\271 \320\276\320\261\321\212\320\265\320\272\321\202", Q_NULLPTR));
+        AddStaticGameObjectDialog->setWindowTitle(QApplication::translate("AddStaticGameObjectDialog", "Add/Edit static game object", Q_NULLPTR));
         errorsMsg->setText(QString());
-        label->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265", Q_NULLPTR));
-        label_2->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\244\320\260\320\271\320\273 \320\274\320\276\320\264\320\265\320\273\320\270", Q_NULLPTR));
-        chooseModelFileBtn->setText(QApplication::translate("AddStaticGameObjectDialog", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214", Q_NULLPTR));
+        label->setText(QApplication::translate("AddStaticGameObjectDialog", "Name", Q_NULLPTR));
+        label_2->setText(QApplication::translate("AddStaticGameObjectDialog", "Model file name", Q_NULLPTR));
+        chooseModelFileBtn->setText(QApplication::translate("AddStaticGameObjectDialog", "select", Q_NULLPTR));
     } // retranslateUi
 
 };
