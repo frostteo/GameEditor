@@ -76,10 +76,23 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="editPreferencesAction"/>
   </widget>
   <action name="actionObjConverter">
    <property name="text">
     <string>.obj convert</string>
+   </property>
+  </action>
+  <action name="editPreferencesAction">
+   <property name="icon">
+    <iconset resource="GameEditor.qrc">
+     <normaloff>:/GameEditor/prefs-icon.png</normaloff>:/GameEditor/prefs-icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+   <property name="toolTip">
+    <string>Map editor preferences</string>
    </property>
   </action>
  </widget>

@@ -12,10 +12,12 @@
 #include "Logger.h"
 #include "InputListener.h"
 #include "InputState.h"
+#include "windows.h"
 
 class InputSystem
 {
 private:
+  HWND m_hwnd;
   std::list<InputListener *> m_listenersList;
   IDirectInput8* m_directInput;
   IDirectInputDevice8* m_keyboard;

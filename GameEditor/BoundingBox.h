@@ -28,6 +28,8 @@ protected:
   std::vector<VertexPosition> m_vertices;
   ID3D11Buffer* m_vertexBuffer;
   ID3D11Buffer* m_indexBuffer;
+  XMFLOAT3 m_minPoint;
+  XMFLOAT3 m_maxPoint;
 public:
   const int INDEX_COUNT = 24;
   /*
@@ -48,5 +50,7 @@ public:
   void ShutdownBuffers();
   virtual void PrepareToRender(ID3D11DeviceContext* deviceContext) override;
   virtual int GetIndexCount() override { return INDEX_COUNT; }
+  XMFLOAT3 GetMinPoint();
+  XMFLOAT3 GetMaxPoint();
 };
 

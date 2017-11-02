@@ -13,10 +13,10 @@ class PreviewGameObject :
 protected:
   const float m_scaleCoef = 0.05f;
   const float m_rotateCoef = 0.01f;
-  const float rotateYAngle = 0.1f;
+  const float m_autoRotateYAngle = 0.5f;
   Camera* m_camera;
   StaticGameObject* m_sgo;
-  bool m_rotateSwicher;
+  bool m_autoRotateSwicher;
   bool spacePressed;
 public:
   PreviewGameObject();

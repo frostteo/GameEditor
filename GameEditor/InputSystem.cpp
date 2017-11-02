@@ -13,6 +13,7 @@ InputSystem::~InputSystem()
 void InputSystem::Initialize(HINSTANCE hinstance , HWND hwnd)
 {
   HRESULT result;
+  m_hwnd = hwnd;
 
   // Initialize the main direct input interface.
   result = DirectInput8Create(hinstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_directInput, NULL);
@@ -100,6 +101,14 @@ bool InputSystem::ReadKeyboard()
 bool InputSystem::ReadMouse()
 {
   HRESULT result;
+
+  POINT cursorPos;
+
+  if (GetCursorPos(&cursorPos) && ScreenToClient(m_hwnd, &cursorPos))
+  {
+    m_inputState.mouseXCoor = cursorPos.x;
+    m_inputState.mouseYCoor = cursorPos.y;
+  }
 
   // Read the mouse device.
   result = m_mouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&m_inputState.m_mouseState);

@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="GameEditor">
-    </qresource>
+  <qresource prefix="GameEditor">
+	<file>prefs-icon.png</file>
+ </qresource>
 </RCC>

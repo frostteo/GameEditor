@@ -10,6 +10,8 @@
 #include "MapEditorData.h"
 #include "MapEditor.h"
 #include "SGOTableWidget.h"
+#include "MapEditorPreferencesDialog.h"
+#include "MapEditorPreferences.h"
 
 class GameEditor : public QMainWindow
 {
@@ -26,11 +28,13 @@ private:
   std::unique_ptr<SGOTableWidget> m_SGOTableWidget;
   std::unique_ptr<MapEditorData> m_mapEditorData;
   std::unique_ptr<MapEditor> m_mapEditor;
+  std::unique_ptr<MapEditorPreferences> m_mapEditorPreferences;
 private:
   void configureUI();
 private slots:
   void on_actionObjConverter_triggered();
   void AddSGOToMap(StaticGameObjectDbInfo& gameObject);
+  void on_editPreferencesAction_triggered();
 public:
     GameEditor(QWidget *parent = Q_NULLPTR);
     ~GameEditor() { }

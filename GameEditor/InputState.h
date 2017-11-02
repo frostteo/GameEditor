@@ -21,6 +21,8 @@ protected:
   unsigned char m_previousMouseBtnState[countOfMouseKeys];
 
 public:
+  int mouseXCoor = 0;
+  int mouseYCoor = 0;
   DIMOUSESTATE m_mouseState;
   bool IsKeyDown(BYTE key) { return m_keyboardState[key] & 0x80; }
   bool IsMouseBtnDown(MouseButtons btn) { return m_mouseState.rgbButtons[btn]; }

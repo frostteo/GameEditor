@@ -45,9 +45,9 @@ SGOOnMapDbInfo AddOrEditSGOOnMapDialog::GetSGOOnMap()
   const float gradesInCircle = 360.0f;
 
   m_SGOOnMap.instanceName = this->instanceNameTxt->text().trimmed();
-  m_SGOOnMap.xPos = fmod(this->xPosTxt->text().toFloat(), gradesInCircle);
-  m_SGOOnMap.yPos = fmod(this->yPosTxt->text().toFloat(), gradesInCircle);
-  m_SGOOnMap.zPos = fmod(this->zPosTxt->text().toFloat(), gradesInCircle);
+  m_SGOOnMap.xPos = this->xPosTxt->text().toFloat();
+  m_SGOOnMap.yPos = this->yPosTxt->text().toFloat();
+  m_SGOOnMap.zPos = this->zPosTxt->text().toFloat();
 
   m_SGOOnMap.xRotate = fmod(this->xRotateTxt->text().toFloat(), gradesInCircle);
   m_SGOOnMap.yRotate = fmod(this->yRotateTxt->text().toFloat(), gradesInCircle);

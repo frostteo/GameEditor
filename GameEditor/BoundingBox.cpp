@@ -12,6 +12,9 @@ void BoundingBox::Initialize(float& minX, float& minY, float& minZ, float& maxX,
 {
   const int countOfPointInParallelepiped = 8;
 
+  m_minPoint = XMFLOAT3(minX, minY, minZ);
+  m_maxPoint = XMFLOAT3(maxX, maxY, maxZ);
+
   VertexPosition bottomNearLeft = { minX, minY, minZ };
   VertexPosition bottomFarLeft = { minX, minY, maxZ };
   VertexPosition bottomFarRight = { maxX, minY, maxZ };
@@ -191,4 +194,14 @@ void BoundingBox::PrepareToRender(ID3D11DeviceContext* deviceContext)
 
   // Set the index buffer to active in the input assembler so it can be rendered.
   deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+}
+
+XMFLOAT3 BoundingBox::GetMinPoint()
+{
+  return m_minPoint;
+}
+
+XMFLOAT3 BoundingBox::GetMaxPoint()
+{
+  return m_maxPoint;
 }

@@ -7,6 +7,7 @@ GameEditor::GameEditor(QWidget *parent)
 
     BLLDependencyResolver::GetUnitOfWork()->Initialize(m_hostName, m_databaseName, m_connectionName);
     this->configureUI();
+    m_mapEditorPreferences = std::unique_ptr<MapEditorPreferences>(new MapEditorPreferences);
 }
 
 void GameEditor::configureUI()
@@ -50,4 +51,11 @@ void GameEditor::AddSGOToMap(StaticGameObjectDbInfo& gameObject)
 void GameEditor::show()
 {
   QMainWindow::show();
+}
+
+void GameEditor::on_editPreferencesAction_triggered()
+{
+  MapEditorPreferencesDialog dialog;
+  dialog.SetMapEditorPreferences(m_mapEditorPreferences.get());
+  dialog.exec();
 }

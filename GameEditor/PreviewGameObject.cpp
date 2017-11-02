@@ -3,7 +3,7 @@
 PreviewGameObject::PreviewGameObject()
 {
   m_name = "preview game object";
-  m_rotateSwicher = false;
+  m_autoRotateSwicher = false;
 }
 
 
@@ -22,18 +22,18 @@ void PreviewGameObject::ProcessUserInput(InputState* inputState)
 
   if (inputState->IsKeyDown(DIK_TAB))
   {
-    m_rotateSwicher = false;
+    m_autoRotateSwicher = false;
     m_sgo->SetWorldMatrix(XMMatrixIdentity());
   }
   
   
   if (inputState->IsKeyPressed(DIK_SPACE))
-    m_rotateSwicher = !m_rotateSwicher;
+    m_autoRotateSwicher = !m_autoRotateSwicher;
 
 
-  if (m_rotateSwicher)
+  if (m_autoRotateSwicher)
   {
-    m_sgo->ChangeYRotation(0.5);
+    m_sgo->ChangeYRotation(m_autoRotateYAngle);
     return;
   }
 

@@ -21,5 +21,8 @@ public:
   void GetViewMatrix(XMMATRIX& viewMatrix);
   void GetOrthoMatrix(XMMATRIX& orthoMatrix);
   void GetProjectionMatrix(XMMATRIX& projectionMatrix);
+  float GetScreenWidth() { return m_screenWidth; }
+  float GetScreenHeight() { return m_screenHeight; }
+  float GetFieldOfView() { return m_fieldOfView; }
 };
 

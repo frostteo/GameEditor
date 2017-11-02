@@ -5,8 +5,15 @@ MapEditor::MapEditor(QString pathToModels, QString pathToMaterials, QWidget *par
 {
   this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
   this->setWindowTitle("Map editor");
-  m_Camera->SetPosition(0.0f, 0.0f, -500.0f);
-
+  m_Camera->SetPosition(-500.0f, 0.0f, 0.0f);
+  m_Camera->SetRotation(0.0f, 90.0f, 0.0f);
+  //m_Camera->SetPosition(0.0f, 0.0f, -500.0f);
+  //m_Camera->SetRotation(0.0f, 180.0f, 0.0f);
+  MapEditorControl* mapEditorControl = new MapEditorControl;
+  mapEditorControl->SetSelectedObjectId(&m_selectedObjectId);
+  mapEditorControl->SetCamera(m_Camera.get());
+  mapEditorControl->SetSGOMap(&m_staticGameObjectMap);
+  m_inputSystem->AddInputListener(mapEditorControl);
 }
 
 MapEditor::~MapEditor()
@@ -19,6 +26,7 @@ void MapEditor::AddSGO(SGOOnMapDbInfo& sgoOnMap)
   sgo.SetModel(GetModel(sgoOnMap.staticGameObjectDbInfo.modelFileName.toStdString()));
   sgo.GetModel()->GetBoundingBox()->InitializeBuffers(m_graphicSystem->GetDevice());
   sgo.SetPosition(sgoOnMap.xPos, sgoOnMap.yPos, sgoOnMap.zPos);
+  sgo.SetRotation(sgoOnMap.xRotate, sgoOnMap.yRotate, sgoOnMap.zRotate);
   sgo.m_SGODbInfoId = sgoOnMap.staticGameObjectDbInfo.id;
   //TODO FHolod: later add rotate data
   m_staticGameObjectMap[sgoOnMap.id] = sgo;
@@ -26,11 +34,18 @@ void MapEditor::AddSGO(SGOOnMapDbInfo& sgoOnMap)
 
 void MapEditor::paintEvent(QPaintEvent* pEvent)
 {
+  XMMATRIX worldMatrix;
+
   for (auto& sgo : m_staticGameObjectMap)
   {
-    XMMATRIX worldMatrix;
     sgo.second.GetWorldMatrix(worldMatrix);
     m_graphicSystem->AddModelToRenderList(sgo.second.GetModel(), worldMatrix);
+  }
+
+  if (m_selectedObjectId != MapEditorControl::NOTHING_SELECTED)
+  {
+    m_staticGameObjectMap[m_selectedObjectId].GetWorldMatrix(worldMatrix);
+    m_graphicSystem->AddGridToRenderList(m_staticGameObjectMap[m_selectedObjectId].GetModel()->GetBoundingBox(), worldMatrix);
   }
   QtDirectXWidget::paintEvent(pEvent);
 }

@@ -6,12 +6,14 @@
 #include <map>
 #include "StaticGameObject.h"
 #include "SGOOnMapDbInfo.h"
+#include "MapEditorControl.h"
 
 class MapEditor : public QtDirectXWidget, public Ui::MapEditor
 {
     Q_OBJECT
 protected:
   std::map<int, StaticGameObject> m_staticGameObjectMap;
+  int m_selectedObjectId = MapEditorControl::NOTHING_SELECTED;
 protected:
   virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
