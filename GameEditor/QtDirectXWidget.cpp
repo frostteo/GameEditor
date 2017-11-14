@@ -1,11 +1,5 @@
 #include "QtDirectXWidget.h"
 
-QtDirectXWidget::QtDirectXWidget(QWidget *parent)
-    : QWidget(parent)
-{
-    setupUi(this);
-}
-
 QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QWidget(parent)
 {

@@ -46,10 +46,10 @@ void PreviewGameObject::ProcessUserInput(InputState* inputState)
     m_sgo->GetWorldMatrix(worldMatrix);
 
     if (abs(deltaX) > abs(deltaY)) {
-      worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationNormal(XMVectorSet(0, 1, 0, 1), deltaX * m_rotateCoef));
+      worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationY(deltaX * m_rotateCoef));
     }
     else {
-      worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationNormal(XMVectorSet(1, 0, 0, 1), deltaY * m_rotateCoef));
+      worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixRotationX(deltaY * m_rotateCoef));
     }
 
     m_sgo->SetWorldMatrix(worldMatrix);

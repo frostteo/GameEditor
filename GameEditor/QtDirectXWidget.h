@@ -18,7 +18,7 @@ class QtDirectXWidget : public QWidget, public Ui::QtDirectXWidget
 protected:
   const bool FULL_SCREEN = false;
   const bool VSYNC_ENABLED = true;
-  const float SCREEN_DEPTH = 5000.0f;
+  const float SCREEN_DEPTH = 40960.0f;
   const float SCREEN_NEAR = 0.1f;
 
   std::string m_pathToMaterials;
@@ -44,7 +44,6 @@ protected:
   virtual void paintEvent(QPaintEvent* pEvent);
   Model* GetModel(std::string& modelName);
 public:
-  QtDirectXWidget(QWidget *parent = Q_NULLPTR);
   QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~QtDirectXWidget();
 

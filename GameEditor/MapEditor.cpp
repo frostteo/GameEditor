@@ -5,14 +5,12 @@ MapEditor::MapEditor(QString pathToModels, QString pathToMaterials, QWidget *par
 {
   this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
   this->setWindowTitle("Map editor");
-  m_Camera->SetPosition(-500.0f, 0.0f, 0.0f);
-  m_Camera->SetRotation(0.0f, 90.0f, 0.0f);
-  //m_Camera->SetPosition(0.0f, 0.0f, -500.0f);
-  //m_Camera->SetRotation(0.0f, 180.0f, 0.0f);
-  MapEditorControl* mapEditorControl = new MapEditorControl;
+ /* m_Camera->SetPosition(-500.0f, 0.0f, 0.0f);
+  m_Camera->SetRotation(0.0f, 90.0f, 0.0f);*/
+  m_Camera->SetPosition(500.0f, 0.0f, 0.0f);
+  m_Camera->SetRotation(0.0f, -90.0f, 0.0f);
+  MapEditorControl* mapEditorControl = new MapEditorControl(m_Camera.get(), &m_staticGameObjectMap);
   mapEditorControl->SetSelectedObjectId(&m_selectedObjectId);
-  mapEditorControl->SetCamera(m_Camera.get());
-  mapEditorControl->SetSGOMap(&m_staticGameObjectMap);
   m_inputSystem->AddInputListener(mapEditorControl);
 }
 

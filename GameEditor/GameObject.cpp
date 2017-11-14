@@ -36,28 +36,6 @@ void GameObject::SetRotation(float x, float y, float z)
   m_needRebuildRotationMatrix = true;
 }
 
-void GameObject::MoveVerticalInLocalCord(float distance)
-{
-  m_positionY += distance;
-  m_needRebuildTranslationMatrix = true;
-}
-
-void GameObject::MoveForwardBackwardInLocalCord(float distance)
-{
-  float yRotationInRad = XMConvertToRadians(m_rotationY);
-  m_positionX += sinf(yRotationInRad) * distance;
-  m_positionZ += cosf(yRotationInRad) * distance;
-  m_needRebuildTranslationMatrix = true;
-}
-
-void GameObject::MoveLeftRightInLocalCord(float distance)
-{
-  float yRotationInRad = XMConvertToRadians(m_rotationY);
-  m_positionX += cosf(yRotationInRad) * distance;
-  m_positionZ -= sinf(yRotationInRad) * distance;
-  m_needRebuildTranslationMatrix = true;
-}
-
 XMFLOAT3 GameObject::GetPosition()
 {
   return XMFLOAT3(m_positionX, m_positionY, m_positionZ);
@@ -117,8 +95,7 @@ void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
     if (m_needRebuildTranslationMatrix)
       m_translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
 
-    m_worldMatrix = XMMatrixMultiply(XMMatrixIdentity(), m_rotationMatrix);
-    m_worldMatrix = XMMatrixMultiply(m_worldMatrix, m_translationMatrix);
+    m_worldMatrix = XMMatrixMultiply(m_rotationMatrix, m_translationMatrix);
   }
 
   worldMatrix = m_worldMatrix;
@@ -129,6 +106,94 @@ void GameObject::SetWorldMatrix(XMMATRIX worldMatrix)
   m_worldMatrix = worldMatrix;
   m_needRebuildRotationMatrix = false;
   m_needRebuildTranslationMatrix = false;
+
+  XMFLOAT4X4 worldReadableMatrix;
+
+  XMStoreFloat4x4(&worldReadableMatrix, m_worldMatrix);
+
+  m_positionX = worldReadableMatrix._41;
+  m_positionY = worldReadableMatrix._42;
+  m_positionZ = worldReadableMatrix._43;
+  
+  m_rotationX = asin(-worldReadableMatrix._32);
+  const float THRESHOLD = 0.001f; 
+
+  float test = cos(m_rotationX);
+
+  if (test > THRESHOLD)
+  {
+    m_rotationZ = atan2(worldReadableMatrix._12, worldReadableMatrix._22);
+    m_rotationY = atan2(worldReadableMatrix._31, worldReadableMatrix._33);
+  }
+  else
+  {
+    m_rotationZ = atan2(-worldReadableMatrix._21, worldReadableMatrix._11);
+    m_rotationY = 0.0f;
+  }
+
+  m_rotationX = XMConvertToDegrees(m_rotationX);
+  m_rotationY = XMConvertToDegrees(m_rotationY);
+  m_rotationZ = XMConvertToDegrees(m_rotationZ);
+  m_needRebuildTranslationMatrix = true;
+  m_needRebuildRotationMatrix = true;
 }
 
+XMVECTOR GameObject::GetRight()
+{
+  XMFLOAT4X4 worldReadableMatrix;
 
+  XMStoreFloat4x4(&worldReadableMatrix, m_worldMatrix);
+  XMVECTOR rightVector = XMVectorSet(worldReadableMatrix._11, worldReadableMatrix._12, worldReadableMatrix._13, 1.0f);
+  rightVector = XMVector3Normalize(rightVector);
+  return rightVector;
+}
+
+XMVECTOR GameObject::GetUp()
+{
+  XMFLOAT4X4 worldReadableMatrix;
+
+  XMStoreFloat4x4(&worldReadableMatrix, m_worldMatrix);
+  XMVECTOR upVector = XMVectorSet(worldReadableMatrix._21, worldReadableMatrix._22, worldReadableMatrix._23, 1.0f);
+  upVector = XMVector3Normalize(upVector);
+  return upVector;
+}
+
+XMVECTOR GameObject::GetForward()
+{
+  XMFLOAT4X4 worldReadableMatrix;
+
+  XMStoreFloat4x4(&worldReadableMatrix, m_worldMatrix);
+  XMVECTOR forwardVector = XMVectorSet(worldReadableMatrix._31, worldReadableMatrix._32, worldReadableMatrix._33, 1.0f);
+  forwardVector = XMVector3Normalize(forwardVector);
+  return forwardVector;
+}
+
+void GameObject::MoveRight(float distance)
+{
+  XMVECTOR rightVector = GetRight();
+
+  m_positionX += XMVectorGetX(rightVector) * distance;
+  m_positionY += XMVectorGetY(rightVector) * distance;
+  m_positionZ += XMVectorGetZ(rightVector) * distance;
+  m_needRebuildTranslationMatrix = true;
+}
+
+void GameObject::MoveUp(float distance)
+{
+  XMVECTOR upVector = GetUp();
+
+  m_positionX += XMVectorGetX(upVector) * distance;
+  m_positionY += XMVectorGetY(upVector) * distance;
+  m_positionZ += XMVectorGetZ(upVector) * distance;
+  m_needRebuildTranslationMatrix = true;
+}
+
+void GameObject::MoveForward(float distance)
+{
+  XMVECTOR forwardVector = GetForward();
+
+  m_positionX += XMVectorGetX(forwardVector) * distance;
+  m_positionY += XMVectorGetY(forwardVector) * distance;
+  m_positionZ += XMVectorGetZ(forwardVector) * distance;
+  m_needRebuildTranslationMatrix = true;
+}

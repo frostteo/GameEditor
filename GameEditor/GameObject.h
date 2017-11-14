@@ -1,13 +1,6 @@
 #pragma once
 
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-
-#include <d3d11.h>
-#include <directxmath.h>
-
-using namespace DirectX;
+#include "GEMath.h"
 
 class GameObject
 {
@@ -30,10 +23,16 @@ public:
   void ChangeXRotation(float angle);
   void ChangeYRotation(float angle);
   void ChangeZRotation(float angle);
-  void MoveVerticalInLocalCord(float distance);
-  void MoveForwardBackwardInLocalCord(float distance);
-  void MoveLeftRightInLocalCord(float distance);
+
   void virtual GetWorldMatrix(XMMATRIX& worldMatrix);
   void SetWorldMatrix(XMMATRIX worldMatrix);
+
+  XMVECTOR GetRight();
+  XMVECTOR GetUp();
+  XMVECTOR GetForward();
+
+  void MoveRight(float distance);
+  void MoveUp(float distance);
+  void MoveForward(float distance);
 };
 
