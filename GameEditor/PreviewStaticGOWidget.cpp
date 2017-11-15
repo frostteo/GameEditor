@@ -22,11 +22,13 @@ void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGam
 {
   m_inputSystem->ClearListenersList();
 
+  m_sgo = StaticGameObject();
   m_sgo.SetModel(GetModel(staticGameObject.modelFileName.toStdString()));
 
   PreviewGameObject* previewGameObject = new PreviewGameObject();
   previewGameObject->SetCamera(m_Camera.get());
   previewGameObject->SetSGO(&m_sgo);
+  LookAtObjectFromHelper::LookToObjectFromWorldFront(m_Camera.get(), &m_sgo);
   m_inputSystem->AddInputListener(previewGameObject);
 }
 

@@ -5,6 +5,7 @@
 #include "Logger.h"
 #include "Camera.h"
 #include "StaticGameObject.h"
+#include "LookAtObjectFromHelper.h"
 
 class MapEditorControl :
   public InputListener
@@ -32,10 +33,6 @@ protected:
 
   XMMATRIX GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosition, XMVECTOR targetPoint, float deltaX, float deltaY);
   XMMATRIX GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosition, XMVECTOR targetPoint, float deltaX, float deltaY, XMVECTOR cameraRight);
-
-  void LookToObjectFromHelper(float& newWidth, float& newHeight, float& newDepth, XMVECTOR& newObjectCenter);
-  void LookToObjectFromFront();
-  void LookToObjectFromUp();
 public:
   MapEditorControl(Camera* camera, std::map<int, StaticGameObject>* staticGameObjectMap);
   virtual ~MapEditorControl();
