@@ -77,6 +77,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="editPreferencesAction"/>
+   <addaction name="actionSnap_to_angle"/>
+   <addaction name="actionSnap_to_grid"/>
   </widget>
   <action name="actionObjConverter">
    <property name="text">
@@ -84,6 +86,9 @@
    </property>
   </action>
   <action name="editPreferencesAction">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="GameEditor.qrc">
      <normaloff>:/GameEditor/prefs-icon.png</normaloff>:/GameEditor/prefs-icon.png</iconset>
@@ -93,6 +98,36 @@
    </property>
    <property name="toolTip">
     <string>Map editor preferences</string>
+   </property>
+  </action>
+  <action name="actionSnap_to_angle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="GameEditor.qrc">
+     <normaloff>:/GameEditor/angle.png</normaloff>:/GameEditor/angle.png</iconset>
+   </property>
+   <property name="text">
+    <string>Use angle</string>
+   </property>
+   <property name="toolTip">
+    <string>Use angle snap</string>
+   </property>
+  </action>
+  <action name="actionSnap_to_grid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="GameEditor.qrc">
+     <normaloff>:/GameEditor/grid2.png</normaloff>:/GameEditor/grid2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Snap to grid</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap to grid</string>
    </property>
   </action>
  </widget>

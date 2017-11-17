@@ -30,6 +30,8 @@ class Ui_GameEditorClass
 public:
     QAction *actionObjConverter;
     QAction *editPreferencesAction;
+    QAction *actionSnap_to_angle;
+    QAction *actionSnap_to_grid;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QGridLayout *gridLayout_3;
@@ -53,9 +55,22 @@ public:
         actionObjConverter->setObjectName(QStringLiteral("actionObjConverter"));
         editPreferencesAction = new QAction(GameEditorClass);
         editPreferencesAction->setObjectName(QStringLiteral("editPreferencesAction"));
+        editPreferencesAction->setCheckable(false);
         QIcon icon;
         icon.addFile(QStringLiteral(":/GameEditor/prefs-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
         editPreferencesAction->setIcon(icon);
+        actionSnap_to_angle = new QAction(GameEditorClass);
+        actionSnap_to_angle->setObjectName(QStringLiteral("actionSnap_to_angle"));
+        actionSnap_to_angle->setCheckable(true);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/GameEditor/angle.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionSnap_to_angle->setIcon(icon1);
+        actionSnap_to_grid = new QAction(GameEditorClass);
+        actionSnap_to_grid->setObjectName(QStringLiteral("actionSnap_to_grid"));
+        actionSnap_to_grid->setCheckable(true);
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/GameEditor/grid2.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionSnap_to_grid->setIcon(icon2);
         centralWidget = new QWidget(GameEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -109,6 +124,8 @@ public:
         menuBar->addAction(menuMeshConverter->menuAction());
         menuMeshConverter->addAction(actionObjConverter);
         mainToolBar->addAction(editPreferencesAction);
+        mainToolBar->addAction(actionSnap_to_angle);
+        mainToolBar->addAction(actionSnap_to_grid);
 
         retranslateUi(GameEditorClass);
 
@@ -125,6 +142,14 @@ public:
         editPreferencesAction->setText(QApplication::translate("GameEditorClass", "Preferences", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         editPreferencesAction->setToolTip(QApplication::translate("GameEditorClass", "Map editor preferences", Q_NULLPTR));
+#endif // QT_NO_TOOLTIP
+        actionSnap_to_angle->setText(QApplication::translate("GameEditorClass", "Use angle", Q_NULLPTR));
+#ifndef QT_NO_TOOLTIP
+        actionSnap_to_angle->setToolTip(QApplication::translate("GameEditorClass", "Use angle snap", Q_NULLPTR));
+#endif // QT_NO_TOOLTIP
+        actionSnap_to_grid->setText(QApplication::translate("GameEditorClass", "Snap to grid", Q_NULLPTR));
+#ifndef QT_NO_TOOLTIP
+        actionSnap_to_grid->setToolTip(QApplication::translate("GameEditorClass", "Snap to grid", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         tabWidget->setTabText(tabWidget->indexOf(tab_11), QApplication::translate("GameEditorClass", "\320\241\321\202\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\270\320\265 \320\270\320\263\321\200\320\276\320\262\321\213\320\265 \320\276\320\261\321\212\320\265\320\272\321\202\321\213", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_12), QApplication::translate("GameEditorClass", "Tab 2", Q_NULLPTR));

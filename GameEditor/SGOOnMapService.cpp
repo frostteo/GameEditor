@@ -104,3 +104,21 @@ void SGOOnMapService::DecrementSGOCount(int id)
   gameObject.countOnMap -= 1;
   m_unitOfWork->GetStaticGORepository()->Update(gameObject);
 }
+
+void SGOOnMapService::SetPosition(int id, float x, float y, float z)
+{
+  auto gameObjectOnMap = m_unitOfWork->GetSGOOnMapRepository()->Get(id);
+  gameObjectOnMap.xPos = x;
+  gameObjectOnMap.yPos = y;
+  gameObjectOnMap.zPos = z;
+  m_unitOfWork->GetSGOOnMapRepository()->Update(gameObjectOnMap);
+}
+
+void SGOOnMapService::SetRotation(int id, float x, float y, float z)
+{
+  auto gameObjectOnMap = m_unitOfWork->GetSGOOnMapRepository()->Get(id);
+  gameObjectOnMap.xRotate = x;
+  gameObjectOnMap.yRotate = y;
+  gameObjectOnMap.zRotate = z;
+  m_unitOfWork->GetSGOOnMapRepository()->Update(gameObjectOnMap);
+}

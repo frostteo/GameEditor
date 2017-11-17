@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>198</width>
-    <height>180</height>
+    <width>383</width>
+    <height>204</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,17 +16,17 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <widget class="QGroupBox" name="groupBox">
+  <widget class="QGroupBox" name="movementSpeedsGroup">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>181</width>
-     <height>131</height>
+     <width>191</width>
+     <height>151</height>
     </rect>
    </property>
    <property name="title">
-    <string>Movement speeds</string>
+    <string>Movement speeds (cm/s, degrees/s)</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -85,13 +85,23 @@
       </property>
      </widget>
     </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="cameraPanLbl">
+      <property name="text">
+       <string>Camera pan</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="cameraPanTxt"/>
+    </item>
    </layout>
   </widget>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>150</y>
+     <x>200</x>
+     <y>170</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -99,6 +109,61 @@
    <property name="standardButtons">
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="snapsGroup">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>10</y>
+     <width>161</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Snaps (cm, s)</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="gridSnapLbl">
+      <property name="text">
+       <string>Grid snap</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="gridSnapTxt"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="angleSnapLbl">
+      <property name="text">
+       <string>Angle snap</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="angleSnapTxt"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="useGridCheckBox">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>Use grid</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="useAngleCheckBox">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>Use angle</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

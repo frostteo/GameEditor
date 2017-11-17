@@ -30,9 +30,9 @@ void GameObject::SetPosition(float x, float y, float z)
 
 void GameObject::SetRotation(float x, float y, float z)
 {
-  m_rotationX = x;
-  m_rotationY = y;
-  m_rotationZ = z;
+  m_rotationX = fmod(x, 360.0f);
+  m_rotationY = fmod(y, 360.0f);
+  m_rotationZ = fmod(z, 360.0f);
   m_needRebuildRotationMatrix = true;
 }
 
@@ -49,39 +49,21 @@ XMFLOAT3 GameObject::GetRotation()
 void GameObject::ChangeXRotation(float angle)
 {
   m_rotationX += angle;
-
-  if (angle < 0 && m_rotationX < 0)
-    m_rotationX += 360;
-
-  if (angle > 0 && m_rotationX > 360)
-    m_rotationX -= 360;
-
+  m_rotationX = fmod(m_rotationX, 360.0f);
   m_needRebuildRotationMatrix = true;
 }
 
 void GameObject::ChangeYRotation(float angle)
 {
   m_rotationY += angle;
-
-  if (angle < 0 && m_rotationY < 0)
-    m_rotationY += 360;
-
-  if (angle > 0 && m_rotationY > 360)
-    m_rotationY -= 360;
-
+  m_rotationY = fmod(m_rotationY, 360.0f);
   m_needRebuildRotationMatrix = true;
 }
 
 void GameObject::ChangeZRotation(float angle)
 {
   m_rotationZ += angle;
-
-  if (angle < 0 && m_rotationZ < 0)
-    m_rotationZ += 360;
-
-  if (angle > 0 && m_rotationZ > 360)
-    m_rotationZ -= 360;
-
+  m_rotationZ = fmod(m_rotationZ, 360.0f);
   m_needRebuildRotationMatrix = true;
 }
 

@@ -42,13 +42,12 @@ public:
     QLabel *instanceNameLbl;
     QLineEdit *instanceNameTxt;
     QDialogButtonBox *buttonBox;
-    QLabel *validationWarningLbl;
 
     void setupUi(QDialog *AddOrEditSGOOnMapDialog)
     {
         if (AddOrEditSGOOnMapDialog->objectName().isEmpty())
             AddOrEditSGOOnMapDialog->setObjectName(QStringLiteral("AddOrEditSGOOnMapDialog"));
-        AddOrEditSGOOnMapDialog->resize(341, 223);
+        AddOrEditSGOOnMapDialog->resize(341, 203);
         positionGroupBox = new QGroupBox(AddOrEditSGOOnMapDialog);
         positionGroupBox->setObjectName(QStringLiteral("positionGroupBox"));
         positionGroupBox->setGeometry(QRect(20, 50, 151, 111));
@@ -99,28 +98,16 @@ public:
         instanceNameTxt->setGeometry(QRect(90, 20, 241, 20));
         buttonBox = new QDialogButtonBox(AddOrEditSGOOnMapDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(170, 190, 156, 23));
+        buttonBox->setGeometry(QRect(170, 170, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-        validationWarningLbl = new QLabel(AddOrEditSGOOnMapDialog);
-        validationWarningLbl->setObjectName(QStringLiteral("validationWarningLbl"));
-        validationWarningLbl->setEnabled(true);
-        validationWarningLbl->setGeometry(QRect(20, 170, 311, 16));
-        QPalette palette;
-        QBrush brush(QColor(221, 147, 0, 255));
-        brush.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::Active, QPalette::WindowText, brush);
-        QBrush brush1(QColor(0, 0, 0, 255));
-        brush1.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::Active, QPalette::Text, brush1);
-        palette.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
-        palette.setBrush(QPalette::Inactive, QPalette::Text, brush1);
-        QBrush brush2(QColor(120, 120, 120, 255));
-        brush2.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush2);
-        palette.setBrush(QPalette::Disabled, QPalette::Text, brush2);
-        validationWarningLbl->setPalette(palette);
+        QWidget::setTabOrder(instanceNameTxt, xPosTxt);
+        QWidget::setTabOrder(xPosTxt, yPosTxt);
+        QWidget::setTabOrder(yPosTxt, zPosTxt);
+        QWidget::setTabOrder(zPosTxt, xRotateTxt);
+        QWidget::setTabOrder(xRotateTxt, yRotateTxt);
+        QWidget::setTabOrder(yRotateTxt, zRotateTxt);
 
         retranslateUi(AddOrEditSGOOnMapDialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), AddOrEditSGOOnMapDialog, SLOT(accept()));
@@ -141,7 +128,6 @@ public:
         yRotateLbl->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "y", Q_NULLPTR));
         zRotateLbl->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "z", Q_NULLPTR));
         instanceNameLbl->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "instance name", Q_NULLPTR));
-        validationWarningLbl->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "Object with this name already exists", Q_NULLPTR));
     } // retranslateUi
 
 };

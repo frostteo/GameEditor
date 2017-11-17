@@ -82,6 +82,9 @@ void SGOOnMapTableWidget::configurePaginator()
 
 void SGOOnMapTableWidget::TableRowSelected(const QItemSelection& selected, const QItemSelection& deselected)
 {
+  int selectedRow = m_table->selectionModel()->currentIndex().row();
+  SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
+  m_mapEditor->SetSelectedObjectObjectId(gameObject.id);
   editBtnsStateConfigure();
 }
 
@@ -107,7 +110,7 @@ void SGOOnMapTableWidget::UpdateTable()
 
 void SGOOnMapTableWidget::AddSGOToMap(StaticGameObjectDbInfo& sgo)
 {
-  AddOrEditSGOOnMapDialog dialog(m_tableModel->GetSGOOnMapService(), this);
+  AddOrEditSGOOnMapDialog dialog(this);
   SGOOnMapDbInfo sgoOnMap;
   sgoOnMap.staticGameObjectDbInfo = sgo;
   sgoOnMap.staticGameObjectId = sgo.id;
@@ -140,7 +143,7 @@ void SGOOnMapTableWidget::EditBtnClicked()
   int selectedRow = m_table->selectionModel()->currentIndex().row();
   SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
 
-  AddOrEditSGOOnMapDialog dialog(m_tableModel->GetSGOOnMapService(), this);
+  AddOrEditSGOOnMapDialog dialog(this);
   dialog.setSGOOnMap(gameObject);
 
   if (dialog.exec() == QDialog::Accepted) {
@@ -156,7 +159,7 @@ void SGOOnMapTableWidget::CloneBtnClicked()
   SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
   gameObject.id = 0;
 
-  AddOrEditSGOOnMapDialog dialog(m_tableModel->GetSGOOnMapService(), this);
+  AddOrEditSGOOnMapDialog dialog(this);
   dialog.setSGOOnMap(gameObject);
 
   if (dialog.exec() == QDialog::Accepted) {

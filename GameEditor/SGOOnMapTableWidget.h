@@ -41,6 +41,7 @@ public:
     ~SGOOnMapTableWidget();
     void AddSGOToMap(StaticGameObjectDbInfo& sgo);
     void SetMapEditor(MapEditor* mapEditor);
+    SGOOnMapTM* GetTableModel() { return m_tableModel.get(); }
 signals:
     void SGOCountChanged();
 };

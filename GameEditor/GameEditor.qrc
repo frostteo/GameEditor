@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="GameEditor">
-	<file>prefs-icon.png</file>
- </qresource>
+    <file>angle.png</file>
+    <file>grid2.png</file>
+    <file>prefs-icon.png</file>
+  </qresource>
 </RCC>

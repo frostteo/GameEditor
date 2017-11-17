@@ -7,11 +7,11 @@ GameEditor::GameEditor(QWidget *parent)
 
     BLLDependencyResolver::GetUnitOfWork()->Initialize(m_hostName, m_databaseName, m_connectionName);
     this->configureUI();
-    m_mapEditorPreferences = std::unique_ptr<MapEditorPreferences>(new MapEditorPreferences);
 }
 
 void GameEditor::configureUI()
 {
+  m_mapEditorPreferences = std::unique_ptr<MapEditorPreferences>(new MapEditorPreferences);
   m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_pathToModels, m_pathToMaterials));
   ui.tabWidget->clear();
   ui.tabWidget->addTab(m_SGOTableWidget.get(), "static game objects"); 
@@ -22,7 +22,7 @@ void GameEditor::configureUI()
   m_mapEditorData = std::unique_ptr<MapEditorData>(new MapEditorData(this));
   m_mapEditorData->show();
 
-  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_pathToModels, m_pathToMaterials, this));
+  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_mapEditorData->GetSGOOnMapTableWidget()->GetTableModel(), m_pathToModels, m_pathToMaterials, this));
   m_mapEditor->show();
 
   m_mapEditorData->GetSGOOnMapTableWidget()->SetMapEditor(m_mapEditor.get());
@@ -58,4 +58,16 @@ void GameEditor::on_editPreferencesAction_triggered()
   MapEditorPreferencesDialog dialog;
   dialog.SetMapEditorPreferences(m_mapEditorPreferences.get());
   dialog.exec();
+  this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
+  this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
+}
+
+void GameEditor::on_actionSnap_to_angle_toggled(bool checked)
+{
+  m_mapEditorPreferences->SetSnapToAngleState(checked);
+}
+
+void GameEditor::on_actionSnap_to_grid_toggled(bool checked)
+{
+  m_mapEditorPreferences->SetSnapToGridState(checked);
 }

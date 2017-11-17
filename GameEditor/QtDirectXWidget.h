@@ -35,8 +35,6 @@ protected:
   std::unique_ptr<GraphicSystem> m_graphicSystem;
 
 protected:
-  
-
   /** Destroys the D3D environment */
   void Shutdown();
 

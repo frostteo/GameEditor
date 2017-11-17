@@ -1,13 +1,10 @@
 #include "AddOrEditSGOOnMapDialog.h"
 
-AddOrEditSGOOnMapDialog::AddOrEditSGOOnMapDialog(ISGOOnMapService* SGOOnMapService, QWidget *parent)
+AddOrEditSGOOnMapDialog::AddOrEditSGOOnMapDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
 
-    m_SGOOnMapService = SGOOnMapService;
-
-    this->validationWarningLbl->setVisible(false);
     this->xPosTxt->setValidator(new QDoubleValidator());
     this->yPosTxt->setValidator(new QDoubleValidator());
     this->zPosTxt->setValidator(new QDoubleValidator());
@@ -58,22 +55,5 @@ SGOOnMapDbInfo AddOrEditSGOOnMapDialog::GetSGOOnMap()
 
 void AddOrEditSGOOnMapDialog::done(int result)
 {
-  if (result == QDialog::Accepted)
-  {
-    this->validationWarningLbl->setVisible(false);
-
-    GetParameters getParameter;
-    PagingInfo pagingInfo;
-
-    auto objectsWithSameName = m_SGOOnMapService->GetFiltered(getParameter, pagingInfo, "", this->instanceNameTxt->text().trimmed().toStdString());
-
-    if (objectsWithSameName.count() > 0 && objectsWithSameName[0].id != m_SGOOnMap.id)
-      this->validationWarningLbl->setVisible(true);
-    else
-      QDialog::done(result);
-  }
-  else
-  {
-    QDialog::done(result);
-  }
+   QDialog::done(result);
 }

@@ -3,6 +3,7 @@
 
 InputSystem::InputSystem()
 {
+  m_timer = std::unique_ptr<HighPerformanceTimer>(new HighPerformanceTimer);
 }
 
 InputSystem::~InputSystem()
@@ -14,6 +15,8 @@ void InputSystem::Initialize(HINSTANCE hinstance , HWND hwnd)
 {
   HRESULT result;
   m_hwnd = hwnd;
+
+  m_timer->Initialize();
 
   // Initialize the main direct input interface.
   result = DirectInput8Create(hinstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_directInput, NULL);
@@ -127,6 +130,8 @@ bool InputSystem::ReadMouse()
 
 void InputSystem::Frame()
 {
+  m_timer->Frame();
+  m_inputState.time = m_timer->GetTime();
   if (ReadKeyboard() && ReadMouse())
   {
     for (auto listener : m_listenersList)

@@ -1,6 +1,6 @@
 #include "MapEditor.h"
 
-MapEditor::MapEditor(QString pathToModels, QString pathToMaterials, QWidget *parent)
+MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTM* sgoOnMapTM, QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QtDirectXWidget(pathToModels, pathToMaterials, parent)
 {
   this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
@@ -9,7 +9,7 @@ MapEditor::MapEditor(QString pathToModels, QString pathToMaterials, QWidget *par
   m_Camera->SetRotation(0.0f, 90.0f, 0.0f);*/
   m_Camera->SetPosition(500.0f, 0.0f, 0.0f);
   m_Camera->SetRotation(0.0f, -90.0f, 0.0f);
-  MapEditorControl* mapEditorControl = new MapEditorControl(m_Camera.get(), &m_staticGameObjectMap);
+  MapEditorControl* mapEditorControl = new MapEditorControl(mapEditorPreferences, sgoOnMapTM, m_Camera.get(), &m_staticGameObjectMap);
   mapEditorControl->SetSelectedObjectId(&m_selectedObjectId);
   m_inputSystem->AddInputListener(mapEditorControl);
 }
@@ -26,7 +26,6 @@ void MapEditor::AddSGO(SGOOnMapDbInfo& sgoOnMap)
   sgo.SetPosition(sgoOnMap.xPos, sgoOnMap.yPos, sgoOnMap.zPos);
   sgo.SetRotation(sgoOnMap.xRotate, sgoOnMap.yRotate, sgoOnMap.zRotate);
   sgo.m_SGODbInfoId = sgoOnMap.staticGameObjectDbInfo.id;
-  //TODO FHolod: later add rotate data
   m_staticGameObjectMap[sgoOnMap.id] = sgo;
 }
 
@@ -50,6 +49,8 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
 
 void MapEditor::DeleteSGO(int id)
 {
+  if (m_selectedObjectId == id)
+    m_selectedObjectId = MapEditorControl::NOTHING_SELECTED;
   m_staticGameObjectMap.erase(id);
 }
 

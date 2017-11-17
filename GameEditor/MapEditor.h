@@ -5,8 +5,8 @@
 #include "QtDirectXWidget.h"
 #include <map>
 #include "StaticGameObject.h"
-#include "SGOOnMapDbInfo.h"
 #include "MapEditorControl.h"
+#include "SGOOnMapTM.h"
 
 class MapEditor : public QtDirectXWidget, public Ui::MapEditor
 {
@@ -17,7 +17,7 @@ protected:
 protected:
   virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
-  MapEditor(QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
+  MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTM* sgoOnMapTM, QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~MapEditor();
 public slots:
   void AddSGO(SGOOnMapDbInfo& sgoOnMap);
@@ -25,4 +25,5 @@ public slots:
   void EditSGO(SGOOnMapDbInfo& sgoOnMap);
   void SGODbInfoDeleted(int sgoDbInfoId);
   void SGODbInfoEdited(StaticGameObjectDbInfo& dbInfo);
+  void SetSelectedObjectObjectId(int selectedObjectId) { m_selectedObjectId = selectedObjectId; }
 };

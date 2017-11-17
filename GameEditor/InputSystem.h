@@ -5,6 +5,7 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+#include <memory>
 #include <algorithm>
 #include <list>
 #include <cstring>
@@ -13,6 +14,7 @@
 #include "InputListener.h"
 #include "InputState.h"
 #include "windows.h"
+#include "HighPerformanceTimer.h"
 
 class InputSystem
 {
@@ -23,6 +25,7 @@ private:
   IDirectInputDevice8* m_keyboard;
   IDirectInputDevice8* m_mouse;
   InputState m_inputState;
+  std::unique_ptr<HighPerformanceTimer> m_timer;
 protected:
   bool ReadKeyboard();
   bool ReadMouse();

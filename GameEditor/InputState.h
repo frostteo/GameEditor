@@ -21,6 +21,7 @@ protected:
   unsigned char m_previousMouseBtnState[countOfMouseKeys];
 
 public:
+  float time;
   int mouseXCoor = 0;
   int mouseYCoor = 0;
   DIMOUSESTATE m_mouseState;

@@ -103,3 +103,19 @@ SGOOnMapDbInfo SGOOnMapTM::GetEntityByKey(int id)
 {
   return m_SGOOnMapService->Get(id);
 }
+
+void SGOOnMapTM::EditPosition(int id, float x, float y, float z)
+{
+  m_SGOOnMapService->SetPosition(id, x, y, z);
+  auto findIterator = std::find_if(m_data.begin(), m_data.end(), [=](const SGOOnMapDbInfo& sgo) -> bool { return sgo.id == id; });
+  if (findIterator != m_data.end())
+    UpdateData();
+}
+
+void SGOOnMapTM::EditRotation(int id, float x, float y, float z)
+{
+  m_SGOOnMapService->SetRotation(id, x, y, z);
+  auto findIterator = std::find_if(m_data.begin(), m_data.end(), [=](const SGOOnMapDbInfo& sgo) -> bool { return sgo.id == id; });
+  if (findIterator != m_data.end())
+    UpdateData();
+}
