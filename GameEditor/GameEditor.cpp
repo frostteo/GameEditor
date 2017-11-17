@@ -12,6 +12,9 @@ GameEditor::GameEditor(QWidget *parent)
 void GameEditor::configureUI()
 {
   m_mapEditorPreferences = std::unique_ptr<MapEditorPreferences>(new MapEditorPreferences);
+  this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
+  this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
+
   m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_pathToModels, m_pathToMaterials));
   ui.tabWidget->clear();
   ui.tabWidget->addTab(m_SGOTableWidget.get(), "static game objects"); 

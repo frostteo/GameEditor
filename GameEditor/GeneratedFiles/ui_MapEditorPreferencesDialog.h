@@ -175,7 +175,7 @@ public:
         cameraRotationLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "Camera rotation", Q_NULLPTR));
         cameraZoomLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "Camera zoom", Q_NULLPTR));
         cameraPanLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "Camera pan", Q_NULLPTR));
-        snapsGroup->setTitle(QApplication::translate("MapEditorPreferencesDialog", "Snaps (cm, s)", Q_NULLPTR));
+        snapsGroup->setTitle(QApplication::translate("MapEditorPreferencesDialog", "Snaps (cm, degrees)", Q_NULLPTR));
         gridSnapLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "Grid snap", Q_NULLPTR));
         angleSnapLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "Angle snap", Q_NULLPTR));
         useGridCheckBox->setText(QApplication::translate("MapEditorPreferencesDialog", "Use grid", Q_NULLPTR));

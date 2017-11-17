@@ -120,7 +120,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Snaps (cm, s)</string>
+    <string>Snaps (cm, degrees)</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
