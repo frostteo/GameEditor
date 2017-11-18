@@ -1,10 +1,11 @@
 #include "MapEditorControl.h"
+#include "SGOOnMapTableWidget.h"
 
-MapEditorControl::MapEditorControl(MapEditorPreferences* mapEditorPreferences, SGOOnMapTM* sgoOnMapTM, Camera* camera, std::map<int, StaticGameObject>* staticGameObjectMap)
+MapEditorControl::MapEditorControl(MapEditorPreferences* mapEditorPreferences, SGOOnMapTableWidget* sgoOnMapTableWidget, Camera* camera, std::map<int, StaticGameObject>* staticGameObjectMap)
 {
   SetCamera(camera);
   SetSGOMap(staticGameObjectMap);
-  SetSGOOnMapTM(sgoOnMapTM);
+  SetSGOOnMapTableWidget(sgoOnMapTableWidget);
   SetMapEditorPreferenses(mapEditorPreferences);
 }
 
@@ -13,11 +14,22 @@ MapEditorControl::~MapEditorControl()
 {
 }
 
+void MapEditorControl::SetSGOOnMapTableWidget(SGOOnMapTableWidget* sgoOnMapTableWidget)
+{
+  m_sgoOnMapTableWidget = sgoOnMapTableWidget; 
+  SetSGOOnMapTM(sgoOnMapTableWidget->GetTableModel());
+}
 
 void MapEditorControl::ProcessUserInput(InputState* inputState)
 {
   if (m_camera)
   {
+    if (inputState->IsKeyPressed(DIK_DELETE) && (*m_selectedObjectId) != NOTHING_SELECTED)
+      m_sgoOnMapTableWidget->Delete((*m_selectedObjectId));
+
+    if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_V))
+      Clone();
+
     m_timeInSecondsBetweenFrames = inputState->time * 0.001;
 
     if (inputState->IsMouseBtnPressed(MouseButtons::LeftMouseBtn))
@@ -25,7 +37,11 @@ void MapEditorControl::ProcessUserInput(InputState* inputState)
   
     MoveCamera(inputState);
 
-    if (inputState->IsKeyPressed(DIK_C) && (*m_selectedObjectId) != NOTHING_SELECTED)
+    if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_C) && (*m_selectedObjectId) != NOTHING_SELECTED)
+    {
+      m_idForCopy = (*m_selectedObjectId);
+    }
+    else if (inputState->IsKeyDown(DIK_C) && (*m_selectedObjectId) != NOTHING_SELECTED)
     {
       auto gameObject = m_staticGameObjectMap->at((*m_selectedObjectId));
       LookAtObjectFromHelper::LookToObjectFromWorldFront(m_camera, &gameObject);
@@ -174,17 +190,6 @@ XMMATRIX MapEditorControl::GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosi
   return XMMatrixLookAtLH(newCamPosition, targetPoint, GEMath::UpWorld);
 }
 
-float MapEditorControl::GetCorrectedWithSnapDelta(float delta, float snapSize)
-{
-  const float MOVE_OBJECT_THRESHOLD = 2.0f;
-
-  float absDelta = abs(delta);
-  if (absDelta > MOVE_OBJECT_THRESHOLD && absDelta < snapSize)
-    delta = snapSize * GetSign(delta);
-  
-  return delta;
-}
-
 float MapEditorControl::GetCorrectedWithSnapCoord(float coord, float snapSize)
 {
   return round(coord / snapSize) * snapSize;
@@ -201,8 +206,6 @@ void MapEditorControl::MoveObject(InputState* inputState)
 
   if (m_mapEditorPreferences->GetSnapToGridState() && m_needRecalculateAcumulativePositionForSnap)
   {
-    /*deltaX = GetCorrectedWithSnapDelta(deltaX, m_mapEditorPreferences->GetGridSnapSize());
-    deltaY = GetCorrectedWithSnapDelta(deltaY, m_mapEditorPreferences->GetGridSnapSize());*/
     m_accumulativePositionForSnap = selectedObjectPosition;
     m_needRecalculateAcumulativePositionForSnap = false;
   }
@@ -432,4 +435,12 @@ bool MapEditorControl::RayAABBIntersect(XMFLOAT3& minPoint, XMFLOAT3& maxPoint, 
 
   distance = tnear;
   return tnear > 0.0f && tfar > tnear;
+}
+
+void MapEditorControl::Clone()
+{
+  if (m_idForCopy == NOTHING_SELECTED)
+    return;
+
+  m_sgoOnMapTableWidget->Clone((*m_selectedObjectId));
 }

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_SGOTableWidget_t {
-    QByteArrayData data[26];
-    char stringdata0[389];
+    QByteArrayData data[27];
+    char stringdata0[407];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -56,7 +56,8 @@ QT_MOC_LITERAL(21, 305, 24), // "on_previewSGOBtn_clicked"
 QT_MOC_LITERAL(22, 330, 22), // "on_addToMapBtn_clicked"
 QT_MOC_LITERAL(23, 353, 20), // "on_SGODeletedFromMap"
 QT_MOC_LITERAL(24, 374, 2), // "id"
-QT_MOC_LITERAL(25, 377, 11) // "UpdateTable"
+QT_MOC_LITERAL(25, 377, 11), // "UpdateTable"
+QT_MOC_LITERAL(26, 389, 17) // "CountOnMapChanged"
 
     },
     "SGOTableWidget\0AddToMap\0\0"
@@ -69,7 +70,7 @@ QT_MOC_LITERAL(25, 377, 11) // "UpdateTable"
     "pageNumber\0onPage\0HeaderSectionClicked\0"
     "sectionIndex\0on_previewSGOBtn_clicked\0"
     "on_addToMapBtn_clicked\0on_SGODeletedFromMap\0"
-    "id\0UpdateTable"
+    "id\0UpdateTable\0CountOnMapChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -79,7 +80,7 @@ static const uint qt_meta_data_SGOTableWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -87,22 +88,23 @@ static const uint qt_meta_data_SGOTableWidget[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   84,    2, 0x06 /* Public */,
-       5,    1,   87,    2, 0x06 /* Public */,
-       7,    1,   90,    2, 0x06 /* Public */,
+       1,    1,   89,    2, 0x06 /* Public */,
+       5,    1,   92,    2, 0x06 /* Public */,
+       7,    1,   95,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       8,    0,   93,    2, 0x09 /* Protected */,
-       9,    0,   94,    2, 0x09 /* Protected */,
-      10,    0,   95,    2, 0x09 /* Protected */,
-      11,    0,   96,    2, 0x09 /* Protected */,
-      12,    2,   97,    2, 0x09 /* Protected */,
-      16,    2,  102,    2, 0x09 /* Protected */,
-      19,    1,  107,    2, 0x09 /* Protected */,
-      21,    0,  110,    2, 0x09 /* Protected */,
-      22,    0,  111,    2, 0x09 /* Protected */,
-      23,    1,  112,    2, 0x09 /* Protected */,
-      25,    0,  115,    2, 0x0a /* Public */,
+       8,    0,   98,    2, 0x09 /* Protected */,
+       9,    0,   99,    2, 0x09 /* Protected */,
+      10,    0,  100,    2, 0x09 /* Protected */,
+      11,    0,  101,    2, 0x09 /* Protected */,
+      12,    2,  102,    2, 0x09 /* Protected */,
+      16,    2,  107,    2, 0x09 /* Protected */,
+      19,    1,  112,    2, 0x09 /* Protected */,
+      21,    0,  115,    2, 0x09 /* Protected */,
+      22,    0,  116,    2, 0x09 /* Protected */,
+      23,    1,  117,    2, 0x09 /* Protected */,
+      25,    0,  120,    2, 0x0a /* Public */,
+      26,    1,  121,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -121,6 +123,7 @@ static const uint qt_meta_data_SGOTableWidget[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   24,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   24,
 
        0        // eod
 };
@@ -145,6 +148,7 @@ void SGOTableWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 11: _t->on_addToMapBtn_clicked(); break;
         case 12: _t->on_SGODeletedFromMap((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 13: _t->UpdateTable(); break;
+        case 14: _t->CountOnMapChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -211,13 +215,13 @@ int SGOTableWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 14)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 15;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 14)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 14;
+        _id -= 15;
     }
     return _id;
 }

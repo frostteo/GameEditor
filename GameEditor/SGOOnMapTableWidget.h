@@ -37,11 +37,11 @@ protected:
   void configureUI();
   void configurePaginator();
 public:
-    SGOOnMapTableWidget(QWidget *parent = Q_NULLPTR);
-    ~SGOOnMapTableWidget();
-    void AddSGOToMap(StaticGameObjectDbInfo& sgo);
-    void SetMapEditor(MapEditor* mapEditor);
-    SGOOnMapTM* GetTableModel() { return m_tableModel.get(); }
-signals:
-    void SGOCountChanged();
+  SGOOnMapTableWidget(QWidget *parent = Q_NULLPTR);
+  ~SGOOnMapTableWidget();
+  void AddSGOToMap(StaticGameObjectDbInfo& sgo);
+  void SetMapEditor(MapEditor* mapEditor);
+  SGOOnMapTM* GetTableModel() { return m_tableModel.get(); }
+  void Clone(int id);
+  void Delete(int id);
 };

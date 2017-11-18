@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include "IStaticGOService.h"
 #include "QtUtils.h"
 #include "SGOMetadata.h"
@@ -30,5 +31,6 @@ public:
  
   void UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter = "", QString SGOModelFilenameFilter = "");
   virtual StaticGameObjectDbInfo GetEntityByKey(int id) override;
+  virtual bool ContainsInMemory(int id) override;
 };
 

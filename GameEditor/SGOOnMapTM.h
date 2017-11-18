@@ -28,7 +28,10 @@ public:
   void UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter = "", QString instanceNameFilter = "");
   ISGOOnMapService* GetSGOOnMapService() { return m_SGOOnMapService; }
   virtual SGOOnMapDbInfo GetEntityByKey(int id) override;
+  virtual bool ContainsInMemory(int id) override;
 public slots:
   void EditPosition(int id, float x, float y, float z);
   void EditRotation(int id, float x, float y, float z);
+signals:
+  void SGOCountChanged(int id);
 };

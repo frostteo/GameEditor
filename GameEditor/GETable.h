@@ -33,6 +33,7 @@ public:
   T GetEntity(int rowNumber) { return m_data.at(rowNumber); }
   virtual T GetEntityByKey(int id) = 0;
   PagingInfo GetPagingInfo() { return m_pagingInfo; }
+  virtual bool ContainsInMemory(int id) = 0;
 };
 
 template <class T>

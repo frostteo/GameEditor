@@ -82,6 +82,12 @@ void StaticGameObjectTM::removeEntity(int id)
   m_staticGOService->DeleteStaticGameObject(id);
 }
 
+bool StaticGameObjectTM::ContainsInMemory(int id)
+{
+  auto findIterator = std::find_if(m_data.begin(), m_data.end(), [=](const StaticGameObjectDbInfo& sgo) -> bool { return sgo.id == id; });
+  return findIterator != m_data.end();
+}
+
 StaticGameObjectDbInfo StaticGameObjectTM::GetEntityByKey(int id)
 {
   return m_staticGOService->GetStaticGameObject(id);

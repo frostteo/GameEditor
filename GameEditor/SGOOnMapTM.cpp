@@ -75,6 +75,7 @@ SGOOnMapTM::~SGOOnMapTM()
 void SGOOnMapTM::appendEntity(SGOOnMapDbInfo& gameObject)
 {
   m_SGOOnMapService->Create(gameObject);
+  emit SGOCountChanged(gameObject.staticGameObjectId);
 }
 
 void SGOOnMapTM::editEntity(SGOOnMapDbInfo& gameObject)
@@ -84,7 +85,16 @@ void SGOOnMapTM::editEntity(SGOOnMapDbInfo& gameObject)
 
 void SGOOnMapTM::removeEntity(int id)
 {
+  auto sgo = m_SGOOnMapService->Get(id);
+  int staticGameObjectId = sgo.staticGameObjectId;
   m_SGOOnMapService->Delete(id);
+  emit SGOCountChanged(staticGameObjectId);
+}
+
+bool SGOOnMapTM::ContainsInMemory(int id)
+{
+  auto findIterator = std::find_if(m_data.begin(), m_data.end(), [=](const SGOOnMapDbInfo& sgo) -> bool { return sgo.id == id; });
+  return findIterator != m_data.end();
 }
 
 void SGOOnMapTM::UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter, QString instanceNameFilter)
@@ -107,15 +117,13 @@ SGOOnMapDbInfo SGOOnMapTM::GetEntityByKey(int id)
 void SGOOnMapTM::EditPosition(int id, float x, float y, float z)
 {
   m_SGOOnMapService->SetPosition(id, x, y, z);
-  auto findIterator = std::find_if(m_data.begin(), m_data.end(), [=](const SGOOnMapDbInfo& sgo) -> bool { return sgo.id == id; });
-  if (findIterator != m_data.end())
+  if (ContainsInMemory(id))
     UpdateData();
 }
 
 void SGOOnMapTM::EditRotation(int id, float x, float y, float z)
 {
   m_SGOOnMapService->SetRotation(id, x, y, z);
-  auto findIterator = std::find_if(m_data.begin(), m_data.end(), [=](const SGOOnMapDbInfo& sgo) -> bool { return sgo.id == id; });
-  if (findIterator != m_data.end())
+  if (ContainsInMemory(id))
     UpdateData();
 }

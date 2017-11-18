@@ -57,7 +57,7 @@ public:
         editPreferencesAction->setObjectName(QStringLiteral("editPreferencesAction"));
         editPreferencesAction->setCheckable(false);
         QIcon icon;
-        icon.addFile(QStringLiteral(":/GameEditor/prefs-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QStringLiteral(":/GameEditor/settings.png"), QSize(), QIcon::Normal, QIcon::Off);
         editPreferencesAction->setIcon(icon);
         actionSnap_to_angle = new QAction(GameEditorClass);
         actionSnap_to_angle->setObjectName(QStringLiteral("actionSnap_to_angle"));

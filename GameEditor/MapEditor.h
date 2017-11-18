@@ -17,7 +17,7 @@ protected:
 protected:
   virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
-  MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTM* sgoOnMapTM, QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
+  MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTableWidget* sgoOnMapTableWidget, QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~MapEditor();
 public slots:
   void AddSGO(SGOOnMapDbInfo& sgoOnMap);

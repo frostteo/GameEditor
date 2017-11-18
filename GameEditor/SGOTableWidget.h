@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <algorithm>
 #include <QWidget>
 #include <qtableview.h>
 #include <qboxlayout.h>
@@ -42,6 +43,7 @@ protected:
   void configurePaginator();
 public slots:
   void UpdateTable();
+  void CountOnMapChanged(int id);
 public:
     SGOTableWidget(QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
     ~SGOTableWidget();

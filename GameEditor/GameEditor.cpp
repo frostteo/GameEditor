@@ -25,12 +25,12 @@ void GameEditor::configureUI()
   m_mapEditorData = std::unique_ptr<MapEditorData>(new MapEditorData(this));
   m_mapEditorData->show();
 
-  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_mapEditorData->GetSGOOnMapTableWidget()->GetTableModel(), m_pathToModels, m_pathToMaterials, this));
+  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_mapEditorData->GetSGOOnMapTableWidget(), m_pathToModels, m_pathToMaterials, this));
   m_mapEditor->show();
 
   m_mapEditorData->GetSGOOnMapTableWidget()->SetMapEditor(m_mapEditor.get());
 
-  connect(m_mapEditorData->GetSGOOnMapTableWidget(), SIGNAL(SGOCountChanged()), m_SGOTableWidget.get(), SLOT(UpdateTable()));
+  connect(m_mapEditorData->GetSGOOnMapTableWidget()->GetTableModel(), SIGNAL(SGOCountChanged(int)), m_SGOTableWidget.get(), SLOT(CountOnMapChanged(int)));
   connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), m_mapEditorData->GetSGOOnMapTableWidget(), SLOT(SGODeleted(int)));
   connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), m_mapEditor.get(), SLOT(SGODbInfoDeleted(int)));
   connect(m_SGOTableWidget.get(), SIGNAL(SGOEdited(StaticGameObjectDbInfo&)), m_mapEditor.get(), SLOT(SGODbInfoEdited(StaticGameObjectDbInfo&)));

@@ -172,3 +172,9 @@ void SGOTableWidget::on_SGODeletedFromMap(int id)
   gameObject.countOnMap -= 1;
   m_SGOTableModel->edit(gameObject);
 }
+
+void SGOTableWidget::CountOnMapChanged(int id)
+{
+  if (m_SGOTableModel->ContainsInMemory(id))
+    UpdateTable();
+}

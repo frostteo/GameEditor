@@ -91,7 +91,7 @@
    </property>
    <property name="icon">
     <iconset resource="GameEditor.qrc">
-     <normaloff>:/GameEditor/prefs-icon.png</normaloff>:/GameEditor/prefs-icon.png</iconset>
+     <normaloff>:/GameEditor/settings.png</normaloff>:/GameEditor/settings.png</iconset>
    </property>
    <property name="text">
     <string>Preferences</string>

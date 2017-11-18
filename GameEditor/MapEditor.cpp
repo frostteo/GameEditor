@@ -1,6 +1,6 @@
 #include "MapEditor.h"
 
-MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTM* sgoOnMapTM, QString pathToModels, QString pathToMaterials, QWidget *parent)
+MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTableWidget* sgoOnMapTableWidget, QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QtDirectXWidget(pathToModels, pathToMaterials, parent)
 {
   this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
@@ -9,7 +9,7 @@ MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTM* sgo
   m_Camera->SetRotation(0.0f, 90.0f, 0.0f);*/
   m_Camera->SetPosition(500.0f, 0.0f, 0.0f);
   m_Camera->SetRotation(0.0f, -90.0f, 0.0f);
-  MapEditorControl* mapEditorControl = new MapEditorControl(mapEditorPreferences, sgoOnMapTM, m_Camera.get(), &m_staticGameObjectMap);
+  MapEditorControl* mapEditorControl = new MapEditorControl(mapEditorPreferences, sgoOnMapTableWidget, m_Camera.get(), &m_staticGameObjectMap);
   mapEditorControl->SetSelectedObjectId(&m_selectedObjectId);
   m_inputSystem->AddInputListener(mapEditorControl);
 }
