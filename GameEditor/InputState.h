@@ -26,7 +26,9 @@ public:
   int mouseYCoor = 0;
   DIMOUSESTATE m_mouseState;
   bool IsKeyDown(BYTE key) { return m_keyboardState[key] & 0x80; }
+  bool IsKeyUp(BYTE key) { return !(m_keyboardState[key] & 0x80); }
   bool IsMouseBtnDown(MouseButtons btn) { return m_mouseState.rgbButtons[btn]; }
+  bool IsMouseBtnUp(MouseButtons btn) { return !(m_mouseState.rgbButtons[btn]); }
   bool IsKeyPressed(BYTE key)
   {
     if (m_keyboardState[key] & 0x80 && !(m_previousKeyboardState[key] & 0x80))

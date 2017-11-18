@@ -7,13 +7,14 @@
 #include "StaticGameObject.h"
 #include "MapEditorControl.h"
 #include "SGOOnMapTM.h"
+#include <set>
 
 class MapEditor : public QtDirectXWidget, public Ui::MapEditor
 {
     Q_OBJECT
 protected:
   std::map<int, StaticGameObject> m_staticGameObjectMap;
-  int m_selectedObjectId = MapEditorControl::NOTHING_SELECTED;
+  std::set<int> m_selectedObjectIds;
 protected:
   virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
@@ -25,5 +26,5 @@ public slots:
   void EditSGO(SGOOnMapDbInfo& sgoOnMap);
   void SGODbInfoDeleted(int sgoDbInfoId);
   void SGODbInfoEdited(StaticGameObjectDbInfo& dbInfo);
-  void SetSelectedObjectObjectId(int selectedObjectId) { m_selectedObjectId = selectedObjectId; }
+  void SetSelectedObjectObjectId(int selectedObjectId) { m_selectedObjectIds.clear(); m_selectedObjectIds.insert(selectedObjectId); }
 };

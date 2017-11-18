@@ -10,7 +10,7 @@ MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, SGOOnMapTableWi
   m_Camera->SetPosition(500.0f, 0.0f, 0.0f);
   m_Camera->SetRotation(0.0f, -90.0f, 0.0f);
   MapEditorControl* mapEditorControl = new MapEditorControl(mapEditorPreferences, sgoOnMapTableWidget, m_Camera.get(), &m_staticGameObjectMap);
-  mapEditorControl->SetSelectedObjectId(&m_selectedObjectId);
+  mapEditorControl->SetSelectedObjectIds(&m_selectedObjectIds);
   m_inputSystem->AddInputListener(mapEditorControl);
 }
 
@@ -39,18 +39,17 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
     m_graphicSystem->AddModelToRenderList(sgo.second.GetModel(), worldMatrix);
   }
 
-  if (m_selectedObjectId != MapEditorControl::NOTHING_SELECTED)
+  for (int selectedId : m_selectedObjectIds)
   {
-    m_staticGameObjectMap[m_selectedObjectId].GetWorldMatrix(worldMatrix);
-    m_graphicSystem->AddGridToRenderList(m_staticGameObjectMap[m_selectedObjectId].GetModel()->GetBoundingBox(), worldMatrix);
+    m_staticGameObjectMap[selectedId].GetWorldMatrix(worldMatrix);
+    m_graphicSystem->AddGridToRenderList(m_staticGameObjectMap[selectedId].GetModel()->GetBoundingBox(), worldMatrix);
   }
+  
   QtDirectXWidget::paintEvent(pEvent);
 }
 
 void MapEditor::DeleteSGO(int id)
 {
-  if (m_selectedObjectId == id)
-    m_selectedObjectId = MapEditorControl::NOTHING_SELECTED;
   m_staticGameObjectMap.erase(id);
 }
 

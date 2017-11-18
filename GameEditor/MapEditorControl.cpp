@@ -24,38 +24,39 @@ void MapEditorControl::ProcessUserInput(InputState* inputState)
 {
   if (m_camera)
   {
-    if (inputState->IsKeyPressed(DIK_DELETE) && (*m_selectedObjectId) != NOTHING_SELECTED)
-      m_sgoOnMapTableWidget->Delete((*m_selectedObjectId));
-
-    if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_V))
-      Clone();
+    if (inputState->IsKeyPressed(DIK_DELETE) && !m_selectedObjectIds->empty())
+    {
+      for (int selectedId : (*m_selectedObjectIds))
+        m_sgoOnMapTableWidget->Delete(selectedId);
+      (*m_selectedObjectIds).clear();
+    }
 
     m_timeInSecondsBetweenFrames = inputState->time * 0.001;
 
     if (inputState->IsMouseBtnPressed(MouseButtons::LeftMouseBtn))
-      PickObject(inputState->mouseXCoor, inputState->mouseYCoor);
+      PickObject(inputState, inputState->mouseXCoor, inputState->mouseYCoor);
   
     MoveCamera(inputState);
 
-    if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_C) && (*m_selectedObjectId) != NOTHING_SELECTED)
+    if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_C) && !m_selectedObjectIds->empty())
     {
-      m_idForCopy = (*m_selectedObjectId);
+      Clone();
     }
-    else if (inputState->IsKeyDown(DIK_C) && (*m_selectedObjectId) != NOTHING_SELECTED)
+    else if (inputState->IsKeyDown(DIK_C) && !m_selectedObjectIds->empty())
     {
-      auto gameObject = m_staticGameObjectMap->at((*m_selectedObjectId));
+      auto gameObject = m_staticGameObjectMap->at((*m_selectedObjectIds->begin()));
       LookAtObjectFromHelper::LookToObjectFromWorldFront(m_camera, &gameObject);
     }
       
-    if (inputState->IsKeyPressed(DIK_T) && (*m_selectedObjectId) != NOTHING_SELECTED)
+    if (inputState->IsKeyPressed(DIK_T) && !m_selectedObjectIds->empty())
     {
-      auto gameObject = m_staticGameObjectMap->at((*m_selectedObjectId));
+      auto gameObject = m_staticGameObjectMap->at((*m_selectedObjectIds->begin()));
       LookAtObjectFromHelper::LookToObjectFromWorldUp(m_camera, &gameObject);
     }
 
     if (inputState->IsKeyDown(DIK_LSHIFT))
     {
-      if ((*m_selectedObjectId) != NOTHING_SELECTED)
+      if (!m_selectedObjectIds->empty())
       {
         RotateCameraAroundObject(inputState);
       }
@@ -64,30 +65,42 @@ void MapEditorControl::ProcessUserInput(InputState* inputState)
       }
     }
 
-    if ((*m_selectedObjectId) != NOTHING_SELECTED) 
+    if (!m_selectedObjectIds->empty())
     {
       if (inputState->IsMouseBtnDown(MouseButtons::LeftMouseBtn))
-        MoveObject(inputState);
+        MoveObjects(inputState);
       
       if (inputState->IsMouseBtnDown(MouseButtons::RightMouseBtn))
-        RotateObject(inputState);
+        RotateObjects(inputState);
 
       if (inputState->IsMouseBtnReleased(MouseButtons::LeftMouseBtn) && m_sgoTranslated)
-      {
-        m_sgoTranslated = false;
-        m_needRecalculateAcumulativePositionForSnap = true;
-        XMFLOAT3 position = m_staticGameObjectMap->at((*m_selectedObjectId)).GetPosition();
-        m_SGOOnMapTM->EditPosition((*m_selectedObjectId), position.x, position.y, position.z);
-      }
+        SaveChangedPositionsInDB();
 
       if (inputState->IsMouseBtnReleased(MouseButtons::RightMouseBtn) && m_sgoRotated)
-      {
-        m_sgoRotated = false;
-        m_needRecalculateAcumulativeRotationForSnap = true;
-        XMFLOAT3 rotation = m_staticGameObjectMap->at((*m_selectedObjectId)).GetRotation();
-        m_SGOOnMapTM->EditRotation((*m_selectedObjectId), rotation.x, rotation.y, rotation.z);
-      }
+        SaveChangedRotationsInDB();
     }
+  }
+}
+
+void MapEditorControl::SaveChangedPositionsInDB()
+{
+  m_sgoTranslated = false;
+  m_needRecalculateAcumulativePositionForSnap = true;
+  for (int selectedId : (*m_selectedObjectIds))
+  {
+    XMFLOAT3 position = m_staticGameObjectMap->at(selectedId).GetPosition();
+    m_SGOOnMapTM->EditPosition(selectedId, position.x, position.y, position.z);
+  }
+}
+
+void MapEditorControl::SaveChangedRotationsInDB()
+{
+  m_sgoRotated = false;
+  m_needRecalculateAcumulativeRotationForSnap = true;
+  for (int selectedId : (*m_selectedObjectIds))
+  {
+    XMFLOAT3 rotation = m_staticGameObjectMap->at(selectedId).GetRotation();
+    m_SGOOnMapTM->EditRotation(selectedId, rotation.x, rotation.y, rotation.z);
   }
 }
 
@@ -108,7 +121,7 @@ void MapEditorControl::RotateCameraAroundObject(InputState* inputState)
   float deltaXRadians = XMConvertToRadians(inputState->m_mouseState.lX * m_mapEditorPreferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
   float deltaYRadians = XMConvertToRadians(inputState->m_mouseState.lY * m_mapEditorPreferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
 
-  objectPosition = m_staticGameObjectMap->at((*m_selectedObjectId)).GetPosition();
+  objectPosition = GetCenterOfSelectedObjects();
   cameraPosition = m_camera->GetPosition();
   forwardCameraVector = m_camera->GetForward();
   rightCameraVector = m_camera->GetRight();
@@ -195,18 +208,36 @@ float MapEditorControl::GetCorrectedWithSnapCoord(float coord, float snapSize)
   return round(coord / snapSize) * snapSize;
 }
 
-void MapEditorControl::MoveObject(InputState* inputState)
+void MapEditorControl::CalculateDifferenceWithPoint(std::map<int, XMFLOAT3>* differenceFromPoint, XMFLOAT3 point)
 {
-  XMFLOAT3 selectedObjectPosition = m_staticGameObjectMap->at((*m_selectedObjectId)).GetPosition();
+  for (int selectedObjectId : (*m_selectedObjectIds))
+  {
+    XMFLOAT3 differenceWithCenter;
+    XMFLOAT3 objectPosition = m_staticGameObjectMap->at(selectedObjectId).GetPosition();
+    differenceWithCenter.x = objectPosition.x - point.x;
+    differenceWithCenter.y = objectPosition.y - point.y;
+    differenceWithCenter.z = objectPosition.z - point.z;
+    (*differenceFromPoint)[selectedObjectId] = differenceWithCenter;
+  }
+}
+
+void MapEditorControl::MoveObjects(InputState* inputState)
+{
+  std::map<int, XMFLOAT3> differenceFromCenter;
+  XMFLOAT3 centerOfSelectedObjectsGroup;
+
   float deltaX = inputState->m_mouseState.lX * m_mapEditorPreferences->GetObjectMoveSpeed() * m_timeInSecondsBetweenFrames;
   float deltaY = inputState->m_mouseState.lY * m_mapEditorPreferences->GetObjectMoveSpeed() * m_timeInSecondsBetweenFrames;
 
   if (deltaX == 0.0f && deltaY == 0.0f)
     return;
 
+  centerOfSelectedObjectsGroup = GetCenterOfSelectedObjects();
+  CalculateDifferenceWithPoint(&differenceFromCenter, centerOfSelectedObjectsGroup);
+
   if (m_mapEditorPreferences->GetSnapToGridState() && m_needRecalculateAcumulativePositionForSnap)
   {
-    m_accumulativePositionForSnap = selectedObjectPosition;
+    m_accumulativePositionForSnap = centerOfSelectedObjectsGroup;
     m_needRecalculateAcumulativePositionForSnap = false;
   }
 
@@ -214,10 +245,10 @@ void MapEditorControl::MoveObject(InputState* inputState)
   {
     if (m_mapEditorPreferences->GetSnapToGridState()) {
       m_accumulativePositionForSnap.y -= deltaY;
-      selectedObjectPosition.y = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.y, m_mapEditorPreferences->GetGridSnapSize());
+      centerOfSelectedObjectsGroup.y = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.y, m_mapEditorPreferences->GetGridSnapSize());
     }
     else {
-      selectedObjectPosition.y -= deltaY;
+      centerOfSelectedObjectsGroup.y -= deltaY;
     }
   }
   else
@@ -234,65 +265,101 @@ void MapEditorControl::MoveObject(InputState* inputState)
       m_accumulativePositionForSnap.x += deltaY * XMVectorGetX(forwardCameraVector);
       m_accumulativePositionForSnap.z += deltaY * XMVectorGetZ(forwardCameraVector);
 
-      selectedObjectPosition.x = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.x, m_mapEditorPreferences->GetGridSnapSize());
-      selectedObjectPosition.z = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.z, m_mapEditorPreferences->GetGridSnapSize());
+      centerOfSelectedObjectsGroup.x = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.x, m_mapEditorPreferences->GetGridSnapSize());
+      centerOfSelectedObjectsGroup.z = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.z, m_mapEditorPreferences->GetGridSnapSize());
     }
     else {
-      selectedObjectPosition.x += deltaX * XMVectorGetX(rightCameraVector);
-      selectedObjectPosition.z += deltaX * XMVectorGetZ(rightCameraVector);
-      selectedObjectPosition.x += deltaY * XMVectorGetX(forwardCameraVector);
-      selectedObjectPosition.z += deltaY * XMVectorGetZ(forwardCameraVector);
+      centerOfSelectedObjectsGroup.x += deltaX * XMVectorGetX(rightCameraVector);
+      centerOfSelectedObjectsGroup.z += deltaX * XMVectorGetZ(rightCameraVector);
+      centerOfSelectedObjectsGroup.x += deltaY * XMVectorGetX(forwardCameraVector);
+      centerOfSelectedObjectsGroup.z += deltaY * XMVectorGetZ(forwardCameraVector);
     }
   }
-  (*m_staticGameObjectMap)[(*m_selectedObjectId)].SetPosition(selectedObjectPosition.x, selectedObjectPosition.y, selectedObjectPosition.z);
+
+  for (int selectedObjectId : (*m_selectedObjectIds))
+  {
+    (*m_staticGameObjectMap)[selectedObjectId].SetPosition(centerOfSelectedObjectsGroup.x + differenceFromCenter[selectedObjectId].x, centerOfSelectedObjectsGroup.y + differenceFromCenter[selectedObjectId].y, centerOfSelectedObjectsGroup.z + differenceFromCenter[selectedObjectId].z);
+  }
   m_sgoTranslated = true;
 }
 
-void MapEditorControl::RotateObject(InputState* inputState)
+void MapEditorControl::RotateObjects(InputState* inputState)
 {
-  XMFLOAT3 rotation = m_staticGameObjectMap->at((*m_selectedObjectId)).GetRotation();
+  XMFLOAT3 centerOfSelectedObjects; 
+  XMMATRIX newRotaions;
+  float correctedAngleWithSnap;
   float deltaX = inputState->m_mouseState.lX * m_mapEditorPreferences->GetObjectRotationSpeed() * m_timeInSecondsBetweenFrames;
   float deltaY = inputState->m_mouseState.lY * m_mapEditorPreferences->GetObjectRotationSpeed() * m_timeInSecondsBetweenFrames;
 
   if (deltaX == 0.0f && deltaY == 0.0f)
     return;
   
+  centerOfSelectedObjects = GetCenterOfSelectedObjects();
+
   if (m_mapEditorPreferences->GetSnapToAngleState() && m_needRecalculateAcumulativeRotationForSnap)
   {
-    m_accumulativeRotationForSnap = rotation;
+    m_accumulativeRotationForSnap = XMFLOAT3(0.0f, 0.0f, 0.0f);
     m_needRecalculateAcumulativeRotationForSnap = false;
   }
 
-  m_sgoRotated = true;
   if (inputState->IsKeyDown(DIK_Z))
   {
     if (m_mapEditorPreferences->GetSnapToAngleState())
+    {
       m_accumulativeRotationForSnap.z += deltaX;
+      correctedAngleWithSnap = GetCorrectedWithSnapCoord(m_accumulativeRotationForSnap.z, m_mapEditorPreferences->GetAngleSnap());
+      newRotaions = XMMatrixRotationZ(XMConvertToRadians(correctedAngleWithSnap));
+      if (correctedAngleWithSnap != 0.0f)
+        m_accumulativeRotationForSnap.z = 0.0f;
+    }
     else
-      rotation.z += deltaX;
+    {
+      newRotaions = XMMatrixRotationZ(XMConvertToRadians(deltaX));
+    }
   }
   else if (inputState->IsKeyDown(DIK_X))
   {
     if (m_mapEditorPreferences->GetSnapToAngleState())
+    {
       m_accumulativeRotationForSnap.x += deltaY;
+      correctedAngleWithSnap = GetCorrectedWithSnapCoord(m_accumulativeRotationForSnap.x, m_mapEditorPreferences->GetAngleSnap());
+      newRotaions = XMMatrixRotationX(XMConvertToRadians(correctedAngleWithSnap));
+      if (correctedAngleWithSnap != 0.0f)
+        m_accumulativeRotationForSnap.x = 0.0f;
+    }
     else
-      rotation.x += deltaY;
+    {
+      newRotaions = XMMatrixRotationX(XMConvertToRadians(deltaY));
+    }
+   
   }
   else
   {
     if (m_mapEditorPreferences->GetSnapToAngleState())
+    {
       m_accumulativeRotationForSnap.y += deltaX;
-    else
-      rotation.y += deltaX;
+      correctedAngleWithSnap = GetCorrectedWithSnapCoord(m_accumulativeRotationForSnap.y, m_mapEditorPreferences->GetAngleSnap());
+      newRotaions = XMMatrixRotationY(XMConvertToRadians(correctedAngleWithSnap));
+      if (correctedAngleWithSnap != 0.0f)
+        m_accumulativeRotationForSnap.y = 0.0f;
+    }
+    else 
+    {
+      newRotaions = XMMatrixRotationY(XMConvertToRadians(deltaX));
+    }
   }
 
-  if (m_mapEditorPreferences->GetSnapToAngleState())
+  for (int selectedObjectId : (*m_selectedObjectIds))
   {
-    rotation.x = GetCorrectedWithSnapCoord(m_accumulativeRotationForSnap.x, m_mapEditorPreferences->GetAngleSnap());
-    rotation.y = GetCorrectedWithSnapCoord(m_accumulativeRotationForSnap.y, m_mapEditorPreferences->GetAngleSnap());
-    rotation.z = GetCorrectedWithSnapCoord(m_accumulativeRotationForSnap.z, m_mapEditorPreferences->GetAngleSnap());
+    XMMATRIX worldMatrix;
+    (*m_staticGameObjectMap)[selectedObjectId].GetWorldMatrix(worldMatrix);
+    worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(-centerOfSelectedObjects.x, -centerOfSelectedObjects.y, -centerOfSelectedObjects.z));
+    worldMatrix = XMMatrixMultiply(worldMatrix, newRotaions);
+    worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(centerOfSelectedObjects.x, centerOfSelectedObjects.y, centerOfSelectedObjects.z));
+
+    (*m_staticGameObjectMap)[selectedObjectId].SetWorldMatrix(worldMatrix);
   }
-  m_staticGameObjectMap->at((*m_selectedObjectId)).SetRotation(rotation.x, rotation.y, rotation.z);
+  m_sgoRotated = true;
 }
 
 void MapEditorControl::MoveCamera(InputState* inputState)
@@ -329,7 +396,7 @@ void MapEditorControl::RotateCamera(InputState* inputState)
   m_camera->ChangeXRotation(deltaY * m_mapEditorPreferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
 }
 
-void MapEditorControl::PickObject(int mouseXCoor, int mouseYCoor)
+void MapEditorControl::PickObject(InputState* inputState, int mouseXCoor, int mouseYCoor)
 {
   XMMATRIX projectionMatrix;
   XMMATRIX cameraWorldMatrix;
@@ -345,8 +412,6 @@ void MapEditorControl::PickObject(int mouseXCoor, int mouseYCoor)
   float minDistance = INT_FAST32_MAX;
   float viewSpaceCursorXCoor, viewSpaceCursorYCoor, viewSpaceCursorZCoor;
 
-  (*m_selectedObjectId) = NOTHING_SELECTED;
-
   m_camera->GetProjectionMatrix(projectionMatrix);
   XMStoreFloat4x4(&projectionMatrixReadable, projectionMatrix);
 
@@ -361,6 +426,7 @@ void MapEditorControl::PickObject(int mouseXCoor, int mouseYCoor)
   cameraPosition = m_camera->GetPosition();
   pickRayInCameraWorldSpacePos = XMLoadFloat3(&cameraPosition);
 
+  int selectedObjectId = NOTHING_SELECTED;
   for (auto& sgo : (*m_staticGameObjectMap))
   {
     BoundingBox* box = sgo.second.GetModel()->GetBoundingBox();
@@ -383,13 +449,35 @@ void MapEditorControl::PickObject(int mouseXCoor, int mouseYCoor)
 
     if (RayAABBIntersect(minPoint, maxPoint, rayPosReadable, rayDirectReadable, distance))
     {
+      m_needRecalculateRotationAroundPoint = true;
       if (distance < minDistance)
       {
         minDistance = distance;
-        (*m_selectedObjectId) = sgo.first;
-        m_needRecalculateRotationAroundPoint = true;
+        selectedObjectId = sgo.first;
       }
     }
+  }
+
+  if (selectedObjectId == NOTHING_SELECTED)
+  {
+    if (inputState->IsKeyUp(DIK_LCONTROL) && inputState->IsKeyUp(DIK_LALT))
+      m_selectedObjectIds->clear();
+  }
+  else
+  {
+    if (inputState->IsKeyDown(DIK_LALT)){
+      m_selectedObjectIds->erase(selectedObjectId);
+    }
+    else {
+      if (m_selectedObjectIds->count(selectedObjectId) > 0)
+        return;
+
+      if (inputState->IsKeyUp(DIK_LCONTROL))
+        m_selectedObjectIds->clear();
+
+      m_selectedObjectIds->insert(selectedObjectId);
+    }
+     
   }
 }
 
@@ -439,8 +527,30 @@ bool MapEditorControl::RayAABBIntersect(XMFLOAT3& minPoint, XMFLOAT3& maxPoint, 
 
 void MapEditorControl::Clone()
 {
-  if (m_idForCopy == NOTHING_SELECTED)
+  if (m_selectedObjectIds->empty())
     return;
 
-  m_sgoOnMapTableWidget->Clone((*m_selectedObjectId));
+  for (auto selectedId : (*m_selectedObjectIds))
+    m_sgoOnMapTableWidget->Clone(selectedId);
+}
+
+XMFLOAT3 MapEditorControl::GetCenterOfSelectedObjects()
+{
+  if (m_selectedObjectIds->empty())
+    RUNTIME_ERROR("There is no selected objects")
+
+  XMFLOAT3 center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+  for (int selectedObjectId : (*m_selectedObjectIds))
+  {
+    StaticGameObject gameObject = m_staticGameObjectMap->at(selectedObjectId);
+    XMFLOAT3 position = gameObject.GetPosition();
+    center.x += position.x;
+    center.y += position.y;
+    center.z += position.z;
+  }
+  center.x = center.x / m_selectedObjectIds->size();
+  center.y = center.y / m_selectedObjectIds->size();
+  center.z = center.z / m_selectedObjectIds->size();
+
+  return center;
 }

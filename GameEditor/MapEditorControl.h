@@ -1,6 +1,8 @@
 #pragma once
 #include <map>
+#include <set>
 #include <math.h>
+#include <algorithm>
 #include "InputListener.h"
 #include "Logger.h"
 #include "Camera.h"
@@ -22,7 +24,6 @@ protected:
 
   SGOOnMapTM* m_SGOOnMapTM;
   Camera* m_camera;
-  int* m_selectedObjectId;
   std::map<int, StaticGameObject>* m_staticGameObjectMap;
   MapEditorPreferences* m_mapEditorPreferences;
 
@@ -38,14 +39,14 @@ protected:
   XMFLOAT3 m_accumulativeRotationForSnap;
   bool m_needRecalculateAcumulativeRotationForSnap = true;
 
-  int m_idForCopy = NOTHING_SELECTED;
+  std::set<int>* m_selectedObjectIds;
 protected:
   bool RayAABBIntersect(XMFLOAT3& minPoint, XMFLOAT3& maxPoint, XMFLOAT3& position, XMFLOAT3& direction, float& result);
-  void PickObject(int mouseXCoor, int mouseYCoor);
+  void PickObject(InputState* inputState, int mouseXCoor, int mouseYCoor);
   void RotateCamera(InputState* inputState);
   void MoveCamera(InputState* inputState);
-  void RotateObject(InputState* inputState);
-  void MoveObject(InputState* inputState);
+  void RotateObjects(InputState* inputState);
+  void MoveObjects(InputState* inputState);
 
   void RotateCameraAroundObject(InputState* inputState);
 
@@ -54,6 +55,10 @@ protected:
 
   float GetCorrectedWithSnapCoord(float coord, float snapSize);
   void Clone();
+  XMFLOAT3 GetCenterOfSelectedObjects();
+  void SaveChangedPositionsInDB();
+  void SaveChangedRotationsInDB();
+  void CalculateDifferenceWithPoint(std::map<int, XMFLOAT3>* differenceFromPoint, XMFLOAT3 point);
 public:
   MapEditorControl(MapEditorPreferences* mapEditorPreferences, SGOOnMapTableWidget* sgoOnMapTableWidget, Camera* camera, std::map<int, StaticGameObject>* staticGameObjectMap);
   virtual ~MapEditorControl();
@@ -62,7 +67,7 @@ public:
   void SetCamera(Camera* camera) { m_camera = camera; }
   void SetSGOMap(std::map<int, StaticGameObject>* staticGameObjectMap) { m_staticGameObjectMap = staticGameObjectMap; }
   void SetSGOOnMapTableWidget(SGOOnMapTableWidget* sgoOnMapTableWidget);
-  void SetSelectedObjectId(int* selectedObjectId) { m_selectedObjectId = selectedObjectId; }
   void SetMapEditorPreferenses(MapEditorPreferences* mapEditorPreferences) { m_mapEditorPreferences = mapEditorPreferences; }
+  void SetSelectedObjectIds(std::set<int>* selectedObjectIds) { m_selectedObjectIds = selectedObjectIds; }
 };
 
