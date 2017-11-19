@@ -3,6 +3,8 @@
 #include <set>
 #include <math.h>
 #include <algorithm>
+#include <vector>
+#include <iterator>
 #include "InputListener.h"
 #include "Logger.h"
 #include "Camera.h"
@@ -55,6 +57,7 @@ protected:
 
   float GetCorrectedWithSnapCoord(float coord, float snapSize);
   void Clone();
+  void Delete();
   XMFLOAT3 GetCenterOfSelectedObjects();
   void SaveChangedPositionsInDB();
   void SaveChangedRotationsInDB();

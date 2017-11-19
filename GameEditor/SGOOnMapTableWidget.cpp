@@ -13,10 +13,13 @@ SGOOnMapTableWidget::~SGOOnMapTableWidget()
 
 void SGOOnMapTableWidget::editBtnsStateConfigure()
 {
+  int selectedRowSize = m_table->selectionModel()->selectedRows().size();
   bool hasSelection = m_table->selectionModel()->hasSelection();
-  m_toolBox->editBtn->setEnabled(hasSelection);
+ 
   m_toolBox->cloneBtn->setEnabled(hasSelection);
   m_toolBox->deleteBtn->setEnabled(hasSelection);
+
+  m_toolBox->editBtn->setEnabled(selectedRowSize == 1);
 }
 
 void SGOOnMapTableWidget::configureTable()
@@ -27,7 +30,7 @@ void SGOOnMapTableWidget::configureTable()
   m_table->setModel(m_tableModel.get());
 
   m_table->setSelectionBehavior(QAbstractItemView::SelectRows);
-  m_table->setSelectionMode(QAbstractItemView::SingleSelection);
+  m_table->setSelectionMode(QAbstractItemView::MultiSelection);
   m_table->resizeColumnsToContents();
   m_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
   m_table->horizontalHeader()->setStretchLastSection(true);
@@ -80,11 +83,21 @@ void SGOOnMapTableWidget::configurePaginator()
   connect(m_paginator.get(), SIGNAL(PageChanged(int, int)), this, SLOT(PaginatorPageChanged(int, int)));
 }
 
+std::vector<int> SGOOnMapTableWidget::GetSelectedIds()
+{
+  std::vector<int> selectedObjectsIds;
+  selectedObjectsIds.reserve(m_table->selectionModel()->selectedRows().size());
+  for (auto& index : m_table->selectionModel()->selectedRows())
+  {
+    selectedObjectsIds.push_back(index.data().toInt());
+  }
+  return selectedObjectsIds;
+}
+
 void SGOOnMapTableWidget::TableRowSelected(const QItemSelection& selected, const QItemSelection& deselected)
 {
-  int selectedRow = m_table->selectionModel()->currentIndex().row();
-  SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
-  m_mapEditor->SetSelectedObjectObjectId(gameObject.id);
+  std::vector<int> selectedObjectsIds = GetSelectedIds();
+  m_mapEditor->SetSelectedObjectIds(selectedObjectsIds);
   editBtnsStateConfigure();
 }
 
@@ -128,25 +141,26 @@ void SGOOnMapTableWidget::AddSGOToMap(StaticGameObjectDbInfo& sgo)
   }
 }
 
-void SGOOnMapTableWidget::Delete(int id)
+void SGOOnMapTableWidget::Delete(std::vector<int> selectedIds)
 {
-  m_mapEditor->DeleteSGO(id);
-  m_tableModel->remove(id);
+  m_mapEditor->SetSelectedObjectIds(std::vector<int>());
+  for (int id : selectedIds) {
+    m_mapEditor->DeleteSGO(id);
+    m_tableModel->remove(id);
+  }
+ 
 }
 
 void SGOOnMapTableWidget::DeleteBtnClicked()
 {
-  int selectedRow = m_table->selectionModel()->currentIndex().row();
-  SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
-  Delete(gameObject.id);
+  std::vector<int> selectedIds = GetSelectedIds();
+  Delete(selectedIds);
 }
 
-void SGOOnMapTableWidget::EditBtnClicked()
+void SGOOnMapTableWidget::Edit(int id)
 {
-  int selectedRow = m_table->selectionModel()->currentIndex().row();
-  SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
-
-  AddOrEditSGOOnMapDialog dialog(this);
+  SGOOnMapDbInfo gameObject = m_tableModel->GetEntityByKey(id);
+  AddOrEditSGOOnMapDialog dialog;
   dialog.setSGOOnMap(gameObject);
 
   if (dialog.exec() == QDialog::Accepted) {
@@ -156,28 +170,37 @@ void SGOOnMapTableWidget::EditBtnClicked()
   }
 }
 
-void SGOOnMapTableWidget::Clone(int id)
+void SGOOnMapTableWidget::EditBtnClicked()
 {
-  SGOOnMapDbInfo gameObject = m_tableModel->GetEntityByKey(id);
-  gameObject.id = 0;
+  int selectedRow = m_table->selectionModel()->currentIndex().row();
+  SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
+  Edit(gameObject.id);
+}
 
-  if (gameObject.staticGameObjectDbInfo.countOnMap > 0)
-    gameObject.instanceName = gameObject.staticGameObjectDbInfo.name + QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
+void SGOOnMapTableWidget::Clone(std::vector<int> selectedIds)
+{
+  for (int id : selectedIds)
+  {
+    SGOOnMapDbInfo gameObject = m_tableModel->GetEntityByKey(id);
+    gameObject.id = 0;
 
-  AddOrEditSGOOnMapDialog dialog;
-  dialog.setSGOOnMap(gameObject);
+    if (gameObject.staticGameObjectDbInfo.countOnMap > 0)
+      gameObject.instanceName = gameObject.staticGameObjectDbInfo.name + QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
 
-  if (dialog.exec() == QDialog::Accepted) {
-    SGOOnMapDbInfo clonedGameObject = dialog.GetSGOOnMap();
-    m_tableModel->append(clonedGameObject);
-    m_mapEditor->AddSGO(clonedGameObject);
+    AddOrEditSGOOnMapDialog dialog;
+    dialog.setSGOOnMap(gameObject);
+
+    if (dialog.exec() == QDialog::Accepted) {
+      SGOOnMapDbInfo clonedGameObject = dialog.GetSGOOnMap();
+      m_tableModel->append(clonedGameObject);
+      m_mapEditor->AddSGO(clonedGameObject);
+    }
   }
 }
 
 void SGOOnMapTableWidget::CloneBtnClicked()
 {
-  int selectedRow = m_table->selectionModel()->currentIndex().row();
-  Clone(m_tableModel->GetEntity(selectedRow).id);
+  Clone(GetSelectedIds());
 }
 
 void SGOOnMapTableWidget::SetMapEditor(MapEditor* mapEditor)

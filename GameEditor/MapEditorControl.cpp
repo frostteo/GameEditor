@@ -24,12 +24,11 @@ void MapEditorControl::ProcessUserInput(InputState* inputState)
 {
   if (m_camera)
   {
+    if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_E) && m_selectedObjectIds->size() == 1)
+      m_sgoOnMapTableWidget->Edit((*m_selectedObjectIds->begin()));
+
     if (inputState->IsKeyPressed(DIK_DELETE) && !m_selectedObjectIds->empty())
-    {
-      for (int selectedId : (*m_selectedObjectIds))
-        m_sgoOnMapTableWidget->Delete(selectedId);
-      (*m_selectedObjectIds).clear();
-    }
+      Delete();
 
     m_timeInSecondsBetweenFrames = inputState->time * 0.001;
 
@@ -254,16 +253,16 @@ void MapEditorControl::MoveObjects(InputState* inputState)
   else
   {
     XMVECTOR rightCameraVector;
-    XMVECTOR forwardCameraVector;
+    XMVECTOR forwardMoveVector;
 
     rightCameraVector = m_camera->GetRight();
-    forwardCameraVector = m_camera->GetForward();
+    forwardMoveVector = XMVector3Normalize(XMVector3Cross(rightCameraVector, GEMath::UpWorld));
 
     if (m_mapEditorPreferences->GetSnapToGridState()) {
       m_accumulativePositionForSnap.x += deltaX * XMVectorGetX(rightCameraVector);
       m_accumulativePositionForSnap.z += deltaX * XMVectorGetZ(rightCameraVector);
-      m_accumulativePositionForSnap.x += deltaY * XMVectorGetX(forwardCameraVector);
-      m_accumulativePositionForSnap.z += deltaY * XMVectorGetZ(forwardCameraVector);
+      m_accumulativePositionForSnap.x += deltaY * XMVectorGetX(forwardMoveVector);
+      m_accumulativePositionForSnap.z += deltaY * XMVectorGetZ(forwardMoveVector);
 
       centerOfSelectedObjectsGroup.x = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.x, m_mapEditorPreferences->GetGridSnapSize());
       centerOfSelectedObjectsGroup.z = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.z, m_mapEditorPreferences->GetGridSnapSize());
@@ -271,8 +270,8 @@ void MapEditorControl::MoveObjects(InputState* inputState)
     else {
       centerOfSelectedObjectsGroup.x += deltaX * XMVectorGetX(rightCameraVector);
       centerOfSelectedObjectsGroup.z += deltaX * XMVectorGetZ(rightCameraVector);
-      centerOfSelectedObjectsGroup.x += deltaY * XMVectorGetX(forwardCameraVector);
-      centerOfSelectedObjectsGroup.z += deltaY * XMVectorGetZ(forwardCameraVector);
+      centerOfSelectedObjectsGroup.x += deltaY * XMVectorGetX(forwardMoveVector);
+      centerOfSelectedObjectsGroup.z += deltaY * XMVectorGetZ(forwardMoveVector);
     }
   }
 
@@ -427,6 +426,7 @@ void MapEditorControl::PickObject(InputState* inputState, int mouseXCoor, int mo
   pickRayInCameraWorldSpacePos = XMLoadFloat3(&cameraPosition);
 
   int selectedObjectId = NOTHING_SELECTED;
+  m_sgoOnMapTableWidget->ClearSelection();
   for (auto& sgo : (*m_staticGameObjectMap))
   {
     BoundingBox* box = sgo.second.GetModel()->GetBoundingBox();
@@ -530,8 +530,21 @@ void MapEditorControl::Clone()
   if (m_selectedObjectIds->empty())
     return;
 
-  for (auto selectedId : (*m_selectedObjectIds))
-    m_sgoOnMapTableWidget->Clone(selectedId);
+  std::vector<int> selectedObjectIdsVector;
+  selectedObjectIdsVector.reserve(m_selectedObjectIds->size());
+  std::copy(m_selectedObjectIds->begin(), m_selectedObjectIds->end(), std::back_inserter(selectedObjectIdsVector));
+  m_sgoOnMapTableWidget->Clone(selectedObjectIdsVector);
+}
+
+void MapEditorControl::Delete()
+{
+  if (m_selectedObjectIds->empty())
+    return;
+
+  std::vector<int> selectedIdsVector;
+  selectedIdsVector.reserve(m_selectedObjectIds->size());
+  std::copy(m_selectedObjectIds->begin(), m_selectedObjectIds->end(), std::back_inserter(selectedIdsVector));
+  m_sgoOnMapTableWidget->Delete(selectedIdsVector);
 }
 
 XMFLOAT3 MapEditorControl::GetCenterOfSelectedObjects()

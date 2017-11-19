@@ -36,12 +36,15 @@ protected:
   void configureTable();
   void configureUI();
   void configurePaginator();
+  std::vector<int> GetSelectedIds();
 public:
   SGOOnMapTableWidget(QWidget *parent = Q_NULLPTR);
   ~SGOOnMapTableWidget();
   void AddSGOToMap(StaticGameObjectDbInfo& sgo);
   void SetMapEditor(MapEditor* mapEditor);
   SGOOnMapTM* GetTableModel() { return m_tableModel.get(); }
-  void Clone(int id);
-  void Delete(int id);
+  void Clone(std::vector<int> selectedIds);
+  void Delete(std::vector<int> selectedIds);
+  void Edit(int id);
+  void ClearSelection() { m_table->selectionModel()->clearSelection(); }
 };

@@ -3,11 +3,9 @@
 #include <QWidget>
 #include "ui_MapEditor.h"
 #include "QtDirectXWidget.h"
-#include <map>
 #include "StaticGameObject.h"
 #include "MapEditorControl.h"
 #include "SGOOnMapTM.h"
-#include <set>
 
 class MapEditor : public QtDirectXWidget, public Ui::MapEditor
 {
@@ -26,5 +24,5 @@ public slots:
   void EditSGO(SGOOnMapDbInfo& sgoOnMap);
   void SGODbInfoDeleted(int sgoDbInfoId);
   void SGODbInfoEdited(StaticGameObjectDbInfo& dbInfo);
-  void SetSelectedObjectObjectId(int selectedObjectId) { m_selectedObjectIds.clear(); m_selectedObjectIds.insert(selectedObjectId); }
+  void SetSelectedObjectIds(std::vector<int> selectedObjectIds) { m_selectedObjectIds.clear(); std::copy(selectedObjectIds.begin(), selectedObjectIds.end(), std::inserter(m_selectedObjectIds, m_selectedObjectIds.end())); }
 };

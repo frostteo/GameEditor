@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MapEditor_t {
-    QByteArrayData data[15];
-    char stringdata0[183];
+    QByteArrayData data[16];
+    char stringdata0[196];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,16 +44,17 @@ QT_MOC_LITERAL(9, 81, 11), // "sgoDbInfoId"
 QT_MOC_LITERAL(10, 93, 15), // "SGODbInfoEdited"
 QT_MOC_LITERAL(11, 109, 23), // "StaticGameObjectDbInfo&"
 QT_MOC_LITERAL(12, 133, 6), // "dbInfo"
-QT_MOC_LITERAL(13, 140, 25), // "SetSelectedObjectObjectId"
-QT_MOC_LITERAL(14, 166, 16) // "selectedObjectId"
+QT_MOC_LITERAL(13, 140, 20), // "SetSelectedObjectIds"
+QT_MOC_LITERAL(14, 161, 16), // "std::vector<int>"
+QT_MOC_LITERAL(15, 178, 17) // "selectedObjectIds"
 
     },
     "MapEditor\0AddSGO\0\0SGOOnMapDbInfo&\0"
     "sgoOnMap\0DeleteSGO\0id\0EditSGO\0"
     "SGODbInfoDeleted\0sgoDbInfoId\0"
     "SGODbInfoEdited\0StaticGameObjectDbInfo&\0"
-    "dbInfo\0SetSelectedObjectObjectId\0"
-    "selectedObjectId"
+    "dbInfo\0SetSelectedObjectIds\0"
+    "std::vector<int>\0selectedObjectIds"
 };
 #undef QT_MOC_LITERAL
 
@@ -84,7 +85,7 @@ static const uint qt_meta_data_MapEditor[] = {
     QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void, QMetaType::Int,    9,
     QMetaType::Void, 0x80000000 | 11,   12,
-    QMetaType::Void, QMetaType::Int,   14,
+    QMetaType::Void, 0x80000000 | 14,   15,
 
        0        // eod
 };
@@ -100,7 +101,7 @@ void MapEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 2: _t->EditSGO((*reinterpret_cast< SGOOnMapDbInfo(*)>(_a[1]))); break;
         case 3: _t->SGODbInfoDeleted((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 4: _t->SGODbInfoEdited((*reinterpret_cast< StaticGameObjectDbInfo(*)>(_a[1]))); break;
-        case 5: _t->SetSelectedObjectObjectId((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->SetSelectedObjectIds((*reinterpret_cast< std::vector<int>(*)>(_a[1]))); break;
         default: ;
         }
     }
