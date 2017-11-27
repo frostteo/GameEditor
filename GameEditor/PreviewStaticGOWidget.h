@@ -14,6 +14,7 @@ class PreviewStaticGOWidget : public QtDirectXWidget, public Ui::PreviewStaticGO
 {
     Q_OBJECT
 private:
+  MapEditorPreferences* m_mapEditorPreferences;
   StaticGameObject m_sgo;
 protected:
   /** Destroys the D3D environment */
@@ -22,7 +23,7 @@ protected:
   /** paints the scene */
   virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
-  PreviewStaticGOWidget(QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
+  PreviewStaticGOWidget(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~PreviewStaticGOWidget();
   /** Initialized the D3D environment */
   bool Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials);

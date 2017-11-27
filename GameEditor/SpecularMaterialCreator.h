@@ -3,6 +3,7 @@
 #include "IMaterialCreator.h"
 #include "TextureFactory.h"
 #include "SpecularMaterial.h"
+#include "Utils.h"
 
 class SpecularMaterialCreator :
   public IMaterialCreator

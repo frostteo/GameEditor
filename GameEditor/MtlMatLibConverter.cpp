@@ -50,8 +50,11 @@ std::string MtlMatLibConverter::defineMaterialType(const MtlMaterial& material)
   //TODO FHolod: algorithm will be extended
   if (!material.map_Kd.empty() && !material.map_bump.empty())
     return BumpMaterial::bumpMaterialType;
-  else 
-    return ColorMaterial::colorMaterialType;
+  else if (!material.map_Kd.empty() && HasSpecularData(material))
+    return SpecularMaterial::specularMaterialType;
+  else if (!material.map_Kd.empty())
+    return TextureMaterial::textureMaterialType;
+  else return ColorMaterial::colorMaterialType;
 }
 
 void MtlMatLibConverter::saveBumpMaterial(std::ofstream& ofstream, const MtlMaterial& material)
@@ -62,13 +65,21 @@ void MtlMatLibConverter::saveBumpMaterial(std::ofstream& ofstream, const MtlMate
     ofstream << "bumpDepth: " << material.bumpPower << std::endl;
 }
 
+void MtlMatLibConverter::saveSpecularMaterialType(std::ofstream& ofstream, const MtlMaterial& material)
+{
+  ofstream << "type: " << SpecularMaterial::specularMaterialType << std::endl;
+  ofstream << "textureFileName: " << material.map_Kd << std::endl;
+  ofstream << "specularColor: " << material.Ks.r << ' ' << material.Ks.g << ' ' << material.Ks.b << ' ' << 1.0f << std::endl;
+  ofstream << "specularPower: " << material.Ns << std::endl;
+}
+
 void MtlMatLibConverter::saveColorMaterial(std::ofstream& ofstream, const MtlMaterial& material)
 {
   ColorMaterialSubType subType;
   if (material.Ks.r > 0 && material.Ks.g > 0 && material.Ks.b > 0 &&
     material.Ke.r > 0 && material.Ke.g > 0 && material.Ke.b > 0)
     subType = ColorMaterialSubType::COLOR_SPEC_SELFILUM;
-  else if (material.Ks.r > 0 && material.Ks.g > 0 && material.Ks.b > 0)
+  else if (HasSpecularData(material))
     subType = ColorMaterialSubType::COLOR_SPECULAR;
   else
     subType = ColorMaterialSubType::ONLY_COLOR;
@@ -129,7 +140,17 @@ void MtlMatLibConverter::saveMaterial(const std::string& materialName, const Mtl
 
     if (materialType == BumpMaterial::bumpMaterialType)
       saveBumpMaterial(ofstream, material);
+    else if (materialType == SpecularMaterial::specularMaterialType)
+      saveSpecularMaterialType(ofstream, material);
+    else if (materialType == TextureMaterial::textureMaterialType)
+      saveTextureMaterial(ofstream, material);
     else if (materialType == ColorMaterial::colorMaterialType)
       saveColorMaterial(ofstream, material);
   }
+}
+
+void MtlMatLibConverter::saveTextureMaterial(std::ofstream& ofstream, const MtlMaterial& material)
+{
+  ofstream << "type: " << TextureMaterial::textureMaterialType << std::endl;
+  ofstream << "textureFileName: " << material.map_Kd << std::endl;
 }

@@ -5,6 +5,7 @@
 #include "Logger.h"
 #include "BumpMaterial.h"
 #include "ColorMaterial.h"
+#include "SpecularMaterial.h"
 #include "Utils.h"
 
 class MtlMatLibConverter : public IConverter
@@ -39,11 +40,15 @@ protected:
   std::string m_pathToMaterials;
   std::string m_space; //Place for reading string from buffer
 protected:
+  bool HasSpecularData(const MtlMaterial& material) { return (material.Ks.r > 0 || material.Ks.g > 0 || material.Ks.b > 0) && material.Ns > 0; }
+
   void readMtlMaterial(std::stringstream& strStream, MtlMaterial& material);
   void saveMaterial(const std::string& materialName, const MtlMaterial& material, bool needReplaceIfExists);
   std::string defineMaterialType(const MtlMaterial& material);
   void saveBumpMaterial(std::ofstream& ofstream, const MtlMaterial& material);
   void saveColorMaterial(std::ofstream& ofstream, const MtlMaterial& material);
+  void saveTextureMaterial(std::ofstream& ofstream, const MtlMaterial& material);
+  void saveSpecularMaterialType(std::ofstream& ofstream, const MtlMaterial& material);
 public:
   static const std::string GE_MAT_EXT;
   static const std::string MTL_MAT_EXT;

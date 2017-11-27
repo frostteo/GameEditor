@@ -16,6 +16,7 @@ public:
   virtual void Delete(int id) = 0;
   virtual void Update(T& entity) = 0;
   virtual int Create(T& entity) = 0;
+  virtual void ExecuteQuery(std::string queryStr) = 0;
   virtual ~IRepository<T>() {}
 };
 

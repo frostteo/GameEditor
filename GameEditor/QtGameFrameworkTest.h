@@ -55,4 +55,5 @@ private:
   ShaderConfiguration* m_shaderConfiguration;
   LightininigSystem* m_lightininigSystem;
   std::unique_ptr<GraphicSystem> m_graphicSystem;
+  std::unique_ptr<MapEditorPreferences> m_mapEditorPreferences;
 };

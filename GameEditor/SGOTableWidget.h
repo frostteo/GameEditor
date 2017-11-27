@@ -25,6 +25,8 @@ private:
   QString m_pathToModels;
   QString m_pathToMaterials;
   std::unique_ptr<PreviewStaticGOWidget> m_previewStaticGOWidget;
+  MapEditorPreferences* m_mapEditorPreferences;
+
 protected slots:
   void on_addSGOBtn_clicked();
   void on_editSGOBtn_clicked();
@@ -45,7 +47,7 @@ public slots:
   void UpdateTable();
   void CountOnMapChanged(int id);
 public:
-    SGOTableWidget(QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
+    SGOTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
     ~SGOTableWidget();
     void SetPathToModels(QString& path) { m_pathToModels = path; }
     void SetPathToMaterials(QString& path) { m_pathToMaterials = path; }

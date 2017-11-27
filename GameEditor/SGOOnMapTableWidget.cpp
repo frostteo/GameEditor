@@ -41,6 +41,8 @@ void SGOOnMapTableWidget::configureTable()
   connect(m_toolBox->deleteBtn, SIGNAL(clicked()), this, SLOT(DeleteBtnClicked()));
   connect(m_toolBox->editBtn, SIGNAL(clicked()), this, SLOT(EditBtnClicked()));
   connect(m_toolBox->cloneBtn, SIGNAL(clicked()), this, SLOT(CloneBtnClicked()));
+  connect(m_toolBox->freezeAllBtn, SIGNAL(clicked()), this, SLOT(FreezeAllBtnClicked()));
+  connect(m_toolBox->unfreezeAllBtn, SIGNAL(clicked()), this, SLOT(UnfreezeAllBtnClicked()));
 
   connect(m_table->selectionModel(),
     SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -206,9 +208,17 @@ void SGOOnMapTableWidget::CloneBtnClicked()
 void SGOOnMapTableWidget::SetMapEditor(MapEditor* mapEditor)
 {
   m_mapEditor = mapEditor; 
-  auto allGameObjectsOnMap = m_tableModel->GetSGOOnMapService()->GetAll();
-  for (auto& gameObject : allGameObjectsOnMap)
-  {
-    m_mapEditor->AddSGO(gameObject);
-  }
+  auto allGameObjectsOnMap = m_tableModel->GetSGOOnMapService()->GetAll().toVector().toStdVector();
+  m_mapEditor->InitializeOctoTree(allGameObjectsOnMap);
 }
+
+void SGOOnMapTableWidget::FreezeAllBtnClicked()
+{
+  m_tableModel->FreezeAll();
+}
+
+void SGOOnMapTableWidget::UnfreezeAllBtnClicked()
+{
+  m_tableModel->UnfreezeAll();
+}
+

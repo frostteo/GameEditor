@@ -35,6 +35,7 @@ void AddOrEditSGOOnMapDialog::setSGOOnMap(SGOOnMapDbInfo gameObject)
       instanceName += QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
   }
   this->instanceNameTxt->setText(instanceName);
+  this->isFrozenCheckBox->setChecked(m_SGOOnMap.isFrozen > 0);
 }
 
 SGOOnMapDbInfo AddOrEditSGOOnMapDialog::GetSGOOnMap()
@@ -49,6 +50,8 @@ SGOOnMapDbInfo AddOrEditSGOOnMapDialog::GetSGOOnMap()
   m_SGOOnMap.xRotate = fmod(this->xRotateTxt->text().toFloat(), gradesInCircle);
   m_SGOOnMap.yRotate = fmod(this->yRotateTxt->text().toFloat(), gradesInCircle);
   m_SGOOnMap.zRotate = fmod(this->zRotateTxt->text().toFloat(), gradesInCircle);
+
+  m_SGOOnMap.isFrozen = this->isFrozenCheckBox->isChecked()? 1 : 0;
 
   return m_SGOOnMap;
 }

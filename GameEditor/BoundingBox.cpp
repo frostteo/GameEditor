@@ -8,24 +8,32 @@ BoundingBox::BoundingBox()
   m_vertexBuffer = nullptr;
 }
 
-void BoundingBox::Initialize(float& minX, float& minY, float& minZ, float& maxX, float& maxY, float& maxZ)
+void BoundingBox::CorrectZeroCoordinates(float& min, float& max)
 {
-  const int countOfPointInParallelepiped = 8;
+  if (abs(min - max) < 5)
+  {
+    min = -5.0f;
+    max = 5.0f;
+  }
+}
 
-  m_minPoint = XMFLOAT3(minX, minY, minZ);
-  m_maxPoint = XMFLOAT3(maxX, maxY, maxZ);
+void BoundingBox::Initialize(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+{
+  CorrectZeroCoordinates(minX, maxX);
+  CorrectZeroCoordinates(minY, maxY);
+  CorrectZeroCoordinates(minZ, maxZ);
 
-  VertexPosition bottomNearLeft = { minX, minY, minZ };
-  VertexPosition bottomFarLeft = { minX, minY, maxZ };
-  VertexPosition bottomFarRight = { maxX, minY, maxZ };
-  VertexPosition bottomNearRight = { maxX, minY, minZ };
-  VertexPosition topNearLeft = { minX, maxY, minZ };
-  VertexPosition topFarLeft = { minX, maxY, maxZ };
-  VertexPosition topFarRight = { maxX, maxY, maxZ };
-  VertexPosition topNearRight = { maxX, maxY, minZ };
+  XMFLOAT3 bottomNearLeft = { minX, minY, minZ };
+  XMFLOAT3 bottomFarLeft = { minX, minY, maxZ };
+  XMFLOAT3 bottomFarRight = { maxX, minY, maxZ };
+  XMFLOAT3 bottomNearRight = { maxX, minY, minZ };
+  XMFLOAT3 topNearLeft = { minX, maxY, minZ };
+  XMFLOAT3 topFarLeft = { minX, maxY, maxZ };
+  XMFLOAT3 topFarRight = { maxX, maxY, maxZ };
+  XMFLOAT3 topNearRight = { maxX, maxY, minZ };
 
   m_vertices.clear();
-  m_vertices.reserve(countOfPointInParallelepiped);
+  m_vertices.reserve(COUNT_OF_POINTS);
   m_vertices.push_back(bottomNearLeft);
   m_vertices.push_back(bottomFarLeft);
   m_vertices.push_back(bottomFarRight);
@@ -34,6 +42,36 @@ void BoundingBox::Initialize(float& minX, float& minY, float& minZ, float& maxX,
   m_vertices.push_back(topFarLeft);
   m_vertices.push_back(topFarRight);
   m_vertices.push_back(topNearRight);
+}
+
+void BoundingBox::Initialize(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, XMMATRIX worldMatrix)
+{
+  std::vector<XMVECTOR> xmvectors;
+  xmvectors.reserve(COUNT_OF_POINTS);
+
+  m_vertices.clear();
+  m_vertices.reserve(COUNT_OF_POINTS);
+
+  CorrectZeroCoordinates(minX, maxX);
+  CorrectZeroCoordinates(minY, maxY);
+  CorrectZeroCoordinates(minZ, maxZ);
+
+  xmvectors.push_back(XMVectorSet(minX, minY, minZ, 0.0f));
+  xmvectors.push_back(XMVectorSet(minX, minY, maxZ, 0.0f));
+  xmvectors.push_back(XMVectorSet(maxX, minY, maxZ, 0.0f));
+  xmvectors.push_back(XMVectorSet(maxX, minY, minZ, 0.0f));
+  xmvectors.push_back(XMVectorSet(minX, maxY, minZ, 0.0f));
+  xmvectors.push_back(XMVectorSet(minX, maxY, maxZ, 0.0f));
+  xmvectors.push_back(XMVectorSet(maxX, maxY, maxZ, 0.0f));
+  xmvectors.push_back(XMVectorSet(maxX, maxY, minZ, 0.0f));
+
+  for (size_t i = 0; i < COUNT_OF_POINTS; ++i)
+  {
+    xmvectors[i] = XMVector3Transform(xmvectors[i], worldMatrix);
+    XMFLOAT3 space;
+    XMStoreFloat3(&space, xmvectors[i]);
+    m_vertices.push_back(space);
+  }
 }
 
 void BoundingBox::SerializeStatic(std::ostream& ostream, float& minX, float& minY, float& minZ, float& maxX, float& maxY, float& maxZ)
@@ -82,7 +120,7 @@ void BoundingBox::InitializeBuffers(ID3D11Device* device)
   for (int i = 0; i < m_vertices.size(); ++i)
   {
     Vertex vertex;
-    vertex.position = XMFLOAT3(m_vertices[i].x, m_vertices[i].y, m_vertices[i].z);
+    vertex.position = m_vertices[i];
     if (i < 4)
       vertex.color = (i % 2 == 0 ? XMFLOAT3(1.0f, 0.0f, 0.0f) : XMFLOAT3(0.0f, 1.0f, 0.0f));
     else
@@ -198,10 +236,10 @@ void BoundingBox::PrepareToRender(ID3D11DeviceContext* deviceContext)
 
 XMFLOAT3 BoundingBox::GetMinPoint()
 {
-  return m_minPoint;
+  return m_vertices[0];
 }
 
 XMFLOAT3 BoundingBox::GetMaxPoint()
 {
-  return m_maxPoint;
+  return m_vertices[6];
 }

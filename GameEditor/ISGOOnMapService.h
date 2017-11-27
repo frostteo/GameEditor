@@ -18,4 +18,6 @@ public:
   virtual QList<SGOOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "") = 0;
   virtual void SetPosition(int id, float x, float y, float z) = 0;
   virtual void SetRotation(int id, float x, float y, float z) = 0;
+  virtual void FreezeAll() = 0;
+  virtual void UnfreezeAll() = 0;
 };

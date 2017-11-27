@@ -15,7 +15,7 @@ void GameEditor::configureUI()
   this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
 
-  m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_pathToModels, m_pathToMaterials));
+  m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
   ui.tabWidget->clear();
   ui.tabWidget->addTab(m_SGOTableWidget.get(), "static game objects"); 
 

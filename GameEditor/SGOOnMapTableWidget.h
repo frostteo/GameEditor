@@ -30,6 +30,8 @@ protected slots:
   void DeleteBtnClicked();
   void EditBtnClicked();
   void CloneBtnClicked();
+  void FreezeAllBtnClicked();
+  void UnfreezeAllBtnClicked();
 
   void SGODeleted(int sgoId) { UpdateTable(); }
 protected:

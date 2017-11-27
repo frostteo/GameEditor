@@ -254,24 +254,43 @@ void MapEditorControl::MoveObjects(InputState* inputState)
   {
     XMVECTOR rightCameraVector;
     XMVECTOR forwardMoveVector;
+    bool needMoveXAxis = inputState->IsKeyDown(DIK_X);
+    bool needMoveZAxis = inputState->IsKeyDown(DIK_Y);
+    if (needMoveZAxis == needMoveXAxis)
+    {
+      needMoveXAxis = true;
+      needMoveZAxis = true;
+    }
 
     rightCameraVector = m_camera->GetRight();
     forwardMoveVector = XMVector3Normalize(XMVector3Cross(rightCameraVector, GEMath::UpWorld));
 
     if (m_mapEditorPreferences->GetSnapToGridState()) {
-      m_accumulativePositionForSnap.x += deltaX * XMVectorGetX(rightCameraVector);
-      m_accumulativePositionForSnap.z += deltaX * XMVectorGetZ(rightCameraVector);
-      m_accumulativePositionForSnap.x += deltaY * XMVectorGetX(forwardMoveVector);
-      m_accumulativePositionForSnap.z += deltaY * XMVectorGetZ(forwardMoveVector);
+
+      if (needMoveXAxis) {
+        m_accumulativePositionForSnap.x += deltaX * XMVectorGetX(rightCameraVector);
+        m_accumulativePositionForSnap.x += deltaY * XMVectorGetX(forwardMoveVector);
+      }
+
+      if (needMoveZAxis) {
+        m_accumulativePositionForSnap.z += deltaX * XMVectorGetZ(rightCameraVector);
+        m_accumulativePositionForSnap.z += deltaY * XMVectorGetZ(forwardMoveVector);
+      }
 
       centerOfSelectedObjectsGroup.x = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.x, m_mapEditorPreferences->GetGridSnapSize());
       centerOfSelectedObjectsGroup.z = GetCorrectedWithSnapCoord(m_accumulativePositionForSnap.z, m_mapEditorPreferences->GetGridSnapSize());
     }
     else {
-      centerOfSelectedObjectsGroup.x += deltaX * XMVectorGetX(rightCameraVector);
-      centerOfSelectedObjectsGroup.z += deltaX * XMVectorGetZ(rightCameraVector);
-      centerOfSelectedObjectsGroup.x += deltaY * XMVectorGetX(forwardMoveVector);
-      centerOfSelectedObjectsGroup.z += deltaY * XMVectorGetZ(forwardMoveVector);
+
+      if (needMoveXAxis) {
+        centerOfSelectedObjectsGroup.x += deltaX * XMVectorGetX(rightCameraVector);
+        centerOfSelectedObjectsGroup.x += deltaY * XMVectorGetX(forwardMoveVector);
+      }
+      if (needMoveZAxis) {
+        centerOfSelectedObjectsGroup.z += deltaX * XMVectorGetZ(rightCameraVector);
+        centerOfSelectedObjectsGroup.z += deltaY * XMVectorGetZ(forwardMoveVector);
+      }
+
     }
   }
 
@@ -373,7 +392,6 @@ void MapEditorControl::MoveCamera(InputState* inputState)
   {
     int deltaX = inputState->m_mouseState.lX;
     int deltaY = inputState->m_mouseState.lY;
-
 
     if (deltaX)
       m_camera->MoveRight(deltaX * m_mapEditorPreferences->GetCameraPanSpeed() * m_timeInSecondsBetweenFrames);

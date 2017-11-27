@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>341</width>
-    <height>203</height>
+    <width>345</width>
+    <height>232</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -203,8 +203,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>170</y>
+     <x>180</x>
+     <y>200</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -217,6 +217,19 @@
    </property>
    <property name="standardButtons">
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="isFrozenCheckBox">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>170</y>
+     <width>70</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Is frozen</string>
    </property>
   </widget>
  </widget>

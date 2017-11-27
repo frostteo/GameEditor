@@ -18,5 +18,6 @@ struct SGOOnMapDbInfo
   float xRotate = 0.0f;
   float yRotate = 0.0f;
   float zRotate = 0.0f;
+  int isFrozen = 0;
 };
 

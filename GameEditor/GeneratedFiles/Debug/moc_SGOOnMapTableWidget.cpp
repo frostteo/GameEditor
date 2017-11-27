@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_SGOOnMapTableWidget_t {
-    QByteArrayData data[18];
-    char stringdata0[246];
+    QByteArrayData data[20];
+    char stringdata0[288];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -47,8 +47,10 @@ QT_MOC_LITERAL(12, 169, 11), // "UpdateTable"
 QT_MOC_LITERAL(13, 181, 16), // "DeleteBtnClicked"
 QT_MOC_LITERAL(14, 198, 14), // "EditBtnClicked"
 QT_MOC_LITERAL(15, 213, 15), // "CloneBtnClicked"
-QT_MOC_LITERAL(16, 229, 10), // "SGODeleted"
-QT_MOC_LITERAL(17, 240, 5) // "sgoId"
+QT_MOC_LITERAL(16, 229, 19), // "FreezeAllBtnClicked"
+QT_MOC_LITERAL(17, 249, 21), // "UnfreezeAllBtnClicked"
+QT_MOC_LITERAL(18, 271, 10), // "SGODeleted"
+QT_MOC_LITERAL(19, 282, 5) // "sgoId"
 
     },
     "SGOOnMapTableWidget\0editBtnsStateConfigure\0"
@@ -57,6 +59,7 @@ QT_MOC_LITERAL(17, 240, 5) // "sgoId"
     "pageNumber\0onPage\0HeaderSectionClicked\0"
     "sectionIndex\0UpdateTable\0DeleteBtnClicked\0"
     "EditBtnClicked\0CloneBtnClicked\0"
+    "FreezeAllBtnClicked\0UnfreezeAllBtnClicked\0"
     "SGODeleted\0sgoId"
 };
 #undef QT_MOC_LITERAL
@@ -67,7 +70,7 @@ static const uint qt_meta_data_SGOOnMapTableWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -75,15 +78,17 @@ static const uint qt_meta_data_SGOOnMapTableWidget[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   59,    2, 0x09 /* Protected */,
-       3,    2,   60,    2, 0x09 /* Protected */,
-       7,    2,   65,    2, 0x09 /* Protected */,
-      10,    1,   70,    2, 0x09 /* Protected */,
-      12,    0,   73,    2, 0x09 /* Protected */,
-      13,    0,   74,    2, 0x09 /* Protected */,
-      14,    0,   75,    2, 0x09 /* Protected */,
-      15,    0,   76,    2, 0x09 /* Protected */,
-      16,    1,   77,    2, 0x09 /* Protected */,
+       1,    0,   69,    2, 0x09 /* Protected */,
+       3,    2,   70,    2, 0x09 /* Protected */,
+       7,    2,   75,    2, 0x09 /* Protected */,
+      10,    1,   80,    2, 0x09 /* Protected */,
+      12,    0,   83,    2, 0x09 /* Protected */,
+      13,    0,   84,    2, 0x09 /* Protected */,
+      14,    0,   85,    2, 0x09 /* Protected */,
+      15,    0,   86,    2, 0x09 /* Protected */,
+      16,    0,   87,    2, 0x09 /* Protected */,
+      17,    0,   88,    2, 0x09 /* Protected */,
+      18,    1,   89,    2, 0x09 /* Protected */,
 
  // slots: parameters
     QMetaType::Void,
@@ -94,7 +99,9 @@ static const uint qt_meta_data_SGOOnMapTableWidget[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   17,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   19,
 
        0        // eod
 };
@@ -113,7 +120,9 @@ void SGOOnMapTableWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         case 5: _t->DeleteBtnClicked(); break;
         case 6: _t->EditBtnClicked(); break;
         case 7: _t->CloneBtnClicked(); break;
-        case 8: _t->SGODeleted((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: _t->FreezeAllBtnClicked(); break;
+        case 9: _t->UnfreezeAllBtnClicked(); break;
+        case 10: _t->SGODeleted((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -158,13 +167,13 @@ int SGOOnMapTableWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 11;
     }
     return _id;
 }

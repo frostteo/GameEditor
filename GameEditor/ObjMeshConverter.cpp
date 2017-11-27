@@ -319,7 +319,7 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
       vertexTxt.coord.y = vertices[vIndex].y;
       vertexTxt.coord.z = vertices[vIndex].z;
 
-      if (tIndex > 0) {
+      if (tIndex >= 0) {
         vertexTxt.tu = texcoords[tIndex].x;
         vertexTxt.tv = texcoords[tIndex].y;
       }
@@ -340,7 +340,7 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
       vertexTxt2.coord.y = vertices[vIndex].y;
       vertexTxt2.coord.z = vertices[vIndex].z;
 
-      if (tIndex > 0) {
+      if (tIndex >= 0) {
         vertexTxt2.tu = texcoords[tIndex].x;
         vertexTxt2.tv = texcoords[tIndex].y;
       }
@@ -361,7 +361,7 @@ bool ObjMeshConverter::LoadDataStructures(const std::string& fileInStr, int vert
       vertexTxt3.coord.y = vertices[vIndex].y;
       vertexTxt3.coord.z = vertices[vIndex].z;
 
-      if (tIndex > 0) {
+      if (tIndex >= 0) {
         vertexTxt3.tu = texcoords[tIndex].x;
         vertexTxt3.tv = texcoords[tIndex].y;
       }
@@ -434,7 +434,7 @@ void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTx
   float textCoordDiff = tuVector[0] * tvVector[0] - tuVector[1] * tvVector[1];
   if (textCoordDiff == 0)
     den = 1.0f;
-  else 
+  else
     den = 1.0f / textCoordDiff;
 
   tangent = CalculateTangentOrBinormal(tvVector, vector1, vector2, den);

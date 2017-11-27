@@ -38,3 +38,14 @@ void Camera::GetProjectionMatrix(XMMATRIX& projectionMatrix)
 {
   projectionMatrix = m_projectionMatrix;
 }
+
+CameraFrustrum* Camera::GetCameraFrustrum()
+{
+  if (this->needRebuildDependOnWorldMatrix){
+    m_cameraFrustrum.ConstructFrustrum(this);
+    this->needRebuildDependOnWorldMatrix = false;
+  }
+   
+
+  return &m_cameraFrustrum;
+}

@@ -55,6 +55,8 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   m_sgo.GetModel()->GetBoundingBox()->InitializeBuffers(m_graphicSystem->GetDevice());
 
+  m_mapEditorPreferences = std::unique_ptr<MapEditorPreferences>(new MapEditorPreferences());
+
   // Create the camera object.
   m_Camera = new Camera();
   m_Camera->Initialize(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
@@ -77,7 +79,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   m_inputSystem = new InputSystem();
   m_inputSystem->Initialize(GetModuleHandle(NULL), hwnd);
 
-  PreviewGameObject* previewGameObject = new PreviewGameObject();
+  PreviewGameObject* previewGameObject = new PreviewGameObject(m_Camera, &m_sgo, m_mapEditorPreferences.get());
   previewGameObject->SetCamera(m_Camera);
   previewGameObject->SetSGO(&m_sgo);
   m_inputSystem->AddInputListener(previewGameObject);

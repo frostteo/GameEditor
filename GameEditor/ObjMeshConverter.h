@@ -10,9 +10,6 @@
 #include "VertexTxt.h"
 #include "BoundingBox.h"
 
-
-
-
 class ObjMeshConverter :
   public IMeshConverter
 {

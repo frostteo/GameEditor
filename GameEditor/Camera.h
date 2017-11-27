@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "CameraFrustrum.h"
 
 using namespace DirectX;
 
@@ -14,6 +15,8 @@ private:
   float m_fieldOfView;
   XMMATRIX m_orthoMatrix;
   XMMATRIX m_projectionMatrix;
+
+  CameraFrustrum m_cameraFrustrum;
 public:
   Camera();
   void Initialize(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView = XM_PIDIV4);
@@ -24,5 +27,8 @@ public:
   float GetScreenWidth() { return m_screenWidth; }
   float GetScreenHeight() { return m_screenHeight; }
   float GetFieldOfView() { return m_fieldOfView; }
+
+  bool NeedRebuildFrustrum() { return this->needRebuildDependOnWorldMatrix; }
+  CameraFrustrum* GetCameraFrustrum();
 };
 

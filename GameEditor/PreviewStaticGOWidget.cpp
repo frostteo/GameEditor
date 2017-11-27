@@ -2,10 +2,11 @@
 
 
 
-PreviewStaticGOWidget::PreviewStaticGOWidget(QString pathToModels, QString pathToMaterials, QWidget *parent)
+PreviewStaticGOWidget::PreviewStaticGOWidget(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QtDirectXWidget(pathToModels, pathToMaterials, parent)
 {
   this->setWindowTitle("Preview static game object");
+  m_mapEditorPreferences = mapEditorPreferences;
 }
 
 bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials)
@@ -25,9 +26,7 @@ void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGam
   m_sgo = StaticGameObject();
   m_sgo.SetModel(GetModel(staticGameObject.modelFileName.toStdString()));
 
-  PreviewGameObject* previewGameObject = new PreviewGameObject();
-  previewGameObject->SetCamera(m_Camera.get());
-  previewGameObject->SetSGO(&m_sgo);
+  PreviewGameObject* previewGameObject = new PreviewGameObject(m_Camera.get(), &m_sgo, m_mapEditorPreferences);
   LookAtObjectFromHelper::LookToObjectFromWorldFront(m_Camera.get(), &m_sgo);
   m_inputSystem->AddInputListener(previewGameObject);
 }

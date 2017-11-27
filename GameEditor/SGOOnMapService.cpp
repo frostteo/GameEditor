@@ -122,3 +122,15 @@ void SGOOnMapService::SetRotation(int id, float x, float y, float z)
   gameObjectOnMap.zRotate = z;
   m_unitOfWork->GetSGOOnMapRepository()->Update(gameObjectOnMap);
 }
+
+void SGOOnMapService::FreezeAll()
+{
+  std::string freezeQuery = QString("Update %1 SET %2 = 1").arg(m_sgoOnMapMetadata.GetTableName(), m_sgoOnMapMetadata.GetColumnNames()[8]).toStdString();
+  m_unitOfWork->GetSGOOnMapRepository()->ExecuteQuery(freezeQuery);
+}
+
+void SGOOnMapService::UnfreezeAll()
+{
+  std::string freezeQuery = QString("Update %1 SET %2 = 0").arg(m_sgoOnMapMetadata.GetTableName(), m_sgoOnMapMetadata.GetColumnNames()[8]).toStdString();
+  m_unitOfWork->GetSGOOnMapRepository()->ExecuteQuery(freezeQuery);
+}

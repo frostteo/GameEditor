@@ -10,12 +10,6 @@
 */
 class BoundingBox : public GridObject
 {
-private:
-  struct VertexPosition
-  {
-    float x, y, z;
-    bool operator== (const VertexPosition& another) const { return this->x == another.x && this->y == another.y && this->z == another.z; }
-  };
 public:
   struct Vertex {
     XMFLOAT3 position;
@@ -25,13 +19,14 @@ private:
   static const int BOUNDING_BOX_SERIALIZE_NAME_LENGTH = 15;
   static const char BOUNDING_BOX_SERIALIZE_NAME[BOUNDING_BOX_SERIALIZE_NAME_LENGTH];
 protected:
-  std::vector<VertexPosition> m_vertices;
+  std::vector<XMFLOAT3> m_vertices;
   ID3D11Buffer* m_vertexBuffer;
   ID3D11Buffer* m_indexBuffer;
-  XMFLOAT3 m_minPoint;
-  XMFLOAT3 m_maxPoint;
+protected:
+  void CorrectZeroCoordinates(float& min, float& max);
 public:
-  const int INDEX_COUNT = 24;
+  static const int COUNT_OF_POINTS = 8;
+  static const int INDEX_COUNT = 24;
   /*
   * Serialize with same algorithm as class member Serialize function, deserialize can restore object
   */
@@ -44,7 +39,8 @@ public:
   */
   void Serialize(std::ostream& ostream);
   void Deserialize(std::istream& istream);
-  void Initialize(float& minX, float& minY, float& minZ, float& maxX, float& maxY, float& maxZ);
+  void Initialize(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
+  void Initialize(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, XMMATRIX worldMatrix);
   virtual ~BoundingBox();
   void InitializeBuffers(ID3D11Device* device);
   void ShutdownBuffers();
@@ -52,5 +48,6 @@ public:
   virtual int GetIndexCount() override { return INDEX_COUNT; }
   XMFLOAT3 GetMinPoint();
   XMFLOAT3 GetMaxPoint();
+  XMFLOAT3 GetVertex(int index) { return m_vertices[index]; }
 };
 

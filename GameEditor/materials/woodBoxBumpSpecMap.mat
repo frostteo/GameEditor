@@ -1,7 +1,0 @@
-type: bumpSpecMap
-textureFileName: ../GameEditor/texture/glassbrickcolor.tga
-normalMap: ../GameEditor/texture/glassbricknormal.tga
-specularMap: ../GameEditor/texture/glassbrickspecular.tga
-bumpDepth: 1.0
-specularColor: 1.0 1.0 1.0 1.0
-specularPower: 32.0

@@ -1,9 +1,12 @@
 #include "PreviewGameObject.h"
 
-PreviewGameObject::PreviewGameObject()
+PreviewGameObject::PreviewGameObject(Camera* camera, StaticGameObject* sgo, MapEditorPreferences* preferences)
 {
   m_name = "preview game object";
   m_autoRotateSwicher = false;
+  SetCamera(camera);
+  SetSGO(sgo);
+  SetMapEditorPreferences(preferences);
 }
 
 
@@ -13,11 +16,12 @@ PreviewGameObject::~PreviewGameObject()
 
 void PreviewGameObject::ProcessUserInput(InputState* inputState)
 {
+  m_timeInSecondsBetweenFrames = inputState->time * 0.001f;
   if (m_camera) 
   {
     int deltaZ = inputState->m_mouseState.lZ;
     XMFLOAT3 position = m_camera->GetPosition();
-    m_camera->SetPosition(position.x, position.y, position.z + deltaZ * m_scaleCoef);
+    m_camera->SetPosition(position.x, position.y, position.z + deltaZ * m_preferences->GetCameraZoomSpeed() * m_timeInSecondsBetweenFrames);
   }
 
   if (inputState->IsKeyDown(DIK_TAB))

@@ -5,12 +5,14 @@
 #include "BLLDependencyResolver.h"
 #include "Utils.h"
 #include "SGOMetadata.h"
+#include "SGOOnMapMetadata.h"
 
 class SGOOnMapService : public ISGOOnMapService
 {
 protected:
   IUnitOfWork* m_unitOfWork;
   SGOMetadata m_SGOMetadata;
+  SGOOnMapMetadata m_sgoOnMapMetadata;
 protected:
   void IncrementSGOCount(int id);
   void DecrementSGOCount(int id);
@@ -25,5 +27,7 @@ public:
   virtual QList<SGOOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "") override;
   virtual void SetPosition(int id, float x, float y, float z) override;
   virtual void SetRotation(int id, float x, float y, float z) override;
+  virtual void FreezeAll() override;
+  virtual void UnfreezeAll() override;
 };
 

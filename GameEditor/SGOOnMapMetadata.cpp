@@ -4,7 +4,7 @@
 SGOOnMapMetadata::SGOOnMapMetadata()
 {
   m_tableName = "SGOOnMapDbInfo";
-  m_columnNames = { "staticGameObjectId", "instanceName", "xPox", "yPos", "zPos", "xRotate", "yRotate", "zRotate"};
+  m_columnNames = { "staticGameObjectId", "instanceName", "xPox", "yPos", "zPos", "xRotate", "yRotate", "zRotate", "isFrozen"};
   AddRelationShip(m_SGOMetadata.GetTableName(), m_columnNames[0], m_SGOMetadata.GetKeyColumnName());
 }
 
@@ -26,6 +26,7 @@ void SGOOnMapMetadata::InitializeFromQuery(SGOOnMapDbInfo& entity, QSqlQuery* qu
   entity.xRotate = query->value(selectInfos[m_columnNames[5]].aliasColumnName).toFloat();
   entity.yRotate = query->value(selectInfos[m_columnNames[6]].aliasColumnName).toFloat();
   entity.zRotate = query->value(selectInfos[m_columnNames[7]].aliasColumnName).toFloat();
+  entity.isFrozen = query->value(selectInfos[m_columnNames[8]].aliasColumnName).toFloat();
 
   if (joinTableNames != nullptr && joinTableNames->size() > 0) {
     if (std::find(joinTableNames->begin(), joinTableNames->end(), m_relationships.begin()->first) != joinTableNames->end())
@@ -59,6 +60,9 @@ QVariant SGOOnMapMetadata::GetFieldByName(const SGOOnMapDbInfo& entity, QString 
 
   if (name == m_columnNames[7])
     return entity.zRotate;
+
+  if (name == m_columnNames[8])
+    return entity.isFrozen;
 
   if (name == GetKeyColumnName())
     return entity.id;

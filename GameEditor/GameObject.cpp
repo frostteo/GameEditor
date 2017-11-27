@@ -69,8 +69,10 @@ void GameObject::ChangeZRotation(float angle)
 
 void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
 {
-  if (m_needRebuildRotationMatrix || m_needRebuildTranslationMatrix)
+  if (NeedRebuildWorldMatrix())
   {
+    needRebuildDependOnWorldMatrix = true;
+
     if (m_needRebuildRotationMatrix)
       m_rotationMatrix = XMMatrixRotationRollPitchYaw(XMConvertToRadians(m_rotationX), XMConvertToRadians(m_rotationY), XMConvertToRadians(m_rotationZ));
 

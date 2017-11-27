@@ -17,3 +17,7 @@ GameEditor/gameEditorLog.txt
 *.tlog
 *.exe
 *.ilk
+*.txt
+*.tga
+*.mat
+*.mtl

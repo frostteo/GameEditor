@@ -20,6 +20,8 @@ protected:
   static const QString LEFT_JOIN_OP_STR;
   static const QString RIGHT_JOIN_OP_STR;
 
+  static bool m_foreignKeyEnabled;
+
   std::string m_connectionName;
   QString m_defaultOrderField = "id";
 protected:
@@ -42,7 +44,11 @@ public:
   virtual void Update(T& entity) override;
   virtual int Create(T& entity) override;
   virtual void DeleteWhere(std::string& whereCondition);
+  virtual void ExecuteQuery(std::string queryStr) override;
 };
+
+template <class T>
+bool QtRepository<T>::m_foreignKeyEnabled = false;
 
 template <class T>
 std::unique_ptr<DbTableMetadata<T>> QtRepository<T>::m_tableMetadata = std::unique_ptr<DbTableMetadata<T>>();
@@ -79,11 +85,25 @@ template <class T>
 IRepository<T>* QtRepository<T>::Initialize(std::string connectionName)
 {
   m_connectionName = connectionName; 
-  QSqlQuery query(GetDatabase());
-  query.prepare("PRAGMA foreign_keys=on;"); //foreign key constrains enable
-  if (!query.exec()) 
-    RUNTIME_ERROR(query.lastError().text().toStdString())
+
+  if (!m_foreignKeyEnabled) {
+    QSqlQuery query(GetDatabase());
+    query.prepare("PRAGMA foreign_keys=on;"); //foreign key constrains enable
+    if (!query.exec())
+      RUNTIME_ERROR(query.lastError().text().toStdString())
+      m_foreignKeyEnabled = true;
+  }
+  
   return this;
+}
+
+template <class T>
+void QtRepository<T>::ExecuteQuery(std::string queryStr)
+{
+  QSqlQuery query(GetDatabase());
+  query.prepare(QString::fromStdString(queryStr));
+  if (!query.exec())
+    RUNTIME_ERROR(query.lastError().text().toStdString())
 }
 
 template <class T>
@@ -172,7 +192,7 @@ std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pa
     throw std::runtime_error(Logger::get().GetErrorTraceMessage(countQuery.lastError().text().toStdString(), __FILE__, __LINE__));
   }
 
-  pagingInfo.pageCount = ceil(allRowCount / parameters.onPage);
+  pagingInfo.pageCount = ceil((float) allRowCount / (float) parameters.onPage);
 
   if (pagingInfo.pageCount == 0) pagingInfo.pageCount = 1;
   if ((parameters.pageNumber - 1) * parameters.onPage >= allRowCount) parameters.pageNumber = pagingInfo.pageCount;

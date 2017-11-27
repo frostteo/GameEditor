@@ -66,14 +66,8 @@ float4 BumpMapPixelShader(PixelInputType input) : SV_TARGET
     // Calculate the amount of light on this pixel based on the bump map normal value.
     lightIntensity = saturate(dot(bumpNormal, lightDir));
 	
-	if (lightIntensity == 0.0f)
-		lightIntensity = ambientColor.x;
-	
 	// Determine the final diffuse color based on the diffuse color and the amount of light intensity.
-	color = saturate(diffuseColor * lightIntensity);
-	
-    // Combine the final bump light color with the texture color.
-    color = color * textureColor;
+	color = saturate(textureColor * (ambientColor + diffuseColor * lightIntensity));
 	
     return color;
 }

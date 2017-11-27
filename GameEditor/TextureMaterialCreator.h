@@ -3,6 +3,7 @@
 #include "IMaterialCreator.h"
 #include "TextureFactory.h"
 #include "TextureMaterial.h"
+#include "Utils.h"
 
 class TextureMaterialCreator :
   public IMaterialCreator

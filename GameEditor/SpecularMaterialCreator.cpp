@@ -32,7 +32,8 @@ IMaterial* SpecularMaterialCreator::Get(const std::string& fileInStr, const std:
   {
     fileStrStream.get(input);
   }
-  fileStrStream >> texturePath;
+  std::getline(fileStrStream, texturePath);
+  texturePath = Utils::Trim(texturePath);
 
   fileStrStream.get(input);
   while (input != ':')

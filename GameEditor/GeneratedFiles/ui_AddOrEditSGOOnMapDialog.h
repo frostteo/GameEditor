@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QGroupBox>
@@ -42,12 +43,13 @@ public:
     QLabel *instanceNameLbl;
     QLineEdit *instanceNameTxt;
     QDialogButtonBox *buttonBox;
+    QCheckBox *isFrozenCheckBox;
 
     void setupUi(QDialog *AddOrEditSGOOnMapDialog)
     {
         if (AddOrEditSGOOnMapDialog->objectName().isEmpty())
             AddOrEditSGOOnMapDialog->setObjectName(QStringLiteral("AddOrEditSGOOnMapDialog"));
-        AddOrEditSGOOnMapDialog->resize(341, 203);
+        AddOrEditSGOOnMapDialog->resize(345, 232);
         positionGroupBox = new QGroupBox(AddOrEditSGOOnMapDialog);
         positionGroupBox->setObjectName(QStringLiteral("positionGroupBox"));
         positionGroupBox->setGeometry(QRect(20, 50, 151, 111));
@@ -98,10 +100,13 @@ public:
         instanceNameTxt->setGeometry(QRect(90, 20, 241, 20));
         buttonBox = new QDialogButtonBox(AddOrEditSGOOnMapDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(170, 170, 156, 23));
+        buttonBox->setGeometry(QRect(180, 200, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        isFrozenCheckBox = new QCheckBox(AddOrEditSGOOnMapDialog);
+        isFrozenCheckBox->setObjectName(QStringLiteral("isFrozenCheckBox"));
+        isFrozenCheckBox->setGeometry(QRect(260, 170, 70, 17));
         QWidget::setTabOrder(instanceNameTxt, xPosTxt);
         QWidget::setTabOrder(xPosTxt, yPosTxt);
         QWidget::setTabOrder(yPosTxt, zPosTxt);
@@ -128,6 +133,7 @@ public:
         yRotateLbl->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "y", Q_NULLPTR));
         zRotateLbl->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "z", Q_NULLPTR));
         instanceNameLbl->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "instance name", Q_NULLPTR));
+        isFrozenCheckBox->setText(QApplication::translate("AddOrEditSGOOnMapDialog", "Is frozen", Q_NULLPTR));
     } // retranslateUi
 
 };

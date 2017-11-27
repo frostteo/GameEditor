@@ -29,7 +29,8 @@ IMaterial* TextureMaterialCreator::Get(const std::string& fileInStr, const std::
   {
     fileStrStream.get(input);
   }
-  fileStrStream >> texturePath;
+  std::getline(fileStrStream, texturePath);
+  texturePath = Utils::Trim(texturePath);
 
   Texture* texture = m_textureFactory->GetResource(texturePath);
   TextureMaterial* material = new TextureMaterial(fileName, texture);

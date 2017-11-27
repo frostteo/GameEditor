@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>151</width>
-    <height>192</height>
+    <height>220</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>150</width>
-    <height>190</height>
+    <height>220</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
         <x>0</x>
         <y>0</y>
         <width>133</width>
-        <height>120</height>
+        <height>148</height>
        </rect>
       </property>
       <attribute name="label">
@@ -48,12 +48,19 @@
         <rect>
          <x>10</x>
          <y>30</y>
-         <width>75</width>
+         <width>91</width>
          <height>23</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>edit</string>
+       </property>
        <property name="text">
         <string>edit</string>
+       </property>
+       <property name="icon">
+        <iconset resource="GameEditor.qrc">
+         <normaloff>:/GameEditor/edit icon.png</normaloff>:/GameEditor/edit icon.png</iconset>
        </property>
       </widget>
       <widget class="QPushButton" name="cloneBtn">
@@ -61,12 +68,19 @@
         <rect>
          <x>10</x>
          <y>0</y>
-         <width>75</width>
+         <width>91</width>
          <height>23</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>clone</string>
+       </property>
        <property name="text">
         <string>clone</string>
+       </property>
+       <property name="icon">
+        <iconset resource="GameEditor.qrc">
+         <normaloff>:/GameEditor/clone.png</normaloff>:/GameEditor/clone.png</iconset>
        </property>
       </widget>
       <widget class="QPushButton" name="deleteBtn">
@@ -74,12 +88,59 @@
         <rect>
          <x>10</x>
          <y>60</y>
-         <width>75</width>
+         <width>91</width>
          <height>23</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>delete</string>
+       </property>
        <property name="text">
         <string>delete</string>
+       </property>
+       <property name="icon">
+        <iconset resource="GameEditor.qrc">
+         <normaloff>:/GameEditor/delete icon.png</normaloff>:/GameEditor/delete icon.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="freezeAllBtn">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>91</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>freeze all</string>
+       </property>
+       <property name="text">
+        <string>freeze all</string>
+       </property>
+       <property name="icon">
+        <iconset resource="GameEditor.qrc">
+         <normaloff>:/GameEditor/snowflake.png</normaloff>:/GameEditor/snowflake.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="unfreezeAllBtn">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>91</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>unfreeze all</string>
+       </property>
+       <property name="text">
+        <string>unfreeze all</string>
+       </property>
+       <property name="icon">
+        <iconset resource="GameEditor.qrc">
+         <normaloff>:/GameEditor/unfreeze.png</normaloff>:/GameEditor/unfreeze.png</iconset>
        </property>
       </widget>
      </widget>
@@ -89,7 +150,7 @@
         <x>0</x>
         <y>0</y>
         <width>133</width>
-        <height>120</height>
+        <height>148</height>
        </rect>
       </property>
       <attribute name="label">
@@ -147,6 +208,8 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="GameEditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

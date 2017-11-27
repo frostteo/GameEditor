@@ -74,15 +74,8 @@ float4 BumpMapSpecularPixelShader(PixelInputType input) : SV_TARGET
 
     // Calculate the amount of light on this pixel based on the bump map normal value.
     lightIntensity = saturate(dot(bumpNormal, lightDir));
-	
-	if (lightIntensity == 0.0f)
-		lightIntensity = ambientColor.x;
-	
-	// Determine the final diffuse color based on the diffuse color and the amount of light intensity.
-	color = saturate(diffuseColor * lightIntensity);
-	
-    // Combine the final bump light color with the texture color.
-    color = color * textureColor;
+
+    color = (ambientColor + diffuseColor * lightIntensity) * textureColor;
 	
 	if(lightIntensity > 0.0f)
     {	
@@ -99,8 +92,9 @@ float4 BumpMapSpecularPixelShader(PixelInputType input) : SV_TARGET
         specular = specular * specularIntensity;
 		
 		// Add the specular component last to the output color.
-        color = saturate(color + specular);
+        color = color + specular;
 	}
-		
+	
+	color = saturate(color);
     return color;
 }

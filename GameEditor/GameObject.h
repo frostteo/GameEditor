@@ -12,6 +12,9 @@ private:
   bool m_needRebuildRotationMatrix;
   float m_positionX, m_positionY, m_positionZ;
   float m_rotationX, m_rotationY, m_rotationZ;
+
+public :
+  bool needRebuildDependOnWorldMatrix = true; // Для обозначения что нужно перестроить объекты в наследниках зависящие от изменения матрицы мировых координат, например bounding box
 public:
   GameObject();
   virtual ~GameObject();
@@ -34,5 +37,7 @@ public:
   void MoveRight(float distance);
   void MoveUp(float distance);
   void MoveForward(float distance);
+
+  inline bool NeedRebuildWorldMatrix() { return m_needRebuildTranslationMatrix || m_needRebuildRotationMatrix; }
 };
 

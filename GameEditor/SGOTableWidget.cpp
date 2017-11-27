@@ -1,8 +1,9 @@
 #include "SGOTableWidget.h"
 
-SGOTableWidget::SGOTableWidget(QString& pathToModels, QString& pathToMaterials, QWidget *parent)
+SGOTableWidget::SGOTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent)
     : QWidget(parent)
 {
+  m_mapEditorPreferences = mapEditorPreferences;
   SetPathToModels(pathToModels);
   SetPathToMaterials(pathToMaterials);
   ui.setupUi(this);
@@ -15,8 +16,7 @@ SGOTableWidget::~SGOTableWidget()
 
 void SGOTableWidget::configureTable()
 {
-  m_previewStaticGOWidget = std::unique_ptr<PreviewStaticGOWidget>(new PreviewStaticGOWidget(m_pathToModels, m_pathToMaterials));
-  m_previewStaticGOWidget->setWindowModality(Qt::WindowModality::ApplicationModal);
+  m_previewStaticGOWidget = std::unique_ptr<PreviewStaticGOWidget>(new PreviewStaticGOWidget(m_mapEditorPreferences, m_pathToModels, m_pathToMaterials, this));
 
   m_SGOTable = std::unique_ptr<QTableView>(new QTableView);
   m_SGOTableModel = std::unique_ptr<StaticGameObjectTM>(new StaticGameObjectTM(10));
