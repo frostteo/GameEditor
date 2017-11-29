@@ -92,6 +92,7 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
 void MapEditor::DeleteSGO(int id)
 {
   m_octoTree.DeleteSgo(id, &m_staticGameObjectMap[id]);
+  m_selectedObjectIds.erase(id);
   m_staticGameObjectMap.erase(id);
 }
 
@@ -106,9 +107,16 @@ void MapEditor::SGODbInfoDeleted(int sgoDbInfoId)
   for (auto it = m_staticGameObjectMap.begin(), itEnd = m_staticGameObjectMap.end(); it != itEnd;)
   {
     if (it->second.m_SGODbInfoId == sgoDbInfoId)
+    {
+      m_octoTree.DeleteSgo(it->first, &m_staticGameObjectMap[it->first]);
+      m_selectedObjectIds.erase(it->first);
       it = m_staticGameObjectMap.erase(it);
+    }
     else
+    {
       ++it;
+    }
+      
   }
 }
 
