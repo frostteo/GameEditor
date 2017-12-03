@@ -1,10 +1,11 @@
 #include "SGOOnMapTableWidget.h"
 
-SGOOnMapTableWidget::SGOOnMapTableWidget(QWidget *parent)
+SGOOnMapTableWidget::SGOOnMapTableWidget(MapEditorControl* mapEditorControl, QWidget *parent)
     : QWidget(parent)
 {
-    setupUi(this);
-    configureUI();
+  m_mapEditorControl = mapEditorControl;
+  setupUi(this);
+  configureUI();
 }
 
 SGOOnMapTableWidget::~SGOOnMapTableWidget()
@@ -20,14 +21,19 @@ void SGOOnMapTableWidget::editBtnsStateConfigure()
   m_toolBox->deleteBtn->setEnabled(hasSelection);
 
   m_toolBox->editBtn->setEnabled(selectedRowSize == 1);
+
+  QModelIndex test;
+  bool freezeBtnEnabled = m_tableModel->rowCount(test) > 0;
+  m_toolBox->freezeAllBtn->setEnabled(freezeBtnEnabled);
+  m_toolBox->unfreezeAllBtn->setEnabled(freezeBtnEnabled);
 }
 
 void SGOOnMapTableWidget::configureTable()
 {
   m_table = std::unique_ptr<QTableView>(new QTableView);
-  m_tableModel = std::unique_ptr<SGOOnMapTM>(new SGOOnMapTM(10));
+  m_tableModel = m_mapEditorControl->GetMapEditorViewModel()->GetSGOOnMapTM();
 
-  m_table->setModel(m_tableModel.get());
+  m_table->setModel(m_tableModel);
 
   m_table->setSelectionBehavior(QAbstractItemView::SelectRows);
   m_table->setSelectionMode(QAbstractItemView::MultiSelection);
@@ -48,8 +54,9 @@ void SGOOnMapTableWidget::configureTable()
     SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
     SLOT(TableRowSelected(const QItemSelection &, const QItemSelection &)));
 
-  connect(m_tableModel.get(), SIGNAL(TableDataChanged()), this, SLOT(editBtnsStateConfigure()));
+  connect(m_tableModel, SIGNAL(TableDataChanged()), this, SLOT(editBtnsStateConfigure()));
   connect(m_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(HeaderSectionClicked(int)));
+  connect(m_tableModel, SIGNAL(ClearSelectionSignal()), this, SLOT(ClearSelection()));
 }
 
 void SGOOnMapTableWidget::configureUI()
@@ -79,7 +86,7 @@ void SGOOnMapTableWidget::configureUI()
 
 void SGOOnMapTableWidget::configurePaginator()
 {
-  connect(m_tableModel.get(), SIGNAL(PagingInfoChanged(PagingInfo)), m_paginator.get(), SLOT(UpdatePagingInfo(PagingInfo)));
+  connect(m_tableModel, SIGNAL(PagingInfoChanged(PagingInfo)), m_paginator.get(), SLOT(UpdatePagingInfo(PagingInfo)));
   m_paginator->UpdatePagingInfo(m_tableModel->GetPagingInfo());
 
   connect(m_paginator.get(), SIGNAL(PageChanged(int, int)), this, SLOT(PaginatorPageChanged(int, int)));
@@ -99,7 +106,7 @@ std::vector<int> SGOOnMapTableWidget::GetSelectedIds()
 void SGOOnMapTableWidget::TableRowSelected(const QItemSelection& selected, const QItemSelection& deselected)
 {
   std::vector<int> selectedObjectsIds = GetSelectedIds();
-  m_mapEditor->SetSelectedObjectIds(selectedObjectsIds);
+  m_tableModel->SetSelectedSGOIds(selectedObjectsIds);
   editBtnsStateConfigure();
 }
 
@@ -123,102 +130,32 @@ void SGOOnMapTableWidget::UpdateTable()
     m_toolBox->GetInstanceNameFilter());
 }
 
-void SGOOnMapTableWidget::AddSGOToMap(StaticGameObjectDbInfo& sgo)
-{
-  AddOrEditSGOOnMapDialog dialog(this);
-  SGOOnMapDbInfo sgoOnMap;
-  sgoOnMap.staticGameObjectDbInfo = sgo;
-  sgoOnMap.staticGameObjectId = sgo.id;
-  sgoOnMap.instanceName = sgo.name;
-  if (sgo.countOnMap > 0)
-    sgoOnMap.instanceName += QString::number(sgo.countOnMap);
-
-  //TODO FHolod: установить позицию и поворот в зависимости от координат камеры редакторы карты
-  dialog.setSGOOnMap(sgoOnMap);
-
-  if (dialog.exec() == QDialog::Accepted) {
-    sgoOnMap = dialog.GetSGOOnMap();
-    m_tableModel->append(sgoOnMap);
-    m_mapEditor->AddSGO(sgoOnMap);
-  }
-}
-
-void SGOOnMapTableWidget::Delete(std::vector<int> selectedIds)
-{
-  m_mapEditor->SetSelectedObjectIds(std::vector<int>());
-  for (int id : selectedIds) {
-    m_mapEditor->DeleteSGO(id);
-    m_tableModel->remove(id);
-  }
- 
-}
-
 void SGOOnMapTableWidget::DeleteBtnClicked()
 {
   std::vector<int> selectedIds = GetSelectedIds();
-  Delete(selectedIds);
-}
-
-void SGOOnMapTableWidget::Edit(int id)
-{
-  SGOOnMapDbInfo gameObject = m_tableModel->GetEntityByKey(id);
-  AddOrEditSGOOnMapDialog dialog;
-  dialog.setSGOOnMap(gameObject);
-
-  if (dialog.exec() == QDialog::Accepted) {
-    SGOOnMapDbInfo editedGameObject = dialog.GetSGOOnMap();
-    m_tableModel->edit(editedGameObject);
-    m_mapEditor->EditSGO(editedGameObject);
-  }
+  m_mapEditorControl->Delete(selectedIds);
 }
 
 void SGOOnMapTableWidget::EditBtnClicked()
 {
   int selectedRow = m_table->selectionModel()->currentIndex().row();
   SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
-  Edit(gameObject.id);
-}
-
-void SGOOnMapTableWidget::Clone(std::vector<int> selectedIds)
-{
-  for (int id : selectedIds)
-  {
-    SGOOnMapDbInfo gameObject = m_tableModel->GetEntityByKey(id);
-    gameObject.id = 0;
-
-    if (gameObject.staticGameObjectDbInfo.countOnMap > 0)
-      gameObject.instanceName = gameObject.staticGameObjectDbInfo.name + QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
-
-    AddOrEditSGOOnMapDialog dialog;
-    dialog.setSGOOnMap(gameObject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-      SGOOnMapDbInfo clonedGameObject = dialog.GetSGOOnMap();
-      m_tableModel->append(clonedGameObject);
-      m_mapEditor->AddSGO(clonedGameObject);
-    }
-  }
+  m_mapEditorControl->EditSgoOnMap(gameObject.id);
 }
 
 void SGOOnMapTableWidget::CloneBtnClicked()
 {
-  Clone(GetSelectedIds());
-}
-
-void SGOOnMapTableWidget::SetMapEditor(MapEditor* mapEditor)
-{
-  m_mapEditor = mapEditor; 
-  auto allGameObjectsOnMap = m_tableModel->GetSGOOnMapService()->GetAll().toVector().toStdVector();
-  m_mapEditor->InitializeOctoTree(allGameObjectsOnMap);
+  auto selectedIds = GetSelectedIds();
+  m_mapEditorControl->Clone(selectedIds);
 }
 
 void SGOOnMapTableWidget::FreezeAllBtnClicked()
 {
-  m_tableModel->FreezeAll();
+  m_mapEditorControl->FreezeAll();
 }
 
 void SGOOnMapTableWidget::UnfreezeAllBtnClicked()
 {
-  m_tableModel->UnfreezeAll();
+  m_mapEditorControl->UnfreezeAll();
 }
 

@@ -31,8 +31,10 @@ bool SGOOnMapTM::setData(const QModelIndex & index, const QVariant & value, int 
   {
     if (index.column() == 9) {
       auto sgo =  m_data.at(index.row());
-      sgo.isFrozen = value.toBool();
-      this->edit(sgo);
+      if (value.toBool())
+        emit FreezeSgoSignal(sgo.id);
+      else
+        emit UnfreezeSgoSignal(sgo.id);
     }
 
     this->endResetModel();

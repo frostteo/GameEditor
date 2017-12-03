@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Model.h"
+#include "DrawableBoundingBox.h"
 
 class StaticGameObject :
   public GameObject
@@ -8,8 +9,12 @@ class StaticGameObject :
 private:
   Model* m_model;
   BoundingBox m_bbInWorldCoord;
+  DrawableBoundingBox m_drawableBoundingBox;
 public:
-  int m_SGODbInfoId;
+  int uniqueId;
+
+  int modelId;
+  bool isFrozen;
 protected:
   void RebuildBBInWorldCoord();
 public:
@@ -18,5 +23,6 @@ public:
   Model* GetModel() { return m_model; }
   void SetModel(Model* model);
   BoundingBox* GetBBInWorldCoords();
+  DrawableBoundingBox* GetDrawableBoundingBox() { return &m_drawableBoundingBox; }
 };
 

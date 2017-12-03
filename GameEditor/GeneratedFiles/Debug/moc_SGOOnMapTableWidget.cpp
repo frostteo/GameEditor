@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_SGOOnMapTableWidget_t {
-    QByteArrayData data[20];
-    char stringdata0[288];
+    QByteArrayData data[19];
+    char stringdata0[286];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -49,8 +49,7 @@ QT_MOC_LITERAL(14, 198, 14), // "EditBtnClicked"
 QT_MOC_LITERAL(15, 213, 15), // "CloneBtnClicked"
 QT_MOC_LITERAL(16, 229, 19), // "FreezeAllBtnClicked"
 QT_MOC_LITERAL(17, 249, 21), // "UnfreezeAllBtnClicked"
-QT_MOC_LITERAL(18, 271, 10), // "SGODeleted"
-QT_MOC_LITERAL(19, 282, 5) // "sgoId"
+QT_MOC_LITERAL(18, 271, 14) // "ClearSelection"
 
     },
     "SGOOnMapTableWidget\0editBtnsStateConfigure\0"
@@ -60,7 +59,7 @@ QT_MOC_LITERAL(19, 282, 5) // "sgoId"
     "sectionIndex\0UpdateTable\0DeleteBtnClicked\0"
     "EditBtnClicked\0CloneBtnClicked\0"
     "FreezeAllBtnClicked\0UnfreezeAllBtnClicked\0"
-    "SGODeleted\0sgoId"
+    "ClearSelection"
 };
 #undef QT_MOC_LITERAL
 
@@ -88,7 +87,7 @@ static const uint qt_meta_data_SGOOnMapTableWidget[] = {
       15,    0,   86,    2, 0x09 /* Protected */,
       16,    0,   87,    2, 0x09 /* Protected */,
       17,    0,   88,    2, 0x09 /* Protected */,
-      18,    1,   89,    2, 0x09 /* Protected */,
+      18,    0,   89,    2, 0x09 /* Protected */,
 
  // slots: parameters
     QMetaType::Void,
@@ -101,7 +100,7 @@ static const uint qt_meta_data_SGOOnMapTableWidget[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   19,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -122,7 +121,7 @@ void SGOOnMapTableWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         case 7: _t->CloneBtnClicked(); break;
         case 8: _t->FreezeAllBtnClicked(); break;
         case 9: _t->UnfreezeAllBtnClicked(); break;
-        case 10: _t->SGODeleted((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 10: _t->ClearSelection(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {

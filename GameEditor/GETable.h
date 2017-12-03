@@ -17,7 +17,6 @@ protected:
   std::map<int, std::string> m_orderFieldMap;
 protected:
   virtual void FillOrderFieldMap() = 0;
-  void UpdateData();
   virtual void GetData() = 0;
   virtual void appendEntity(T& entity) = 0;
   virtual void editEntity(T& entity) = 0;
@@ -34,6 +33,7 @@ public:
   virtual T GetEntityByKey(int id) = 0;
   PagingInfo GetPagingInfo() { return m_pagingInfo; }
   virtual bool ContainsInMemory(int id) = 0;
+  void UpdateData();
 };
 
 template <class T>

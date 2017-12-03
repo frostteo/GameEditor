@@ -11,9 +11,9 @@ class MapEditorData : public QWidget, public Ui::MapEditorData
 private:
   std::unique_ptr<SGOOnMapTableWidget> m_tableWidget;
 protected:
-  void configureUI();
+  void configureUI(MapEditorControl* mapEditorControl);
 public:
-    MapEditorData(QWidget *parent = Q_NULLPTR);
+    MapEditorData(MapEditorControl* mapEditorControl, QWidget *parent = Q_NULLPTR);
     ~MapEditorData();
     SGOOnMapTableWidget* GetSGOOnMapTableWidget() { return m_tableWidget.get(); }
 };

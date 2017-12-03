@@ -51,6 +51,8 @@ public:
   void SetPathToModels(QString pathToModels) { m_pathToModels = pathToModels.toStdString(); }
   void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = pathToMaterials.toStdString(); }
 
+  ModelFactory* GetModelFactory() { m_graphicSystem->GetModelFactory(); }
+
   /** a hint to Qt to give the widget as much space as possible */
   QSizePolicy sizePolicy() const { return QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); }
 

@@ -15,25 +15,21 @@ void GameEditor::configureUI()
   this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
 
+  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
+  m_mapEditor->show();
+
   m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
   ui.tabWidget->clear();
   ui.tabWidget->addTab(m_SGOTableWidget.get(), "static game objects"); 
 
   connect(m_SGOTableWidget.get(), SIGNAL(AddToMap(StaticGameObjectDbInfo&)), this, SLOT(AddSGOToMap(StaticGameObjectDbInfo&)));
   
-
-  m_mapEditorData = std::unique_ptr<MapEditorData>(new MapEditorData(this));
+  m_mapEditorData = std::unique_ptr<MapEditorData>(new MapEditorData(m_mapEditor->GetMapEditorControl(), this));
   m_mapEditorData->show();
 
-  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_mapEditorData->GetSGOOnMapTableWidget(), m_pathToModels, m_pathToMaterials, this));
-  m_mapEditor->show();
-
-  m_mapEditorData->GetSGOOnMapTableWidget()->SetMapEditor(m_mapEditor.get());
-
-  connect(m_mapEditorData->GetSGOOnMapTableWidget()->GetTableModel(), SIGNAL(SGOCountChanged(int)), m_SGOTableWidget.get(), SLOT(CountOnMapChanged(int)));
-  connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), m_mapEditorData->GetSGOOnMapTableWidget(), SLOT(SGODeleted(int)));
-  connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), m_mapEditor.get(), SLOT(SGODbInfoDeleted(int)));
-  connect(m_SGOTableWidget.get(), SIGNAL(SGOEdited(StaticGameObjectDbInfo&)), m_mapEditor.get(), SLOT(SGODbInfoEdited(StaticGameObjectDbInfo&)));
+  connect(m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel()->GetSGOOnMapTM(), SIGNAL(SGOCountChanged(int)), m_SGOTableWidget.get(), SLOT(CountOnMapChanged(int)));
+  connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), (m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel()), SLOT(SGODbInfoDeleted(int)));
+  connect(m_SGOTableWidget.get(), SIGNAL(SGOEdited(StaticGameObjectDbInfo&)), (m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel()), SLOT(SGODbInfoEdited(StaticGameObjectDbInfo&)));
 }
 
 void GameEditor::on_actionObjConverter_triggered()
@@ -48,7 +44,7 @@ void GameEditor::on_actionObjConverter_triggered()
 
 void GameEditor::AddSGOToMap(StaticGameObjectDbInfo& gameObject)
 {
-  m_mapEditorData->GetSGOOnMapTableWidget()->AddSGOToMap(gameObject);
+  m_mapEditor->GetMapEditorControl()->AddSgoToMap(gameObject);
 }
 
 void GameEditor::show()

@@ -1,12 +1,13 @@
 #include "MapEditorControl.h"
-#include "SGOOnMapTableWidget.h"
 
-MapEditorControl::MapEditorControl(MapEditorPreferences* mapEditorPreferences, SGOOnMapTableWidget* sgoOnMapTableWidget, Camera* camera, std::map<int, StaticGameObject>* staticGameObjectMap)
+MapEditorControl::MapEditorControl(MapEditorViewModel* mapEditorViewModel, std::vector<StaticGameObject*>* visibleSgos, Camera* camera)
 {
-  SetCamera(camera);
-  SetSGOMap(staticGameObjectMap);
-  SetSGOOnMapTableWidget(sgoOnMapTableWidget);
-  SetMapEditorPreferenses(mapEditorPreferences);
+  m_mapEditorViewModel = mapEditorViewModel;
+  m_selectedObjectIds = m_mapEditorViewModel->GetSelectedSgoIds();
+  m_staticGameObjectMap = m_mapEditorViewModel->GetSgoMap();
+  m_visibleSgos = visibleSgos;
+  m_mapEditorPreferences = m_mapEditorViewModel->GetMapEditorPreferences();
+  m_camera = camera;
 }
 
 
@@ -14,23 +15,67 @@ MapEditorControl::~MapEditorControl()
 {
 }
 
-void MapEditorControl::SetSGOOnMapTableWidget(SGOOnMapTableWidget* sgoOnMapTableWidget)
+void MapEditorControl::EditSgoOnMap(int id)
 {
-  m_sgoOnMapTableWidget = sgoOnMapTableWidget; 
-  SetSGOOnMapTM(sgoOnMapTableWidget->GetTableModel());
+  SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
+  AddOrEditSGOOnMapDialog dialog;
+  dialog.setSGOOnMap(gameObject);
+
+  if (dialog.exec() == QDialog::Accepted) {
+    SGOOnMapDbInfo editedGameObject = dialog.GetSGOOnMap();
+    m_mapEditorViewModel->EditSgo(editedGameObject);
+  }
+}
+
+void MapEditorControl::Delete(std::vector<int>& ids)
+{
+  m_mapEditorViewModel->SetSelectedObjectIds(std::vector<int>()); //TODO FHolod: возможно этот метод должен быть protected
+
+  for (int id : ids) {
+    m_mapEditorViewModel->DeleteSgo(id);
+  }
+}
+
+void MapEditorControl::Clone(std::vector<int>& ids)
+{
+  for (int id : ids)
+  {
+    SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
+    gameObject.id = 0;
+
+    if (gameObject.staticGameObjectDbInfo.countOnMap > 0)
+      gameObject.instanceName = gameObject.staticGameObjectDbInfo.name + QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
+
+    AddOrEditSGOOnMapDialog dialog;
+    dialog.setSGOOnMap(gameObject);
+
+    if (dialog.exec() == QDialog::Accepted) {
+      SGOOnMapDbInfo clonedGameObject = dialog.GetSGOOnMap();
+      m_mapEditorViewModel->AddSgo(clonedGameObject);
+    }
+  }
 }
 
 void MapEditorControl::ProcessUserInput(InputState* inputState)
 {
   if (m_camera)
   {
+    if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_F) && m_selectedObjectIds->size() > 0)
+    {
+      if (inputState->IsKeyDown(DIK_LSHIFT))
+        m_mapEditorViewModel->UnfreezeSelected();
+      else
+        m_mapEditorViewModel->FreezeSelected();
+    }
+   
+
     if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_E) && m_selectedObjectIds->size() == 1)
-      m_sgoOnMapTableWidget->Edit((*m_selectedObjectIds->begin()));
+      EditSgoOnMap((*m_selectedObjectIds->begin()));
 
     if (inputState->IsKeyPressed(DIK_DELETE) && !m_selectedObjectIds->empty())
       Delete();
 
-    m_timeInSecondsBetweenFrames = inputState->time * 0.001;
+    m_timeInSecondsBetweenFrames = inputState->time * 0.001f;
 
     if (inputState->IsMouseBtnPressed(MouseButtons::LeftMouseBtn))
       PickObject(inputState, inputState->mouseXCoor, inputState->mouseYCoor);
@@ -88,7 +133,7 @@ void MapEditorControl::SaveChangedPositionsInDB()
   for (int selectedId : (*m_selectedObjectIds))
   {
     XMFLOAT3 position = m_staticGameObjectMap->at(selectedId).GetPosition();
-    m_SGOOnMapTM->EditPosition(selectedId, position.x, position.y, position.z);
+    m_mapEditorViewModel->EditPositionInSgoTableOnMapTableModel(selectedId, position.x, position.y, position.z);
   }
 }
 
@@ -99,7 +144,7 @@ void MapEditorControl::SaveChangedRotationsInDB()
   for (int selectedId : (*m_selectedObjectIds))
   {
     XMFLOAT3 rotation = m_staticGameObjectMap->at(selectedId).GetRotation();
-    m_SGOOnMapTM->EditRotation(selectedId, rotation.x, rotation.y, rotation.z);
+    m_mapEditorViewModel->EditRotationInSgoTableOnMapTableModel(selectedId, rotation.x, rotation.y, rotation.z);
   }
 }
 
@@ -120,7 +165,7 @@ void MapEditorControl::RotateCameraAroundObject(InputState* inputState)
   float deltaXRadians = XMConvertToRadians(inputState->m_mouseState.lX * m_mapEditorPreferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
   float deltaYRadians = XMConvertToRadians(inputState->m_mouseState.lY * m_mapEditorPreferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
 
-  objectPosition = GetCenterOfSelectedObjects();
+  objectPosition = GetCenterOfSelectedObjects(false);
   cameraPosition = m_camera->GetPosition();
   forwardCameraVector = m_camera->GetForward();
   rightCameraVector = m_camera->GetRight();
@@ -222,6 +267,9 @@ void MapEditorControl::CalculateDifferenceWithPoint(std::map<int, XMFLOAT3>* dif
 
 void MapEditorControl::MoveObjects(InputState* inputState)
 {
+  if (AllSelectedObjectsAreFrozen())
+    return;
+
   std::map<int, XMFLOAT3> differenceFromCenter;
   XMFLOAT3 centerOfSelectedObjectsGroup;
 
@@ -231,7 +279,7 @@ void MapEditorControl::MoveObjects(InputState* inputState)
   if (deltaX == 0.0f && deltaY == 0.0f)
     return;
 
-  centerOfSelectedObjectsGroup = GetCenterOfSelectedObjects();
+  centerOfSelectedObjectsGroup = GetCenterOfSelectedObjects(true);
   CalculateDifferenceWithPoint(&differenceFromCenter, centerOfSelectedObjectsGroup);
 
   if (m_mapEditorPreferences->GetSnapToGridState() && m_needRecalculateAcumulativePositionForSnap)
@@ -296,13 +344,18 @@ void MapEditorControl::MoveObjects(InputState* inputState)
 
   for (int selectedObjectId : (*m_selectedObjectIds))
   {
-    (*m_staticGameObjectMap)[selectedObjectId].SetPosition(centerOfSelectedObjectsGroup.x + differenceFromCenter[selectedObjectId].x, centerOfSelectedObjectsGroup.y + differenceFromCenter[selectedObjectId].y, centerOfSelectedObjectsGroup.z + differenceFromCenter[selectedObjectId].z);
+    if (!(*m_staticGameObjectMap)[selectedObjectId].isFrozen) {
+      (*m_staticGameObjectMap)[selectedObjectId].SetPosition(centerOfSelectedObjectsGroup.x + differenceFromCenter[selectedObjectId].x, centerOfSelectedObjectsGroup.y + differenceFromCenter[selectedObjectId].y, centerOfSelectedObjectsGroup.z + differenceFromCenter[selectedObjectId].z);
+    }
   }
   m_sgoTranslated = true;
 }
 
 void MapEditorControl::RotateObjects(InputState* inputState)
 {
+  if (AllSelectedObjectsAreFrozen())
+    return;
+
   XMFLOAT3 centerOfSelectedObjects; 
   XMMATRIX newRotaions;
   float correctedAngleWithSnap;
@@ -312,7 +365,7 @@ void MapEditorControl::RotateObjects(InputState* inputState)
   if (deltaX == 0.0f && deltaY == 0.0f)
     return;
   
-  centerOfSelectedObjects = GetCenterOfSelectedObjects();
+  centerOfSelectedObjects = GetCenterOfSelectedObjects(true);
 
   if (m_mapEditorPreferences->GetSnapToAngleState() && m_needRecalculateAcumulativeRotationForSnap)
   {
@@ -369,13 +422,16 @@ void MapEditorControl::RotateObjects(InputState* inputState)
 
   for (int selectedObjectId : (*m_selectedObjectIds))
   {
-    XMMATRIX worldMatrix;
-    (*m_staticGameObjectMap)[selectedObjectId].GetWorldMatrix(worldMatrix);
-    worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(-centerOfSelectedObjects.x, -centerOfSelectedObjects.y, -centerOfSelectedObjects.z));
-    worldMatrix = XMMatrixMultiply(worldMatrix, newRotaions);
-    worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(centerOfSelectedObjects.x, centerOfSelectedObjects.y, centerOfSelectedObjects.z));
+    if (!(*m_staticGameObjectMap)[selectedObjectId].isFrozen)
+    {
+      XMMATRIX worldMatrix;
+      (*m_staticGameObjectMap)[selectedObjectId].GetWorldMatrix(worldMatrix);
+      worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(-centerOfSelectedObjects.x, -centerOfSelectedObjects.y, -centerOfSelectedObjects.z));
+      worldMatrix = XMMatrixMultiply(worldMatrix, newRotaions);
+      worldMatrix = XMMatrixMultiply(worldMatrix, XMMatrixTranslation(centerOfSelectedObjects.x, centerOfSelectedObjects.y, centerOfSelectedObjects.z));
 
-    (*m_staticGameObjectMap)[selectedObjectId].SetWorldMatrix(worldMatrix);
+      (*m_staticGameObjectMap)[selectedObjectId].SetWorldMatrix(worldMatrix);
+    }
   }
   m_sgoRotated = true;
 }
@@ -444,17 +500,17 @@ void MapEditorControl::PickObject(InputState* inputState, int mouseXCoor, int mo
   pickRayInCameraWorldSpacePos = XMLoadFloat3(&cameraPosition);
 
   int selectedObjectId = NOTHING_SELECTED;
-  m_sgoOnMapTableWidget->ClearSelection();
-  for (auto& sgo : (*m_staticGameObjectMap))
+  m_mapEditorViewModel->ClearSelectionInSgoOnMapTable();
+  for (auto sgo : *m_visibleSgos)
   {
-    BoundingBox* box = sgo.second.GetModel()->GetBoundingBox();
+    BoundingBox* box = sgo->GetModel()->GetBoundingBox();
     XMFLOAT3 minPoint = box->GetMinPoint();
     XMFLOAT3 maxPoint = box->GetMaxPoint();
     XMFLOAT3 rayPosReadable;
     XMFLOAT3 rayDirectReadable;
     float distance;
 
-    sgo.second.GetWorldMatrix(objectWorldMatrix);
+    sgo->GetWorldMatrix(objectWorldMatrix);
     objectWorldMatrix = XMMatrixInverse(&matInvDeter, objectWorldMatrix);
 
     pickRayInObjectSpaceDir = XMVector3TransformNormal(pickRayInCameraWorldSpaceDir, objectWorldMatrix);
@@ -471,7 +527,7 @@ void MapEditorControl::PickObject(InputState* inputState, int mouseXCoor, int mo
       if (distance < minDistance)
       {
         minDistance = distance;
-        selectedObjectId = sgo.first;
+        selectedObjectId = sgo->uniqueId;
       }
     }
   }
@@ -551,7 +607,7 @@ void MapEditorControl::Clone()
   std::vector<int> selectedObjectIdsVector;
   selectedObjectIdsVector.reserve(m_selectedObjectIds->size());
   std::copy(m_selectedObjectIds->begin(), m_selectedObjectIds->end(), std::back_inserter(selectedObjectIdsVector));
-  m_sgoOnMapTableWidget->Clone(selectedObjectIdsVector);
+  Clone(selectedObjectIdsVector);
 }
 
 void MapEditorControl::Delete()
@@ -562,26 +618,71 @@ void MapEditorControl::Delete()
   std::vector<int> selectedIdsVector;
   selectedIdsVector.reserve(m_selectedObjectIds->size());
   std::copy(m_selectedObjectIds->begin(), m_selectedObjectIds->end(), std::back_inserter(selectedIdsVector));
-  m_sgoOnMapTableWidget->Delete(selectedIdsVector);
+  Delete(selectedIdsVector);
 }
 
-XMFLOAT3 MapEditorControl::GetCenterOfSelectedObjects()
+void MapEditorControl::AddSgoToMap(StaticGameObjectDbInfo& sgo)
+{
+  AddOrEditSGOOnMapDialog dialog; //TODO FHolod: посылался родительский виджет в конструктор
+  SGOOnMapDbInfo sgoOnMap;
+  sgoOnMap.staticGameObjectDbInfo = sgo;
+  sgoOnMap.staticGameObjectId = sgo.id;
+  sgoOnMap.instanceName = sgo.name;
+  if (sgo.countOnMap > 0)
+    sgoOnMap.instanceName += QString::number(sgo.countOnMap);
+
+  //TODO FHolod: установить позицию и поворот в зависимости от координат камеры редакторы карты
+  dialog.setSGOOnMap(sgoOnMap);
+
+  if (dialog.exec() == QDialog::Accepted) {
+    sgoOnMap = dialog.GetSGOOnMap();
+    m_mapEditorViewModel->AddSgo(sgoOnMap);
+  }
+}
+
+void MapEditorControl::FreezeAll()
+{
+  m_mapEditorViewModel->FreezeAll();
+}
+
+void MapEditorControl::UnfreezeAll()
+{
+  m_mapEditorViewModel->UnfreezeAll();
+}
+
+XMFLOAT3 MapEditorControl::GetCenterOfSelectedObjects(bool isChangeObjectOperation)
 {
   if (m_selectedObjectIds->empty())
-    RUNTIME_ERROR("There is no selected objects")
+    RUNTIME_ERROR("There is no selected objects");
 
+  int countOfNoFrozenObjects = 0;
   XMFLOAT3 center = XMFLOAT3(0.0f, 0.0f, 0.0f);
   for (int selectedObjectId : (*m_selectedObjectIds))
   {
     StaticGameObject gameObject = m_staticGameObjectMap->at(selectedObjectId);
+    if (isChangeObjectOperation && gameObject.isFrozen)
+      continue;
+
     XMFLOAT3 position = gameObject.GetPosition();
     center.x += position.x;
     center.y += position.y;
     center.z += position.z;
+    ++countOfNoFrozenObjects;
   }
-  center.x = center.x / m_selectedObjectIds->size();
-  center.y = center.y / m_selectedObjectIds->size();
-  center.z = center.z / m_selectedObjectIds->size();
+  center.x = center.x / countOfNoFrozenObjects;
+  center.y = center.y / countOfNoFrozenObjects;
+  center.z = center.z / countOfNoFrozenObjects;
 
   return center;
+}
+
+bool MapEditorControl::AllSelectedObjectsAreFrozen()
+{
+  for (auto& sgo : *m_staticGameObjectMap)
+  {
+    if (!sgo.second.isFrozen)
+      return false;
+  }
+
+  return true;
 }

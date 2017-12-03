@@ -1,20 +1,14 @@
 #pragma once
-#include <map>
-#include <set>
 #include <math.h>
 #include <algorithm>
-#include <vector>
 #include <iterator>
 #include "InputListener.h"
 #include "Logger.h"
 #include "Camera.h"
-#include "StaticGameObject.h"
 #include "LookAtObjectFromHelper.h"
-#include "SGOOnMapTM.h"
-#include "MapEditorPreferences.h"
+#include "MapEditorViewModel.h"
 #include "AddOrEditSGOOnMapDialog.h"
-
-class SGOOnMapTableWidget;
+#include "StaticGameObjectDbInfo.h"
 
 class MapEditorControl :
   public InputListener
@@ -22,11 +16,12 @@ class MapEditorControl :
 public:
   static const int NOTHING_SELECTED = -1;
 protected:
-  SGOOnMapTableWidget* m_sgoOnMapTableWidget;
-
-  SGOOnMapTM* m_SGOOnMapTM;
   Camera* m_camera;
+
+  MapEditorViewModel* m_mapEditorViewModel;
+  std::set<int>* m_selectedObjectIds;
   std::map<int, StaticGameObject>* m_staticGameObjectMap;
+  std::vector<StaticGameObject*>* m_visibleSgos;
   MapEditorPreferences* m_mapEditorPreferences;
 
   XMVECTOR m_rotateAroundPoint;
@@ -40,8 +35,7 @@ protected:
 
   XMFLOAT3 m_accumulativeRotationForSnap;
   bool m_needRecalculateAcumulativeRotationForSnap = true;
-
-  std::set<int>* m_selectedObjectIds;
+  
 protected:
   bool RayAABBIntersect(XMFLOAT3& minPoint, XMFLOAT3& maxPoint, XMFLOAT3& position, XMFLOAT3& direction, float& result);
   void PickObject(InputState* inputState, int mouseXCoor, int mouseYCoor);
@@ -58,19 +52,26 @@ protected:
   float GetCorrectedWithSnapCoord(float coord, float snapSize);
   void Clone();
   void Delete();
-  XMFLOAT3 GetCenterOfSelectedObjects();
+  XMFLOAT3 GetCenterOfSelectedObjects(bool isChangeObjectOperation);
   void SaveChangedPositionsInDB();
   void SaveChangedRotationsInDB();
   void CalculateDifferenceWithPoint(std::map<int, XMFLOAT3>* differenceFromPoint, XMFLOAT3 point);
+
+  bool AllSelectedObjectsAreFrozen();
 public:
-  MapEditorControl(MapEditorPreferences* mapEditorPreferences, SGOOnMapTableWidget* sgoOnMapTableWidget, Camera* camera, std::map<int, StaticGameObject>* staticGameObjectMap);
+  MapEditorControl(MapEditorViewModel* mapEditorViewModel, std::vector<StaticGameObject*>* visibleSgos, Camera* camera);
   virtual ~MapEditorControl();
+
   virtual void ProcessUserInput(InputState* inputState) override;
-  void SetSGOOnMapTM(SGOOnMapTM* sgoOnMapTM) { m_SGOOnMapTM = sgoOnMapTM; }
-  void SetCamera(Camera* camera) { m_camera = camera; }
-  void SetSGOMap(std::map<int, StaticGameObject>* staticGameObjectMap) { m_staticGameObjectMap = staticGameObjectMap; }
-  void SetSGOOnMapTableWidget(SGOOnMapTableWidget* sgoOnMapTableWidget);
-  void SetMapEditorPreferenses(MapEditorPreferences* mapEditorPreferences) { m_mapEditorPreferences = mapEditorPreferences; }
-  void SetSelectedObjectIds(std::set<int>* selectedObjectIds) { m_selectedObjectIds = selectedObjectIds; }
+
+  MapEditorViewModel* GetMapEditorViewModel() { return m_mapEditorViewModel; }
+
+  void AddSgoToMap(StaticGameObjectDbInfo& sgo);
+  void EditSgoOnMap(int id);
+  void Delete(std::vector<int>& ids);
+  void Clone(std::vector<int>& ids);
+
+  void FreezeAll();
+  void UnfreezeAll();
 };
 

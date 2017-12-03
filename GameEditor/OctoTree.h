@@ -27,7 +27,7 @@ protected:
   bool CanOctTreeContainObject(StaticGameObject* sgo);
   void GetVisibleSgoHelper(OctoTreeNode* node, CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
 
-  void InitializeAllBBsHelper(OctoTreeNode* node, ID3D11Device* device);
+  void InitializeAllBBsHelper(OctoTreeNode* node);
 public:
   OctoTree();
   void Initialize(const std::map<int, StaticGameObject*>* objectsMap, XMFLOAT3 center, float halfLength);
@@ -41,6 +41,6 @@ public:
   virtual ~OctoTree();
 
   std::vector<BoundingBox*> AllBBs; // необходимо для отладки, для визуализации октодерева
-  void InitializeAllBBs(ID3D11Device* device);
+  void InitializeAllBBs();
 };
 

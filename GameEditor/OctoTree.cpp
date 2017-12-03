@@ -166,20 +166,19 @@ void OctoTree::DeleteUnusedNodeHelper(OctoTreeNode* node)
   }
 }
 
-void OctoTree::InitializeAllBBs(ID3D11Device* device)
+void OctoTree::InitializeAllBBs()
 {
   AllBBs.clear();
-  InitializeAllBBsHelper(m_root, device);
+  InitializeAllBBsHelper(m_root);
 }
 
-void OctoTree::InitializeAllBBsHelper(OctoTreeNode* node, ID3D11Device* device)
+void OctoTree::InitializeAllBBsHelper(OctoTreeNode* node)
 {
   for (size_t i = 0; i < OctoTreeNode::CHILD_NODES_COUNT; i++) {
     if (node->childNodes[i])
-      InitializeAllBBsHelper(node->childNodes[i], device);
+      InitializeAllBBsHelper(node->childNodes[i]);
   }
 
-  node->boundingBox.InitializeBuffers(device);
   AllBBs.push_back(&node->boundingBox);
 }
 

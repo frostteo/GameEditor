@@ -8,8 +8,7 @@
 #include "QtGEPaginator.h"
 #include "SGOOnMapTM.h"
 #include "SGOOnMapToolBox.h"
-#include "AddOrEditSGOOnMapDialog.h"
-#include "MapEditor.h"
+#include "MapEditorControl.h"
 
 class SGOOnMapTableWidget : public QWidget, public Ui::SGOOnMapTableWidget
 {
@@ -17,9 +16,10 @@ class SGOOnMapTableWidget : public QWidget, public Ui::SGOOnMapTableWidget
 private:
   std::unique_ptr<SGOOnMapToolBox> m_toolBox;
   std::unique_ptr<QTableView> m_table;
-  std::unique_ptr<SGOOnMapTM> m_tableModel;
+  SGOOnMapTM* m_tableModel;
   std::unique_ptr<QtGEPaginator> m_paginator;
-  MapEditor* m_mapEditor;
+
+  MapEditorControl* m_mapEditorControl;
 protected slots:
   void editBtnsStateConfigure();
   void TableRowSelected(const QItemSelection& selected, const QItemSelection& deselected);
@@ -33,20 +33,13 @@ protected slots:
   void FreezeAllBtnClicked();
   void UnfreezeAllBtnClicked();
 
-  void SGODeleted(int sgoId) { UpdateTable(); }
+  void ClearSelection() { m_table->selectionModel()->clearSelection(); }
 protected:
   void configureTable();
   void configureUI();
   void configurePaginator();
   std::vector<int> GetSelectedIds();
 public:
-  SGOOnMapTableWidget(QWidget *parent = Q_NULLPTR);
+  SGOOnMapTableWidget(MapEditorControl* mapEditorControl, QWidget *parent = Q_NULLPTR);
   ~SGOOnMapTableWidget();
-  void AddSGOToMap(StaticGameObjectDbInfo& sgo);
-  void SetMapEditor(MapEditor* mapEditor);
-  SGOOnMapTM* GetTableModel() { return m_tableModel.get(); }
-  void Clone(std::vector<int> selectedIds);
-  void Delete(std::vector<int> selectedIds);
-  void Edit(int id);
-  void ClearSelection() { m_table->selectionModel()->clearSelection(); }
 };

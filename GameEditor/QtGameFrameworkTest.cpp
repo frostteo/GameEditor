@@ -53,7 +53,6 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   m_sgo.SetModel(m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/test column.txt"));
   //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/cube.txt");
 
-  m_sgo.GetModel()->GetBoundingBox()->InitializeBuffers(m_graphicSystem->GetDevice());
 
   m_mapEditorPreferences = std::unique_ptr<MapEditorPreferences>(new MapEditorPreferences());
 
@@ -125,7 +124,6 @@ void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
   XMMATRIX worldMatrix;
   m_sgo.GetWorldMatrix(worldMatrix);
   m_graphicSystem->AddModelToRenderList(m_sgo.GetModel(), worldMatrix);
-  m_graphicSystem->AddGridToRenderList(m_sgo.GetModel()->GetBoundingBox(), worldMatrix);
   m_graphicSystem->Render(m_Camera, m_lightininigSystem);
 
   // trigger another update as soon as possible 

@@ -13,6 +13,7 @@ StaticGameObject::~StaticGameObject()
 void StaticGameObject::SetModel(Model* model)
 {
   m_model = model;
+  m_drawableBoundingBox.Initialize(model->GetBoundingBox());
   RebuildBBInWorldCoord();
 }
 
