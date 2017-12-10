@@ -3,7 +3,7 @@
 
 SGOMetadata::SGOMetadata()
 {
-  m_tableName = "StaticGameObjectDbInfo";
+  m_tableName = "StaticGameObject";
   m_columnNames = { "name", "modelFileName", "countOnMap" };
 }
 

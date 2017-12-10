@@ -3,7 +3,7 @@
 
 SGOOnMapMetadata::SGOOnMapMetadata()
 {
-  m_tableName = "SGOOnMapDbInfo";
+  m_tableName = "SGOOnMap";
   m_columnNames = { "staticGameObjectId", "instanceName", "xPox", "yPos", "zPos", "xRotate", "yRotate", "zRotate", "isFrozen"};
   AddRelationShip(m_SGOMetadata.GetTableName(), m_columnNames[0], m_SGOMetadata.GetKeyColumnName());
 }

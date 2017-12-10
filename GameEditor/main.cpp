@@ -15,12 +15,37 @@ int main(int argc, char *argv[])
     
       GameEditor w;
 
-      //GetParameters getParameters;
-      //PagingInfo pagingInfo;
-      //auto test = DependencyResolver::GetSGOOnMapService()->GetFiltered(getParameters, pagingInfo);
+      GetParameters getParameters;
+      PagingInfo pagingInfo;
 
+      PointLightDbInfo pointLight;
+      pointLight.name = "test2";
+      pointLight.staticGameObjectId = 40;
+      pointLight.linearAttenuation = 0.7f;
+      pointLight.quadraticAttenuation = 1.8f;
+      //DependencyResolver::GetPointLightService()->Create(pointLight);
+      /*PointLightDbInfo pointLight = DependencyResolver::GetPointLightService()->Get(1);
+      pointLight.name = "Fedor test";
+      DependencyResolver::GetPointLightService()->Update(pointLight);*/
+      //DependencyResolver::GetPointLightService()->Delete(1);
 
-      //auto test2 = DependencyResolver::GetSGOOnMapService()->GetAll();
+      PointLightOnMapDbInfo pointLightOnMap;
+     /* pointLightOnMap.pointLightId = 1;
+      pointLightOnMap.instanceName = "test2 instance";
+      pointLightOnMap.linearAttenuation = pointLight.linearAttenuation;
+      pointLightOnMap.quadraticAttenuation = pointLight.quadraticAttenuation;
+      pointLightOnMap.xPos = 10;
+      pointLightOnMap.yPos = 50;
+      pointLightOnMap.zPos = 134;*/
+      //DependencyResolver::GetPointLightOnMapService()->Create(pointLightOnMap);
+     /* pointLightOnMap = DependencyResolver::GetPointLightOnMapService()->Get(1);
+      pointLightOnMap.isFrozen = false;
+      pointLightOnMap.xRotate = 524;
+      DependencyResolver::GetPointLightOnMapService()->Delete(1);
+      auto test2 = DependencyResolver::GetPointLightOnMapService()->GetAll();*/
+      //auto test = DependencyResolver::GetPointLightService()->Get(1);
+
+      auto test2 = DependencyResolver::GetPointLightOnMapService()->GetFiltered(getParameters, pagingInfo, "", "test", "lamp");
       w.showMaximized();
      /* QtGameFrameworkTest w2;
       w2.show();*/

@@ -43,7 +43,7 @@ protected:
   void BuildInsertQueryStr();
   void BuildUpdateQueryStr();
   void BuildDeleteQueryStr();
-  void BuildJoinConditions();
+  virtual void BuildJoinConditions();
   virtual void AddRelationShip(QString tableName, QString thisTableForeignKey, QString otherTablePrimaryKey);
   QString JoinOpToString(JoinOperator joinOperator);
 public:

@@ -27,6 +27,14 @@ void QtUnitOfWork::Initialize(std::string hostName, std::string databaseName, st
   m_SGOOnMapRepository = std::unique_ptr<IRepository<SGOOnMapDbInfo>>(
     DALDependencyResolver::GetSGOOnMapRepository()->Initialize(connectionName)
     );
+
+  m_pointLightRepository = std::unique_ptr<IRepository<PointLightDbInfo>>(
+    DALDependencyResolver::GetPointLightRepository()->Initialize(connectionName)
+    );
+
+  m_pointLightOnMapRepository = std::unique_ptr<IRepository<PointLightOnMapDbInfo>>(
+    DALDependencyResolver::GetPointLightOnMapRepository()->Initialize(connectionName)
+    );
 }
 
 IRepository<StaticGameObjectDbInfo>* QtUnitOfWork::GetStaticGORepository()
@@ -37,4 +45,14 @@ IRepository<StaticGameObjectDbInfo>* QtUnitOfWork::GetStaticGORepository()
 IRepository<SGOOnMapDbInfo>* QtUnitOfWork::GetSGOOnMapRepository()
 {
   return m_SGOOnMapRepository.get();
+}
+
+IRepository<PointLightDbInfo>* QtUnitOfWork::GetPointLightRepository()
+{
+  return m_pointLightRepository.get();
+}
+
+IRepository<PointLightOnMapDbInfo>* QtUnitOfWork::GetPointLightOnMapRepository()
+{
+  return m_pointLightOnMapRepository.get();
 }

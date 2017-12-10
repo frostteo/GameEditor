@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include "DbTableMetadata.h"
 #include "SGOOnMapDbInfo.h"
 #include "SGOMetadata.h"
 
