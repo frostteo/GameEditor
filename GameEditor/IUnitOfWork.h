@@ -6,6 +6,7 @@
 #include "SGOOnMapDbInfo.h"
 #include "PointLightDbInfo.h"
 #include "PointLightOnMapDbInfo.h"
+#include <QSqlDatabase.h>
 
 class IUnitOfWork 
 {
@@ -17,4 +18,5 @@ public:
   virtual IRepository<SGOOnMapDbInfo>* GetSGOOnMapRepository() = 0;
   virtual IRepository<PointLightDbInfo>* GetPointLightRepository() = 0;
   virtual IRepository<PointLightOnMapDbInfo>* GetPointLightOnMapRepository() = 0;
+  virtual QSqlDatabase GetDatabase() = 0; //TODO FHolod: изначально хотелось бы не иметь зависимостей от Qt в этом классе
 };

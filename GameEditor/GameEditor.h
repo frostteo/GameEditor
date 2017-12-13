@@ -12,6 +12,7 @@
 #include "SGOTableWidget.h"
 #include "MapEditorPreferencesDialog.h"
 #include "MapEditorPreferences.h"
+#include "PointLightTableWidget.h"
 
 class GameEditor : public QMainWindow
 {
@@ -26,6 +27,7 @@ private:
   QString m_pathToObjModels = "../GameEditor/obj models";
 
   std::unique_ptr<SGOTableWidget> m_SGOTableWidget;
+  std::unique_ptr<PointLightTableWidget> m_pointLightTableWidget;
   std::unique_ptr<MapEditorData> m_mapEditorData;
   std::unique_ptr<MapEditor> m_mapEditor;
   std::unique_ptr<MapEditorPreferences> m_mapEditorPreferences;

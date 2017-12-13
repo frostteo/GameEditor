@@ -13,6 +13,7 @@ protected:
   IUnitOfWork* m_unitOfWork;
   PointLightMetadata m_pointLightMetadata;
   SGOMetadata m_sgoMetadata;
+  PointLightOnMapMetadata m_pointLightOnMapMetadata;
 protected:
   void IncrementPointLightCount(int id);
   void DecrementPointLightCount(int id);

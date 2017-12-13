@@ -14,7 +14,7 @@ PointLightService::~PointLightService()
 PointLightDbInfo PointLightService::Get(int id)
 {
   std::vector<JoinInfo> joinInfos;
-  joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
   PointLightDbInfo pointLight = m_unitOfWork->GetPointLightRepository()->Get(id, &joinInfos);
 
   return pointLight;
@@ -23,7 +23,7 @@ PointLightDbInfo PointLightService::Get(int id)
 QList<PointLightDbInfo> PointLightService::GetAll()
 {
   std::vector<JoinInfo> joinInfos;
-  joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
   std::vector<PointLightDbInfo> pointLights = m_unitOfWork->GetPointLightRepository()->GetAll(&joinInfos);
 
   QList<PointLightDbInfo> qListPointLights;
@@ -59,15 +59,14 @@ QList<PointLightDbInfo> PointLightService::GetFiltered(GetParameters& parameters
   std::vector<PointLightDbInfo> gameObjects;
   QList<PointLightDbInfo> qListGameObjects;
 
-
+ 
   if (!name.empty()) {
-    whereParams.push_back(" PointLight_name LIKE '%" + name + "%' ");
+    whereParams.push_back(" " + m_pointLightMetadata.GetAlias(0).toStdString() + " LIKE '%" + name + "%' ");
     filteringIsEnabled = true;
   }
 
-
   if (!sgoName.empty()) {
-    whereParams.push_back(" StaticGameObject_name LIKE '%" + sgoName + "%' ");
+    whereParams.push_back(" " + m_SGOMetadata.GetAlias(0).toStdString() + " LIKE '%" + sgoName + "%' ");
     filteringIsEnabled = true;
   }
 
@@ -78,7 +77,7 @@ QList<PointLightDbInfo> PointLightService::GetFiltered(GetParameters& parameters
     parameters.whereCondition = "1";
 
   parameters.joinInfos.clear();
-  parameters.joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  parameters.joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
   gameObjects = m_unitOfWork->GetPointLightRepository()->GetAll(parameters, pagingInfo);
   qListGameObjects.reserve(gameObjects.size());
 

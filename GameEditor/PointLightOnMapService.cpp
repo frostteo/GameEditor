@@ -15,6 +15,7 @@ PointLightOnMapDbInfo PointLightOnMapService::Get(int id)
 {
   std::vector<JoinInfo> joinInfos;
   joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
   PointLightOnMapDbInfo pointLightOnMapDbInfo = m_unitOfWork->GetPointLightOnMapRepository()->Get(id, &joinInfos);
 
   return pointLightOnMapDbInfo;
@@ -24,7 +25,7 @@ QList<PointLightOnMapDbInfo> PointLightOnMapService::GetAll()
 {
   std::vector<JoinInfo> joinInfos;
   joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
-  joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
   std::vector<PointLightOnMapDbInfo> pointLightsOnMap = m_unitOfWork->GetPointLightOnMapRepository()->GetAll(&joinInfos);
 
   QList<PointLightOnMapDbInfo> qListpointLightsOnMap;
@@ -84,17 +85,18 @@ QList<PointLightOnMapDbInfo> PointLightOnMapService::GetFiltered(GetParameters& 
 
 
   if (!instanceName.empty()) {
-    whereParams.push_back(" PointLightOnMap_instanceName LIKE '%" + instanceName + "%' ");
+
+    whereParams.push_back(" " + m_pointLightOnMapMetadata.GetAlias(1).toStdString() + " LIKE '%" + instanceName + "%' ");
     filteringIsEnabled = true;
   }
 
   if (!sgoName.empty()) {
-    whereParams.push_back(" PointLight_name LIKE '%" + pointLightName + "%' ");
+    whereParams.push_back(" " + m_pointLightMetadata.GetAlias(0).toStdString() + " LIKE '%" + pointLightName + "%' ");
     filteringIsEnabled = true;
   }
 
   if (!sgoName.empty()) {
-    whereParams.push_back(" StaticGameObject_name LIKE '%" + sgoName + "%' ");
+    whereParams.push_back(" " + m_sgoMetadata.GetAlias(0).toStdString() + " LIKE '%" + sgoName + "%' ");
     filteringIsEnabled = true;
   }
 
@@ -106,7 +108,7 @@ QList<PointLightOnMapDbInfo> PointLightOnMapService::GetFiltered(GetParameters& 
 
   parameters.joinInfos.clear();
   parameters.joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
-  parameters.joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  parameters.joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
   gameObjects = m_unitOfWork->GetPointLightOnMapRepository()->GetAll(parameters, pagingInfo);
   qListGameObjects.reserve(gameObjects.size());
 

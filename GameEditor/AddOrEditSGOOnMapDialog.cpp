@@ -5,12 +5,15 @@ AddOrEditSGOOnMapDialog::AddOrEditSGOOnMapDialog(QWidget *parent)
 {
     setupUi(this);
 
-    this->xPosTxt->setValidator(new QDoubleValidator());
-    this->yPosTxt->setValidator(new QDoubleValidator());
-    this->zPosTxt->setValidator(new QDoubleValidator());
-    this->xRotateTxt->setValidator(new QDoubleValidator());
-    this->yRotateTxt->setValidator(new QDoubleValidator());
-    this->zRotateTxt->setValidator(new QDoubleValidator());
+    QDoubleValidator* validator = new QDoubleValidator();
+    validator->setLocale(QLocale::English);
+
+    this->xPosTxt->setValidator(validator);
+    this->yPosTxt->setValidator(validator);
+    this->zPosTxt->setValidator(validator);
+    this->xRotateTxt->setValidator(validator);
+    this->yRotateTxt->setValidator(validator);
+    this->zRotateTxt->setValidator(validator);
 }
 
 AddOrEditSGOOnMapDialog::~AddOrEditSGOOnMapDialog()

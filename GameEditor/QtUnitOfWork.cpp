@@ -56,3 +56,8 @@ IRepository<PointLightOnMapDbInfo>* QtUnitOfWork::GetPointLightOnMapRepository()
 {
   return m_pointLightOnMapRepository.get();
 }
+
+QSqlDatabase QtUnitOfWork::GetDatabase()
+{
+  return m_db;
+}

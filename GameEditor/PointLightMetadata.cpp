@@ -40,7 +40,13 @@ QVariant PointLightMetadata::GetFieldByName(const PointLightDbInfo& entity, QStr
     return entity.name;
 
   if (name == m_columnNames[1])
+  {
+    if (entity.staticGameObjectId == 0)
+      return QVariant();
+
     return entity.staticGameObjectId;
+  }
+    
 
   if (name == m_columnNames[2])
     return entity.relativePosX;

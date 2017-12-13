@@ -55,13 +55,12 @@ QList<StaticGameObjectDbInfo> StaticGOService::GetFiltered(GetParameters& parame
   QList<StaticGameObjectDbInfo> qListGameObjects;
 
   if (!name.empty()) {
-    whereParams.push_back(" StaticGameObjectDbInfo_name LIKE '%" + name + "%' ");
+    whereParams.push_back(" " + m_metadata.GetAlias(0).toStdString() + " LIKE '%" + name + "%' ");
     filteringIsEnabled = true;
   }
 
-
   if (!model.empty()) {
-    whereParams.push_back(" StaticGameObjectDbInfo_modelFileName LIKE '%" + model + "%' ");
+    whereParams.push_back(" " + m_metadata.GetAlias(1).toStdString() + " LIKE '%" + model + "%' ");
     filteringIsEnabled = true;
   }
 

@@ -56,13 +56,13 @@ QList<SGOOnMapDbInfo> SGOOnMapService::GetFiltered(GetParameters& parameters, Pa
  
 
   if (!SGOName.empty()) {
-    whereParams.push_back(" StaticGameObjectDbInfo_name LIKE '%" + SGOName + "%' ");
+    whereParams.push_back(" " + m_SGOMetadata.GetAlias(0).toStdString() + " LIKE '%" + SGOName + "%' ");
     filteringIsEnabled = true;
   }
 
 
   if (!instanceName.empty()) {
-    whereParams.push_back(" SGOOnMapDbInfo_instanceName LIKE '%" + instanceName + "%' ");
+    whereParams.push_back(" " + m_sgoOnMapMetadata.GetAlias(1).toStdString() + " LIKE '%" + instanceName + "%' ");
     filteringIsEnabled = true;
   }
 

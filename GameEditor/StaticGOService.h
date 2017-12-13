@@ -12,6 +12,7 @@ class StaticGOService
 {
 protected:
   IUnitOfWork* m_unitOfWork;
+  SGOMetadata m_metadata;
 public:
   StaticGOService();
   virtual ~StaticGOService();

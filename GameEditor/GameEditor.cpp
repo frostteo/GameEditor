@@ -19,8 +19,10 @@ void GameEditor::configureUI()
   m_mapEditor->show();
 
   m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
+  m_pointLightTableWidget = std::unique_ptr<PointLightTableWidget>(new PointLightTableWidget(this));
   ui.tabWidget->clear();
   ui.tabWidget->addTab(m_SGOTableWidget.get(), "static game objects"); 
+  ui.tabWidget->addTab(m_pointLightTableWidget.get(), "point lights");
 
   connect(m_SGOTableWidget.get(), SIGNAL(AddToMap(StaticGameObjectDbInfo&)), this, SLOT(AddSGOToMap(StaticGameObjectDbInfo&)));
   

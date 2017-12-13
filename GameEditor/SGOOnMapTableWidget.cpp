@@ -57,6 +57,8 @@ void SGOOnMapTableWidget::configureTable()
   connect(m_tableModel, SIGNAL(TableDataChanged()), this, SLOT(editBtnsStateConfigure()));
   connect(m_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(HeaderSectionClicked(int)));
   connect(m_tableModel, SIGNAL(ClearSelectionSignal()), this, SLOT(ClearSelection()));
+
+  editBtnsStateConfigure();
 }
 
 void SGOOnMapTableWidget::configureUI()

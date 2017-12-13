@@ -44,6 +44,9 @@
        <string>Edit</string>
       </attribute>
       <widget class="QPushButton" name="editBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -64,6 +67,9 @@
        </property>
       </widget>
       <widget class="QPushButton" name="cloneBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -84,6 +90,9 @@
        </property>
       </widget>
       <widget class="QPushButton" name="deleteBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -104,6 +113,9 @@
        </property>
       </widget>
       <widget class="QPushButton" name="freezeAllBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -124,6 +136,9 @@
        </property>
       </widget>
       <widget class="QPushButton" name="unfreezeAllBtn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>

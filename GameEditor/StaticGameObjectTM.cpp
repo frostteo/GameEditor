@@ -39,20 +39,29 @@ void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, int orderFieldI
 
 QVariant StaticGameObjectTM::data(const QModelIndex &index, int role) const
 {
-  if (index.column() == 3 && role == Qt::TextAlignmentRole)
-    return Qt::AlignRight;
+  switch (role) {
+    case Qt::TextAlignmentRole:
 
-  if (role != Qt::DisplayRole && role != Qt::EditRole) return{};
-  const auto & gameObject = m_data[index.row()];
+      if (index.column() == 0 || index.column() == 3)
+        return Qt::AlignRight | Qt::AlignVCenter;
 
-  switch (index.column())
-  {
-    case 0: return gameObject.id;
-    case 1: return gameObject.name;
-    case 2: return gameObject.modelFileName;
-    case 3: return gameObject.countOnMap;
-    default: return{};
+      break;
+    case Qt::DisplayRole:
+
+      const auto & gameObject = m_data[index.row()];
+
+      switch (index.column())
+      {
+        case 0: return gameObject.id;
+        case 1: return gameObject.name;
+        case 2: return gameObject.modelFileName;
+        case 3: return gameObject.countOnMap;
+        default: return{};
+      }
+      break;
   }
+
+  return QVariant();
 }
 
 QVariant StaticGameObjectTM::headerData(int section, Qt::Orientation orientation, int role) const

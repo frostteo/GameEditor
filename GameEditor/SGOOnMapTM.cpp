@@ -11,7 +11,7 @@ void SGOOnMapTM::FillOrderFieldMap()
 {
   SGOOnMapMetadata metadata;
 
-  m_orderFieldMap.insert(std::pair<int, std::string>(0, metadata.GetSelectInfos()[metadata.GetColumnNames()[0]].aliasColumnName.toStdString()));
+  m_orderFieldMap.insert(std::pair<int, std::string>(0, metadata.GetSelectInfos()[metadata.GetKeyColumnName()].aliasColumnName.toStdString()));
 
   QString SGOTableName = metadata.GetRelationShips().begin()->first;
   m_orderFieldMap.insert(std::pair<int, std::string>(1, metadata.GetRelationShipAlias(SGOTableName, 0).toStdString()));
@@ -57,8 +57,8 @@ QVariant SGOOnMapTM::data(const QModelIndex &index, int role) const
   switch (role) {
     case Qt::TextAlignmentRole:
 
-      if (index.column() >= 3 && index.column() <= 8)
-        return Qt::AlignRight;
+      if (index.column() == 0 || index.column() >= 3 && index.column() <= 8)
+        return Qt::AlignRight | Qt::AlignVCenter;
 
       break;
 

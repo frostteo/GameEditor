@@ -9,6 +9,7 @@
 #ifndef UI_ADDOREDITSGOONMAPDIALOG_H
 #define UI_ADDOREDITSGOONMAPDIALOG_H
 
+#include <QtCore/QLocale>
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
@@ -50,6 +51,7 @@ public:
         if (AddOrEditSGOOnMapDialog->objectName().isEmpty())
             AddOrEditSGOOnMapDialog->setObjectName(QStringLiteral("AddOrEditSGOOnMapDialog"));
         AddOrEditSGOOnMapDialog->resize(345, 232);
+        AddOrEditSGOOnMapDialog->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         positionGroupBox = new QGroupBox(AddOrEditSGOOnMapDialog);
         positionGroupBox->setObjectName(QStringLiteral("positionGroupBox"));
         positionGroupBox->setGeometry(QRect(20, 50, 151, 111));

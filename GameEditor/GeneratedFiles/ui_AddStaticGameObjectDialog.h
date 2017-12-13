@@ -42,17 +42,17 @@ public:
     {
         if (AddStaticGameObjectDialog->objectName().isEmpty())
             AddStaticGameObjectDialog->setObjectName(QStringLiteral("AddStaticGameObjectDialog"));
-        AddStaticGameObjectDialog->resize(395, 124);
+        AddStaticGameObjectDialog->resize(386, 171);
         buttonBox = new QDialogButtonBox(AddStaticGameObjectDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(230, 90, 156, 23));
+        buttonBox->setGeometry(QRect(220, 140, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         buttonBox->setCenterButtons(false);
         errorsMsg = new QLabel(AddStaticGameObjectDialog);
         errorsMsg->setObjectName(QStringLiteral("errorsMsg"));
-        errorsMsg->setGeometry(QRect(20, 110, 261, 51));
+        errorsMsg->setGeometry(QRect(10, 90, 261, 51));
         QPalette palette;
         QBrush brush(QColor(255, 7, 19, 255));
         brush.setStyle(Qt::SolidPattern);

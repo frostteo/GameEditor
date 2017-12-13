@@ -51,7 +51,6 @@ public:
     ~SGOTableWidget();
     void SetPathToModels(QString& path) { m_pathToModels = path; }
     void SetPathToMaterials(QString& path) { m_pathToMaterials = path; }
-    StaticGameObjectTM* GetTableModel() { return m_SGOTableModel.get(); }
 signals:
     void AddToMap(StaticGameObjectDbInfo& gameObject);
     void SGODeleted(int sgoId);

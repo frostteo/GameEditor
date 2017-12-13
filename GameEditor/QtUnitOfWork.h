@@ -31,5 +31,6 @@ public:
   virtual IRepository<SGOOnMapDbInfo>* GetSGOOnMapRepository() override;
   virtual IRepository<PointLightDbInfo>* GetPointLightRepository() override;
   virtual IRepository<PointLightOnMapDbInfo>* GetPointLightOnMapRepository() override;
+  virtual QSqlDatabase GetDatabase() override;
 };
 
