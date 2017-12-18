@@ -45,21 +45,27 @@ public:
     QLineEdit *linearAttenuationTxt;
     QLabel *quadraticAttenuationLbl;
     QLineEdit *quadraticAttenuationTxt;
+    QLabel *redLbl;
+    QLineEdit *redTxt;
+    QLabel *blueLbl;
+    QLineEdit *blueTxt;
+    QLabel *greenLbl;
+    QLineEdit *greenTxt;
 
     void setupUi(QDialog *AddOrEditPointLightDialog)
     {
         if (AddOrEditPointLightDialog->objectName().isEmpty())
             AddOrEditPointLightDialog->setObjectName(QStringLiteral("AddOrEditPointLightDialog"));
-        AddOrEditPointLightDialog->resize(288, 270);
+        AddOrEditPointLightDialog->resize(279, 369);
         AddOrEditPointLightDialog->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         buttonBox = new QDialogButtonBox(AddOrEditPointLightDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(120, 240, 156, 23));
+        buttonBox->setGeometry(QRect(120, 340, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         errorsMsgLbl = new QLabel(AddOrEditPointLightDialog);
         errorsMsgLbl->setObjectName(QStringLiteral("errorsMsgLbl"));
-        errorsMsgLbl->setGeometry(QRect(20, 190, 261, 51));
+        errorsMsgLbl->setGeometry(QRect(10, 280, 261, 51));
         QPalette palette;
         QBrush brush(QColor(255, 0, 0, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -78,7 +84,7 @@ public:
         errorsMsgLbl->setWordWrap(true);
         layoutWidget = new QWidget(AddOrEditPointLightDialog);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(20, 10, 259, 178));
+        layoutWidget->setGeometry(QRect(10, 10, 259, 256));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -112,6 +118,8 @@ public:
 
         relPosXTxt = new QLineEdit(layoutWidget);
         relPosXTxt->setObjectName(QStringLiteral("relPosXTxt"));
+        relPosXTxt->setEnabled(false);
+        relPosXTxt->setReadOnly(false);
 
         formLayout->setWidget(2, QFormLayout::FieldRole, relPosXTxt);
 
@@ -122,6 +130,8 @@ public:
 
         relPosYTxt = new QLineEdit(layoutWidget);
         relPosYTxt->setObjectName(QStringLiteral("relPosYTxt"));
+        relPosYTxt->setEnabled(false);
+        relPosYTxt->setReadOnly(false);
 
         formLayout->setWidget(3, QFormLayout::FieldRole, relPosYTxt);
 
@@ -132,29 +142,70 @@ public:
 
         relPosZTxt = new QLineEdit(layoutWidget);
         relPosZTxt->setObjectName(QStringLiteral("relPosZTxt"));
+        relPosZTxt->setEnabled(false);
+        relPosZTxt->setReadOnly(false);
 
         formLayout->setWidget(4, QFormLayout::FieldRole, relPosZTxt);
 
         linearAttenuationLbl = new QLabel(layoutWidget);
         linearAttenuationLbl->setObjectName(QStringLiteral("linearAttenuationLbl"));
 
-        formLayout->setWidget(5, QFormLayout::LabelRole, linearAttenuationLbl);
+        formLayout->setWidget(8, QFormLayout::LabelRole, linearAttenuationLbl);
 
         linearAttenuationTxt = new QLineEdit(layoutWidget);
         linearAttenuationTxt->setObjectName(QStringLiteral("linearAttenuationTxt"));
 
-        formLayout->setWidget(5, QFormLayout::FieldRole, linearAttenuationTxt);
+        formLayout->setWidget(8, QFormLayout::FieldRole, linearAttenuationTxt);
 
         quadraticAttenuationLbl = new QLabel(layoutWidget);
         quadraticAttenuationLbl->setObjectName(QStringLiteral("quadraticAttenuationLbl"));
 
-        formLayout->setWidget(6, QFormLayout::LabelRole, quadraticAttenuationLbl);
+        formLayout->setWidget(9, QFormLayout::LabelRole, quadraticAttenuationLbl);
 
         quadraticAttenuationTxt = new QLineEdit(layoutWidget);
         quadraticAttenuationTxt->setObjectName(QStringLiteral("quadraticAttenuationTxt"));
 
-        formLayout->setWidget(6, QFormLayout::FieldRole, quadraticAttenuationTxt);
+        formLayout->setWidget(9, QFormLayout::FieldRole, quadraticAttenuationTxt);
 
+        redLbl = new QLabel(layoutWidget);
+        redLbl->setObjectName(QStringLiteral("redLbl"));
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, redLbl);
+
+        redTxt = new QLineEdit(layoutWidget);
+        redTxt->setObjectName(QStringLiteral("redTxt"));
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, redTxt);
+
+        blueLbl = new QLabel(layoutWidget);
+        blueLbl->setObjectName(QStringLiteral("blueLbl"));
+
+        formLayout->setWidget(7, QFormLayout::LabelRole, blueLbl);
+
+        blueTxt = new QLineEdit(layoutWidget);
+        blueTxt->setObjectName(QStringLiteral("blueTxt"));
+
+        formLayout->setWidget(7, QFormLayout::FieldRole, blueTxt);
+
+        greenLbl = new QLabel(layoutWidget);
+        greenLbl->setObjectName(QStringLiteral("greenLbl"));
+
+        formLayout->setWidget(6, QFormLayout::LabelRole, greenLbl);
+
+        greenTxt = new QLineEdit(layoutWidget);
+        greenTxt->setObjectName(QStringLiteral("greenTxt"));
+
+        formLayout->setWidget(6, QFormLayout::FieldRole, greenTxt);
+
+        QWidget::setTabOrder(nameTxt, sgoNameTxt);
+        QWidget::setTabOrder(sgoNameTxt, relPosXTxt);
+        QWidget::setTabOrder(relPosXTxt, relPosYTxt);
+        QWidget::setTabOrder(relPosYTxt, relPosZTxt);
+        QWidget::setTabOrder(relPosZTxt, redTxt);
+        QWidget::setTabOrder(redTxt, greenTxt);
+        QWidget::setTabOrder(greenTxt, blueTxt);
+        QWidget::setTabOrder(blueTxt, linearAttenuationTxt);
+        QWidget::setTabOrder(linearAttenuationTxt, quadraticAttenuationTxt);
 
         retranslateUi(AddOrEditPointLightDialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), AddOrEditPointLightDialog, SLOT(accept()));
@@ -174,6 +225,9 @@ public:
         relPosZLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "Relative position Z", Q_NULLPTR));
         linearAttenuationLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "Linear attenuation", Q_NULLPTR));
         quadraticAttenuationLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "Quadratic attenuation", Q_NULLPTR));
+        redLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "red", Q_NULLPTR));
+        blueLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "blue", Q_NULLPTR));
+        greenLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "green", Q_NULLPTR));
     } // retranslateUi
 
 };

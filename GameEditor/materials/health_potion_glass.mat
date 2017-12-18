@@ -3,4 +3,5 @@ diffuseColor: 0.1137 0 0 1
 specularColor: 0.468 0.468 0.468 1
 selfIluminationColor: 0 0 0 1
 specularPower: 61
+opacity: 1
 subType: 1

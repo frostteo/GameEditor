@@ -62,9 +62,12 @@ QVariant PointLightTM::data(const QModelIndex &index, int role) const
       case 3: return pointLight.relativePosX;
       case 4: return pointLight.relativePosY;
       case 5: return pointLight.relativePosZ;
-      case 6: return pointLight.linearAttenuation;
-      case 7: return pointLight.quadraticAttenuation;
-      case 8: return pointLight.countOnMap;
+      case 6: return pointLight.red;
+      case 7: return pointLight.green;
+      case 8: return pointLight.blue;
+      case 9: return pointLight.linearAttenuation;
+      case 10: return pointLight.quadraticAttenuation;
+      case 11: return pointLight.countOnMap;
       default: return{};
     }
 
@@ -86,9 +89,12 @@ QVariant PointLightTM::headerData(int section, Qt::Orientation orientation, int 
     case 3: return tr("relative pos x");
     case 4: return tr("relative pos y");
     case 5: return tr("relative pos z");
-    case 6: return tr("linnear attenuation");
-    case 7: return tr("quadratic attenuation");
-    case 8: return tr("count of map");
+    case 6: return tr("red");
+    case 7: return tr("green");
+    case 8: return tr("blue");
+    case 9: return tr("linnear attenuation");
+    case 10: return tr("quadratic attenuation");
+    case 11: return tr("count of map");
     default: return{};
   }
 }

@@ -24,6 +24,7 @@ protected:
     XMVECTOR specularColor;
     XMVECTOR selfIluminationColor;
     float specularPower;
+    float opacity;
     int subtype;
   };
 protected:
@@ -37,7 +38,7 @@ protected:
   void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount);
   void SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
     XMMATRIX projectionMatrix, XMFLOAT3 lightDirection, XMVECTOR ambientLightColor,
-    XMVECTOR diffuseLightColor, XMVECTOR diffuseColor, XMVECTOR specularColor, XMVECTOR selfIluminationColor, float specularPower, XMFLOAT3 cameraPosition, ColorMaterialSubType subtype);
+    XMVECTOR diffuseLightColor, XMVECTOR diffuseColor, XMVECTOR specularColor, XMVECTOR selfIluminationColor, float specularPower, float opacity, XMFLOAT3 cameraPosition, ColorMaterialSubType subtype);
 public:
   ColorShader();
   virtual ~ColorShader();

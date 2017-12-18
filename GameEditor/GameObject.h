@@ -1,6 +1,13 @@
 #pragma once
 
-#include "GEMath.h"
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "d3dcompiler.lib")
+
+#include <d3d11.h>
+#include <directxmath.h>
+
+using namespace DirectX;
 
 class GameObject
 {
@@ -13,6 +20,7 @@ private:
   float m_positionX, m_positionY, m_positionZ;
   float m_rotationX, m_rotationY, m_rotationZ;
 
+  GameObject* m_parent;
 public :
   bool needRebuildDependOnWorldMatrix = true; // Для обозначения что нужно перестроить объекты в наследниках зависящие от изменения матрицы мировых координат, например bounding box
 public:
@@ -39,5 +47,8 @@ public:
   void MoveForward(float distance);
 
   inline bool NeedRebuildWorldMatrix() { return m_needRebuildTranslationMatrix || m_needRebuildRotationMatrix; }
+
+  void SetParent(GameObject* gameObject) { m_parent = gameObject; }
+  void GetParentMatrix(XMMATRIX& parentMatrix) const;
 };
 

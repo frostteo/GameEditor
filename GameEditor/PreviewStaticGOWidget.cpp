@@ -27,7 +27,7 @@ void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGam
   m_sgo.SetModel(GetModel(staticGameObject.modelFileName.toStdString()));
 
   PreviewGameObject* previewGameObject = new PreviewGameObject(m_Camera.get(), &m_sgo, m_mapEditorPreferences);
-  LookAtObjectFromHelper::LookToObjectFromWorldFront(m_Camera.get(), &m_sgo);
+  GEMath::LookToObjectFromWorldFront(m_Camera.get(), &m_sgo);
   m_inputSystem->AddInputListener(previewGameObject);
 }
 

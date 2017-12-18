@@ -4,7 +4,7 @@
 PointLightMetadata::PointLightMetadata()
 {
   m_tableName = "PointLight";
-  m_columnNames = { "name", "sgoId", "relativePosX", "relativePosY", "relativePosZ", "linearAttenuation", "quadraticAttenuation", "countOnMap" };
+  m_columnNames = { "name", "sgoId", "relativePosX", "relativePosY", "relativePosZ", "red", "green", "blue", "linearAttenuation", "quadraticAttenuation", "countOnMap" };
   AddRelationShip(m_SGOMetadata.GetTableName(), m_columnNames[1], m_SGOMetadata.GetKeyColumnName());
 }
 
@@ -23,9 +23,12 @@ void PointLightMetadata::InitializeFromQuery(PointLightDbInfo& entity, QSqlQuery
   entity.relativePosX = query->value(selectInfos[m_columnNames[2]].aliasColumnName).toFloat();
   entity.relativePosY = query->value(selectInfos[m_columnNames[3]].aliasColumnName).toFloat();
   entity.relativePosZ = query->value(selectInfos[m_columnNames[4]].aliasColumnName).toFloat();
-  entity.linearAttenuation = query->value(selectInfos[m_columnNames[5]].aliasColumnName).toFloat();
-  entity.quadraticAttenuation = query->value(selectInfos[m_columnNames[6]].aliasColumnName).toFloat();
-  entity.countOnMap = query->value(selectInfos[m_columnNames[7]].aliasColumnName).toInt();
+  entity.red = query->value(selectInfos[m_columnNames[5]].aliasColumnName).toFloat();
+  entity.green = query->value(selectInfos[m_columnNames[6]].aliasColumnName).toFloat();
+  entity.blue = query->value(selectInfos[m_columnNames[7]].aliasColumnName).toFloat();
+  entity.linearAttenuation = query->value(selectInfos[m_columnNames[8]].aliasColumnName).toFloat();
+  entity.quadraticAttenuation = query->value(selectInfos[m_columnNames[9]].aliasColumnName).toFloat();
+  entity.countOnMap = query->value(selectInfos[m_columnNames[10]].aliasColumnName).toInt();
 
   if (joinTableNames != nullptr && joinTableNames->size() > 0) {
     if (std::find(joinTableNames->begin(), joinTableNames->end(), m_relationships.begin()->first) != joinTableNames->end())
@@ -46,7 +49,6 @@ QVariant PointLightMetadata::GetFieldByName(const PointLightDbInfo& entity, QStr
 
     return entity.staticGameObjectId;
   }
-    
 
   if (name == m_columnNames[2])
     return entity.relativePosX;
@@ -58,12 +60,21 @@ QVariant PointLightMetadata::GetFieldByName(const PointLightDbInfo& entity, QStr
     return entity.relativePosZ;
 
   if (name == m_columnNames[5])
-    return entity.linearAttenuation;
+    return entity.red;
 
   if (name == m_columnNames[6])
-    return entity.quadraticAttenuation;
+    return entity.green;
 
   if (name == m_columnNames[7])
+    return entity.blue;
+
+  if (name == m_columnNames[8])
+    return entity.linearAttenuation;
+
+  if (name == m_columnNames[9])
+    return entity.quadraticAttenuation;
+
+  if (name == m_columnNames[10])
     return entity.countOnMap;
 
   if (name == GetKeyColumnName())

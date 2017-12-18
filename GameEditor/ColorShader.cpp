@@ -205,7 +205,7 @@ void ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::w
 
 void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix, XMFLOAT3 lightDirection, XMVECTOR ambientLightColor,
-  XMVECTOR diffuseLightColor, XMVECTOR diffuseColor, XMVECTOR specularColor, XMVECTOR selfIluminationColor, float specularPower, XMFLOAT3 cameraPosition, ColorMaterialSubType subtype)
+  XMVECTOR diffuseLightColor, XMVECTOR diffuseColor, XMVECTOR specularColor, XMVECTOR selfIluminationColor, float specularPower, float opacity, XMFLOAT3 cameraPosition, ColorMaterialSubType subtype)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -298,7 +298,8 @@ void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
   dataPtr4->specularColor = specularColor;
   dataPtr4->selfIluminationColor = selfIluminationColor;
   dataPtr4->specularPower = specularPower;
-  dataPtr4->subtype = (int) subtype;
+  dataPtr4->opacity = opacity;
+  dataPtr4->subtype = static_cast<int>(subtype);
 
   // Unlock the constant buffer.
   deviceContext->Unmap(m_materialBuffer, 0);
@@ -321,7 +322,7 @@ void ColorShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMM
 {
   ColorMaterial* colorMaterial = (ColorMaterial *)material;
 
-  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), colorMaterial->m_diffuseColor, colorMaterial->m_specularColor, colorMaterial->m_selfIluminationColor, colorMaterial->m_specularPower, cameraPosition, colorMaterial->m_subType);
+  SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor(), colorMaterial->m_diffuseColor, colorMaterial->m_specularColor, colorMaterial->m_selfIluminationColor, colorMaterial->m_specularPower, colorMaterial->m_opacity, cameraPosition, colorMaterial->m_subType);
 
   RenderShader(deviceContext, indexCount);
 }

@@ -364,7 +364,7 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
 
   // Create an alpha enabled blend state description.
   blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
-  blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+  blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
   blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
   blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
   blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;

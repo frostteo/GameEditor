@@ -5,10 +5,10 @@
 #include "InputListener.h"
 #include "Logger.h"
 #include "Camera.h"
-#include "LookAtObjectFromHelper.h"
 #include "MapEditorViewModel.h"
 #include "AddOrEditSGOOnMapDialog.h"
 #include "StaticGameObjectDbInfo.h"
+#include "GEMath.h"
 
 class MapEditorControl :
   public InputListener
@@ -47,7 +47,6 @@ protected:
   void RotateCameraAroundObject(InputState* inputState);
 
   XMMATRIX GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosition, XMVECTOR targetPoint, float deltaXRadians, float deltaYRadians);
-  XMMATRIX GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosition, XMVECTOR targetPoint, float deltaXRadians, float deltaYRadians, XMVECTOR cameraRight);
 
   float GetCorrectedWithSnapCoord(float coord, float snapSize);
   void Clone();

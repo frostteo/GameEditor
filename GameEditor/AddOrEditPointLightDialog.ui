@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>288</width>
-    <height>270</height>
+    <width>279</width>
+    <height>369</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>240</y>
+     <y>340</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -35,8 +35,8 @@
   <widget class="QLabel" name="errorsMsgLbl">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>190</y>
+     <x>10</x>
+     <y>280</y>
      <width>261</width>
      <height>51</height>
     </rect>
@@ -142,10 +142,10 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>10</y>
      <width>259</width>
-     <height>178</height>
+     <height>256</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -180,7 +180,14 @@
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="QLineEdit" name="relPosXTxt"/>
+     <widget class="QLineEdit" name="relPosXTxt">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="relPosYLbl">
@@ -190,7 +197,14 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QLineEdit" name="relPosYTxt"/>
+     <widget class="QLineEdit" name="relPosYTxt">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="relPosZLbl">
@@ -200,32 +214,81 @@
      </widget>
     </item>
     <item row="4" column="1">
-     <widget class="QLineEdit" name="relPosZTxt"/>
+     <widget class="QLineEdit" name="relPosZTxt">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
-    <item row="5" column="0">
+    <item row="8" column="0">
      <widget class="QLabel" name="linearAttenuationLbl">
       <property name="text">
        <string>Linear attenuation</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="8" column="1">
      <widget class="QLineEdit" name="linearAttenuationTxt"/>
     </item>
-    <item row="6" column="0">
+    <item row="9" column="0">
      <widget class="QLabel" name="quadraticAttenuationLbl">
       <property name="text">
        <string>Quadratic attenuation</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="1">
+    <item row="9" column="1">
      <widget class="QLineEdit" name="quadraticAttenuationTxt"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="redLbl">
+      <property name="text">
+       <string>red</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="redTxt"/>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="blueLbl">
+      <property name="text">
+       <string>blue</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="blueTxt"/>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="greenLbl">
+      <property name="text">
+       <string>green</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="greenTxt"/>
     </item>
    </layout>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>nameTxt</tabstop>
+  <tabstop>sgoNameTxt</tabstop>
+  <tabstop>relPosXTxt</tabstop>
+  <tabstop>relPosYTxt</tabstop>
+  <tabstop>relPosZTxt</tabstop>
+  <tabstop>redTxt</tabstop>
+  <tabstop>greenTxt</tabstop>
+  <tabstop>blueTxt</tabstop>
+  <tabstop>linearAttenuationTxt</tabstop>
+  <tabstop>quadraticAttenuationTxt</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

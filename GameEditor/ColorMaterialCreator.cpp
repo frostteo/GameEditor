@@ -14,6 +14,7 @@ IMaterial* ColorMaterialCreator::Get(const std::string& fileInStr, const std::st
   float sr, sg, sb, sa;
   float ir, ig, ib, ia;
   float specularPower;
+  float opacity;
   int subType;
 
   do {
@@ -47,6 +48,11 @@ IMaterial* ColorMaterialCreator::Get(const std::string& fileInStr, const std::st
   do {
     fileStrStream.get(input);
   } while (input != ':');
+  fileStrStream >> opacity;
+
+  do {
+    fileStrStream.get(input);
+  } while (input != ':');
   fileStrStream >> subType;
 
   ColorMaterial* material = new ColorMaterial(
@@ -55,7 +61,8 @@ IMaterial* ColorMaterialCreator::Get(const std::string& fileInStr, const std::st
     XMVectorSet(sr, sg, sb, sa),
     XMVectorSet(ir, ig, ib, ia), 
     specularPower,
-    (ColorMaterialSubType) subType);
+    opacity,
+    static_cast<ColorMaterialSubType>(subType));
 
   return material;
 }

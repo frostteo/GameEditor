@@ -29,15 +29,15 @@ class Ui_PointLightWidgetToolBox
 public:
     QToolBox *pointLightToolBox;
     QWidget *editTool;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QPushButton *addBtn;
     QPushButton *editBtn;
     QPushButton *deleteBtn;
-    QPushButton *previewBtn;
+    QPushButton *configureRelPosBtn;
     QPushButton *addToMapBtn;
     QWidget *filterTool;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_2;
     QLabel *nameLbl;
     QLineEdit *nameFilterTxt;
@@ -61,38 +61,38 @@ public:
         editTool = new QWidget();
         editTool->setObjectName(QStringLiteral("editTool"));
         editTool->setGeometry(QRect(0, 0, 121, 147));
-        widget = new QWidget(editTool);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(0, 0, 77, 141));
-        verticalLayout = new QVBoxLayout(widget);
+        layoutWidget = new QWidget(editTool);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(0, 0, 90, 141));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        addBtn = new QPushButton(widget);
+        addBtn = new QPushButton(layoutWidget);
         addBtn->setObjectName(QStringLiteral("addBtn"));
 
         verticalLayout->addWidget(addBtn);
 
-        editBtn = new QPushButton(widget);
+        editBtn = new QPushButton(layoutWidget);
         editBtn->setObjectName(QStringLiteral("editBtn"));
         editBtn->setEnabled(false);
 
         verticalLayout->addWidget(editBtn);
 
-        deleteBtn = new QPushButton(widget);
+        deleteBtn = new QPushButton(layoutWidget);
         deleteBtn->setObjectName(QStringLiteral("deleteBtn"));
         deleteBtn->setEnabled(false);
 
         verticalLayout->addWidget(deleteBtn);
 
-        previewBtn = new QPushButton(widget);
-        previewBtn->setObjectName(QStringLiteral("previewBtn"));
-        previewBtn->setEnabled(false);
+        configureRelPosBtn = new QPushButton(layoutWidget);
+        configureRelPosBtn->setObjectName(QStringLiteral("configureRelPosBtn"));
+        configureRelPosBtn->setEnabled(false);
 
-        verticalLayout->addWidget(previewBtn);
+        verticalLayout->addWidget(configureRelPosBtn);
 
-        addToMapBtn = new QPushButton(widget);
+        addToMapBtn = new QPushButton(layoutWidget);
         addToMapBtn->setObjectName(QStringLiteral("addToMapBtn"));
         addToMapBtn->setEnabled(false);
 
@@ -102,33 +102,33 @@ public:
         filterTool = new QWidget();
         filterTool->setObjectName(QStringLiteral("filterTool"));
         filterTool->setGeometry(QRect(0, 0, 121, 147));
-        widget1 = new QWidget(filterTool);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(0, 0, 121, 86));
-        verticalLayout_2 = new QVBoxLayout(widget1);
+        layoutWidget1 = new QWidget(filterTool);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(0, 0, 121, 86));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        nameLbl = new QLabel(widget1);
+        nameLbl = new QLabel(layoutWidget1);
         nameLbl->setObjectName(QStringLiteral("nameLbl"));
         nameLbl->setMinimumSize(QSize(47, 0));
 
         verticalLayout_2->addWidget(nameLbl);
 
-        nameFilterTxt = new QLineEdit(widget1);
+        nameFilterTxt = new QLineEdit(layoutWidget1);
         nameFilterTxt->setObjectName(QStringLiteral("nameFilterTxt"));
         nameFilterTxt->setMinimumSize(QSize(111, 0));
 
         verticalLayout_2->addWidget(nameFilterTxt);
 
-        sgoNameLbl = new QLabel(widget1);
+        sgoNameLbl = new QLabel(layoutWidget1);
         sgoNameLbl->setObjectName(QStringLiteral("sgoNameLbl"));
         sgoNameLbl->setMinimumSize(QSize(61, 0));
 
         verticalLayout_2->addWidget(sgoNameLbl);
 
-        sgoNameFilterTxt = new QLineEdit(widget1);
+        sgoNameFilterTxt = new QLineEdit(layoutWidget1);
         sgoNameFilterTxt->setObjectName(QStringLiteral("sgoNameFilterTxt"));
         sgoNameFilterTxt->setMinimumSize(QSize(113, 0));
 
@@ -150,7 +150,7 @@ public:
         addBtn->setText(QApplication::translate("PointLightWidgetToolBox", "add", Q_NULLPTR));
         editBtn->setText(QApplication::translate("PointLightWidgetToolBox", "edit", Q_NULLPTR));
         deleteBtn->setText(QApplication::translate("PointLightWidgetToolBox", "delete", Q_NULLPTR));
-        previewBtn->setText(QApplication::translate("PointLightWidgetToolBox", "preview", Q_NULLPTR));
+        configureRelPosBtn->setText(QApplication::translate("PointLightWidgetToolBox", "configure rel pos", Q_NULLPTR));
         addToMapBtn->setText(QApplication::translate("PointLightWidgetToolBox", "addToMap", Q_NULLPTR));
         pointLightToolBox->setItemText(pointLightToolBox->indexOf(editTool), QApplication::translate("PointLightWidgetToolBox", "Edit", Q_NULLPTR));
         nameLbl->setText(QApplication::translate("PointLightWidgetToolBox", "name", Q_NULLPTR));

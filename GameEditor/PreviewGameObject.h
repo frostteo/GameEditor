@@ -12,7 +12,6 @@ class PreviewGameObject :
   public InputListener
 {
 protected:
-  const float m_scaleCoef = 0.05f;
   const float m_rotateCoef = 0.01f;
   const float m_autoRotateYAngle = 0.5f;
   MapEditorPreferences* m_preferences;

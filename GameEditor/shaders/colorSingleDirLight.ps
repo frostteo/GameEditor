@@ -15,6 +15,7 @@ cbuffer MaterialBuffer
     float4 specularColor;
 	float4 selfIluminationColor;
     float specularPower;
+	float opacity;
 	int subtype;
 };
 
@@ -30,6 +31,9 @@ struct PixelInputType
     float3 viewDirection : TEXCOORD1;
 };
 
+#define COLOR_SPECULAR 1
+#define COLOR_SELFILUM 2
+#define COLOR_TRANSPARENT 4
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pixel Shader
@@ -59,7 +63,7 @@ float4 ColorPixelShader(PixelInputType input) : SV_TARGET
         // Determine the final diffuse color based on the diffuse color and the amount of light intensity.
         color += (diffuseLightColor * lightIntensity);
 		
-		if (subtype) {
+		if (subtype & COLOR_SPECULAR) {
 			// Calculate the reflection vector based on the light intensity, normal vector, and light direction.
 			reflection = normalize(2 * lightIntensity * input.normal - lightDir); 
 			specular = specularColor * pow(saturate(dot(reflection, input.viewDirection)), specularPower);
@@ -68,9 +72,12 @@ float4 ColorPixelShader(PixelInputType input) : SV_TARGET
 	color *= diffuseColor;
 	color = color + specular;
 	
-	if (subtype == 2)
+	if (subtype & COLOR_SELFILUM)
 		color += selfIluminationColor;
-		
+	
+	if (subtype & COLOR_TRANSPARENT)
+		color.a = opacity;
+	
 	color = saturate(color);
 	
     return color;

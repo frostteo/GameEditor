@@ -13,10 +13,12 @@ class AddOrEditPointLightDialog : public QDialog, public Ui::AddOrEditPointLight
 private:
   PointLightDbInfo m_pointLight;
   SGOMetadata m_sgoMetadata;
+ protected slots:
+  void on_sgoNameTxt_textChanged(const QString &text);
 public:
-    AddOrEditPointLightDialog(QWidget *parent = Q_NULLPTR);
-    ~AddOrEditPointLightDialog();
-    void SetPointLight(PointLightDbInfo pointLight);
-    PointLightDbInfo GetPointLight();
-    void done(int result) override;
+  AddOrEditPointLightDialog(QWidget *parent = Q_NULLPTR);
+  ~AddOrEditPointLightDialog();
+  void SetPointLight(PointLightDbInfo pointLight);
+  PointLightDbInfo GetPointLight();
+  void done(int result) override;
 };

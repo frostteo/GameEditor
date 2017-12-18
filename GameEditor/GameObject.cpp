@@ -13,6 +13,8 @@ GameObject::GameObject()
  
   m_needRebuildTranslationMatrix = true;
   m_needRebuildRotationMatrix = true;
+
+  m_parent = nullptr;
 }
 
 
@@ -82,7 +84,17 @@ void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
     m_worldMatrix = XMMatrixMultiply(m_rotationMatrix, m_translationMatrix);
   }
 
-  worldMatrix = m_worldMatrix;
+  if (m_parent)
+  {
+    XMMATRIX parentMatrix;
+    GetParentMatrix(parentMatrix);
+
+    worldMatrix = XMMatrixMultiply(m_worldMatrix, parentMatrix);
+  }
+  else
+  {
+    worldMatrix = m_worldMatrix;
+  }
 }
 
 void GameObject::SetWorldMatrix(XMMATRIX worldMatrix)
@@ -129,6 +141,15 @@ XMVECTOR GameObject::GetRight()
   XMStoreFloat4x4(&worldReadableMatrix, m_worldMatrix);
   XMVECTOR rightVector = XMVectorSet(worldReadableMatrix._11, worldReadableMatrix._12, worldReadableMatrix._13, 1.0f);
   rightVector = XMVector3Normalize(rightVector);
+
+  if (m_parent)
+  {
+    XMMATRIX parentMatrix;
+    GetParentMatrix(parentMatrix);
+
+    rightVector = XMVector3TransformCoord(rightVector, parentMatrix);
+  }
+
   return rightVector;
 }
 
@@ -139,6 +160,15 @@ XMVECTOR GameObject::GetUp()
   XMStoreFloat4x4(&worldReadableMatrix, m_worldMatrix);
   XMVECTOR upVector = XMVectorSet(worldReadableMatrix._21, worldReadableMatrix._22, worldReadableMatrix._23, 1.0f);
   upVector = XMVector3Normalize(upVector);
+
+  if (m_parent)
+  {
+    XMMATRIX parentMatrix;
+    GetParentMatrix(parentMatrix);
+
+    upVector = XMVector3TransformCoord(upVector, parentMatrix);
+  }
+
   return upVector;
 }
 
@@ -149,6 +179,15 @@ XMVECTOR GameObject::GetForward()
   XMStoreFloat4x4(&worldReadableMatrix, m_worldMatrix);
   XMVECTOR forwardVector = XMVectorSet(worldReadableMatrix._31, worldReadableMatrix._32, worldReadableMatrix._33, 1.0f);
   forwardVector = XMVector3Normalize(forwardVector);
+
+  if (m_parent)
+  {
+    XMMATRIX parentMatrix;
+    GetParentMatrix(parentMatrix);
+
+    forwardVector = XMVector3TransformCoord(forwardVector, parentMatrix);
+  }
+
   return forwardVector;
 }
 
@@ -180,4 +219,16 @@ void GameObject::MoveForward(float distance)
   m_positionY += XMVectorGetY(forwardVector) * distance;
   m_positionZ += XMVectorGetZ(forwardVector) * distance;
   m_needRebuildTranslationMatrix = true;
+}
+
+void GameObject::GetParentMatrix(XMMATRIX& parentMatrix) const
+{
+  if (!m_parent)
+  {
+    parentMatrix = XMMatrixIdentity();
+  }
+  else
+  {
+    m_parent->GetWorldMatrix(parentMatrix);
+  }
 }

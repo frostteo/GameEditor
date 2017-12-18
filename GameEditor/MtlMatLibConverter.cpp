@@ -75,21 +75,24 @@ void MtlMatLibConverter::saveSpecularMaterialType(std::ofstream& ofstream, const
 
 void MtlMatLibConverter::saveColorMaterial(std::ofstream& ofstream, const MtlMaterial& material)
 {
-  ColorMaterialSubType subType;
-  if (material.Ks.r > 0 && material.Ks.g > 0 && material.Ks.b > 0 &&
-    material.Ke.r > 0 && material.Ke.g > 0 && material.Ke.b > 0)
-    subType = ColorMaterialSubType::COLOR_SPEC_SELFILUM;
-  else if (HasSpecularData(material))
-    subType = ColorMaterialSubType::COLOR_SPECULAR;
-  else
-    subType = ColorMaterialSubType::ONLY_COLOR;
+  ColorMaterialSubType subType = static_cast<ColorMaterialSubType>(0);
+
+  if (material.Ke.r > 0 && material.Ke.g > 0 && material.Ke.b > 0)
+    subType |= ColorMaterialSubType::COLOR_SELFILUM;
+
+  if (HasSpecularData(material))
+    subType |= ColorMaterialSubType::COLOR_SPECULAR;
+
+  if (material.d < 1)
+    subType |= ColorMaterialSubType::COLOR_TRANSPARENT;
 
   ofstream << "type: " << ColorMaterial::colorMaterialType << std::endl;
   ofstream << "diffuseColor: " << material.Kd.r << ' ' << material.Kd.g << ' ' << material.Kd.b << ' ' << 1.0f << std::endl;
   ofstream << "specularColor: " << material.Ks.r << ' ' << material.Ks.g << ' ' << material.Ks.b << ' ' << 1.0f << std::endl;
   ofstream << "selfIluminationColor: " << material.Ke.r << ' ' << material.Ke.g << ' ' << material.Ke.b << ' ' << 1.0f << std::endl;
   ofstream << "specularPower: " << material.Ns << std::endl;
-  ofstream << "subType: " << subType << std::endl;
+  ofstream << "opacity: " << material.d << std::endl;
+  ofstream << "subType: " << static_cast<int>(subType) << std::endl;
 }
 
 void MtlMatLibConverter::readMtlMaterial(std::stringstream& strStream, MtlMaterial& material)

@@ -88,12 +88,19 @@ void GraphicSystem::DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix,
       if (material->GetTexturesCount() > 0)
         shader->SetTextures(deviceContext, material->GetTextures(), material->GetTexturesCount());
 
+      bool needEnableTransparancy = material->GetType() == ColorMaterial::colorMaterialType && (int)(((ColorMaterial*)material)->m_subType & ColorMaterialSubType::COLOR_TRANSPARENT) > 0;
+
+      if (needEnableTransparancy)
+        m_direct3D->TurnOnAlphaBlending();
+
       for (auto meshInfo : materialInfo.second)
       {
         meshInfo.second->PrepareToRender(deviceContext);
         shader->Render(deviceContext, meshInfo.second->GetIndexCount(), meshInfo.first, viewMatrix, projectionMatrix, material, lightiningSystem, cameraPosition);
       }
 
+      if (needEnableTransparancy)
+        m_direct3D->TurnOffAlphaBlending();
     }
   }
   m_modelRenderList.clear();

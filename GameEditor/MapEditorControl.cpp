@@ -89,13 +89,13 @@ void MapEditorControl::ProcessUserInput(InputState* inputState)
     else if (inputState->IsKeyDown(DIK_C) && !m_selectedObjectIds->empty())
     {
       auto gameObject = m_staticGameObjectMap->at((*m_selectedObjectIds->begin()));
-      LookAtObjectFromHelper::LookToObjectFromWorldFront(m_camera, &gameObject);
+      GEMath::LookToObjectFromWorldFront(m_camera, &gameObject);
     }
       
     if (inputState->IsKeyPressed(DIK_T) && !m_selectedObjectIds->empty())
     {
       auto gameObject = m_staticGameObjectMap->at((*m_selectedObjectIds->begin()));
-      LookAtObjectFromHelper::LookToObjectFromWorldUp(m_camera, &gameObject);
+      GEMath::LookToObjectFromWorldUp(m_camera, &gameObject);
     }
 
     if (inputState->IsKeyDown(DIK_LSHIFT))
@@ -197,7 +197,7 @@ void MapEditorControl::RotateCameraAroundObject(InputState* inputState)
     m_needRecalculateRotationAroundPoint = false;
   }
 
-  newCameraMatrix = GetCameraMatrixRotateAroundTarget(cameraPositionXm, m_rotateAroundPoint, deltaXRadians, deltaYRadians, rightCameraVector);
+  newCameraMatrix = GEMath::GetCameraMatrixRotateAroundTarget(cameraPositionXm, m_rotateAroundPoint, deltaXRadians, deltaYRadians, rightCameraVector);
   m_camera->SetWorldMatrix(XMMatrixInverse(&helper, newCameraMatrix));
 }
 
@@ -231,20 +231,6 @@ XMMATRIX MapEditorControl::GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosi
   XMVECTOR newCameraPosition = XMVectorSet(x, y, z, 0.0f);
 
   return XMMatrixLookAtLH(newCameraPosition, targetPoint, GEMath::UpWorld);
-}
-
-XMMATRIX MapEditorControl::GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosition, XMVECTOR targetPoint, float deltaXRadians, float deltaYRadians, XMVECTOR cameraRight)
-{
-  XMVECTOR camFocusVector = cameraPosition - targetPoint;
-  if (XMVectorGetX(camFocusVector) < 0.0f)
-    deltaYRadians = -deltaYRadians;
-
-  XMMATRIX rotationX = XMMatrixRotationAxis(cameraRight, deltaYRadians);
-  XMMATRIX rotaionY = XMMatrixRotationY(deltaXRadians);
-  XMMATRIX rotations = XMMatrixMultiply(rotationX, rotaionY);
-  camFocusVector = XMVector3TransformNormal(camFocusVector, rotations);
-  XMVECTOR newCamPosition = camFocusVector + targetPoint;
-  return XMMatrixLookAtLH(newCamPosition, targetPoint, GEMath::UpWorld);
 }
 
 float MapEditorControl::GetCorrectedWithSnapCoord(float coord, float snapSize)

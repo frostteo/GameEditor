@@ -88,7 +88,7 @@ void QtDirectXWidget::resizeEvent(QResizeEvent* evt)
   m_Camera->Initialize(width, height, SCREEN_NEAR, SCREEN_DEPTH);
 }
 
-Model* QtDirectXWidget::GetModel(std::string& modelName)
+Model* QtDirectXWidget::GetModel(const std::string& modelName)
 {
   return m_graphicSystem->GetModelFactory()->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + modelName);
 }

@@ -1,10 +1,14 @@
 #include "PointLightTableWidget.h"
 
-PointLightTableWidget::PointLightTableWidget(QWidget *parent)
+PointLightTableWidget::PointLightTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent)
     : QWidget(parent)
 {
-    setupUi(this);
-    configureUI();
+  m_mapEditorPreferences = mapEditorPreferences;
+  m_pathToModels = pathToModels;
+  m_pathToMaterials = pathToMaterials;
+
+  setupUi(this);
+  configureUI();
 }
 
 PointLightTableWidget::~PointLightTableWidget()
@@ -33,6 +37,20 @@ void PointLightTableWidget::configureUI()
   this->setLayout(horizontalLayout);
 
   connect(m_toolBox.get(), SIGNAL(FilterChanged()), this, SLOT(UpdateTable()));
+
+  m_configurePLRelativePosWidget = std::unique_ptr<ConfigurePLRelativePosWidget>(new ConfigurePLRelativePosWidget(m_mapEditorPreferences, m_pathToModels, m_pathToMaterials, this));
+
+  connect(m_configurePLRelativePosWidget.get(), SIGNAL(PointLightPositionChanged(int, float, float, float)), this, SLOT(PointLightPositionChanged(int, float, float, float)));
+}
+
+void PointLightTableWidget::PointLightPositionChanged(int id, float x, float y, float z)
+{
+  PointLightDbInfo pointLightDbInfo = m_tableModel->GetEntityByKey(id);
+  pointLightDbInfo.relativePosX = x;
+  pointLightDbInfo.relativePosY = y;
+  pointLightDbInfo.relativePosZ = z;
+
+  m_tableModel->edit(pointLightDbInfo);
 }
 
 void PointLightTableWidget::configureTable()
@@ -54,7 +72,7 @@ void PointLightTableWidget::configureTable()
   connect(m_toolBox->addBtn, SIGNAL(clicked()), this, SLOT(on_addPointLightBtn_clicked()));
   connect(m_toolBox->editBtn, SIGNAL(clicked()), this, SLOT(on_editPointLightBtn_clicked()));
   connect(m_toolBox->deleteBtn, SIGNAL(clicked()), this, SLOT(on_deletePointLightBtn_clicked()));
-  //connect(m_toolBox->previewBtn, SIGNAL(clicked()), this, SLOT(on_previewSGOBtn_clicked()));
+  connect(m_toolBox->configureRelPosBtn, SIGNAL(clicked()), this, SLOT(on_configureRelPosBtn_clicked()));
   //connect(m_toolBox->ui.addToMapBtn, SIGNAL(clicked()), this, SLOT(on_addToMapBtn_clicked()));
 
   connect(m_table->selectionModel(),
@@ -103,8 +121,26 @@ void PointLightTableWidget::editBtnsStateConfigure()
   bool hasSelection = m_table->selectionModel()->hasSelection();
   m_toolBox->editBtn->setEnabled(hasSelection);
   m_toolBox->deleteBtn->setEnabled(hasSelection);
-  m_toolBox->previewBtn->setEnabled(hasSelection);
   m_toolBox->addToMapBtn->setEnabled(hasSelection);
+
+  if (hasSelection)
+  {
+    int selectedRow = m_table->selectionModel()->currentIndex().row();
+    PointLightDbInfo pointLight = m_tableModel->GetEntity(selectedRow);
+    m_toolBox->configureRelPosBtn->setEnabled(pointLight.staticGameObjectId);
+  }
+  else
+  {
+    m_toolBox->configureRelPosBtn->setEnabled(false);
+  }
+}
+
+void PointLightTableWidget::on_configureRelPosBtn_clicked()
+{
+  int selectedRow = m_table->selectionModel()->currentIndex().row();
+  PointLightDbInfo pointLight = m_tableModel->GetEntity(selectedRow);
+  m_configurePLRelativePosWidget->SetPointLight(pointLight);
+  m_configurePLRelativePosWidget->show();
 }
 
 void PointLightTableWidget::on_addPointLightBtn_clicked()
@@ -124,7 +160,9 @@ void PointLightTableWidget::on_editPointLightBtn_clicked()
   dialog.SetPointLight(pointLight);
 
   if (dialog.exec() == QDialog::Accepted) {
-    m_tableModel->edit(dialog.GetPointLight());
+    pointLight = dialog.GetPointLight();
+    m_tableModel->edit(pointLight);
+    m_configurePLRelativePosWidget->CheckPointLightPosChanged(pointLight);
   }
 }
 

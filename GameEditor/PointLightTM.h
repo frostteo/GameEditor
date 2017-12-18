@@ -25,7 +25,7 @@ protected:
 public:
   PointLightTM(int onPage = 10, QObject * parent = {});
   virtual ~PointLightTM(); 
-  int columnCount(const QModelIndex &) const override { return 9; }
+  int columnCount(const QModelIndex &) const override { return 12; }
   QVariant data(const QModelIndex &index, int role) const override;
   QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 

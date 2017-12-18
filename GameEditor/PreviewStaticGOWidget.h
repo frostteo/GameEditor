@@ -8,7 +8,7 @@
 #include "StaticGameObjectDbInfo.h"
 #include "QtUtils.h"
 #include "QtDirectXWidget.h"
-#include "LookAtObjectFromHelper.h"
+#include "GEMath.h"
 
 class PreviewStaticGOWidget : public QtDirectXWidget, public Ui::PreviewStaticGOWidget
 {
