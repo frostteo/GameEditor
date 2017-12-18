@@ -43,6 +43,8 @@ protected:
 public slots:
   void UpdateTable();
   void PointLightPositionChanged(int id, float x, float y, float z);
+  void SGOEditedSlot(StaticGameObjectDbInfo& gameObject);
+  void SGODeletedSlot(int sgoId);
 public:
   PointLightTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
     ~PointLightTableWidget();

@@ -172,3 +172,13 @@ void PointLightTableWidget::on_deletePointLightBtn_clicked()
   int id = m_tableModel->index(selectedRow, 0).data().toInt();
   m_tableModel->remove(id);
 }
+
+void PointLightTableWidget::SGOEditedSlot(StaticGameObjectDbInfo& gameObject)
+{
+   m_tableModel->UpdateData();
+}
+
+void PointLightTableWidget::SGODeletedSlot(int sgoId)
+{
+  m_tableModel->UpdateData();
+}

@@ -32,6 +32,9 @@ void GameEditor::configureUI()
   connect(m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel()->GetSGOOnMapTM(), SIGNAL(SGOCountChanged(int)), m_SGOTableWidget.get(), SLOT(CountOnMapChanged(int)));
   connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), (m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel()), SLOT(SGODbInfoDeleted(int)));
   connect(m_SGOTableWidget.get(), SIGNAL(SGOEdited(StaticGameObjectDbInfo&)), (m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel()), SLOT(SGODbInfoEdited(StaticGameObjectDbInfo&)));
+
+  connect(m_SGOTableWidget.get(), SIGNAL(SGOEdited(StaticGameObjectDbInfo&)), m_pointLightTableWidget.get(), SLOT(SGOEditedSlot(StaticGameObjectDbInfo&)));
+  connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), m_pointLightTableWidget.get(), SLOT(SGODeletedSlot(int)));
 }
 
 void GameEditor::on_actionObjConverter_triggered()

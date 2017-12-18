@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PointLightTableWidget_t {
-    QByteArrayData data[22];
-    char stringdata0[331];
+    QByteArrayData data[27];
+    char stringdata0[401];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -52,7 +52,12 @@ QT_MOC_LITERAL(17, 296, 25), // "PointLightPositionChanged"
 QT_MOC_LITERAL(18, 322, 2), // "id"
 QT_MOC_LITERAL(19, 325, 1), // "x"
 QT_MOC_LITERAL(20, 327, 1), // "y"
-QT_MOC_LITERAL(21, 329, 1) // "z"
+QT_MOC_LITERAL(21, 329, 1), // "z"
+QT_MOC_LITERAL(22, 331, 13), // "SGOEditedSlot"
+QT_MOC_LITERAL(23, 345, 23), // "StaticGameObjectDbInfo&"
+QT_MOC_LITERAL(24, 369, 10), // "gameObject"
+QT_MOC_LITERAL(25, 380, 14), // "SGODeletedSlot"
+QT_MOC_LITERAL(26, 395, 5) // "sgoId"
 
     },
     "PointLightTableWidget\0on_addPointLightBtn_clicked\0"
@@ -64,7 +69,8 @@ QT_MOC_LITERAL(21, 329, 1) // "z"
     "PaginatorPageChanged\0pageNumber\0onPage\0"
     "HeaderSectionClicked\0sectionIndex\0"
     "UpdateTable\0PointLightPositionChanged\0"
-    "id\0x\0y\0z"
+    "id\0x\0y\0z\0SGOEditedSlot\0StaticGameObjectDbInfo&\0"
+    "gameObject\0SGODeletedSlot\0sgoId"
 };
 #undef QT_MOC_LITERAL
 
@@ -74,7 +80,7 @@ static const uint qt_meta_data_PointLightTableWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -82,16 +88,18 @@ static const uint qt_meta_data_PointLightTableWidget[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   64,    2, 0x09 /* Protected */,
-       3,    0,   65,    2, 0x09 /* Protected */,
-       4,    0,   66,    2, 0x09 /* Protected */,
-       5,    0,   67,    2, 0x09 /* Protected */,
-       6,    0,   68,    2, 0x09 /* Protected */,
-       7,    2,   69,    2, 0x09 /* Protected */,
-      11,    2,   74,    2, 0x09 /* Protected */,
-      14,    1,   79,    2, 0x09 /* Protected */,
-      16,    0,   82,    2, 0x0a /* Public */,
-      17,    4,   83,    2, 0x0a /* Public */,
+       1,    0,   74,    2, 0x09 /* Protected */,
+       3,    0,   75,    2, 0x09 /* Protected */,
+       4,    0,   76,    2, 0x09 /* Protected */,
+       5,    0,   77,    2, 0x09 /* Protected */,
+       6,    0,   78,    2, 0x09 /* Protected */,
+       7,    2,   79,    2, 0x09 /* Protected */,
+      11,    2,   84,    2, 0x09 /* Protected */,
+      14,    1,   89,    2, 0x09 /* Protected */,
+      16,    0,   92,    2, 0x0a /* Public */,
+      17,    4,   93,    2, 0x0a /* Public */,
+      22,    1,  102,    2, 0x0a /* Public */,
+      25,    1,  105,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -104,6 +112,8 @@ static const uint qt_meta_data_PointLightTableWidget[] = {
     QMetaType::Void, QMetaType::Int,   15,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int, QMetaType::Float, QMetaType::Float, QMetaType::Float,   18,   19,   20,   21,
+    QMetaType::Void, 0x80000000 | 23,   24,
+    QMetaType::Void, QMetaType::Int,   26,
 
        0        // eod
 };
@@ -124,6 +134,8 @@ void PointLightTableWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c
         case 7: _t->HeaderSectionClicked((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 8: _t->UpdateTable(); break;
         case 9: _t->PointLightPositionChanged((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4]))); break;
+        case 10: _t->SGOEditedSlot((*reinterpret_cast< StaticGameObjectDbInfo(*)>(_a[1]))); break;
+        case 11: _t->SGODeletedSlot((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -168,13 +180,13 @@ int PointLightTableWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 12;
     }
     return _id;
 }
