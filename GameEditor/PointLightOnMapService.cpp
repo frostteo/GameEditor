@@ -16,9 +16,27 @@ PointLightOnMapDbInfo PointLightOnMapService::Get(int id)
   std::vector<JoinInfo> joinInfos;
   joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
+  joinInfos.push_back(JoinInfo{ m_sgoOnMapMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   PointLightOnMapDbInfo pointLightOnMapDbInfo = m_unitOfWork->GetPointLightOnMapRepository()->Get(id, &joinInfos);
 
   return pointLightOnMapDbInfo;
+}
+
+PointLightOnMapDbInfo PointLightOnMapService::GetBySgoOnMapId(int id)
+{
+  GetParameters parameters;
+  PagingInfo pagingInfo;
+  std::vector<PointLightOnMapDbInfo> gameObjects;
+
+  parameters.whereCondition = (QString("%1 = %2").arg(m_pointLightOnMapMetadata.GetAlias(1), QString::number(id))).toStdString();
+
+  parameters.joinInfos.clear();
+  parameters.joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  parameters.joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
+  parameters.joinInfos.push_back(JoinInfo{ m_sgoOnMapMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
+  gameObjects = m_unitOfWork->GetPointLightOnMapRepository()->GetAll(parameters, pagingInfo);
+
+  return gameObjects[0];
 }
 
 QList<PointLightOnMapDbInfo> PointLightOnMapService::GetAll()
@@ -26,6 +44,7 @@ QList<PointLightOnMapDbInfo> PointLightOnMapService::GetAll()
   std::vector<JoinInfo> joinInfos;
   joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
+  joinInfos.push_back(JoinInfo{ m_sgoOnMapMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   std::vector<PointLightOnMapDbInfo> pointLightsOnMap = m_unitOfWork->GetPointLightOnMapRepository()->GetAll(&joinInfos);
 
   QList<PointLightOnMapDbInfo> qListpointLightsOnMap;
@@ -65,54 +84,33 @@ void PointLightOnMapService::Update(PointLightOnMapDbInfo& pointLightOnMapDbInfo
 
 void PointLightOnMapService::Delete(int id)
 {
-  std::vector<JoinInfo> joinInfos;
-  joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
-  joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
-
-  auto pointLight = m_unitOfWork->GetPointLightOnMapRepository()->Get(id, &joinInfos);
+  auto pointLight = m_unitOfWork->GetPointLightOnMapRepository()->Get(id);
   DecrementPointLightCount(pointLight.pointLightId);
   m_unitOfWork->GetPointLightOnMapRepository()->Delete(id);
 }
 
-QList<PointLightOnMapDbInfo> PointLightOnMapService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string instanceName, std::string pointLightName, std::string sgoName)
+QList<PointLightOnMapDbInfo> PointLightOnMapService::GetByPointLightId(int id)
 {
-  std::vector<std::string> whereParams;
-  std::string whereParamsGlue = " AND ";
-  parameters.whereCondition = "";
-  bool filteringIsEnabled = false;
+  GetParameters parameters;
+  PagingInfo pagingInfo;
   std::vector<PointLightOnMapDbInfo> gameObjects;
-  QList<PointLightOnMapDbInfo> qListGameObjects;
+  QList<PointLightOnMapDbInfo> qListpointLightsOnMap;
+  parameters.onPage = INT_MAX;
 
-
-  if (!instanceName.empty()) {
-
-    whereParams.push_back(" " + m_pointLightOnMapMetadata.GetAlias(1).toStdString() + " LIKE '%" + instanceName + "%' ");
-    filteringIsEnabled = true;
-  }
-
-  if (!sgoName.empty()) {
-    whereParams.push_back(" " + m_pointLightMetadata.GetAlias(0).toStdString() + " LIKE '%" + pointLightName + "%' ");
-    filteringIsEnabled = true;
-  }
-
-  if (!sgoName.empty()) {
-    whereParams.push_back(" " + m_sgoMetadata.GetAlias(0).toStdString() + " LIKE '%" + sgoName + "%' ");
-    filteringIsEnabled = true;
-  }
-
-  if (filteringIsEnabled)
-    parameters.whereCondition = Utils::Join(whereParams, whereParamsGlue);
-
-  else
-    parameters.whereCondition = "1";
+  parameters.whereCondition = QString("%1 = %2").arg(m_pointLightOnMapMetadata.GetAlias(0), QString::number(id)).toStdString();
 
   parameters.joinInfos.clear();
   parameters.joinInfos.push_back(JoinInfo{ m_pointLightMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   parameters.joinInfos.push_back(JoinInfo{ m_sgoMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
+  parameters.joinInfos.push_back(JoinInfo{ m_sgoOnMapMetadata.GetTableName().toStdString(), JoinOperator::INNER_JOIN });
   gameObjects = m_unitOfWork->GetPointLightOnMapRepository()->GetAll(parameters, pagingInfo);
-  qListGameObjects.reserve(gameObjects.size());
 
-  std::copy(gameObjects.begin(), gameObjects.end(), std::back_inserter(qListGameObjects));
+  qListpointLightsOnMap.reserve(gameObjects.size());
+  std::copy(gameObjects.begin(), gameObjects.end(), std::back_inserter(qListpointLightsOnMap));
+  return  qListpointLightsOnMap;
+}
 
-  return qListGameObjects;
+StaticGameObjectDbInfo PointLightOnMapService::GetDefaultPointLightSgo()
+{
+  return m_unitOfWork->GetStaticGORepository()->Get(DEFAUT_POINT_LIGHT_SGO);
 }

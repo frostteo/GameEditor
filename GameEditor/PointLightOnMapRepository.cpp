@@ -18,9 +18,20 @@ IRepository<PointLightOnMapDbInfo>* PointLightOnMapRepository::Initialize(std::s
   QtRepository<PointLightOnMapDbInfo>::Initialize(connectionName);
   QSqlQuery query(GetDatabase());
 
-  QString createTableString = QString("CREATE TABLE IF NOT EXISTS %1 (%2 INTEGER PRIMARY KEY AUTOINCREMENT, %3 INTEGER NOT NULL, %4 TEXT, %5 REAL NOT NULL, %6 REAL NOT NULL, %7 REAL NOT NULL, %8 REAL NOT NULL, %9 REAL NOT NULL, ").arg(m_tableMetadata->GetTableName(), m_tableMetadata->GetKeyColumnName(), m_tableMetadata->GetColumnNames()[0], m_tableMetadata->GetColumnNames()[1], m_tableMetadata->GetColumnNames()[2], m_tableMetadata->GetColumnNames()[3], m_tableMetadata->GetColumnNames()[4], m_tableMetadata->GetColumnNames()[5], m_tableMetadata->GetColumnNames()[6]);
+  PointLightMetadata pointLightMetadata;
+  SGOOnMapMetadata m_SGOOnMapMetadata;
 
-  createTableString = QString("%1 %2 REAL NOT NULL, %3 REAL NOT NULL, %4 REAL NOT NULL, %5 INTEGER NOT NULL, FOREIGN KEY(%6) REFERENCES %7(%8) ON DELETE CASCADE ON UPDATE CASCADE)").arg(createTableString, m_tableMetadata->GetColumnNames()[7], m_tableMetadata->GetColumnNames()[8], m_tableMetadata->GetColumnNames()[9], m_tableMetadata->GetColumnNames()[10], m_tableMetadata->GetColumnNames()[0], m_tableMetadata->GetRelationShips().begin()->first, m_tableMetadata->GetRelationShips().begin()->second.OtherTablePrimaryKeyName);
+  QString createTableString = QString("CREATE TABLE IF NOT EXISTS %1 (%2 INTEGER PRIMARY KEY AUTOINCREMENT, %3 INTEGER NOT NULL, %4 INTEGER NOT NULL, %5 REAL NOT NULL, %6 REAL NOT NULL, %7 REAL NOT NULL, %8 REAL NOT NULL, %9 REAL NOT NULL").arg(m_tableMetadata->GetTableName(), m_tableMetadata->GetKeyColumnName(), m_tableMetadata->GetColumnNames()[0], m_tableMetadata->GetColumnNames()[1], m_tableMetadata->GetColumnNames()[2], m_tableMetadata->GetColumnNames()[3], m_tableMetadata->GetColumnNames()[4], m_tableMetadata->GetColumnNames()[5], m_tableMetadata->GetColumnNames()[6]);
+
+  createTableString = QString("%1, FOREIGN KEY(%2) REFERENCES %3(%4) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(%5) REFERENCES %6(%7) ON DELETE CASCADE ON UPDATE CASCADE)").arg(
+    createTableString,
+    m_tableMetadata->GetColumnNames()[0], 
+    pointLightMetadata.GetTableName(),
+    m_tableMetadata->GetRelationShips()[pointLightMetadata.GetTableName()].OtherTablePrimaryKeyName, 
+    m_tableMetadata->GetColumnNames()[1],
+    m_SGOOnMapMetadata.GetTableName(),
+    m_tableMetadata->GetRelationShips()[m_SGOOnMapMetadata.GetTableName()].OtherTablePrimaryKeyName
+    );
 
   query.prepare(createTableString);
 

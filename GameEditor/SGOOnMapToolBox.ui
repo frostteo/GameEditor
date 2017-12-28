@@ -29,7 +29,7 @@
    <item>
     <widget class="QToolBox" name="SGOOnMapToolBox_2">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="editPage">
       <property name="geometry">
@@ -214,6 +214,29 @@
          <y>70</y>
          <width>121</width>
          <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="gameObjectTypeLbl">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>100</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>game object type</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="gameObjectTypeFilter">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>120</y>
+         <width>121</width>
+         <height>22</height>
         </rect>
        </property>
       </widget>

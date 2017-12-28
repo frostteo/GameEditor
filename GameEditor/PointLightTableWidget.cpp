@@ -6,6 +6,7 @@ PointLightTableWidget::PointLightTableWidget(MapEditorPreferences* mapEditorPref
   m_mapEditorPreferences = mapEditorPreferences;
   m_pathToModels = pathToModels;
   m_pathToMaterials = pathToMaterials;
+  m_pointLightService = DependencyResolver::GetPointLightService();
 
   setupUi(this);
   configureUI();
@@ -73,7 +74,7 @@ void PointLightTableWidget::configureTable()
   connect(m_toolBox->editBtn, SIGNAL(clicked()), this, SLOT(on_editPointLightBtn_clicked()));
   connect(m_toolBox->deleteBtn, SIGNAL(clicked()), this, SLOT(on_deletePointLightBtn_clicked()));
   connect(m_toolBox->configureRelPosBtn, SIGNAL(clicked()), this, SLOT(on_configureRelPosBtn_clicked()));
-  //connect(m_toolBox->ui.addToMapBtn, SIGNAL(clicked()), this, SLOT(on_addToMapBtn_clicked()));
+  connect(m_toolBox->addToMapBtn, SIGNAL(clicked()), this, SLOT(on_addToMapBtn_clicked()));
 
   connect(m_table->selectionModel(),
     SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -163,6 +164,8 @@ void PointLightTableWidget::on_editPointLightBtn_clicked()
     pointLight = dialog.GetPointLight();
     m_tableModel->edit(pointLight);
     m_configurePLRelativePosWidget->CheckPointLightPosChanged(pointLight);
+    pointLight = m_tableModel->GetEntityByKey(pointLight.id);
+    emit PointLightDbInfoEdited(pointLight);
   }
 }
 
@@ -170,7 +173,15 @@ void PointLightTableWidget::on_deletePointLightBtn_clicked()
 {
   int selectedRow = m_table->selectionModel()->currentIndex().row();
   int id = m_tableModel->index(selectedRow, 0).data().toInt();
+  emit DeletePointLight(id);
   m_tableModel->remove(id);
+}
+
+void PointLightTableWidget::on_addToMapBtn_clicked()
+{
+  int selectedRow = m_table->selectionModel()->currentIndex().row();
+  auto pointLight = m_tableModel->GetEntity(selectedRow);
+  emit AddToMap(pointLight);
 }
 
 void PointLightTableWidget::SGOEditedSlot(StaticGameObjectDbInfo& gameObject)
@@ -181,4 +192,21 @@ void PointLightTableWidget::SGOEditedSlot(StaticGameObjectDbInfo& gameObject)
 void PointLightTableWidget::SGODeletedSlot(int sgoId)
 {
   m_tableModel->UpdateData();
+}
+
+void PointLightTableWidget::PointLightCountChanged(int id)
+{
+  if (m_tableModel->ContainsInMemory(id))
+    m_tableModel->UpdateData();
+}
+
+void PointLightTableWidget::BeforeDeleteSgo(int id)
+{
+  auto pointLights = m_pointLightService->GetPointLightsBySgoId(id);
+  for (auto& pointLight : pointLights)
+  {
+    pointLight.staticGameObjectId = 0;
+    m_tableModel->edit(pointLight);
+    emit PointLightDbInfoEdited(pointLight);
+  }
 }

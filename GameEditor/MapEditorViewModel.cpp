@@ -14,6 +14,7 @@ void MapEditorViewModel::Initialize(const std::string& pathToModels, ModelFactor
   m_modelFactory = modelFactory;
   m_mapEditorPreferences = mapEditorPreferences;
 
+  m_pointLightOnMapService = DependencyResolver::GetPointLightOnMapService();
   InitializeSgos();
 }
 
@@ -43,7 +44,7 @@ void MapEditorViewModel::AddSgoToMap(SGOOnMapDbInfo& sgoOnMap)
   sgo.SetModel(GetModel(sgoOnMap.staticGameObjectDbInfo.modelFileName.toStdString()));
   sgo.SetPosition(sgoOnMap.xPos, sgoOnMap.yPos, sgoOnMap.zPos);
   sgo.SetRotation(sgoOnMap.xRotate, sgoOnMap.yRotate, sgoOnMap.zRotate);
-  sgo.modelId = sgoOnMap.staticGameObjectDbInfo.id;
+  sgo.dbInfoId = sgoOnMap.staticGameObjectDbInfo.id;
   sgo.isFrozen = sgoOnMap.isFrozen;
   sgo.uniqueId = sgoOnMap.id;
   m_staticGameObjectMap[sgoOnMap.id] = sgo;
@@ -61,10 +62,27 @@ void MapEditorViewModel::AddSgo(SGOOnMapDbInfo& sgoOnMapDbInfo)
   m_octoTree.AddSgo(sgoOnMapDbInfo.id, &m_staticGameObjectMap[sgoOnMapDbInfo.id]);
 }
 
+void MapEditorViewModel::AddPointLight(PointLightOnMapDbInfo& pointLightOnMapDbInfo)
+{
+  AddSgo(pointLightOnMapDbInfo.sgoOnMapDbInfo);
+  pointLightOnMapDbInfo.sgoOnMapId = pointLightOnMapDbInfo.sgoOnMapDbInfo.id;
+  m_pointLightOnMapService->Create(pointLightOnMapDbInfo);
+  emit PointLightCountChanged(pointLightOnMapDbInfo.pointLightId);
+}
+
 void MapEditorViewModel::DeleteSgo(int id)
 {
   m_sgoOnMapTM.remove(id);
   DeleteSgoFromMap(id);
+}
+
+void MapEditorViewModel::DeletePointLight(int id)
+{
+  auto pointLightOnMap = m_pointLightOnMapService->Get(id);
+  int sgoOnMapId = pointLightOnMap.sgoOnMapId;
+  m_pointLightOnMapService->Delete(id);
+  DeleteSgo(sgoOnMapId);
+  emit PointLightCountChanged(pointLightOnMap.pointLightId);
 }
 
 void MapEditorViewModel::DeleteSgoFromMap(int id)
@@ -78,7 +96,7 @@ void MapEditorViewModel::SGODbInfoDeleted(int sgoDbInfoId)
 {
   for (auto it = m_staticGameObjectMap.begin(), itEnd = m_staticGameObjectMap.end(); it != itEnd;)
   {
-    if (it->second.modelId == sgoDbInfoId)
+    if (it->second.dbInfoId == sgoDbInfoId)
     {
       m_octoTree.DeleteSgo(it->first, &m_staticGameObjectMap[it->first]);
       m_selectedObjectIds.erase(it->first);
@@ -93,11 +111,45 @@ void MapEditorViewModel::SGODbInfoDeleted(int sgoDbInfoId)
   m_sgoOnMapTM.UpdateData();
 }
 
+void MapEditorViewModel::PointLightDbInfoDeleted(int pointLightId)
+{
+  auto pointLightsOnMap = m_pointLightOnMapService->GetByPointLightId(pointLightId);
+
+  for (auto& pointLightOnMap : pointLightsOnMap)
+  {
+    int sgoOnMapId = pointLightOnMap.sgoOnMapId;
+    m_pointLightOnMapService->Delete(pointLightOnMap.id);
+    DeleteSgo(sgoOnMapId);
+  }
+}
+
+void MapEditorViewModel::PointLightDbInfoEdited(PointLightDbInfo& pointLight)
+{
+  //TODO FHolod: Внести изменение об отсносительной позиции или любые другие влияющие изменения
+  auto pointLightsOnMap = m_pointLightOnMapService->GetByPointLightId(pointLight.id);
+
+  if (pointLight.staticGameObjectId == 0)
+  {
+    auto sgo = m_pointLightOnMapService->GetDefaultPointLightSgo();
+    pointLight.staticGameObjectId = sgo.id;
+    pointLight.staticGameObjectDbInfo = sgo;
+  }
+
+  for (auto& pointLightOnMap : pointLightsOnMap)
+  {
+    auto sgoOnMap = pointLightOnMap.sgoOnMapDbInfo;
+    sgoOnMap.staticGameObjectId = pointLight.staticGameObjectId;
+    sgoOnMap.staticGameObjectDbInfo = pointLight.staticGameObjectDbInfo;
+    EditSgo(sgoOnMap);
+  }
+
+}
+
 void MapEditorViewModel::SGODbInfoEdited(StaticGameObjectDbInfo& staticGameObjectDbInfo)
 {
   for (auto& sgo : m_staticGameObjectMap)
   {
-    if (sgo.second.modelId == staticGameObjectDbInfo.id)
+    if (sgo.second.dbInfoId == staticGameObjectDbInfo.id)
     {
       sgo.second.SetModel(GetModel(staticGameObjectDbInfo.modelFileName.toStdString()));
     }
@@ -108,6 +160,12 @@ void MapEditorViewModel::EditSgo(SGOOnMapDbInfo& editedGameObject)
 {
   m_sgoOnMapTM.edit(editedGameObject);
   EditSgoOnMap(editedGameObject);
+}
+
+void MapEditorViewModel::EditPointLight(PointLightOnMapDbInfo& editedPointLightOnMapDbInfo)
+{
+  m_pointLightOnMapService->Update(editedPointLightOnMapDbInfo);
+  EditSgo(editedPointLightOnMapDbInfo.sgoOnMapDbInfo);
 }
 
 void MapEditorViewModel::EditSgoOnMap(SGOOnMapDbInfo& editedGameObject)

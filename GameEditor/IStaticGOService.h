@@ -16,6 +16,6 @@ public:
   virtual int CreateStaticGameObject(StaticGameObjectDbInfo& gameObject) = 0;
   virtual void UpdateStaticGameObject(StaticGameObjectDbInfo& gameObject) = 0;
   virtual void DeleteStaticGameObject(int id) = 0;
-  virtual QList<StaticGameObjectDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name = "", std::string model = "") = 0;
+  virtual QList<StaticGameObjectDbInfo> GetFilteredWithoutService(GetParameters& parameters, PagingInfo& pagingInfo, std::string name = "", std::string model = "") = 0;
 };
 

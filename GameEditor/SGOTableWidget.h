@@ -53,6 +53,7 @@ public:
     void SetPathToMaterials(QString& path) { m_pathToMaterials = path; }
 signals:
     void AddToMap(StaticGameObjectDbInfo& gameObject);
+    void BeforeDeleteSgo(int sgoId);
     void SGODeleted(int sgoId);
     void SGOEdited(StaticGameObjectDbInfo& gameObject);
 };

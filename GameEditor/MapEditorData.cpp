@@ -16,5 +16,5 @@ void MapEditorData::configureUI(MapEditorControl* mapEditorControl)
 {
   m_tableWidget = std::unique_ptr<SGOOnMapTableWidget>(new SGOOnMapTableWidget(mapEditorControl));
   this->tabWidget->clear();
-  this->tabWidget->addTab(m_tableWidget.get(), "static game objects");
+  this->tabWidget->addTab(m_tableWidget.get(), "game objects");
 }

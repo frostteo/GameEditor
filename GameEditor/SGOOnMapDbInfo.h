@@ -2,6 +2,7 @@
 
 #include <qstring.h>
 #include <StaticGameObjectDbInfo.h>
+#include "GameObjectType.h"
 
 /*
 * Static game object on map Db Info
@@ -19,5 +20,6 @@ struct SGOOnMapDbInfo
   float yRotate = 0.0f;
   float zRotate = 0.0f;
   int isFrozen = 0;
+  GameObjectType gameObjectType = GameObjectType::STATIC_GAME_OBJECT;
 };
 

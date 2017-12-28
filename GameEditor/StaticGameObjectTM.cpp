@@ -22,7 +22,7 @@ StaticGameObjectTM::~StaticGameObjectTM()
 
 void StaticGameObjectTM::GetData()
 {
-  m_data = m_staticGOService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_modelFileNameFilter);
+  m_data = m_staticGOService->GetFilteredWithoutService(m_getParameters, m_pagingInfo, m_SGONameFilter, m_modelFileNameFilter);
 }
 
 void StaticGameObjectTM::UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter, QString SGOModelFilenameFilter)

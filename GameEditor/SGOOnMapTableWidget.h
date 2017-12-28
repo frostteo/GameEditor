@@ -38,6 +38,7 @@ protected:
   void configureTable();
   void configureUI();
   void configurePaginator();
+  void configureToolBox();
   std::vector<int> GetSelectedIds();
 public:
   SGOOnMapTableWidget(MapEditorControl* mapEditorControl, QWidget *parent = Q_NULLPTR);

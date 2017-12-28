@@ -24,7 +24,7 @@ public:
   virtual int Create(SGOOnMapDbInfo& gameObject) override;
   virtual void Update(SGOOnMapDbInfo& gameObject) override;
   virtual void Delete(int id) override;
-  virtual QList<SGOOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "") override;
+  virtual QList<SGOOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "", GameObjectType gameObjectType = GameObjectType::ALL) override;
   virtual void SetPosition(int id, float x, float y, float z) override;
   virtual void SetRotation(int id, float x, float y, float z) override;
   virtual void FreezeSgo(int id) override;

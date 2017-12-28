@@ -45,7 +45,7 @@ void SGOOnMapService::Delete(int id)
   m_unitOfWork->GetSGOOnMapRepository()->Delete(id);
 }
 
-QList<SGOOnMapDbInfo> SGOOnMapService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName, std::string instanceName)
+QList<SGOOnMapDbInfo> SGOOnMapService::GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName, std::string instanceName, GameObjectType gameObjectType)
 {
   std::vector<std::string> whereParams;
   std::string whereParamsGlue = " AND ";
@@ -63,6 +63,12 @@ QList<SGOOnMapDbInfo> SGOOnMapService::GetFiltered(GetParameters& parameters, Pa
 
   if (!instanceName.empty()) {
     whereParams.push_back(" " + m_sgoOnMapMetadata.GetAlias(1).toStdString() + " LIKE '%" + instanceName + "%' ");
+    filteringIsEnabled = true;
+  }
+
+  if (gameObjectType != GameObjectType::ALL)
+  {
+    whereParams.push_back(" " + m_sgoOnMapMetadata.GetAlias(8).toStdString() + " = " + std::to_string(static_cast<int>(gameObjectType)));
     filteringIsEnabled = true;
   }
 
@@ -139,12 +145,12 @@ void SGOOnMapService::UnfreezeSgo(int id)
 
 void SGOOnMapService::FreezeAll()
 {
-  std::string freezeQuery = QString("Update %1 SET %2 = 1").arg(m_sgoOnMapMetadata.GetTableName(), m_sgoOnMapMetadata.GetColumnNames()[8]).toStdString();
+  std::string freezeQuery = QString("Update %1 SET %2 = 1").arg(m_sgoOnMapMetadata.GetTableName(), m_sgoOnMapMetadata.GetColumnNames()[9]).toStdString();
   m_unitOfWork->GetSGOOnMapRepository()->ExecuteQuery(freezeQuery);
 }
 
 void SGOOnMapService::UnfreezeAll()
 {
-  std::string freezeQuery = QString("Update %1 SET %2 = 0").arg(m_sgoOnMapMetadata.GetTableName(), m_sgoOnMapMetadata.GetColumnNames()[8]).toStdString();
+  std::string freezeQuery = QString("Update %1 SET %2 = 0").arg(m_sgoOnMapMetadata.GetTableName(), m_sgoOnMapMetadata.GetColumnNames()[9]).toStdString();
   m_unitOfWork->GetSGOOnMapRepository()->ExecuteQuery(freezeQuery);
 }

@@ -21,6 +21,6 @@ public:
   virtual int CreateStaticGameObject(StaticGameObjectDbInfo& gameObject) override;
   virtual void UpdateStaticGameObject(StaticGameObjectDbInfo& gameObject) override;
   virtual void DeleteStaticGameObject(int id) override;
-  virtual QList<StaticGameObjectDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name = "", std::string model = "") override;
+  virtual QList<StaticGameObjectDbInfo> GetFilteredWithoutService(GetParameters& parameters, PagingInfo& pagingInfo, std::string name = "", std::string model = "") override;
 };
 

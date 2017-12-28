@@ -14,9 +14,6 @@ int main(int argc, char *argv[])
     try {
       GameEditor w;
 
-      GetParameters getParameters;
-      PagingInfo pagingInfo;
-   
       w.showMaximized();
      /* QtGameFrameworkTest w2;
       w2.show();*/

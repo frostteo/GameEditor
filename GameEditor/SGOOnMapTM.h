@@ -12,6 +12,7 @@ protected:
   ISGOOnMapService* m_SGOOnMapService;
   std::string m_SGONameFilter = "";
   std::string m_instanceNameFilter = "";
+  GameObjectType m_gameObjectTypeFilter = GameObjectType::ALL;
 
 protected:
   virtual void FillOrderFieldMap() override;
@@ -27,9 +28,9 @@ public:
   QList<SGOOnMapDbInfo> GetAll() { return m_SGOOnMapService->GetAll(); }
   virtual SGOOnMapDbInfo GetEntityByKey(int id) override;
   virtual bool ContainsInMemory(int id) override;
-  void UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter = "", QString instanceNameFilter = "");
+  void UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter = "", QString instanceNameFilter = "", GameObjectType gameObjectType = GameObjectType::ALL);
 
-  int columnCount(const QModelIndex &) const override { return 10; }
+  int columnCount(const QModelIndex &) const override { return 11; }
   QVariant data(const QModelIndex &index, int role) const override;
   QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
   Qt::ItemFlags flags(const QModelIndex & index) const;

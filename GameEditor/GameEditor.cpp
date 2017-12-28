@@ -25,7 +25,8 @@ void GameEditor::configureUI()
   ui.tabWidget->addTab(m_pointLightTableWidget.get(), "point lights");
 
   connect(m_SGOTableWidget.get(), SIGNAL(AddToMap(StaticGameObjectDbInfo&)), this, SLOT(AddSGOToMap(StaticGameObjectDbInfo&)));
-  
+  connect(m_pointLightTableWidget.get(), SIGNAL(AddToMap(PointLightDbInfo&)), this, SLOT(AddPointLightToMap(PointLightDbInfo&)));
+
   m_mapEditorData = std::unique_ptr<MapEditorData>(new MapEditorData(m_mapEditor->GetMapEditorControl(), this));
   m_mapEditorData->show();
 
@@ -34,7 +35,12 @@ void GameEditor::configureUI()
   connect(m_SGOTableWidget.get(), SIGNAL(SGOEdited(StaticGameObjectDbInfo&)), (m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel()), SLOT(SGODbInfoEdited(StaticGameObjectDbInfo&)));
 
   connect(m_SGOTableWidget.get(), SIGNAL(SGOEdited(StaticGameObjectDbInfo&)), m_pointLightTableWidget.get(), SLOT(SGOEditedSlot(StaticGameObjectDbInfo&)));
+  connect(m_SGOTableWidget.get(), SIGNAL(BeforeDeleteSgo(int)), m_pointLightTableWidget.get(), SLOT(BeforeDeleteSgo(int)));
   connect(m_SGOTableWidget.get(), SIGNAL(SGODeleted(int)), m_pointLightTableWidget.get(), SLOT(SGODeletedSlot(int)));
+
+  connect(m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel(), SIGNAL(PointLightCountChanged(int)), m_pointLightTableWidget.get(), SLOT(PointLightCountChanged(int)));
+  connect(m_pointLightTableWidget.get(), SIGNAL(DeletePointLight(int)), m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel(), SLOT(PointLightDbInfoDeleted(int)));
+  connect(m_pointLightTableWidget.get(), SIGNAL(PointLightDbInfoEdited(PointLightDbInfo&)), m_mapEditor->GetMapEditorControl()->GetMapEditorViewModel(), SLOT(PointLightDbInfoEdited(PointLightDbInfo&)));
 }
 
 void GameEditor::on_actionObjConverter_triggered()
@@ -50,6 +56,11 @@ void GameEditor::on_actionObjConverter_triggered()
 void GameEditor::AddSGOToMap(StaticGameObjectDbInfo& gameObject)
 {
   m_mapEditor->GetMapEditorControl()->AddSgoToMap(gameObject);
+}
+
+void GameEditor::AddPointLightToMap(PointLightDbInfo& pointLight)
+{
+  m_mapEditor->GetMapEditorControl()->AddPointLightToMap(pointLight);
 }
 
 void GameEditor::show()

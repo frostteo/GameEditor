@@ -8,4 +8,5 @@ public:
   QString name;
   QString modelFileName;
   int countOnMap = 0;
+  bool isService = false;
 };

@@ -15,5 +15,7 @@ public:
   virtual int Create(PointLightOnMapDbInfo& gameObject) = 0;
   virtual void Update(PointLightOnMapDbInfo& gameObject) = 0;
   virtual void Delete(int id) = 0;
-  virtual QList<PointLightOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string instanceName = "", std::string pointLightName = "", std::string sgoName = "") = 0;
+  virtual PointLightOnMapDbInfo GetBySgoOnMapId(int id) = 0;
+  virtual QList<PointLightOnMapDbInfo> GetByPointLightId(int id) = 0;
+  virtual StaticGameObjectDbInfo GetDefaultPointLightSgo() = 0;
 };

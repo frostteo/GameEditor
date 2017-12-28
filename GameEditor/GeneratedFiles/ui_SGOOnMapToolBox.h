@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -39,6 +40,8 @@ public:
     QLabel *instanceNameLbl;
     QLineEdit *SGONameFilterTxt;
     QLineEdit *instanceNameFilterTxt;
+    QLabel *gameObjectTypeLbl;
+    QComboBox *gameObjectTypeFilter;
 
     void setupUi(QWidget *SGOOnMapToolBox)
     {
@@ -111,6 +114,12 @@ public:
         instanceNameFilterTxt = new QLineEdit(filterPage);
         instanceNameFilterTxt->setObjectName(QStringLiteral("instanceNameFilterTxt"));
         instanceNameFilterTxt->setGeometry(QRect(0, 70, 121, 20));
+        gameObjectTypeLbl = new QLabel(filterPage);
+        gameObjectTypeLbl->setObjectName(QStringLiteral("gameObjectTypeLbl"));
+        gameObjectTypeLbl->setGeometry(QRect(0, 100, 91, 16));
+        gameObjectTypeFilter = new QComboBox(filterPage);
+        gameObjectTypeFilter->setObjectName(QStringLiteral("gameObjectTypeFilter"));
+        gameObjectTypeFilter->setGeometry(QRect(0, 120, 121, 22));
         SGOOnMapToolBox_2->addItem(filterPage, QStringLiteral("Filter"));
 
         verticalLayout->addWidget(SGOOnMapToolBox_2);
@@ -118,7 +127,7 @@ public:
 
         retranslateUi(SGOOnMapToolBox);
 
-        SGOOnMapToolBox_2->setCurrentIndex(0);
+        SGOOnMapToolBox_2->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(SGOOnMapToolBox);
@@ -150,6 +159,7 @@ public:
         SGOOnMapToolBox_2->setItemText(SGOOnMapToolBox_2->indexOf(editPage), QApplication::translate("SGOOnMapToolBox", "Edit", Q_NULLPTR));
         SGONameFilterLbl->setText(QApplication::translate("SGOOnMapToolBox", "SGO name", Q_NULLPTR));
         instanceNameLbl->setText(QApplication::translate("SGOOnMapToolBox", "instance name", Q_NULLPTR));
+        gameObjectTypeLbl->setText(QApplication::translate("SGOOnMapToolBox", "game object type", Q_NULLPTR));
         SGOOnMapToolBox_2->setItemText(SGOOnMapToolBox_2->indexOf(filterPage), QApplication::translate("SGOOnMapToolBox", "Filter", Q_NULLPTR));
     } // retranslateUi
 

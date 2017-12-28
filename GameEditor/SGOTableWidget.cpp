@@ -121,6 +121,7 @@ void SGOTableWidget::on_deleteSGOBtn_clicked()
 {
   int selectedRow = m_SGOTable->selectionModel()->currentIndex().row();
   int id = m_SGOTableModel->index(selectedRow, 0).data().toInt();
+  emit BeforeDeleteSgo(id);
   m_SGOTableModel->remove(id);
   emit SGODeleted(id);
 }

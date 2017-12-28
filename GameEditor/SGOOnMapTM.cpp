@@ -22,14 +22,14 @@ void SGOOnMapTM::FillOrderFieldMap()
 
 void SGOOnMapTM::GetData()
 {
-  m_data = m_SGOOnMapService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_instanceNameFilter);
+  m_data = m_SGOOnMapService->GetFiltered(m_getParameters, m_pagingInfo, m_SGONameFilter, m_instanceNameFilter, m_gameObjectTypeFilter);
 }
 
 bool SGOOnMapTM::setData(const QModelIndex & index, const QVariant & value, int role)
 {
   if (role == Qt::CheckStateRole)
   {
-    if (index.column() == 9) {
+    if (index.column() == 10) {
       auto sgo =  m_data.at(index.row());
       if (value.toBool())
         emit FreezeSgoSignal(sgo.id);
@@ -46,7 +46,7 @@ Qt::ItemFlags SGOOnMapTM::flags(const QModelIndex & index) const
 {
   Qt::ItemFlags returnValue = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 
-  if (index.column() == 9)
+  if (index.column() == 10)
     returnValue |= Qt::ItemIsUserCheckable | Qt::ItemIsEditable;
 
   return returnValue;
@@ -64,7 +64,7 @@ QVariant SGOOnMapTM::data(const QModelIndex &index, int role) const
 
     case Qt::CheckStateRole:
 
-      if (index.column() == 9) {
+      if (index.column() == 10) {
         const auto & sgoOnMap = m_data[index.row()];
         return (sgoOnMap.isFrozen ? Qt::Checked : Qt::Unchecked);
       }
@@ -87,6 +87,7 @@ QVariant SGOOnMapTM::data(const QModelIndex &index, int role) const
         case 6: return sgoOnMap.xRotate;
         case 7: return sgoOnMap.yRotate;
         case 8: return sgoOnMap.zRotate;
+        case 9: return QString::fromStdString(GameObjectTypeToString(sgoOnMap.gameObjectType));
         default: return{};
       }
 
@@ -109,7 +110,8 @@ QVariant SGOOnMapTM::headerData(int section, Qt::Orientation orientation, int ro
     case 6: return tr("x rotate");
     case 7: return tr("y rotate");
     case 8: return tr("z rotate");
-    case 9: return tr("frozen");
+    case 9: return tr("type");
+    case 10: return tr("frozen");
     default: return{};
   }
 }
@@ -143,7 +145,7 @@ bool SGOOnMapTM::ContainsInMemory(int id)
   return findIterator != m_data.end();
 }
 
-void SGOOnMapTM::UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter, QString instanceNameFilter)
+void SGOOnMapTM::UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt::SortOrder orderDirection, QString SGONameFilter, QString instanceNameFilter, GameObjectType gameObjectType)
 {
   m_getParameters.pageNumber = pageNumber;
   m_getParameters.onPage = onPage;
@@ -152,6 +154,7 @@ void SGOOnMapTM::UpdateTable(int pageNumber, int onPage, int orderFieldIndex, Qt
 
   m_SGONameFilter = SGONameFilter.toStdString();
   m_instanceNameFilter = instanceNameFilter.toStdString();
+  m_gameObjectTypeFilter = gameObjectType;
   UpdateData();
 }
 

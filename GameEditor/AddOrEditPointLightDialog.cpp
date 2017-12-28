@@ -105,7 +105,7 @@ void AddOrEditPointLightDialog::done(int result)
       m_pointLight.staticGameObjectId = 0;
     }
     else {
-      QList<StaticGameObjectDbInfo> sgosWithNameList = DependencyResolver::GetStaticGOService()->GetFiltered(getParameters, pagingInfo, trimmedSgoNameFromInput);
+      QList<StaticGameObjectDbInfo> sgosWithNameList = DependencyResolver::GetStaticGOService()->GetFilteredWithoutService(getParameters, pagingInfo, trimmedSgoNameFromInput);
 
       if (sgosWithNameList.size() == 0 || sgosWithNameList.first().name != this->sgoNameTxt->text())
         errorsMsg += tr("static game object name must be selected from dropdown list\n");

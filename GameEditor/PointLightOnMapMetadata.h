@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "PointLightOnMapDbInfo.h"
 #include "PointLightMetadata.h"
+#include "SGOOnMapMetadata.h"
 
 class PointLightOnMapMetadata :
   public DbTableMetadata<PointLightOnMapDbInfo>
@@ -10,6 +11,7 @@ class PointLightOnMapMetadata :
 protected:
   SGOMetadata m_sgoMetadata;
   PointLightMetadata m_pointLightMetadata;
+  SGOOnMapMetadata m_SGOOnMapMetadata;
 protected:
   virtual void BuildJoinConditions() override;
 public:

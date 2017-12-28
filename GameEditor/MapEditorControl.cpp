@@ -15,6 +15,22 @@ MapEditorControl::~MapEditorControl()
 {
 }
 
+void MapEditorControl::EditGameObject(int id)
+{
+  SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
+  
+  switch (gameObject.gameObjectType)
+  {
+    case GameObjectType::STATIC_GAME_OBJECT:
+      EditSgoOnMap(id);
+      break;
+    case GameObjectType::POINT_LIGHT:
+      auto pointLight = m_mapEditorViewModel->GetPointLightOnMapService()->GetBySgoOnMapId(gameObject.id);
+      EditPointLightOnMap(pointLight.id);
+      break;
+  }
+}
+
 void MapEditorControl::EditSgoOnMap(int id)
 {
   SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
@@ -27,13 +43,46 @@ void MapEditorControl::EditSgoOnMap(int id)
   }
 }
 
+void MapEditorControl::EditPointLightOnMap(int id)
+{
+  auto gameObject = m_mapEditorViewModel->GetPointLightOnMapService()->Get(id);
+  AddOrEditPointLightOnMapDialog dialog;
+  dialog.SetPointLightOnMap(gameObject);
+
+  if (dialog.exec() == QDialog::Accepted) {
+    auto editedGameObject = dialog.GetPointLightOnMap();
+    m_mapEditorViewModel->EditPointLight(editedGameObject);
+  }
+}
+
 void MapEditorControl::Delete(std::vector<int>& ids)
 {
   m_mapEditorViewModel->SetSelectedObjectIds(std::vector<int>()); //TODO FHolod: возможно этот метод должен быть protected
 
   for (int id : ids) {
-    m_mapEditorViewModel->DeleteSgo(id);
+    SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
+
+    switch (gameObject.gameObjectType)
+    {
+      case GameObjectType::STATIC_GAME_OBJECT:
+        DeleteSgo(id);
+        break;
+      case GameObjectType::POINT_LIGHT:
+        auto pointLight = m_mapEditorViewModel->GetPointLightOnMapService()->GetBySgoOnMapId(gameObject.id);
+        DeletePointLight(pointLight.id);
+        break;
+    }
   }
+}
+
+void MapEditorControl::DeleteSgo(int id)
+{
+  m_mapEditorViewModel->DeleteSgo(id);
+}
+
+void MapEditorControl::DeletePointLight(int id)
+{
+  m_mapEditorViewModel->DeletePointLight(id);
 }
 
 void MapEditorControl::Clone(std::vector<int>& ids)
@@ -41,18 +90,51 @@ void MapEditorControl::Clone(std::vector<int>& ids)
   for (int id : ids)
   {
     SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
-    gameObject.id = 0;
-
-    if (gameObject.staticGameObjectDbInfo.countOnMap > 0)
-      gameObject.instanceName = gameObject.staticGameObjectDbInfo.name + QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
-
-    AddOrEditSGOOnMapDialog dialog;
-    dialog.setSGOOnMap(gameObject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-      SGOOnMapDbInfo clonedGameObject = dialog.GetSGOOnMap();
-      m_mapEditorViewModel->AddSgo(clonedGameObject);
+    
+    switch (gameObject.gameObjectType)
+    {
+    case GameObjectType::STATIC_GAME_OBJECT:
+      CloneSgo(id);
+      break;
+    case GameObjectType::POINT_LIGHT:
+      auto pointLight = m_mapEditorViewModel->GetPointLightOnMapService()->GetBySgoOnMapId(gameObject.id);
+      ClonePointLight(pointLight.id);
+      break;
     }
+  }
+}
+
+void MapEditorControl::CloneSgo(int id)
+{
+  SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
+  gameObject.id = 0;
+
+  if (gameObject.staticGameObjectDbInfo.countOnMap > 0)
+    gameObject.instanceName = gameObject.staticGameObjectDbInfo.name + QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
+
+  AddOrEditSGOOnMapDialog dialog;
+  dialog.setSGOOnMap(gameObject);
+
+  if (dialog.exec() == QDialog::Accepted) {
+    SGOOnMapDbInfo clonedGameObject = dialog.GetSGOOnMap();
+    m_mapEditorViewModel->AddSgo(clonedGameObject);
+  }
+}
+
+void MapEditorControl::ClonePointLight(int id)
+{
+  auto gameObject = m_mapEditorViewModel->GetPointLightOnMapService()->Get(id);
+  gameObject.id = 0;
+
+  if (gameObject.pointLightDbInfo.countOnMap > 0)
+    gameObject.sgoOnMapDbInfo.instanceName = gameObject.pointLightDbInfo.name + QString::number(gameObject.pointLightDbInfo.countOnMap);
+
+  AddOrEditPointLightOnMapDialog dialog;
+  dialog.SetPointLightOnMap(gameObject);
+
+  if (dialog.exec() == QDialog::Accepted) {
+    auto clonedGameObject = dialog.GetPointLightOnMap();
+    m_mapEditorViewModel->AddPointLight(clonedGameObject);
   }
 }
 
@@ -70,7 +152,7 @@ void MapEditorControl::ProcessUserInput(InputState* inputState)
    
 
     if (inputState->IsKeyDown(DIK_LCONTROL) && inputState->IsKeyDown(DIK_E) && m_selectedObjectIds->size() == 1)
-      EditSgoOnMap((*m_selectedObjectIds->begin()));
+      EditGameObject((*m_selectedObjectIds->begin()));
 
     if (inputState->IsKeyPressed(DIK_DELETE) && !m_selectedObjectIds->empty())
       Delete();
@@ -133,7 +215,11 @@ void MapEditorControl::SaveChangedPositionsInDB()
   for (int selectedId : (*m_selectedObjectIds))
   {
     XMFLOAT3 position = m_staticGameObjectMap->at(selectedId).GetPosition();
-    m_mapEditorViewModel->EditPositionInSgoTableOnMapTableModel(selectedId, position.x, position.y, position.z);
+    auto gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(selectedId);
+    gameObject.xPos = position.x;
+    gameObject.yPos = position.y;
+    gameObject.zPos = position.z;
+    m_mapEditorViewModel->EditSgo(gameObject);
   }
 }
 
@@ -144,7 +230,11 @@ void MapEditorControl::SaveChangedRotationsInDB()
   for (int selectedId : (*m_selectedObjectIds))
   {
     XMFLOAT3 rotation = m_staticGameObjectMap->at(selectedId).GetRotation();
-    m_mapEditorViewModel->EditRotationInSgoTableOnMapTableModel(selectedId, rotation.x, rotation.y, rotation.z);
+    auto gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(selectedId);
+    gameObject.xRotate = rotation.x;
+    gameObject.yRotate = rotation.y;
+    gameObject.zRotate = rotation.z;
+    m_mapEditorViewModel->EditSgo(gameObject);
   }
 }
 
@@ -623,6 +713,43 @@ void MapEditorControl::AddSgoToMap(StaticGameObjectDbInfo& sgo)
   if (dialog.exec() == QDialog::Accepted) {
     sgoOnMap = dialog.GetSGOOnMap();
     m_mapEditorViewModel->AddSgo(sgoOnMap);
+  }
+}
+
+void MapEditorControl::AddPointLightToMap(PointLightDbInfo& pointLight)
+{
+  if (pointLight.staticGameObjectId == 0)
+  {
+    auto sgo = m_mapEditorViewModel->GetPointLightOnMapService()->GetDefaultPointLightSgo();
+    pointLight.staticGameObjectId = sgo.id;
+    pointLight.staticGameObjectDbInfo = sgo;
+  }
+
+  AddOrEditPointLightOnMapDialog dialog;
+  PointLightOnMapDbInfo pointLightOnMap;
+  pointLightOnMap.id = 0;
+  pointLightOnMap.sgoOnMapId = 0;
+  pointLightOnMap.pointLightDbInfo = pointLight;
+  pointLightOnMap.pointLightId = pointLight.id;
+  pointLightOnMap.sgoOnMapDbInfo.id = 0;
+  pointLightOnMap.sgoOnMapDbInfo.staticGameObjectDbInfo = pointLight.staticGameObjectDbInfo;
+  pointLightOnMap.sgoOnMapDbInfo.staticGameObjectId = pointLight.staticGameObjectId;
+  pointLightOnMap.sgoOnMapDbInfo.instanceName = pointLight.name;
+  pointLightOnMap.sgoOnMapDbInfo.gameObjectType = GameObjectType::POINT_LIGHT;
+  if (pointLight.countOnMap > 0)
+    pointLightOnMap.sgoOnMapDbInfo.instanceName += QString::number(pointLight.countOnMap);
+
+  pointLightOnMap.red = pointLight.red;
+  pointLightOnMap.green = pointLight.green;
+  pointLightOnMap.blue = pointLight.blue;
+  pointLightOnMap.linearAttenuation = pointLight.linearAttenuation;
+  pointLightOnMap.quadraticAttenuation = pointLight.quadraticAttenuation;
+
+  dialog.SetPointLightOnMap(pointLightOnMap);
+
+  if (dialog.exec() == QDialog::Accepted) {
+    pointLightOnMap = dialog.GetPointLightOnMap();
+    m_mapEditorViewModel->AddPointLight(pointLightOnMap);
   }
 }
 

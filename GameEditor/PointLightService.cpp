@@ -85,3 +85,23 @@ QList<PointLightDbInfo> PointLightService::GetFiltered(GetParameters& parameters
 
   return qListGameObjects;
 }
+
+QList<PointLightDbInfo> PointLightService::GetPointLightsBySgoId(int id)
+{
+  GetParameters parameters;
+  PagingInfo pagingInfo;
+  parameters.onPage = INT_MAX;
+  std::vector<PointLightDbInfo> gameObjects;
+  QList<PointLightDbInfo> qListGameObjects;
+
+  parameters.whereCondition = QString("%1 = %2").arg(m_pointLightMetadata.GetAlias(1), QString::number(id)).toStdString();
+
+  parameters.joinInfos.clear();
+  parameters.joinInfos.push_back(JoinInfo{ m_SGOMetadata.GetTableName().toStdString(), JoinOperator::LEFT_JOIN });
+  gameObjects = m_unitOfWork->GetPointLightRepository()->GetAll(parameters, pagingInfo);
+  qListGameObjects.reserve(gameObjects.size());
+
+  std::copy(gameObjects.begin(), gameObjects.end(), std::back_inserter(qListGameObjects));
+
+  return qListGameObjects;
+}

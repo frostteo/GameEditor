@@ -3,14 +3,13 @@
 #include "QtDirectXWidget.h"
 #include "ConfigurePLRelPosControl.h"
 #include "PointLightDbInfo.h"
+#include "DependencyResolver.h"
 
 class ConfigurePLRelativePosWidget :
   public QtDirectXWidget
 {
   Q_OBJECT
 private:
-  static const std::string pointLightSgoModel;
-
   MapEditorPreferences* m_mapEditorPreferences;
   StaticGameObject m_sgo;
   StaticGameObject m_pointLightSgo;

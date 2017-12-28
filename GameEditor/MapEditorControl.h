@@ -9,6 +9,7 @@
 #include "AddOrEditSGOOnMapDialog.h"
 #include "StaticGameObjectDbInfo.h"
 #include "GEMath.h"
+#include "AddOrEditPointLightOnMapDialog.h"
 
 class MapEditorControl :
   public InputListener
@@ -21,6 +22,7 @@ protected:
   MapEditorViewModel* m_mapEditorViewModel;
   std::set<int>* m_selectedObjectIds;
   std::map<int, StaticGameObject>* m_staticGameObjectMap;
+  
   std::vector<StaticGameObject*>* m_visibleSgos;
   MapEditorPreferences* m_mapEditorPreferences;
 
@@ -57,6 +59,13 @@ protected:
   void CalculateDifferenceWithPoint(std::map<int, XMFLOAT3>* differenceFromPoint, XMFLOAT3 point);
 
   bool AllSelectedObjectsAreFrozen();
+
+  void EditSgoOnMap(int id);
+  void EditPointLightOnMap(int id);
+  void CloneSgo(int id);
+  void ClonePointLight(int id);
+  void DeleteSgo(int id);
+  void DeletePointLight(int id);
 public:
   MapEditorControl(MapEditorViewModel* mapEditorViewModel, std::vector<StaticGameObject*>* visibleSgos, Camera* camera);
   virtual ~MapEditorControl();
@@ -66,7 +75,8 @@ public:
   MapEditorViewModel* GetMapEditorViewModel() { return m_mapEditorViewModel; }
 
   void AddSgoToMap(StaticGameObjectDbInfo& sgo);
-  void EditSgoOnMap(int id);
+  void AddPointLightToMap(PointLightDbInfo& pointLight);
+  void EditGameObject(int id);
   void Delete(std::vector<int>& ids);
   void Clone(std::vector<int>& ids);
 

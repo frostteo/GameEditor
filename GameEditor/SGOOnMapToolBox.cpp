@@ -19,3 +19,8 @@ void SGOOnMapToolBox::on_instanceNameFilterTxt_editingFinished()
 {
   emit FilterChanged();
 }
+
+void SGOOnMapToolBox::on_gameObjectTypeFilter_currentIndexChanged(int index)
+{
+  emit FilterChanged();
+}

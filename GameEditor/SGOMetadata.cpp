@@ -4,7 +4,7 @@
 SGOMetadata::SGOMetadata()
 {
   m_tableName = "StaticGameObject";
-  m_columnNames = { "name", "modelFileName", "countOnMap" };
+  m_columnNames = { "name", "modelFileName", "countOnMap", "isService" };
 }
 
 
@@ -20,6 +20,7 @@ void SGOMetadata::InitializeFromQuery(StaticGameObjectDbInfo& entity, QSqlQuery*
   entity.name = query->value(selectInfos[m_columnNames[0]].aliasColumnName).toString();
   entity.modelFileName = query->value(selectInfos[m_columnNames[1]].aliasColumnName).toString();
   entity.countOnMap = query->value(selectInfos[m_columnNames[2]].aliasColumnName).toInt();
+  entity.isService = query->value(selectInfos[m_columnNames[3]].aliasColumnName).toBool();
 }
 
 QVariant SGOMetadata::GetFieldByName(const StaticGameObjectDbInfo& entity, QString name)
@@ -32,6 +33,9 @@ QVariant SGOMetadata::GetFieldByName(const StaticGameObjectDbInfo& entity, QStri
 
   if (name == m_columnNames[2])
     return entity.countOnMap;
+
+  if (name == m_columnNames[3])
+    return entity.isService;
 
   if (name == GetKeyColumnName())
     return entity.id;

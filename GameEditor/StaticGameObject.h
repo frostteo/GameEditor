@@ -13,7 +13,7 @@ private:
 public:
   int uniqueId;
 
-  int modelId;
+  int dbInfoId;
   bool isFrozen;
 protected:
   void RebuildBBInWorldCoord();

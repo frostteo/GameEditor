@@ -12,6 +12,7 @@
 #include "AddOrEditPointLightDialog.h"
 #include "ConfigurePLRelativePosWidget.h"
 #include "MapEditorPreferences.h"
+#include "IPointLightService.h"
 
 class PointLightTableWidget : public QWidget, public Ui::PointLightTableWidget
 {
@@ -26,11 +27,13 @@ private:
   QString m_pathToModels;
   QString m_pathToMaterials;
   MapEditorPreferences* m_mapEditorPreferences;
+  IPointLightService* m_pointLightService;
 protected slots:
   void on_addPointLightBtn_clicked();
   void on_editPointLightBtn_clicked();
   void on_deletePointLightBtn_clicked();
   void on_configureRelPosBtn_clicked();
+  void on_addToMapBtn_clicked();
 
   void editBtnsStateConfigure();
   void RowSelected(const QItemSelection& selected, const QItemSelection& deselected);
@@ -45,7 +48,13 @@ public slots:
   void PointLightPositionChanged(int id, float x, float y, float z);
   void SGOEditedSlot(StaticGameObjectDbInfo& gameObject);
   void SGODeletedSlot(int sgoId);
+  void PointLightCountChanged(int id);
+  void BeforeDeleteSgo(int id);
 public:
   PointLightTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
     ~PointLightTableWidget();
+signals:
+    void AddToMap(PointLightDbInfo& pointLight);
+    void DeletePointLight(int id);
+    void PointLightDbInfoEdited(PointLightDbInfo& pointLight);
 };

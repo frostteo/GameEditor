@@ -22,5 +22,6 @@ public:
   virtual void Update(PointLightDbInfo& pointLight) override;
   virtual void Delete(int id) override;
   virtual QList<PointLightDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string name = "", std::string sgoName = "") override;
+  virtual QList<PointLightDbInfo> GetPointLightsBySgoId(int id) override;
 };
 

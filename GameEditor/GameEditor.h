@@ -36,6 +36,7 @@ private:
 private slots:
   void on_actionObjConverter_triggered();
   void AddSGOToMap(StaticGameObjectDbInfo& gameObject);
+  void AddPointLightToMap(PointLightDbInfo& pointLight);
   void on_editPreferencesAction_triggered();
   void on_actionSnap_to_angle_toggled(bool checked);
   void on_actionSnap_to_grid_toggled(bool checked);

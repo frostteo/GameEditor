@@ -1,14 +1,14 @@
 #include "ConfigurePLRelativePosWidget.h"
 
-const std::string ConfigurePLRelativePosWidget::pointLightSgoModel = "pointLight.txt";
-
 ConfigurePLRelativePosWidget::ConfigurePLRelativePosWidget(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QtDirectXWidget(pathToModels, pathToMaterials, parent)
 {
   this->setWindowTitle("configure point light relative position");
   m_mapEditorPreferences = mapEditorPreferences;
+  auto defautPointLightSgo = DependencyResolver::GetPointLightOnMapService()->GetDefaultPointLightSgo();
 
-  m_pointLightSgo.SetModel(GetModel(pointLightSgoModel));
+
+  m_pointLightSgo.SetModel(GetModel(defautPointLightSgo.modelFileName.toStdString()));
   m_pointLightSgo.SetParent(&m_sgo);
   m_control = new ConfigurePLRelPosControl(this, m_Camera.get(), &m_pointLightSgo, m_mapEditorPreferences);
   m_inputSystem->AddInputListener(m_control);

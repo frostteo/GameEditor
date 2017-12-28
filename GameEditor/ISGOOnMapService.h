@@ -15,7 +15,7 @@ public:
   virtual int Create(SGOOnMapDbInfo& gameObject) = 0;
   virtual void Update(SGOOnMapDbInfo& gameObject) = 0;
   virtual void Delete(int id) = 0;
-  virtual QList<SGOOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "") = 0;
+  virtual QList<SGOOnMapDbInfo> GetFiltered(GetParameters& parameters, PagingInfo& pagingInfo, std::string SGOName = "", std::string instanceName = "", GameObjectType gameObjectType = GameObjectType::ALL) = 0;
   virtual void SetPosition(int id, float x, float y, float z) = 0;
   virtual void SetRotation(int id, float x, float y, float z) = 0;
   virtual void FreezeSgo(int id) = 0;

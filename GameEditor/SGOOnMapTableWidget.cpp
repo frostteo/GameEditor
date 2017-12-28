@@ -66,6 +66,7 @@ void SGOOnMapTableWidget::configureUI()
   m_paginator = std::unique_ptr<QtGEPaginator>(new QtGEPaginator);
   m_toolBox = std::unique_ptr<SGOOnMapToolBox>(new SGOOnMapToolBox);
 
+  configureToolBox();
   configureTable();
   configurePaginator();
   QVBoxLayout* vertToolBoxLayout = new QVBoxLayout;
@@ -75,7 +76,6 @@ void SGOOnMapTableWidget::configureUI()
   QHBoxLayout* horizontalLayout = new QHBoxLayout;
   horizontalLayout->addLayout(vertToolBoxLayout);
 
-
   QVBoxLayout* verticalTableLayout = new QVBoxLayout;
   verticalTableLayout->addWidget(m_table.get());
   verticalTableLayout->addWidget(m_paginator.get());
@@ -84,6 +84,13 @@ void SGOOnMapTableWidget::configureUI()
   this->setLayout(horizontalLayout);
 
   connect(m_toolBox.get(), SIGNAL(FilterChanged()), this, SLOT(UpdateTable()));
+}
+
+void SGOOnMapTableWidget::configureToolBox()
+{
+  m_toolBox->gameObjectTypeFilter->addItem("all", static_cast<int>(GameObjectType::ALL));
+  m_toolBox->gameObjectTypeFilter->addItem("static game object", static_cast<int>(GameObjectType::STATIC_GAME_OBJECT));
+  m_toolBox->gameObjectTypeFilter->addItem("point light", static_cast<int>(GameObjectType::POINT_LIGHT));
 }
 
 void SGOOnMapTableWidget::configurePaginator()
@@ -129,7 +136,8 @@ void SGOOnMapTableWidget::UpdateTable()
     m_table->horizontalHeader()->sortIndicatorSection(),
     m_table->horizontalHeader()->sortIndicatorOrder(),
     m_toolBox->GetSGONameFilter(),
-    m_toolBox->GetInstanceNameFilter());
+    m_toolBox->GetInstanceNameFilter(),
+    m_toolBox->GetGameObjectTypeFilter());
 }
 
 void SGOOnMapTableWidget::DeleteBtnClicked()
@@ -142,7 +150,7 @@ void SGOOnMapTableWidget::EditBtnClicked()
 {
   int selectedRow = m_table->selectionModel()->currentIndex().row();
   SGOOnMapDbInfo gameObject = m_tableModel->GetEntity(selectedRow);
-  m_mapEditorControl->EditSgoOnMap(gameObject.id);
+  m_mapEditorControl->EditGameObject(gameObject.id);
 }
 
 void SGOOnMapTableWidget::CloneBtnClicked()
