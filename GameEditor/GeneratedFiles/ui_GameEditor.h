@@ -32,6 +32,7 @@ public:
     QAction *editPreferencesAction;
     QAction *actionSnap_to_angle;
     QAction *actionSnap_to_grid;
+    QAction *actionUseTestLightining;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QGridLayout *gridLayout_3;
@@ -71,6 +72,12 @@ public:
         QIcon icon2;
         icon2.addFile(QStringLiteral(":/GameEditor/grid2.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionSnap_to_grid->setIcon(icon2);
+        actionUseTestLightining = new QAction(GameEditorClass);
+        actionUseTestLightining->setObjectName(QStringLiteral("actionUseTestLightining"));
+        actionUseTestLightining->setCheckable(true);
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/GameEditor/use_test_lightining.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionUseTestLightining->setIcon(icon3);
         centralWidget = new QWidget(GameEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -126,6 +133,7 @@ public:
         mainToolBar->addAction(editPreferencesAction);
         mainToolBar->addAction(actionSnap_to_angle);
         mainToolBar->addAction(actionSnap_to_grid);
+        mainToolBar->addAction(actionUseTestLightining);
 
         retranslateUi(GameEditorClass);
 
@@ -150,6 +158,10 @@ public:
         actionSnap_to_grid->setText(QApplication::translate("GameEditorClass", "Snap to grid", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         actionSnap_to_grid->setToolTip(QApplication::translate("GameEditorClass", "Snap to grid", Q_NULLPTR));
+#endif // QT_NO_TOOLTIP
+        actionUseTestLightining->setText(QApplication::translate("GameEditorClass", "UseTestLightining", Q_NULLPTR));
+#ifndef QT_NO_TOOLTIP
+        actionUseTestLightining->setToolTip(QApplication::translate("GameEditorClass", "Use test lightining", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         tabWidget->setTabText(tabWidget->indexOf(tab_11), QApplication::translate("GameEditorClass", "\320\241\321\202\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\270\320\265 \320\270\320\263\321\200\320\276\320\262\321\213\320\265 \320\276\320\261\321\212\320\265\320\272\321\202\321\213", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_12), QApplication::translate("GameEditorClass", "Tab 2", Q_NULLPTR));

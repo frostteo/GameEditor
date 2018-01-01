@@ -2,12 +2,15 @@
 
 #include <math.h>
 #include <sstream>
+#include <memory>
 #include "FileProcessor.h"
+#include "LightininigSystem.h"
 
 class MapEditorPreferences
 {
 private:
   static const std::string  m_preferencesFileName;
+  std::unique_ptr<LightininigSystem> m_testLightiningSystem;
 
   float m_objectRotationSpeed = 1.0f;
   float m_objectMoveSpeed = 10.0f;
@@ -19,6 +22,17 @@ private:
   bool m_snapToGrid = false;
   bool m_snapToAngle = false;
 
+  float m_redAmbientTestLightColor = 0.15f;
+  float m_greenAmbientTestLightColor = 0.15f;
+  float m_blueAmbientTestLightColor = 0.15f;
+  float m_redDirectTestLightColor = 1.0f;
+  float m_greenDirectTestLightColor = 1.0f;
+  float m_blueDirectTestLightColor = 1.0f;
+  float m_xDirectTestLightDirection = 1.0f;
+  float m_yDirectTestLightDirection = 0.0f;
+  float m_zDirectTestLightDirection = 1.0f;
+
+  bool m_useTestLightining = true;
 protected:
   void ReadPreferencesFromStr(std::string& str);
 public:
@@ -42,6 +56,26 @@ public:
   void SetSnapToGridState(bool useGrid) { m_snapToGrid = useGrid; }
   void SetSnapToAngleState(bool useAngle) { m_snapToAngle = useAngle; }
 
+  void SetAmbientTestLightColor(float red, float green, float blue);
+  void SetDirectTestLightColor(float red, float green, float blue);
+  void SetDirectTestLightDirection(float x, float y, float z);
+
+  float GetRedAmbientTestLightColor() { return m_redAmbientTestLightColor; }
+  float GetGreenAmbientTestLightColor() { return m_greenAmbientTestLightColor; }
+  float GetBlueAmbientTestLightColor() { return m_blueAmbientTestLightColor; }
+
+  float GetRedDirectTestLightColor() { return m_redDirectTestLightColor; }
+  float GetGreenDirectTestLightColor() { return m_greenDirectTestLightColor; }
+  float GetBlueDirectTestLightColor() { return m_blueDirectTestLightColor; }
+
+  float GetXDirectTestLightDirection() { return m_xDirectTestLightDirection; }
+  float GetYDirectTestLightDirection() { return m_yDirectTestLightDirection; }
+  float GetZDirectTestLightDirection() { return m_zDirectTestLightDirection; }
+
+  void SetUseTestLightiningFlag(bool useTestLightining) { m_useTestLightining = useTestLightining; }
+  bool GetUseTestLightiningFlag() { return m_useTestLightining; }
+
+  LightininigSystem* GetTestLightiningSystem() { return m_testLightiningSystem.get(); }
   MapEditorPreferences();
   virtual ~MapEditorPreferences();
 };

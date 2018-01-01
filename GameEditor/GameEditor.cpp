@@ -14,6 +14,7 @@ void GameEditor::configureUI()
   m_mapEditorPreferences = std::unique_ptr<MapEditorPreferences>(new MapEditorPreferences);
   this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
+  this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
 
   m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
   m_mapEditor->show();
@@ -75,6 +76,7 @@ void GameEditor::on_editPreferencesAction_triggered()
   dialog.exec();
   this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
+  this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
 }
 
 void GameEditor::on_actionSnap_to_angle_toggled(bool checked)
@@ -85,4 +87,9 @@ void GameEditor::on_actionSnap_to_angle_toggled(bool checked)
 void GameEditor::on_actionSnap_to_grid_toggled(bool checked)
 {
   m_mapEditorPreferences->SetSnapToGridState(checked);
+}
+
+void GameEditor::on_actionUseTestLightining_toggled(bool checked)
+{
+  m_mapEditorPreferences->SetUseTestLightiningFlag(checked);
 }

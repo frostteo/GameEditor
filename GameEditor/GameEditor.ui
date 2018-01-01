@@ -79,6 +79,7 @@
    <addaction name="editPreferencesAction"/>
    <addaction name="actionSnap_to_angle"/>
    <addaction name="actionSnap_to_grid"/>
+   <addaction name="actionUseTestLightining"/>
   </widget>
   <action name="actionObjConverter">
    <property name="text">
@@ -128,6 +129,21 @@
    </property>
    <property name="toolTip">
     <string>Snap to grid</string>
+   </property>
+  </action>
+  <action name="actionUseTestLightining">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="GameEditor.qrc">
+     <normaloff>:/GameEditor/use_test_lightining.png</normaloff>:/GameEditor/use_test_lightining.png</iconset>
+   </property>
+   <property name="text">
+    <string>UseTestLightining</string>
+   </property>
+   <property name="toolTip">
+    <string>Use test lightining</string>
    </property>
   </action>
  </widget>

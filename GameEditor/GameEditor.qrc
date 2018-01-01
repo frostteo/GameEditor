@@ -8,5 +8,6 @@
     <file>settings.png</file>
     <file>angle.png</file>
     <file>grid2.png</file>
+    <file>use_test_lightining.png</file>
   </qresource>
 </RCC>

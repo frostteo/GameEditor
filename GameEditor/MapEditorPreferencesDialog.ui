@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>383</width>
-    <height>204</height>
+    <width>388</width>
+    <height>444</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -100,8 +100,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>170</y>
+     <x>220</x>
+     <y>410</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -165,8 +165,307 @@
     </item>
    </layout>
   </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>271</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Editor environment test lightining</string>
+   </property>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Ambient light color</string>
+    </property>
+    <widget class="QLabel" name="redAmbientColorLbl">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>red</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="greenAmbientColorLbl">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>green</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="blueAmbientColorLbl">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>20</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>blue</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="redAmbientColorTxt">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="greenAmbientColorTxt">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="blueAmbientColorTxt">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Direct light color</string>
+    </property>
+    <widget class="QLabel" name="redDirectColorLbl">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>red</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="greenDirectColorLbl">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>green</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="blueDirectColorLbl">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>20</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>blue</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="redDirectLightColorTxt">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="greenDirectLightColorTxt">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="blueDirectLightColorTxt">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Direct light direction</string>
+    </property>
+    <widget class="QLabel" name="xDirectLightDirLbl">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>x</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="yDirectLightDirLbl">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>y</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="zDirectLightDirLbl">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>z</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="xDirectLightDirTxt">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="yDirectLightDirTxt">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="zDirectLightDirTxt">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QCheckBox" name="useTestLightiningCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>200</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>Use test lightining</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>objectRotationTxt</tabstop>
+  <tabstop>objectMoveTxt</tabstop>
+  <tabstop>cameraRotationTxt</tabstop>
+  <tabstop>cameraZoomTxt</tabstop>
+  <tabstop>cameraPanTxt</tabstop>
+  <tabstop>gridSnapTxt</tabstop>
+  <tabstop>angleSnapTxt</tabstop>
+  <tabstop>useGridCheckBox</tabstop>
+  <tabstop>useAngleCheckBox</tabstop>
+  <tabstop>redAmbientColorTxt</tabstop>
+  <tabstop>greenAmbientColorTxt</tabstop>
+  <tabstop>blueAmbientColorTxt</tabstop>
+  <tabstop>redDirectLightColorTxt</tabstop>
+  <tabstop>greenDirectLightColorTxt</tabstop>
+  <tabstop>blueDirectLightColorTxt</tabstop>
+  <tabstop>xDirectLightDirTxt</tabstop>
+  <tabstop>yDirectLightDirTxt</tabstop>
+  <tabstop>zDirectLightDirTxt</tabstop>
+  <tabstop>useTestLightiningCheckBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

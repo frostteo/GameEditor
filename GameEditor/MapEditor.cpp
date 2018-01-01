@@ -7,8 +7,6 @@ MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, QString pathToM
   this->setWindowTitle("Map editor");
   m_Camera->SetPosition(-500.0f, 0.0f, 0.0f);
   m_Camera->SetRotation(0.0f, 0.0f, 0.0f);
-  m_lightininigSystem->SetAmbientColor(0.5f, 0.5f, 0.5f, 0.5f);
-  //m_lightininigSystem->SetDirectLightDirection(0.0f, -1.0f, 1.0f);
 
   m_mapEditorViewModel.Initialize(pathToModels.toStdString(), m_graphicSystem->GetModelFactory(), mapEditorPreferences);
   m_mapEditorControl = new MapEditorControl(&m_mapEditorViewModel, &m_visibleSgos, m_Camera.get());
@@ -22,7 +20,7 @@ MapEditor::~MapEditor()
 void MapEditor::paintEvent(QPaintEvent* pEvent)
 {
   XMMATRIX worldMatrix;
-  
+
   m_inputSystem->Frame();
 
   if (m_Camera->NeedRebuildFrustrum())
@@ -52,7 +50,7 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
   }
   ++counter;
  
-  m_graphicSystem->Render(m_Camera.get(), m_lightininigSystem.get());
+  m_graphicSystem->Render(m_Camera.get(), m_mapEditorViewModel.GetMapEditorPreferences()->GetTestLightiningSystem());
 
   // trigger another update as soon as possible 
   update();
