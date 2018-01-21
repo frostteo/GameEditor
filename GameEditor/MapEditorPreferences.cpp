@@ -45,6 +45,8 @@ void MapEditorPreferences::ReadPreferencesFromStr(std::string& str)
   ss >> place >> m_zDirectTestLightDirection;
 
   ss >> place >> std::boolalpha >> m_useTestLightining;
+
+  ss >> place >> m_redAmbientColor >> m_greenAmbientColor >> m_blueAmbientColor;
 }
 
 MapEditorPreferences::~MapEditorPreferences()
@@ -74,6 +76,8 @@ MapEditorPreferences::~MapEditorPreferences()
   fout << "z_direct_test_light_direction: " << m_zDirectTestLightDirection << std::endl;
 
   fout << "use_test_lightining: " << std::boolalpha << m_useTestLightining << std::endl;
+
+  fout << "ambient_colors_rgb: " << m_redAmbientColor << " " << m_greenAmbientColor << " " << m_blueAmbientColor << std::endl;
 }
 
 void MapEditorPreferences::SetAngleSnap(float angle)
@@ -123,4 +127,11 @@ void MapEditorPreferences::SetDirectTestLightDirection(float x, float y, float z
   m_zDirectTestLightDirection = z;
 
   m_testLightiningSystem->SetDirectLightDirection(m_xDirectTestLightDirection, m_yDirectTestLightDirection, m_zDirectTestLightDirection);
+}
+
+void MapEditorPreferences::SetAmbientLightColor(float red, float green, float blue)
+{
+  m_redAmbientColor = red;
+  m_greenAmbientColor = green;
+  m_blueAmbientColor = blue;
 }

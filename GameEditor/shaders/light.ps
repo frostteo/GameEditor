@@ -1,0 +1,70 @@
+////////////////////////////////////////////////////////////////////////////////
+// Filename: light.ps
+////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////
+// GLOBALS //
+/////////////
+Texture2D positionTexture : register(t0);
+Texture2D colorTexture : register(t1);
+Texture2D normalTexture : register(t2);
+Texture2D specularTexture : register(t3);
+Texture2D viewDirectionTexture : register(t4);
+Texture2D selfIluninationTexture : register(t5);
+
+///////////////////
+// SAMPLE STATES //
+///////////////////
+SamplerState SampleTypePoint : register(s0);
+
+//////////////
+// TYPEDEFS //
+//////////////
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float2 tex : TEXCOORD0;
+};
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Pixel Shader
+////////////////////////////////////////////////////////////////////////////////
+float4 TexturePixelShader(PixelInputType input) : SV_TARGET
+{
+	float3 lightDirection = { 1.0f, 0.0f, 1.0f };
+	float4 ambientLightColor = { 0.5f, 0.5f, 0.5f, 1.0f };
+	float3 lightDiffuseColor = { 1.0f, 1.0f, 1.0f };
+	
+	float4 diffuseObjectColor = colorTexture.Sample(SampleTypePoint, input.tex);
+	float3 normal = normalTexture.Sample(SampleTypePoint, input.tex).xyz;
+	float4 specularColorAndPower = specularTexture.Sample(SampleTypePoint, input.tex);
+	float specularPower = specularColorAndPower.w;
+	float3 viewDirection = viewDirectionTexture.Sample(SampleTypePoint, input.tex).xyz;
+	float3 selfIlumColor = selfIluninationTexture.Sample(SampleTypePoint, input.tex).xyz;
+	float3 invertedLightDir = -lightDirection;
+	float3 reflectionIntensity;
+	float3 specularComponent = { 0.0f, 0.0f, 0.0f };
+	
+	float diffuseLightIntensity;
+	
+	float4 outputColor = ambientLightColor;
+	
+	diffuseLightIntensity = saturate(dot(normal, invertedLightDir));
+	
+	if (diffuseLightIntensity > 0.0f)
+	{
+		outputColor.xyz += (lightDiffuseColor * diffuseLightIntensity);
+		if (specularPower > 0.0f)
+		{
+			reflectionIntensity = normalize(2 * diffuseLightIntensity * normal - invertedLightDir); 
+			specularComponent = specularColorAndPower.xyz * pow(saturate(dot(reflectionIntensity, viewDirection)), specularPower);
+		}
+	}
+	outputColor *= diffuseObjectColor;
+	outputColor.xyz += specularComponent;
+	outputColor.xyz += selfIlumColor;
+	
+    return outputColor;
+}

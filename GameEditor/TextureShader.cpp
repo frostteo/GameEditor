@@ -224,7 +224,6 @@ void TextureShader::EnableShader(ID3D11DeviceContext* deviceContext)
 
 void TextureShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
-  // Render the triangle.
   deviceContext->DrawIndexed(indexCount, 0, 0);
 }
 

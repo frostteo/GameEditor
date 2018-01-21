@@ -12,7 +12,7 @@ protected:
     XMFLOAT3 cameraPosition;
     float padding;
   };
-  struct LightBufferSpecularType //TODO was not inherited because of redundant padding for byte alignement
+  struct LightBufferSpecularType 
   {
     XMVECTOR ambientColor;
     XMVECTOR diffuseColor;

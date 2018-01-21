@@ -40,13 +40,13 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   matConverter.ConvertMtlMaterials(material, true);*/
 
   m_shaderConfiguration = new ShaderConfiguration();
-  m_shaderConfiguration->Configure();
+  m_shaderConfiguration->ConfigureForwardRenderer();
 
   m_graphicSystem = std::unique_ptr<GraphicSystem>(new GraphicSystem);
   if (!m_graphicSystem)
     return false;
 
-  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration, "../GameEditor/materials");
+  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration, "../GameEditor/materials", "../GameEditor/models");
 
   //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/lamp.txt");
   //m_model = m_graphicSystem->GetModelFactory()->GetResource("../GameEditor/models/healthPotion.txt");

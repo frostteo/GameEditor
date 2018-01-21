@@ -3,9 +3,11 @@
 
 GridObject::GridObject()
 {
+  
 }
 
 
 GridObject::~GridObject()
 {
+  
 }

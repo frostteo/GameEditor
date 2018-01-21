@@ -52,6 +52,7 @@ void PointLightTableWidget::PointLightPositionChanged(int id, float x, float y, 
   pointLightDbInfo.relativePosZ = z;
 
   m_tableModel->edit(pointLightDbInfo);
+  emit PointLightDbInfoEdited(pointLightDbInfo);
 }
 
 void PointLightTableWidget::configureTable()

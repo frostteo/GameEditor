@@ -40,6 +40,10 @@ MapEditorPreferencesDialog::MapEditorPreferencesDialog(QWidget *parent)
     this->xDirectLightDirTxt->setValidator(testDirectLightDirectionValidator);
     this->yDirectLightDirTxt->setValidator(testDirectLightDirectionValidator);
     this->zDirectLightDirTxt->setValidator(testDirectLightDirectionValidator);
+
+    this->realRedAmbientTxt->setValidator(colorValidator);
+    this->realGreenAmbientTxt->setValidator(colorValidator);
+    this->realBlueAmbientTxt->setValidator(colorValidator);
 }
 
 MapEditorPreferencesDialog::~MapEditorPreferencesDialog()
@@ -72,6 +76,10 @@ void MapEditorPreferencesDialog::SetMapEditorPreferences(MapEditorPreferences* m
   this->zDirectLightDirTxt->setText(QString::number(m_mapEditorPreferences->GetZDirectTestLightDirection()));
 
   this->useTestLightiningCheckBox->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
+
+  this->realRedAmbientTxt->setText(QString::number(m_mapEditorPreferences->GetRedAmbientLightColor()));
+  this->realGreenAmbientTxt->setText(QString::number(m_mapEditorPreferences->GetGreenAmbientLightColor()));
+  this->realBlueAmbientTxt->setText(QString::number(m_mapEditorPreferences->GetBlueAmbientLightColor()));
 }
 
 void MapEditorPreferencesDialog::done(int result)
@@ -92,6 +100,8 @@ void MapEditorPreferencesDialog::done(int result)
     m_mapEditorPreferences->SetDirectTestLightColor(this->redDirectLightColorTxt->text().toFloat(), this->greenDirectLightColorTxt->text().toFloat(), this->blueDirectLightColorTxt->text().toFloat());
     m_mapEditorPreferences->SetDirectTestLightDirection(this->xDirectLightDirTxt->text().toFloat(), this->yDirectLightDirTxt->text().toFloat(), this->zDirectLightDirTxt->text().toFloat());
     m_mapEditorPreferences->SetUseTestLightiningFlag(this->useTestLightiningCheckBox->isChecked());
+
+    m_mapEditorPreferences->SetAmbientLightColor(this->realRedAmbientTxt->text().toFloat(), this->realGreenAmbientTxt->text().toFloat(), this->realBlueAmbientTxt->text().toFloat());
 
     QDialog::done(result);
   }

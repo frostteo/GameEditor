@@ -26,6 +26,6 @@ public:
   PreviewStaticGOWidget(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~PreviewStaticGOWidget();
   /** Initialized the D3D environment */
-  bool Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials);
+  bool Initialize(int screenWidth, int screenHeight, HWND hwnd);
   void SetStaticGameObject(StaticGameObjectDbInfo staticGameObject);
 };

@@ -9,7 +9,7 @@ class ColorShader :
 protected:
   struct CameraBufferType
   {
-    XMFLOAT3 cameraPosition; //TODO FHolod: Padding removing need to be checked
+    XMFLOAT3 cameraPosition;
     int subtype; //It is here for useability
   };
   struct LightBufferColorType 

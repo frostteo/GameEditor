@@ -77,6 +77,7 @@ void GameEditor::on_editPreferencesAction_triggered()
   this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
   this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
+  m_mapEditor->SetAmbientLight(m_mapEditorPreferences->GetRedAmbientLightColor(), m_mapEditorPreferences->GetGreenAmbientLightColor(), m_mapEditorPreferences->GetBlueAmbientLightColor());
 }
 
 void GameEditor::on_actionSnap_to_angle_toggled(bool checked)
@@ -92,4 +93,7 @@ void GameEditor::on_actionSnap_to_grid_toggled(bool checked)
 void GameEditor::on_actionUseTestLightining_toggled(bool checked)
 {
   m_mapEditorPreferences->SetUseTestLightiningFlag(checked);
+
+  if (m_mapEditor)
+    m_mapEditor->EnableTestLightining(checked);
 }

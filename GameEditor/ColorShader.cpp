@@ -313,7 +313,6 @@ void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 
 void ColorShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCount)
 {
-  // Render the triangle.
   deviceContext->DrawIndexed(indexCount, 0, 0);
 }
 

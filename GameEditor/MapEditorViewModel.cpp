@@ -16,6 +16,7 @@ void MapEditorViewModel::Initialize(const std::string& pathToModels, ModelFactor
 
   m_pointLightOnMapService = DependencyResolver::GetPointLightOnMapService();
   InitializeSgos();
+  InitializePointLights();
 }
 
 MapEditorViewModel::~MapEditorViewModel()
@@ -38,6 +39,14 @@ void MapEditorViewModel::InitializeSgos()
   m_octoTree.Initialize(&temporarySgoMap, XMFLOAT3(0.0f, 0.0f, 0.0f), OCT_TREE_CELL_HALF_SIZE);
 }
 
+void MapEditorViewModel::InitializePointLights()
+{
+  for (auto& pointLight : m_pointLightOnMapService->GetAll())
+  {
+    AddPointLightToMap(pointLight);
+  }
+}
+
 void MapEditorViewModel::AddSgoToMap(SGOOnMapDbInfo& sgoOnMap)
 {
   StaticGameObject sgo;
@@ -48,6 +57,19 @@ void MapEditorViewModel::AddSgoToMap(SGOOnMapDbInfo& sgoOnMap)
   sgo.isFrozen = sgoOnMap.isFrozen;
   sgo.uniqueId = sgoOnMap.id;
   m_staticGameObjectMap[sgoOnMap.id] = sgo;
+}
+
+void MapEditorViewModel::AddPointLightToMap(PointLightOnMapDbInfo& dbInfo)
+{
+  PointLight pointLight;
+  pointLight.Initialize(
+    dbInfo.linearAttenuation,
+    dbInfo.quadraticAttenuation,
+    XMFLOAT3(dbInfo.pointLightDbInfo.relativePosX, dbInfo.pointLightDbInfo.relativePosY, dbInfo.pointLightDbInfo.relativePosZ),
+    XMFLOAT3(dbInfo.red, dbInfo.green, dbInfo.blue),
+    &m_staticGameObjectMap[dbInfo.sgoOnMapId]);
+
+  m_pointLightsOnMap[dbInfo.id] = pointLight;
 }
 
 Model* MapEditorViewModel::GetModel(const std::string& modelName)
@@ -68,6 +90,7 @@ void MapEditorViewModel::AddPointLight(PointLightOnMapDbInfo& pointLightOnMapDbI
   pointLightOnMapDbInfo.sgoOnMapId = pointLightOnMapDbInfo.sgoOnMapDbInfo.id;
   m_pointLightOnMapService->Create(pointLightOnMapDbInfo);
   emit PointLightCountChanged(pointLightOnMapDbInfo.pointLightId);
+  AddPointLightToMap(pointLightOnMapDbInfo);
 }
 
 void MapEditorViewModel::DeleteSgo(int id)
@@ -81,6 +104,7 @@ void MapEditorViewModel::DeletePointLight(int id)
   auto pointLightOnMap = m_pointLightOnMapService->Get(id);
   int sgoOnMapId = pointLightOnMap.sgoOnMapId;
   m_pointLightOnMapService->Delete(id);
+  DeletePointLightFromMap(pointLightOnMap.id);
   DeleteSgo(sgoOnMapId);
   emit PointLightCountChanged(pointLightOnMap.pointLightId);
 }
@@ -90,6 +114,11 @@ void MapEditorViewModel::DeleteSgoFromMap(int id)
   m_octoTree.DeleteSgo(id, &m_staticGameObjectMap[id]);
   m_selectedObjectIds.erase(id);
   m_staticGameObjectMap.erase(id);
+}
+
+void MapEditorViewModel::DeletePointLightFromMap(int id)
+{
+  m_pointLightsOnMap.erase(id);
 }
 
 void MapEditorViewModel::SGODbInfoDeleted(int sgoDbInfoId)
@@ -117,9 +146,7 @@ void MapEditorViewModel::PointLightDbInfoDeleted(int pointLightId)
 
   for (auto& pointLightOnMap : pointLightsOnMap)
   {
-    int sgoOnMapId = pointLightOnMap.sgoOnMapId;
-    m_pointLightOnMapService->Delete(pointLightOnMap.id);
-    DeleteSgo(sgoOnMapId);
+    DeletePointLight(pointLightOnMap.id);
   }
 }
 
@@ -140,6 +167,7 @@ void MapEditorViewModel::PointLightDbInfoEdited(PointLightDbInfo& pointLight)
     auto sgoOnMap = pointLightOnMap.sgoOnMapDbInfo;
     sgoOnMap.staticGameObjectId = pointLight.staticGameObjectId;
     sgoOnMap.staticGameObjectDbInfo = pointLight.staticGameObjectDbInfo;
+    EditPointLightOnMap(pointLightOnMap);
     EditSgo(sgoOnMap);
   }
 
@@ -166,12 +194,18 @@ void MapEditorViewModel::EditPointLight(PointLightOnMapDbInfo& editedPointLightO
 {
   m_pointLightOnMapService->Update(editedPointLightOnMapDbInfo);
   EditSgo(editedPointLightOnMapDbInfo.sgoOnMapDbInfo);
+  EditPointLightOnMap(editedPointLightOnMapDbInfo);
 }
 
 void MapEditorViewModel::EditSgoOnMap(SGOOnMapDbInfo& editedGameObject)
 {
   AddSgoToMap(editedGameObject);
   m_octoTree.ObjectChangedPosition(editedGameObject.id, &m_staticGameObjectMap[editedGameObject.id]);
+}
+
+void MapEditorViewModel::EditPointLightOnMap(PointLightOnMapDbInfo& dbInfo)
+{
+  AddPointLightToMap(dbInfo);
 }
 
 void MapEditorViewModel::FreezeSgo(int id)
@@ -235,6 +269,15 @@ void MapEditorViewModel::GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vect
 {
   sgosToRender->clear();
   m_octoTree.GetVisibleSgo(cameraFrustrum, sgosToRender);
+}
+
+void MapEditorViewModel::GetVisiblePointLights(CameraFrustrum* cameraFrustrum, std::vector<PointLight*>* pointLightsToRender)
+{
+  pointLightsToRender->clear();
+  for (auto& pointLight : m_pointLightsOnMap)
+  {
+    pointLightsToRender->push_back(&pointLight.second);
+  }
 }
 
 void MapEditorViewModel::GetSelectedSgos(std::vector<StaticGameObject*>* selectedSgos)

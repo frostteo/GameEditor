@@ -66,10 +66,7 @@ void IShader::Initialize(ID3D11Device* device, HWND hwnd, const std::wstring& vs
 
 void IShader::EnableShader(ID3D11DeviceContext* deviceContext)
 {
-  // Set the vertex input layout.
   deviceContext->IASetInputLayout(m_layout);
-
-  // Set the vertex and pixel shaders that will be used to render this triangle.
   deviceContext->VSSetShader(m_vertexShader, NULL, 0);
   deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 }

@@ -15,11 +15,16 @@
 #include "ShaderFactory.h"
 #include "GridObject.h"
 #include "StaticGameObject.h"
+#include "PointLightDefferedParameters.h"
 
 class GraphicSystem
 {
 private:
   const static std::string GRID_SHADER_NAME;
+  const static std::string AMBIENT_DEFFERED_SHADER_NAME;
+  const static std::string LIGHT_VOLUME_STENCIL_SHADER_NAME;
+  const static std::string POINT_LIGHT_DEFFERED_SHADER_NAME;
+  const static std::string POINT_LIGHT_MODEL_NAME;
 
   std::unique_ptr<D3DConfigurer> m_direct3D;
   std::unique_ptr<ModelFactory> m_modelFactory;
@@ -29,13 +34,17 @@ private:
 
   std::map<std::string, std::map<std::string, std::vector<std::pair<XMMATRIX, Mesh*>>>> m_modelRenderList;
   std::vector<std::pair<XMMATRIX, GridObject*> > m_gridObjectRenderList;
+
+  std::string m_pathToModels;
+  Mesh* m_pointLightMesh;
+  PointLightDefferedParameters m_pointLightDefferedParemeters;
 protected:
   void DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightiningSystem, XMFLOAT3 cameraPosition);
   void DrawGrids(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix);
 public:
   GraphicSystem();
   virtual ~GraphicSystem();
-  void Initialize(int screenWidth, int screenHeight, bool vsyncEnabled, HWND hwnd, bool fullScreen, ShaderConfiguration* shaderConfiguration, std::string pathToMaterials);
+  void Initialize(int screenWidth, int screenHeight, bool vsyncEnabled, HWND hwnd, bool fullScreen, ShaderConfiguration* shaderConfiguration, std::string pathToMaterials, std::string pathToModels);
   ModelFactory* GetModelFactory();
   TextureFactory* GetTextureFactory();
   ShaderFactory* GetShaderFactory();
@@ -43,7 +52,8 @@ public:
 
   void AddModelToRenderList(Model* model, XMMATRIX& worldMatrix);
   void AddGridToRenderList(GridObject* gridObject, XMMATRIX& worldMatrix);
-  void Render(Camera* camera, LightininigSystem* lightiningSystem);
   ID3D11Device* GetDevice() { return m_direct3D->GetDevice(); }
+  void Render(Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDeffered(Camera* camera, LightininigSystem* lightiningSystem);
 };
 

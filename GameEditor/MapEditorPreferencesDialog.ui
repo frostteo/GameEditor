@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>388</width>
-    <height>444</height>
+    <height>530</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,7 +101,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>410</y>
+     <y>500</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -441,6 +441,101 @@
     <property name="checked">
      <bool>true</bool>
     </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>410</y>
+     <width>271</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Environement lighting</string>
+   </property>
+   <widget class="QGroupBox" name="groupBox_6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Ambient color</string>
+    </property>
+    <widget class="QLabel" name="redRealAmbientLbl">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>red</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="greenRealAmbientLbl">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>green</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="blueRealAmbientLbl">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>20</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>blue</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="realRedAmbientTxt">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="realGreenAmbientTxt">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="realBlueAmbientTxt">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>20</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

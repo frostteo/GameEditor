@@ -72,12 +72,20 @@ public:
     QLineEdit *yDirectLightDirTxt;
     QLineEdit *zDirectLightDirTxt;
     QCheckBox *useTestLightiningCheckBox;
+    QGroupBox *groupBox_5;
+    QGroupBox *groupBox_6;
+    QLabel *redRealAmbientLbl;
+    QLabel *greenRealAmbientLbl;
+    QLabel *blueRealAmbientLbl;
+    QLineEdit *realRedAmbientTxt;
+    QLineEdit *realGreenAmbientTxt;
+    QLineEdit *realBlueAmbientTxt;
 
     void setupUi(QWidget *MapEditorPreferencesDialog)
     {
         if (MapEditorPreferencesDialog->objectName().isEmpty())
             MapEditorPreferencesDialog->setObjectName(QStringLiteral("MapEditorPreferencesDialog"));
-        MapEditorPreferencesDialog->resize(388, 444);
+        MapEditorPreferencesDialog->resize(388, 530);
         MapEditorPreferencesDialog->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         movementSpeedsGroup = new QGroupBox(MapEditorPreferencesDialog);
         movementSpeedsGroup->setObjectName(QStringLiteral("movementSpeedsGroup"));
@@ -142,7 +150,7 @@ public:
 
         buttonBox = new QDialogButtonBox(MapEditorPreferencesDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(220, 410, 156, 23));
+        buttonBox->setGeometry(QRect(220, 500, 156, 23));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         snapsGroup = new QGroupBox(MapEditorPreferencesDialog);
         snapsGroup->setObjectName(QStringLiteral("snapsGroup"));
@@ -254,6 +262,30 @@ public:
         useTestLightiningCheckBox->setGeometry(QRect(70, 200, 111, 20));
         useTestLightiningCheckBox->setLayoutDirection(Qt::RightToLeft);
         useTestLightiningCheckBox->setChecked(true);
+        groupBox_5 = new QGroupBox(MapEditorPreferencesDialog);
+        groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
+        groupBox_5->setGeometry(QRect(10, 410, 271, 81));
+        groupBox_6 = new QGroupBox(groupBox_5);
+        groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
+        groupBox_6->setGeometry(QRect(10, 20, 251, 51));
+        redRealAmbientLbl = new QLabel(groupBox_6);
+        redRealAmbientLbl->setObjectName(QStringLiteral("redRealAmbientLbl"));
+        redRealAmbientLbl->setGeometry(QRect(10, 20, 16, 16));
+        greenRealAmbientLbl = new QLabel(groupBox_6);
+        greenRealAmbientLbl->setObjectName(QStringLiteral("greenRealAmbientLbl"));
+        greenRealAmbientLbl->setGeometry(QRect(80, 20, 31, 16));
+        blueRealAmbientLbl = new QLabel(groupBox_6);
+        blueRealAmbientLbl->setObjectName(QStringLiteral("blueRealAmbientLbl"));
+        blueRealAmbientLbl->setGeometry(QRect(170, 20, 21, 16));
+        realRedAmbientTxt = new QLineEdit(groupBox_6);
+        realRedAmbientTxt->setObjectName(QStringLiteral("realRedAmbientTxt"));
+        realRedAmbientTxt->setGeometry(QRect(30, 20, 41, 20));
+        realGreenAmbientTxt = new QLineEdit(groupBox_6);
+        realGreenAmbientTxt->setObjectName(QStringLiteral("realGreenAmbientTxt"));
+        realGreenAmbientTxt->setGeometry(QRect(120, 20, 41, 20));
+        realBlueAmbientTxt = new QLineEdit(groupBox_6);
+        realBlueAmbientTxt->setObjectName(QStringLiteral("realBlueAmbientTxt"));
+        realBlueAmbientTxt->setGeometry(QRect(200, 20, 41, 20));
         QWidget::setTabOrder(objectRotationTxt, objectMoveTxt);
         QWidget::setTabOrder(objectMoveTxt, cameraRotationTxt);
         QWidget::setTabOrder(cameraRotationTxt, cameraZoomTxt);
@@ -306,6 +338,11 @@ public:
         yDirectLightDirLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "y", Q_NULLPTR));
         zDirectLightDirLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "z", Q_NULLPTR));
         useTestLightiningCheckBox->setText(QApplication::translate("MapEditorPreferencesDialog", "Use test lightining", Q_NULLPTR));
+        groupBox_5->setTitle(QApplication::translate("MapEditorPreferencesDialog", "Environement lighting", Q_NULLPTR));
+        groupBox_6->setTitle(QApplication::translate("MapEditorPreferencesDialog", "Ambient color", Q_NULLPTR));
+        redRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "red", Q_NULLPTR));
+        greenRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "green", Q_NULLPTR));
+        blueRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "blue", Q_NULLPTR));
     } // retranslateUi
 
 };

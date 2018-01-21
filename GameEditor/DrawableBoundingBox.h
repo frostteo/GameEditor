@@ -11,8 +11,8 @@ public:
     XMFLOAT3 color;
   };
 private:
-  static const XMFLOAT3 RED_COLOR;
-  static const XMFLOAT3 GREEN_COLOR;
+  static const XMFLOAT3 UNFROZEN_COLOR_FIRST;
+  static const XMFLOAT3 UNFROZEN_COLOR_SECOND;
   static const XMFLOAT3 FROZEN_COLOR_FIRST;
   static const XMFLOAT3 FROZEN_COLOR_SECOND;
 protected:

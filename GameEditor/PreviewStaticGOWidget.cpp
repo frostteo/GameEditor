@@ -9,9 +9,9 @@ PreviewStaticGOWidget::PreviewStaticGOWidget(MapEditorPreferences* mapEditorPref
   m_mapEditorPreferences = mapEditorPreferences;
 }
 
-bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials)
+bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
-  return QtDirectXWidget::Initialize(screenWidth, screenHeight, hwnd, pathToMaterials);
+  return QtDirectXWidget::Initialize(screenWidth, screenHeight, hwnd);
 }
 
 PreviewStaticGOWidget::~PreviewStaticGOWidget()

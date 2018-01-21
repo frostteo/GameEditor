@@ -72,6 +72,7 @@ void MapEditorControl::Delete(std::vector<int>& ids)
         DeletePointLight(pointLight.id);
         break;
     }
+    m_camera->needRebuildDependOnWorldMatrix = true;
   }
 }
 

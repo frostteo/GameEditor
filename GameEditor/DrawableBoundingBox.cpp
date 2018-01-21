@@ -1,7 +1,7 @@
 #include "DrawableBoundingBox.h"
 
-const XMFLOAT3 DrawableBoundingBox::RED_COLOR = XMFLOAT3(1.0f, 0.0f, 0.0f);
-const XMFLOAT3 DrawableBoundingBox::GREEN_COLOR = XMFLOAT3(0.0f, 1.0f, 0.0f);
+const XMFLOAT3 DrawableBoundingBox::UNFROZEN_COLOR_FIRST = XMFLOAT3(1.0f, 0.0f, 0.0f);
+const XMFLOAT3 DrawableBoundingBox::UNFROZEN_COLOR_SECOND = XMFLOAT3(0.0f, 1.0f, 0.0f);
 const XMFLOAT3 DrawableBoundingBox::FROZEN_COLOR_FIRST = XMFLOAT3(0.043f, 0.05f, 0.5f);
 const XMFLOAT3 DrawableBoundingBox::FROZEN_COLOR_SECOND = XMFLOAT3(0.013f, 0.5f, 0.1568f);
 
@@ -43,9 +43,9 @@ void DrawableBoundingBox::InitializeBuffers(ID3D11Device* device, bool isFrozen)
     else
     {
       if (i < 4)
-        vertex.color = (i % 2 == 0 ? RED_COLOR : GREEN_COLOR);
+        vertex.color = (i % 2 == 0 ? UNFROZEN_COLOR_FIRST : UNFROZEN_COLOR_SECOND);
       else
-        vertex.color = (i % 2 == 1 ? RED_COLOR : GREEN_COLOR);
+        vertex.color = (i % 2 == 1 ? UNFROZEN_COLOR_FIRST : UNFROZEN_COLOR_SECOND);
     }
 
     vertices.push_back(vertex);

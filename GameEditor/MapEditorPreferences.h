@@ -33,6 +33,10 @@ private:
   float m_zDirectTestLightDirection = 1.0f;
 
   bool m_useTestLightining = true;
+
+  float m_redAmbientColor = 0.0f;
+  float m_greenAmbientColor = 0.0f;
+  float m_blueAmbientColor = 0.0f;
 protected:
   void ReadPreferencesFromStr(std::string& str);
 public:
@@ -74,6 +78,11 @@ public:
 
   void SetUseTestLightiningFlag(bool useTestLightining) { m_useTestLightining = useTestLightining; }
   bool GetUseTestLightiningFlag() { return m_useTestLightining; }
+
+  float GetRedAmbientLightColor() { return m_redAmbientColor; }
+  float GetGreenAmbientLightColor() { return m_greenAmbientColor; }
+  float GetBlueAmbientLightColor() { return m_blueAmbientColor; }
+  void SetAmbientLightColor(float red, float green, float blue);
 
   LightininigSystem* GetTestLightiningSystem() { return m_testLightiningSystem.get(); }
   MapEditorPreferences();

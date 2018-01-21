@@ -1,0 +1,68 @@
+
+cbuffer PointLightBuffer
+{
+    float3 pointLightColor;
+	float linearAttenuation;
+	float3 pointLightPosition;
+	float quadraticAttenuation;
+	float screenWidth;
+	float screenHeight;
+};
+
+Texture2D positionTexture : register(t0);
+Texture2D colorTexture : register(t1);
+Texture2D normalTexture : register(t2);
+Texture2D specularTexture : register(t3);
+Texture2D viewDirectionTexture : register(t4);
+Texture2D selfIluninationTexture : register(t5);
+
+SamplerState SampleTypePoint : register(s0);
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float2 tex : TEXCOORD0;
+};
+
+float4 PointLightPixelShader(PixelInputType input) : SV_TARGET
+{	
+	float2 screenSizes = {screenWidth, screenHeight};
+	float2 tex = input.position.xy / screenSizes.xy;
+	
+	float4 diffuseObjectColor = colorTexture.Sample(SampleTypePoint, tex);
+	float3 normal = normalTexture.Sample(SampleTypePoint, tex).xyz;
+	float3 worldPos = positionTexture.Sample(SampleTypePoint, tex).xyz;
+	float3 specularObjectColor = specularTexture.Sample(SampleTypePoint, tex).xyz;
+	float specularObjectPower = specularTexture.Sample(SampleTypePoint, tex).w;
+	float3 viewDirection = viewDirectionTexture.Sample(SampleTypePoint, tex).xyz;
+	
+	float4 outputColor;
+	float3 pointLightDirection = pointLightPosition - worldPos;
+	float3 distance = length(pointLightDirection);
+	pointLightDirection /= distance;
+	
+	distance *= 0.01f;
+	
+	float attenuation = (1.0f + distance * linearAttenuation + distance * distance * quadraticAttenuation);
+	
+	float pointLightIntensity = saturate(dot(normal, pointLightDirection));	
+	
+	if (pointLightIntensity > 0.0f)
+	{
+		outputColor.xyz = pointLightIntensity * pointLightColor * diffuseObjectColor;
+		if (specularObjectPower > 0.0f)
+		{
+			//float3 pointLightReflectionVector = normalize(2 * pointLightIntensity * normal - pointLightDirection); 
+			//float specularFactor = saturate(dot(pointLightReflectionVector, viewDirection));
+			
+			float3 halfWay = normalize(viewDirection + pointLightDirection);
+			float specularFactor = saturate(dot(halfWay, normal));
+			outputColor.xyz += specularObjectColor * pow(specularFactor, specularObjectPower);
+		}
+	}
+	
+	outputColor /= attenuation;
+	outputColor.w = 1.0f;
+	outputColor = saturate(outputColor);
+    return outputColor;
+}

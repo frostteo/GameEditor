@@ -46,7 +46,7 @@ public:
   ~QtDirectXWidget();
 
   /** Initialized the D3D environment */
-  bool Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials);
+  bool Initialize(int screenWidth, int screenHeight, HWND hwnd);
 
   void SetPathToModels(QString pathToModels) { m_pathToModels = pathToModels.toStdString(); }
   void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = pathToMaterials.toStdString(); }

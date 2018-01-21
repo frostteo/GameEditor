@@ -15,7 +15,8 @@ private:
 public:
   ShaderConfiguration();
   virtual ~ShaderConfiguration();
-  void Configure(); //TODO FHolod: Later can be loaded from file
+  void ConfigureForwardRenderer();
+  void ConfigureDefferedRenderer();
   std::wstring GetVertexShaderFileName(const std::string& shaderName);
   std::wstring GetPixelShaderFileName(const std::string& shaderName);
   const std::string& GetConfiguredShaderName(const std::string& shaderName);

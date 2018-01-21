@@ -2,20 +2,47 @@
 
 #include <vector>
 #include "IShaderCreator.h"
-#include "GridShaderCreator.h"
-#include "ColorShaderCreator.h"
-#include "TextureShaderCreator.h"
-#include "SingleDirectLightShaderCreator.h"
-#include "SpecularSingleDirLightShaderCreator.h"
-#include "BumpSingleDirLightShaderCreator.h"
-#include "BumpSpecSingleLightShCreator.h"
-#include "BumpSpecMapShaderCreator.h"
-#include "Singleton.h"
+#include "TemplateShaderCreator.h"
+#include "GridShader.h"
+#include "ColorShader.h"
+#include "TextureShader.h"
+#include "SingleDirectLightShader.h"
+#include "SpecularSingleDirLightShader.h"
+#include "BumpSingleDirLightShader.h"
+#include "BumpSpecSingleLightSh.h"
+#include "BumpSpecMapShader.h"
+#include "ColorDefferedShader.h"
+#include "SpecularDefferedShader.h"
+#include "TextureDefferedShader.h"
+#include "BumpDefferedShader.h"
+#include "BumpSpecDefferedShader.h"
+#include "BumpSpecMapDefferedShader.h"
+#include "AmbientDefferedShader.h"
+#include "LightVolumeStencilShader.h"
+#include "PointLightDefferedShader.h"
 #include "ShaderConfiguration.h"
 #include "Logger.h"
 
 class ShaderFactory
 {
+private:
+  static const std::string COLOR_SHADER_NAME;
+  static const std::string TEXTURE_SHADER_NAME;
+  static const std::string SINGLE_DIRECT_LIGHT_SHADER_NAME;
+  static const std::string SPECULAR_DIRECT_LIGHT_SHADER_NAME;
+  static const std::string BUMP_DIRECT_LIGHT_SHADER_NAME;
+  static const std::string BUMP_SPEC_DIRECT_LIGHT_SHADER_NAME;
+  static const std::string BUMP_SPEC_MAP_DIRECT_LIGHT_SHADER_NAME;
+  static const std::string GRID_SHADER_NAME;
+  static const std::string COLOR_DEFFERED_SHADER_NAME;
+  static const std::string SPECULAR_DEFFERED_SHADER_NAME;
+  static const std::string TEXTURE_DEFFERED_SHADER_NAME;
+  static const std::string BUMP_DEFFERED_SHADER_NAME;
+  static const std::string BUMP_SPEC_DEFFERED_SHADER_NAME;
+  static const std::string BUMP_SPECMAP_DEFFERED_SHADER_NAME;
+  static const std::string AMBIENT_DEFFERED_SHADER_NAME;
+  static const std::string LIGHT_VOLUME_STENCIL_SHADER_NAME;
+  static const std::string POINT_LIGHT_DEFFERED_SHADER_NAME;
 private:
   std::vector<IShaderCreator* > m_shaderCreators;
   ShaderConfiguration* m_shaderConfiguration;

@@ -10,6 +10,7 @@
 #include "ModelFactory.h"
 #include "SGOOnMapTM.h"
 #include "IPointLightOnMapService.h"
+#include "PointLight.h"
 
 class MapEditorViewModel : public QObject
 {
@@ -18,6 +19,7 @@ private:
   static const int OCT_TREE_CELL_HALF_SIZE = 32768;
 
   std::map<int, StaticGameObject> m_staticGameObjectMap;
+  std::map<int, PointLight> m_pointLightsOnMap;
   std::set<int> m_selectedObjectIds;
   OctoTree m_octoTree;
   MapEditorPreferences* m_mapEditorPreferences;
@@ -33,6 +35,11 @@ protected:
   void EditSgoOnMap(SGOOnMapDbInfo& editedGameObject);
 
   void InitializeSgos();
+  void InitializePointLights();
+
+  void AddPointLightToMap(PointLightOnMapDbInfo& dbInfo);
+  void DeletePointLightFromMap(int id);
+  void EditPointLightOnMap(PointLightOnMapDbInfo& dbInfo);
 public:
   MapEditorViewModel();
   virtual ~MapEditorViewModel();
@@ -40,6 +47,8 @@ public:
   void Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences);
 
   void GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
+  void GetVisiblePointLights(CameraFrustrum* cameraFrustrum, std::vector<PointLight*>* pointLightsToRender);
+
   void DeleteUnusedNodesInOctTree() { m_octoTree.DeleteUnusedNodes(); }
   void GetSelectedSgos(std::vector<StaticGameObject*>* selectedSgos);
 

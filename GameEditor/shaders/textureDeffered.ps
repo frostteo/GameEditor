@@ -1,0 +1,47 @@
+
+Texture2D shaderTextures[1];
+SamplerState SampleType;
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+    float2 tex : TEXCOORD0;
+	float3 normal: NORMAL0;
+	float3 worldPos: TEXCOORD1;
+};
+
+#define POSITION 0
+#define DIFFUSE 1
+#define NORMAL 2
+#define SPECULAR 3
+#define VIEW_DIRECTION 4
+#define SELF_ILUM 5
+
+struct PixelOutputType
+{
+    float4 position : SV_Target0;
+    float4 diffuse : SV_Target1;
+	float4 normal : SV_Target2;
+	float4 specular : SV_Target3;
+	float4 viewDirection : SV_Target4;
+	float4 selfIlum : SV_Target5;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Pixel Shader
+////////////////////////////////////////////////////////////////////////////////
+PixelOutputType TexturePixelShader(PixelInputType input) : SV_TARGET
+{
+	PixelOutputType output;
+	
+	output.position = float4(input.worldPos, 1.0f);
+	
+    // Sample the pixel color from the texture using the sampler at this texture coordinate location.
+    output.diffuse = shaderTextures[0].Sample(SampleType, input.tex);
+	output.diffuse.w = 1.0f;
+	output.normal.xyz = input.normal;
+	output.normal.w = 1 - input.position.z / input.position.w; //inverted depth
+	output.selfIlum = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	output.specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    return output;
+}

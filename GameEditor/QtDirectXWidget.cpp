@@ -16,7 +16,7 @@ QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, 
   SetPathToModels(pathToModels);
   SetPathToMaterials(pathToMaterials);
 
-  bool result = Initialize(width(), height(), (HWND)winId(), m_pathToMaterials);
+  bool result = Initialize(width(), height(), (HWND)winId());
   if (!result) {
     QMessageBox::critical(this,
       "ERROR",
@@ -30,18 +30,18 @@ QtDirectXWidget::~QtDirectXWidget()
   Shutdown();
 }
 
-bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd, std::string pathToMaterials)
+bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
   bool result;
 
   m_shaderConfiguration = std::unique_ptr<ShaderConfiguration>(new ShaderConfiguration());
-  m_shaderConfiguration->Configure();
+  m_shaderConfiguration->ConfigureForwardRenderer();
 
   m_graphicSystem = std::unique_ptr<GraphicSystem>(new GraphicSystem);
   if (!m_graphicSystem)
     return false;
 
-  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration.get(), pathToMaterials);
+  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration.get(), m_pathToMaterials, m_pathToModels);
 
   // Create the camera object.
   m_Camera = std::unique_ptr<Camera>(new Camera());

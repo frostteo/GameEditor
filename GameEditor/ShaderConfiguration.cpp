@@ -11,11 +11,12 @@ ShaderConfiguration::~ShaderConfiguration()
 {
 }
 
-void ShaderConfiguration::Configure()
+void ShaderConfiguration::ConfigureForwardRenderer()
 {
   m_pathToVertexShader = L"../GameEditor/shaders/[shadername].vs";
   m_pathToPixelShader = L"../GameEditor/shaders/[shadername].ps";
 
+  m_shaderNameMap.clear();
   m_shaderNameMap.insert(shaderNameMap::value_type("color", "colorSingleDirLight"));
   m_shaderNameMap.insert(shaderNameMap::value_type("texture", "texture"));
   m_shaderNameMap.insert(shaderNameMap::value_type("specular", "specularSingleDirLight"));
@@ -23,6 +24,26 @@ void ShaderConfiguration::Configure()
   m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpec", "bumpSpec"));
   m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpecMap", "bumpSpecMap"));
   m_shaderNameMap.insert(shaderNameMap::value_type("grid", "grid"));
+}
+
+void ShaderConfiguration::ConfigureDefferedRenderer()
+{
+  m_pathToVertexShader = L"../GameEditor/shaders/[shadername].vs";
+  m_pathToPixelShader = L"../GameEditor/shaders/[shadername].ps";
+
+  m_shaderNameMap.clear();
+  m_shaderNameMap.insert(shaderNameMap::value_type("color", "colorDeffered"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("texture", "textureDeffered"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("specular", "specularDeffered"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bump", "bumpDeffered"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpec", "bumpSpecDeffered"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpecMap", "bumpSpecMapDeffered"));
+
+  m_shaderNameMap.insert(shaderNameMap::value_type("grid", "grid"));
+
+  m_shaderNameMap.insert(shaderNameMap::value_type("ambientDeffered", "ambientDeffered"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("lightVolumeStencil", "lightVolumeStencil"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("pointLightDeffered", "pointLightDeffered"));
 }
 
 std::wstring ShaderConfiguration::GetVertexShaderFileName(const std::string& shaderName)
