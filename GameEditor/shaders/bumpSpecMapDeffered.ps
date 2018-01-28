@@ -12,8 +12,8 @@ SamplerState SampleType;
 
 cbuffer MaterialBuffer
 {
-	float specularPower;
-    float4 specularColor;
+	float3 specularColorBuffer;
+	float specularPowerBuffer;
     float bumpDepth;
 }
 
@@ -27,61 +27,55 @@ struct PixelInputType
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 binormal : BINORMAL;
-	float3 viewDirection : TEXCOORD1;
-	float3 worldPos : TEXCOORD2;
 };
 
-#define POSITION 0
-#define DIFFUSE 1
-#define NORMAL 2
-#define SPECULAR 3
-#define VIEW_DIRECTION 4
-#define SELF_ILUM 5
+static const float specPowerRange = 255.0f;
 
-struct PixelOutputType
+PS_GBUFFER_OUT PackGBuffer(float4 worldPos, float3 normal, float3 diffuseColor, float3 specularColor, float specularPower, float3 selfIlumColor)
 {
-    float4 position : SV_Target0;
-    float4 diffuse : SV_Target1;
-	float4 normal : SV_Target2;
-	float4 specular : SV_Target3;
-	float4 viewDirection : SV_Target4;
-	float4 selfIlum : SV_Target5;
-};
+	PS_GBUFFER_OUT output;
+	
+	output.normal = float4(normal * 0.5f + 0.5f, 1.0f);
+	output.diffuse = float4(diffuseColor, 1.0f);
+
+	specularPower = specularPower / specPowerRange;
+	output.specular = float4(specularColor, specularPower);
+	output.selfIlum = float4(selfIlumColor, 1.0f);
+	
+	return output;
+}
+
+PS_GBUFFER_OUT PackGBuffer(float3 normal, float3 diffuseColor, float3 specularColor, float specularPower, float3 selfIlumColor)
+{
+	PS_GBUFFER_OUT output;
+	
+	output.normal = float4(normal * 0.5f + 0.5f, 1.0f);
+	output.diffuse = float4(diffuseColor, 1.0f);
+	output.specular = float4(specularColor, specularPower);
+	output.selfIlum = float4(selfIlumColor, 1.0f);
+	
+	return output;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pixel Shader
 ////////////////////////////////////////////////////////////////////////////////
-float4 BumpMapSpecularPixelShader(PixelInputType input) : SV_TARGET
+PS_GBUFFER_OUT BumpMapSpecularPixelShader(PixelInputType input) : SV_TARGET
 {
-	PixelOutputType output;
-	float4 bumpMap;
-    float3 bumpNormal;
+	float3 normal;
+    float3 diffuseColor = shaderTextures[0].Sample(SampleType, input.tex).rgb;
+	float3 specularColor = shaderTextures[2].Sample(SampleType, input.tex).rgb;
+	float specularPower = specularColorBuffer;
+	float3 selfIlumColor = float3(0.0f, 0.0f, 0.0f);
+	float4 bumpMap = shaderTextures[1].Sample(SampleType, input.tex);
 	
-	output.position = float4(input.worldPos, 1.0f);
-	output.normal.w = 1 - input.position.z / input.position.w; //inverted depth
-    // Sample the pixel color from the texture using the sampler at this texture coordinate location.
-    output.diffuse = shaderTexture.Sample(SampleType, input.tex);
-	
-	 // Sample the pixel in the bump map.
-    bumpMap = shaderTextures[1].Sample(SampleType, input.tex);
-
-    // Expand the range of the normal value from (0, +1) to (-1, +1).
+	 // Expand the range of the normal value from (0, +1) to (-1, +1).
     bumpMap = (bumpMap * 2.0f) - 1.0f;
 	bumpMap *= bumpDepth;
-
-    // Calculate the normal from the data in the bump map.
-    bumpNormal = (bumpMap.x * input.tangent) + (bumpMap.y * input.binormal) + (bumpMap.z * input.normal);
 	
-    // Normalize the resulting bump normal.
-    bumpNormal = normalize(bumpNormal);
+	normal = (bumpMap.x * input.tangent) + (bumpMap.y * input.binormal) + (bumpMap.z * input.normal);
+	normal = normalize(normal);
 	
-	output.normal.xyz = bumpNormal;
-
-	output.specular.xyz = shaderTextures[2].Sample(SampleType, input.tex);
-	output.specular.w = specularPower;
-	output.viewDirection = input.viewDirection;
-	
-	output.selfIlum = float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-    return output;
+	return PackGBuffer(input.worldPos, normal, diffuseColor, specularColor, specularPower, selfIlumColor);
 }

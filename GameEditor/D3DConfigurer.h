@@ -77,14 +77,12 @@ public:
   void SetCullFrontRasterState();
   void SetCullNoneRasterState();
 
- 
-
   void SetNullAsDepthBuffer();
   void SetGBufferRenderTargets();
   void ClearGBufferRenderTargets();
   ID3D11ShaderResourceView** GetGBufferShaderResourceViewes();
-  void SetGBufferOnlyDepthBufferToRenderTargets();
+  void SetGBufferOnlyWriteableDepthBufferToRenderTargets();
   void ClearGBufferStencil();
-  void SetGBufferDepthBufferToRenderTargets();
+  void SetGBufferReadonlyDepthBufferToRenderTargets();
 };
 

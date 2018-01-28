@@ -213,7 +213,7 @@ void BumpSpecDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, c
 }
 
 void BumpSpecDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, XMVECTOR specularColor, float specularPower, XMFLOAT3 cameraPosition, float bumpDepth)
+  XMMATRIX projectionMatrix, XMFLOAT3 specularColor, float specularPower, XMFLOAT3 cameraPosition, float bumpDepth)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;

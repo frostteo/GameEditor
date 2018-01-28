@@ -65,6 +65,6 @@ IMaterial* BumpSpecMaterialCreator::Get(const std::string& fileInStr, const std:
 
   Texture* texture = m_textureFactory->GetResource(texturePath);
   Texture* normalMap = m_textureFactory->GetResource(normalMapPath);
-  BumpSpecMaterial* material = new BumpSpecMaterial(fileName, texture, normalMap, bumpDepth, XMVectorSet(rSpec, gSpec, bSpec, aSpec), specularPower);
+ BumpSpecMaterial* material = new BumpSpecMaterial(fileName, texture, normalMap, bumpDepth, XMFLOAT3(rSpec, gSpec, bSpec), specularPower);
   return material;
 }

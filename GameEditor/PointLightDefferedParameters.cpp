@@ -11,18 +11,16 @@ PointLightDefferedParameters::~PointLightDefferedParameters()
 {
 }
 
-void PointLightDefferedParameters::SetScreenWidth(float width)
+void PointLightDefferedParameters::SetPerspectiveValues(XMMATRIX projectionMatrix)
 {
-  if (width <= 0)
-    RUNTIME_ERROR("Width cannot be less or equal zero");
+  XMFLOAT4X4 readableProjectionMatrix;
+  XMFLOAT4 perspectiveValuesReadable;
 
-  m_screenWidth = width;
-}
+  XMStoreFloat4x4(&readableProjectionMatrix, projectionMatrix);
+  perspectiveValuesReadable.x = 1.0f / readableProjectionMatrix._11;
+  perspectiveValuesReadable.y = 1.0f / readableProjectionMatrix._22;
+  perspectiveValuesReadable.z = readableProjectionMatrix._43;
+  perspectiveValuesReadable.w = -readableProjectionMatrix._33;
 
-void PointLightDefferedParameters::SetScreenHeight(float height)
-{
-  if (height <= 0)
-    RUNTIME_ERROR("Height cannot be less or equal zero");
-
-  m_screenHeight = height;
+  m_perspectiveValues = XMLoadFloat4(&perspectiveValuesReadable);
 }

@@ -32,7 +32,6 @@ struct PixelInputType
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 binormal : BINORMAL;
-	float3 worldPos: TEXCOORD1;
 };
 
 
@@ -49,18 +48,16 @@ PixelInputType BumpMapVertexShader(VertexInputType input)
 
     // Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = mul(input.position, worldMatrix);
-	output.worldPos = output.position;
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     
-    // Store the texture coordinates for the pixel shader.
     output.tex = input.tex;
     
     // Calculate the normal vector against the world matrix only and then normalize the final value.
     output.normal = mul(input.normal, (float3x3)worldMatrix);
     output.normal = normalize(output.normal);
 
-	    // Calculate the tangent vector against the world matrix only and then normalize the final value.
+	// Calculate the tangent vector against the world matrix only and then normalize the final value.
     output.tangent = mul(input.tangent, (float3x3)worldMatrix);
     output.tangent = normalize(output.tangent);
 

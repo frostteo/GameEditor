@@ -17,7 +17,7 @@ class QtDirectXWidget : public QWidget, public Ui::QtDirectXWidget
     Q_OBJECT
 protected:
   const bool FULL_SCREEN = false;
-  const bool VSYNC_ENABLED = true;
+  const bool VSYNC_ENABLED = false;
   const float SCREEN_DEPTH = 65536.0f;
   const float SCREEN_NEAR = 0.1f;
 

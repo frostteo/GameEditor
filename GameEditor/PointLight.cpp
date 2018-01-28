@@ -43,6 +43,5 @@ void PointLight::SetAttenuation(float linearAttenuation, float quadraticAttenuat
     m_radius = max(x1, x2);
   }
   m_radius *= 100.0f;
-  m_radius *= 0.5f;
   this->SetScale(m_radius);
 }

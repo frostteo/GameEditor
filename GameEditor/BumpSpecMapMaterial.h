@@ -10,7 +10,7 @@ public:
   Texture* m_specularMap;
   static const std::string bumpSpecMapMaterialType;
 public:
-  BumpSpecMapMaterial(const std::string& name, Texture* texture, Texture* normalMap, Texture* specularMap, float bumpDepth, XMVECTOR specularColor, float specularPower) : BumpSpecMaterial(name, texture, normalMap, bumpDepth, specularColor, specularPower)
+  BumpSpecMapMaterial(const std::string& name, Texture* texture, Texture* normalMap, Texture* specularMap, float bumpDepth, XMFLOAT3 specularColor, float specularPower) : BumpSpecMaterial(name, texture, normalMap, bumpDepth, specularColor, specularPower)
   {
     m_specularMap = specularMap;
     textures[0] = m_texture->GetTexture();

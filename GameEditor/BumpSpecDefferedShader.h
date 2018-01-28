@@ -14,7 +14,7 @@ protected:
   };
   struct MaterialBufferType
   {
-    XMVECTOR specularColor;
+    XMFLOAT3 specularColor;
     float specularPower;
     float bumpDepth;
   };
@@ -25,7 +25,7 @@ protected:
   virtual void ShutdownShader() override;
   virtual void InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename) override;
   void SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-    XMMATRIX projectionMatrix, XMVECTOR specularColor, float specularPower, XMFLOAT3 cameraPosition, float bumpDepth);
+    XMMATRIX projectionMatrix, XMFLOAT3 specularColor, float specularPower, XMFLOAT3 cameraPosition, float bumpDepth);
 public:
   BumpSpecDefferedShader();
   virtual ~BumpSpecDefferedShader();

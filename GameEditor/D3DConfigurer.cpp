@@ -355,8 +355,8 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
   // Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
   // that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
   depthDisabledStencilDesc.DepthEnable = false;
-  depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-  depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+  depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+  depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
   depthDisabledStencilDesc.StencilEnable = false;
   depthDisabledStencilDesc.StencilReadMask = 0xFF;
   depthDisabledStencilDesc.StencilWriteMask = 0xFF;
@@ -761,9 +761,9 @@ void D3DConfigurer::ClearGBufferRenderTargets()
   m_gbuffer->ClearRenderTargets(m_deviceContext, 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void D3DConfigurer::SetGBufferOnlyDepthBufferToRenderTargets()
+void D3DConfigurer::SetGBufferOnlyWriteableDepthBufferToRenderTargets()
 {
-  m_deviceContext->OMSetRenderTargets(0, nullptr, m_gbuffer->GetDepthBuffer());
+  m_deviceContext->OMSetRenderTargets(0, nullptr, m_gbuffer->GetWriteableDepthBuffer());
 }
 
 void D3DConfigurer::ClearGBufferStencil()
@@ -771,9 +771,9 @@ void D3DConfigurer::ClearGBufferStencil()
   m_gbuffer->ClearStencil(m_deviceContext);
 }
 
-void D3DConfigurer::SetGBufferDepthBufferToRenderTargets()
+void D3DConfigurer::SetGBufferReadonlyDepthBufferToRenderTargets()
 {
-  m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_gbuffer->GetDepthBuffer());
+  m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_gbuffer->GetReadonlyDepthBuffer());
 }
 
 void D3DConfigurer::PrepareToFullScreenDefferedEffect()

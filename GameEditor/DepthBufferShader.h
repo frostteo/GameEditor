@@ -2,7 +2,7 @@
 
 #include "IShader.h"
 
-class LightVolumeStencilShader :
+class DepthBufferShader :
   public IShader
 {
 protected:
@@ -13,8 +13,8 @@ protected:
   void SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
     XMMATRIX projectionMatrix);
 public:
-  LightVolumeStencilShader();
-  virtual ~LightVolumeStencilShader();
+  DepthBufferShader();
+  virtual ~DepthBufferShader();
   virtual void Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
     XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition) override;
   virtual void EnableShader(ID3D11DeviceContext* deviceContext) override;

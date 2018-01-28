@@ -17,7 +17,7 @@ const std::string ShaderFactory::BUMP_SPEC_DEFFERED_SHADER_NAME = "bumpSpecDeffe
 const std::string ShaderFactory::BUMP_SPECMAP_DEFFERED_SHADER_NAME = "bumpSpecMapDeffered";
 
 const std::string ShaderFactory::POINT_LIGHT_DEFFERED_SHADER_NAME = "pointLightDeffered";
-const std::string ShaderFactory::LIGHT_VOLUME_STENCIL_SHADER_NAME = "lightVolumeStencil";
+const std::string ShaderFactory::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";
 const std::string ShaderFactory::AMBIENT_DEFFERED_SHADER_NAME = "ambientDeffered";
 
 ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, ShaderConfiguration* shaderConfiguration)
@@ -43,7 +43,7 @@ ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, Shader
   m_shaderCreators.push_back(new TemplateShaderCreator<BumpSpecMapDefferedShader, BUMP_SPECMAP_DEFFERED_SHADER_NAME>());
 
   m_shaderCreators.push_back(new TemplateShaderCreator<AmbientDefferedShader, AMBIENT_DEFFERED_SHADER_NAME>());
-  m_shaderCreators.push_back(new TemplateShaderCreator<LightVolumeStencilShader, LIGHT_VOLUME_STENCIL_SHADER_NAME>());
+  m_shaderCreators.push_back(new TemplateShaderCreator<DepthBufferShader, DEPTH_BUFFER_SHADER_NAME>());
   m_shaderCreators.push_back(new TemplateShaderCreator<PointLightDefferedShader, POINT_LIGHT_DEFFERED_SHADER_NAME>());
 
   for (auto& creator : m_shaderCreators)

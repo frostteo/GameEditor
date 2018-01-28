@@ -15,7 +15,7 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 position : SV_POSITION;
-    float2 tex : TEXCOORD0;
+	float2 cpPos: TEXCOORD0;
 };
 
 PixelInputType PointLightVertexShader(VertexInputType input)
@@ -25,6 +25,6 @@ PixelInputType PointLightVertexShader(VertexInputType input)
     output.position = mul(input.position, worldMatrix);
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
-    output.tex = input.tex;
+	output.cpPos = output.position.xy / output.position.w;
     return output;
 }

@@ -18,7 +18,7 @@
 #include "BumpSpecDefferedShader.h"
 #include "BumpSpecMapDefferedShader.h"
 #include "AmbientDefferedShader.h"
-#include "LightVolumeStencilShader.h"
+#include "DepthBufferShader.h"
 #include "PointLightDefferedShader.h"
 #include "ShaderConfiguration.h"
 #include "Logger.h"
@@ -41,7 +41,7 @@ private:
   static const std::string BUMP_SPEC_DEFFERED_SHADER_NAME;
   static const std::string BUMP_SPECMAP_DEFFERED_SHADER_NAME;
   static const std::string AMBIENT_DEFFERED_SHADER_NAME;
-  static const std::string LIGHT_VOLUME_STENCIL_SHADER_NAME;
+  static const std::string DEPTH_BUFFER_SHADER_NAME;
   static const std::string POINT_LIGHT_DEFFERED_SHADER_NAME;
 private:
   std::vector<IShaderCreator* > m_shaderCreators;

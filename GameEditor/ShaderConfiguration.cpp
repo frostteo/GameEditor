@@ -42,7 +42,7 @@ void ShaderConfiguration::ConfigureDefferedRenderer()
   m_shaderNameMap.insert(shaderNameMap::value_type("grid", "grid"));
 
   m_shaderNameMap.insert(shaderNameMap::value_type("ambientDeffered", "ambientDeffered"));
-  m_shaderNameMap.insert(shaderNameMap::value_type("lightVolumeStencil", "lightVolumeStencil"));
+  m_shaderNameMap.insert(shaderNameMap::value_type("depthBuffer", "depthBuffer"));
   m_shaderNameMap.insert(shaderNameMap::value_type("pointLightDeffered", "pointLightDeffered"));
 }
 

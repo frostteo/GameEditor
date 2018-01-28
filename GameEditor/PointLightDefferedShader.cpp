@@ -3,6 +3,7 @@
 
 PointLightDefferedShader::PointLightDefferedShader()
 {
+  m_worldCoordsUnpackBuffer = nullptr;
   m_pointLightBuffer = nullptr;
 }
 
@@ -19,6 +20,7 @@ void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   ID3D10Blob* vertexShaderBuffer;
   ID3D10Blob* pixelShaderBuffer;
   D3D11_BUFFER_DESC matrixBufferDesc;
+  D3D11_BUFFER_DESC worldCoordsUnpackBufferDesc;
   D3D11_BUFFER_DESC pointLightBufferDesc;
   D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
   unsigned int numElements;
@@ -146,6 +148,19 @@ void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd,
     throw std::runtime_error("failed create sample state for texture " + vsFilenameStdStr);
   }
 
+  worldCoordsUnpackBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+  worldCoordsUnpackBufferDesc.ByteWidth = sizeof(WorldCoordsUnpackBuffer);
+  worldCoordsUnpackBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+  worldCoordsUnpackBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+  worldCoordsUnpackBufferDesc.MiscFlags = 0;
+  worldCoordsUnpackBufferDesc.StructureByteStride = 0;
+
+  result = device->CreateBuffer(&worldCoordsUnpackBufferDesc, NULL, &m_worldCoordsUnpackBuffer);
+  if (FAILED(result))
+  {
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for world coord unpack data " + vsFilenameStdStr, __FILE__, __LINE__));
+  }
+
   // Setup the description of the light dynamic constant buffer that is in the pixel shader.
   // Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
   pointLightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -167,6 +182,12 @@ void PointLightDefferedShader::ShutdownShader()
 {
   TextureShader::ShutdownShader();
 
+  if (m_worldCoordsUnpackBuffer)
+  {
+    m_worldCoordsUnpackBuffer->Release();
+    m_worldCoordsUnpackBuffer = nullptr;
+  }
+
   if (m_pointLightBuffer)
   {
     m_pointLightBuffer->Release();
@@ -175,14 +196,14 @@ void PointLightDefferedShader::ShutdownShader()
 }
 
 void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, XMFLOAT3 pointLightColor, XMFLOAT3 pointLightPosition, float linearAttenuation, float quadraticAttenuation, float screenWidth, float screenHeight)
+  XMMATRIX projectionMatrix, XMFLOAT3 pointLightColor, XMFLOAT3 pointLightPosition, float linearAttenuation, float quadraticAttenuation, XMVECTOR perspectiveValues, XMMATRIX viewMatrixInv)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;
   unsigned int bufferNumber;
   MatrixBufferType* matrixBufferDataPtr;
+  WorldCoordsUnpackBuffer* worldCoordsUnpackBuffer;
   PointLightBuffer* pointLightBufferDataPtr;
-
 
   // Transpose the matrices to prepare them for the shader.
   worldMatrix = XMMatrixTranspose(worldMatrix);
@@ -211,6 +232,22 @@ void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
   // Finanly set the constant buffer in the vertex shader with the updated values.
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 
+  result = deviceContext->Map(m_worldCoordsUnpackBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+  if (FAILED(result))
+    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the world pos unpack data constant buffer ", __FILE__, __LINE__));
+
+  worldCoordsUnpackBuffer = (WorldCoordsUnpackBuffer*)mappedResource.pData;
+  worldCoordsUnpackBuffer->perspectiveValues = perspectiveValues;
+  worldCoordsUnpackBuffer->viewMatrixInverse = XMMatrixTranspose(viewMatrixInv);
+
+  // Unlock the constant buffer.
+  deviceContext->Unmap(m_worldCoordsUnpackBuffer, 0);
+
+  bufferNumber = 0;
+
+  // Finally set the light constant buffer in the pixel shader with the updated values.
+  deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_worldCoordsUnpackBuffer);
+
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_pointLightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
@@ -224,14 +261,12 @@ void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
   pointLightBufferDataPtr->linearAttenuation = linearAttenuation;
   pointLightBufferDataPtr->position = pointLightPosition;
   pointLightBufferDataPtr->quadraticAttenuation = quadraticAttenuation;
-  pointLightBufferDataPtr->screenWidth = screenWidth;
-  pointLightBufferDataPtr->screenHeight = screenHeight;
 
   // Unlock the constant buffer.
   deviceContext->Unmap(m_pointLightBuffer, 0);
 
   // Set the position of the light constant buffer in the pixel shader.
-  bufferNumber = 0;
+  bufferNumber = 1;
 
   // Finally set the light constant buffer in the pixel shader with the updated values.
   deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pointLightBuffer);
@@ -250,7 +285,7 @@ void PointLightDefferedShader::Render(ID3D11DeviceContext* deviceContext, int in
   XMMatrixDecompose(&scale, &rotation, &position, pointLightWorldMatrix);
   XMStoreFloat3(&positionFloat3, position);
 
-  SetShaderParameters(deviceContext, pointLightWorldMatrix, viewMatrix, projectionMatrix, pointLight->GetColor(), positionFloat3, pointLight->GetLinearAttenuation(), pointLight->GetQuadraticAttenuation(), pointLightDefferedParameters->GetScreenWidth(), pointLightDefferedParameters->GetScreenHeight());
+  SetShaderParameters(deviceContext, pointLightWorldMatrix, viewMatrix, projectionMatrix, pointLight->GetColor(), positionFloat3, pointLight->GetLinearAttenuation(), pointLight->GetQuadraticAttenuation(), pointLightDefferedParameters->GetPerspectiveValues(), pointLightDefferedParameters->GetViewMatrixInverse());
 
   RenderShader(deviceContext, indexCount);
 }

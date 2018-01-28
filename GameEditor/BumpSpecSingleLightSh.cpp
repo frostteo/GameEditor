@@ -236,7 +236,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
 
 void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix, XMFLOAT3 lightDirection, XMVECTOR ambientColor,
-  XMVECTOR diffuseColor, XMVECTOR specularColor, float specularPower, XMFLOAT3 cameraPosition, float bumpDepth)
+  XMVECTOR diffuseColor, XMFLOAT3 specularColor, float specularPower, XMFLOAT3 cameraPosition, float bumpDepth)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;

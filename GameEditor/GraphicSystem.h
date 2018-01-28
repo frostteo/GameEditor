@@ -22,7 +22,7 @@ class GraphicSystem
 private:
   const static std::string GRID_SHADER_NAME;
   const static std::string AMBIENT_DEFFERED_SHADER_NAME;
-  const static std::string LIGHT_VOLUME_STENCIL_SHADER_NAME;
+  const static std::string DEPTH_BUFFER_SHADER_NAME;
   const static std::string POINT_LIGHT_DEFFERED_SHADER_NAME;
   const static std::string POINT_LIGHT_MODEL_NAME;
 
@@ -40,6 +40,7 @@ private:
   PointLightDefferedParameters m_pointLightDefferedParemeters;
 protected:
   void DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix, LightininigSystem* lightiningSystem, XMFLOAT3 cameraPosition);
+  void DrawModelsInDepthBuffer(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix);
   void DrawGrids(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix);
 public:
   GraphicSystem();

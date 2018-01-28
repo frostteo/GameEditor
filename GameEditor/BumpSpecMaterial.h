@@ -13,11 +13,11 @@ private:
   static const int TEXTURES_COUNT = 2;
   ID3D11ShaderResourceView* textures[TEXTURES_COUNT];
 public:
-  XMVECTOR m_specularColor;
+  XMFLOAT3 m_specularColor;
   float m_specularPower;
   static const std::string bumpSpecMaterialType;
 public:
-  BumpSpecMaterial(const std::string& name, Texture* texture, Texture* normalMap, float bumpDepth, XMVECTOR specularColor, float specularPower)
+  BumpSpecMaterial(const std::string& name, Texture* texture, Texture* normalMap, float bumpDepth, XMFLOAT3 specularColor, float specularPower)
     : BumpMaterial(name, texture, normalMap, bumpDepth)
   {
     m_specularColor = specularColor;

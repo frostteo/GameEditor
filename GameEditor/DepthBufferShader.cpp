@@ -1,7 +1,7 @@
-#include "LightVolumeStencilShader.h"
+#include "DepthBufferShader.h"
 
 
-LightVolumeStencilShader::LightVolumeStencilShader()
+DepthBufferShader::DepthBufferShader()
 {
   m_matrixBuffer = nullptr;
   m_layout = nullptr;
@@ -10,12 +10,12 @@ LightVolumeStencilShader::LightVolumeStencilShader()
 }
 
 
-LightVolumeStencilShader::~LightVolumeStencilShader()
+DepthBufferShader::~DepthBufferShader()
 {
   ShutdownShader();
 }
 
-void LightVolumeStencilShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
+void DepthBufferShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -92,7 +92,7 @@ void LightVolumeStencilShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   }
 }
 
-void LightVolumeStencilShader::ShutdownShader()
+void DepthBufferShader::ShutdownShader()
 {
   IShader::ShutdownShader();
 
@@ -103,7 +103,7 @@ void LightVolumeStencilShader::ShutdownShader()
   }
 }
 
-void LightVolumeStencilShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+void DepthBufferShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix)
 {
   HRESULT result;
@@ -139,14 +139,14 @@ void LightVolumeStencilShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 }
 
-void LightVolumeStencilShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
+void DepthBufferShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
   XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
   SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
   deviceContext->DrawIndexed(indexCount, 0, 0);
 }
 
-void LightVolumeStencilShader::EnableShader(ID3D11DeviceContext* deviceContext)
+void DepthBufferShader::EnableShader(ID3D11DeviceContext* deviceContext)
 {
   deviceContext->IASetInputLayout(m_layout);
   deviceContext->VSSetShader(m_vertexShader, NULL, 0);

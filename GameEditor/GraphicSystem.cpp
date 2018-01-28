@@ -1,7 +1,7 @@
 #include "GraphicSystem.h"
 
 const std::string GraphicSystem::GRID_SHADER_NAME = "grid";
-const std::string GraphicSystem::LIGHT_VOLUME_STENCIL_SHADER_NAME = "lightVolumeStencil";
+const std::string GraphicSystem::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";
 const std::string GraphicSystem::AMBIENT_DEFFERED_SHADER_NAME = "ambientDeffered";
 const std::string GraphicSystem::POINT_LIGHT_DEFFERED_SHADER_NAME = "pointLightDeffered";
 const std::string GraphicSystem::POINT_LIGHT_MODEL_NAME = "sphere1cm.txt";
@@ -33,9 +33,6 @@ void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnab
   m_modelFactory = std::unique_ptr<ModelFactory>((new ModelFactory())->Initialize(m_direct3D->GetDevice(), m_materialFactory.get()));
 
   m_pointLightMesh = m_modelFactory->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + POINT_LIGHT_MODEL_NAME)->GetMesh(0);
-
-  m_pointLightDefferedParemeters.SetScreenWidth(screenWidth);
-  m_pointLightDefferedParemeters.SetScreenHeight(screenHeight);
 }
 
 ModelFactory* GraphicSystem::GetModelFactory()
@@ -86,7 +83,6 @@ void GraphicSystem::DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix,
 {
   ID3D11DeviceContext* deviceContext = m_direct3D->GetDeviceContext();
 
-  // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
   deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
   for (auto shaderInfo : m_modelRenderList)
@@ -118,6 +114,28 @@ void GraphicSystem::DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix,
   m_modelRenderList.clear();
 }
 
+void GraphicSystem::DrawModelsInDepthBuffer(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix)
+{
+  ID3D11DeviceContext* deviceContext = m_direct3D->GetDeviceContext();
+  XMFLOAT3 space;
+
+  deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+  auto depthBufferShader = m_shaderFactory->Get(DEPTH_BUFFER_SHADER_NAME);
+  depthBufferShader->EnableShader(deviceContext);
+  for (auto shaderInfo : m_modelRenderList)
+  {
+    for (auto materialInfo : shaderInfo.second)
+    {
+      for (auto meshInfo : materialInfo.second)
+      {
+        meshInfo.second->PrepareToRender(deviceContext);
+        depthBufferShader->Render(deviceContext, meshInfo.second->GetIndexCount(), meshInfo.first, viewMatrix, projectionMatrix, nullptr, nullptr, space);
+      }
+    }
+  }
+}
+
 void GraphicSystem::DrawGrids(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix)
 {
   XMFLOAT3 nothing;
@@ -145,55 +163,59 @@ void GraphicSystem::RenderDeffered(Camera* camera, LightininigSystem* lightining
   XMMATRIX spaceMatrix;
   XMFLOAT3 spaceFloat3;
 
-  m_direct3D->SetGBufferRenderTargets();
+ 
   m_direct3D->ClearGBufferRenderTargets();
-
   m_direct3D->DisableBlending();
 
   camera->GetViewMatrix(viewMatrix);
   camera->GetProjectionMatrix(projectionMatrix);
   camera->GetOrthoMatrix(orthoMatrix);
 
+  m_direct3D->SetGBufferRenderTargets();
   DrawModels(viewMatrix, projectionMatrix, nullptr, camera->GetPosition());
+
   m_direct3D->SetBackBufferRenderTarget();
   m_direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
   m_direct3D->DisableDepthTest();
   m_direct3D->SetNullAsDepthBuffer();
-  m_direct3D->PrepareToFullScreenDefferedEffect();
+    m_direct3D->PrepareToFullScreenDefferedEffect();
 
   auto ambientDefferedShader = m_shaderFactory->Get(AMBIENT_DEFFERED_SHADER_NAME);
   ambientDefferedShader->EnableShader(m_direct3D->GetDeviceContext());
-  ambientDefferedShader->SetTextures(m_direct3D->GetDeviceContext(), m_direct3D->GetGBufferShaderResourceViewes(), GBuffer::BUFFER_COUNT);
+  ambientDefferedShader->SetTextures(m_direct3D->GetDeviceContext(), m_direct3D->GetGBufferShaderResourceViewes(), GBuffer::SHADER_RESOURCE_VIEW_COUNT);
   ambientDefferedShader->Render(m_direct3D->GetDeviceContext(), 0, spaceMatrix, spaceMatrix, spaceMatrix, nullptr, lightiningSystem, spaceFloat3);
   
   m_direct3D->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
   m_direct3D->EnableAditiveBlending();
-  
 
-  auto pointLightVolumeShader = m_shaderFactory->Get(LIGHT_VOLUME_STENCIL_SHADER_NAME);
+  auto depthBufferShader = m_shaderFactory->Get(DEPTH_BUFFER_SHADER_NAME);
   auto pointLightDefferedShader = m_shaderFactory->Get(POINT_LIGHT_DEFFERED_SHADER_NAME);
-  
+
+  camera->GetWorldMatrix(worldMatrix);
+  m_pointLightDefferedParemeters.SetViewMatrixInverse(worldMatrix);
+  m_pointLightDefferedParemeters.SetPerspectiveValues(projectionMatrix);
+
   for (auto pointLight : *lightiningSystem->GetPointLights())
   {
     LightininigSystem onePointLightLS;
     onePointLightLS.AddPointLight(pointLight);
     pointLight->GetWorldMatrix(worldMatrix);
 
-    m_direct3D->SetGBufferOnlyDepthBufferToRenderTargets();
+    m_direct3D->SetGBufferOnlyWriteableDepthBufferToRenderTargets();
     m_direct3D->ClearGBufferStencil();
     m_direct3D->EnableDepthStencilLightVolumeState();
     m_direct3D->SetCullNoneRasterState();
-    pointLightVolumeShader->EnableShader(m_direct3D->GetDeviceContext());
+    depthBufferShader->EnableShader(m_direct3D->GetDeviceContext());
     m_pointLightMesh->PrepareToRender(m_direct3D->GetDeviceContext());
-    pointLightVolumeShader->Render(m_direct3D->GetDeviceContext(), m_pointLightMesh->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, nullptr, &onePointLightLS, camera->GetPosition());
+    depthBufferShader->Render(m_direct3D->GetDeviceContext(), m_pointLightMesh->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, nullptr, &onePointLightLS, camera->GetPosition());
 
-    m_direct3D->SetGBufferDepthBufferToRenderTargets();
+    m_direct3D->SetGBufferReadonlyDepthBufferToRenderTargets();
     m_direct3D->EnableDepthStencilDefferedLightState();
     m_direct3D->SetCullFrontRasterState();
+    pointLightDefferedShader->SetTextures(m_direct3D->GetDeviceContext(), m_direct3D->GetGBufferShaderResourceViewes(), GBuffer::SHADER_RESOURCE_VIEW_COUNT);
     pointLightDefferedShader->EnableShader(m_direct3D->GetDeviceContext());
     m_pointLightMesh->PrepareToRender(m_direct3D->GetDeviceContext());
     pointLightDefferedShader->Render(m_direct3D->GetDeviceContext(), m_pointLightMesh->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, &m_pointLightDefferedParemeters, &onePointLightLS, camera->GetPosition());
-
   }
 
   m_direct3D->SetCullBackRasterState();
