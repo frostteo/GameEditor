@@ -45,3 +45,36 @@ void PointLight::SetAttenuation(float linearAttenuation, float quadraticAttenuat
   m_radius *= 100.0f;
   this->SetScale(m_radius);
 }
+
+void PointLight::GetWorldMatrix(XMMATRIX& worldMatrix)
+{
+  m_needRebuildRotationMatrix = false;
+  if (NeedRebuildWorldMatrix())
+  {
+    needRebuildDependOnWorldMatrix = true;
+
+    if (m_needRebuildTranslationMatrix) {
+      m_translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
+      m_needRebuildTranslationMatrix = false;
+    }
+
+    if (m_needRebuildScaleMatrix) {
+      m_scaleMatrix = XMMatrixScaling(m_scale, m_scale, m_scale);
+      m_needRebuildScaleMatrix = false;
+    }
+
+    m_worldMatrix = XMMatrixMultiply(m_scaleMatrix, m_translationMatrix);
+  }
+
+  if (m_parent)
+  {
+    XMMATRIX parentMatrix;
+    GetParentMatrix(parentMatrix);
+
+    worldMatrix = XMMatrixMultiply(m_worldMatrix, parentMatrix);
+  }
+  else
+  {
+    worldMatrix = m_worldMatrix;
+  }
+}

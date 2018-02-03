@@ -22,6 +22,7 @@ public:
   XMFLOAT3 GetColor() { return m_color; }
   void SetColor(XMFLOAT3 color) { m_color = color; }
   float GetRadius() { return m_radius; }
+  void virtual GetWorldMatrix(XMMATRIX& worldMatrix);
   virtual ~PointLight();
 };
 

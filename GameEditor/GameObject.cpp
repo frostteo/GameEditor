@@ -76,6 +76,11 @@ void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
   {
     needRebuildDependOnWorldMatrix = true;
 
+    if (m_needRebuildScaleMatrix) {
+      m_scaleMatrix = XMMatrixScaling(m_scale, m_scale, m_scale);
+      m_needRebuildScaleMatrix = false;
+    }
+
     if (m_needRebuildRotationMatrix) {
       m_rotationMatrix = XMMatrixRotationRollPitchYaw(XMConvertToRadians(m_rotationX), XMConvertToRadians(m_rotationY), XMConvertToRadians(m_rotationZ));
       m_needRebuildRotationMatrix = false;
@@ -84,11 +89,6 @@ void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
     if (m_needRebuildTranslationMatrix) {
       m_translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
       m_needRebuildTranslationMatrix = false;
-    }
-
-    if (m_needRebuildScaleMatrix) {
-      m_scaleMatrix = XMMatrixScaling(m_scale, m_scale, m_scale);
-      m_needRebuildScaleMatrix = false;
     }
 
     if (m_scale != 1.0f)

@@ -441,60 +441,56 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
 void D3DConfigurer::InitializeDefferedLightingStructures()
 {
   bool result;
-  D3D11_DEPTH_STENCIL_DESC depthStencilLightVolumeDesc;
-  D3D11_DEPTH_STENCIL_DESC depthStencilDefferedLightDesc;
+  D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 
-  ZeroMemory(&depthStencilLightVolumeDesc, sizeof(depthStencilLightVolumeDesc));
+  ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 
-  depthStencilLightVolumeDesc.DepthEnable = true;
-  depthStencilLightVolumeDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-  depthStencilLightVolumeDesc.DepthFunc = D3D11_COMPARISON_LESS;
+  depthStencilDesc.DepthEnable = true;
+  depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+  depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
-  depthStencilLightVolumeDesc.StencilEnable = true;
-  depthStencilLightVolumeDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
-  depthStencilLightVolumeDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+  depthStencilDesc.StencilEnable = true;
+  depthStencilDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+  depthStencilDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
 
-  depthStencilLightVolumeDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilLightVolumeDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-  depthStencilLightVolumeDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilLightVolumeDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+  depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+  depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+  depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+  depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-  depthStencilLightVolumeDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilLightVolumeDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-  depthStencilLightVolumeDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilLightVolumeDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+  depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+  depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+  depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+  depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-  result = m_device->CreateDepthStencilState(&depthStencilLightVolumeDesc, &m_depthStencilLightVolumeState);
+  result = m_device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilLightVolumeState);
   if (FAILED(result))
   {
-    RUNTIME_ERROR("Cant create depth stencil light volume state");
+    RUNTIME_ERROR("Can't create light volume depth stencil state");
   }
 
-  ZeroMemory(&depthStencilDefferedLightDesc, sizeof(depthStencilDefferedLightDesc));
-
-  depthStencilDefferedLightDesc.DepthEnable = false;
-  depthStencilDefferedLightDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-  depthStencilDefferedLightDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-  depthStencilDefferedLightDesc.StencilEnable = true;
-  depthStencilDefferedLightDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
-  depthStencilDefferedLightDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
-
-  depthStencilDefferedLightDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilDefferedLightDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilDefferedLightDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilDefferedLightDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
-
-  depthStencilDefferedLightDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilDefferedLightDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilDefferedLightDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-  depthStencilDefferedLightDesc.BackFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
-
-  result = m_device->CreateDepthStencilState(&depthStencilDefferedLightDesc, &m_depthStencilDefferedLightState);
+  depthStencilDesc.StencilEnable = false;
+  depthStencilDesc.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
+  
+  result = m_device->CreateDepthStencilState(&depthStencilDesc, &m_greaterEqualReadonlyDepthStensilState);
   if (FAILED(result))
   {
-    RUNTIME_ERROR("Cant create depth stencil defferred light state");
+    RUNTIME_ERROR("Can't create deffered light tesselated depth stencil state");
   }
+
+  depthStencilDesc.DepthEnable = false;
+  depthStencilDesc.StencilEnable = true;
+  depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+  depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
+  depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+  depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
+
+  result = m_device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilDefferedLightState);
+  if (FAILED(result))
+  {
+    RUNTIME_ERROR("Can't create defferred light depth stencil state");
+  }
+
 }
 
 void D3DConfigurer::EnableDepthStencilLightVolumeState()
@@ -505,6 +501,11 @@ void D3DConfigurer::EnableDepthStencilLightVolumeState()
 void D3DConfigurer::EnableDepthStencilDefferedLightState()
 {
   m_deviceContext->OMSetDepthStencilState(m_depthStencilDefferedLightState, 0);
+}
+
+void D3DConfigurer::EnableGreaterEqualReadonlyDepthTest()
+{
+  m_deviceContext->OMSetDepthStencilState(m_greaterEqualReadonlyDepthStensilState, 0);
 }
 
 void D3DConfigurer::SetCullBackRasterState()

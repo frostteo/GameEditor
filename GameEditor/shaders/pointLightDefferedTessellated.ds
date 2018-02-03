@@ -1,0 +1,40 @@
+
+cbuffer cbPointLightDomain : register(b0)
+{
+	float4x4 LightProjection : packoffset(c0);
+}
+
+struct HS_CONSTANT_DATA_OUTPUT
+{
+	float Edges[4] : SV_TessFactor;
+	float Inside[2] : SV_InsideTessFactor; 
+};
+
+struct HS_OUTPUT
+{
+	float3 HemiDir : POSITION;
+};
+
+struct DS_OUTPUT
+{
+	float4 Position : SV_POSITION;
+	float2 cpPos : TEXCOORD0;
+};
+
+[domain("quad")]
+DS_OUTPUT PointLightDS(HS_CONSTANT_DATA_OUTPUT input, float2 UV : SV_DomainLocation, const OutputPatch<HS_OUTPUT, 4> quad)
+{
+	float2 posClipSpace = UV.xy * 2.0f - 1.0f;
+	
+	float2 posClipSpaceAbs = abs(posClipSpace.xy);
+	float maxLen = max(posClipSpaceAbs.x, posClipSpaceAbs.y);
+	
+	float3 normDir = normalize(float3(posClipSpace.xy, maxLen - 1.0) * quad[0].HemiDir);
+	float4 posLS = float4(normDir.xyz, 1.0);
+	
+	DS_OUTPUT Output;
+	Output.Position = mul(posLS, LightProjection);
+	Output.cpPos = Output.Position.xy / Output.Position.w;
+	
+	return Output;
+}

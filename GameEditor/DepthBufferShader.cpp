@@ -15,7 +15,7 @@ DepthBufferShader::~DepthBufferShader()
   ShutdownShader();
 }
 
-void DepthBufferShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
+void DepthBufferShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -35,13 +35,7 @@ void DepthBufferShader::InitializeShader(ID3D11Device* device, HWND hwnd, const 
     &vertexShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-    // If the shader failed to compile it should have writen something to the error message.
-    if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, vsFilenameStdStr);
-
-    // If there was nothing in the error message then it simply could not find the shader file itself.
-    else
-      throw std::runtime_error("Missing Shader File " + vsFilenameStdStr);
+    OutputShaderErrorMessage(errorMessage, vsFilenameStdStr);
   }
 
   // Create the vertex shader from the buffer.
@@ -149,6 +143,9 @@ void DepthBufferShader::Render(ID3D11DeviceContext* deviceContext, int indexCoun
 void DepthBufferShader::EnableShader(ID3D11DeviceContext* deviceContext)
 {
   deviceContext->IASetInputLayout(m_layout);
-  deviceContext->VSSetShader(m_vertexShader, NULL, 0);
-  deviceContext->PSSetShader(nullptr, NULL, 0);
+  deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
+  deviceContext->HSSetShader(nullptr, nullptr, 0);
+  deviceContext->DSSetShader(nullptr, nullptr, 0);
+  deviceContext->GSSetShader(nullptr, nullptr, 0);
+  deviceContext->PSSetShader(nullptr, nullptr, 0);
 }

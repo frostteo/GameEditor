@@ -42,6 +42,7 @@ private:
 
   ID3D11DepthStencilState* m_depthStencilLightVolumeState;
   ID3D11DepthStencilState* m_depthStencilDefferedLightState;
+  ID3D11DepthStencilState* m_greaterEqualReadonlyDepthStensilState;
 
   std::unique_ptr<GBuffer> m_gbuffer;
 public:
@@ -64,6 +65,7 @@ public:
   void DisableDepthTest();
   void EnableDepthStencilLightVolumeState();
   void EnableDepthStencilDefferedLightState();
+  void EnableGreaterEqualReadonlyDepthTest();
 
   void EnableTransparencyBlending();
   void DisableBlending();

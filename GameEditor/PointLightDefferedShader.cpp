@@ -13,7 +13,7 @@ PointLightDefferedShader::~PointLightDefferedShader()
   ShutdownShader();
 }
 
-void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
+void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -28,55 +28,36 @@ void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   std::string vsFilenameStdStr = Utils::UnicodeStrToByteStr(vsFilename);
   std::string psFilenameStdStr = Utils::UnicodeStrToByteStr(psFilename);
 
-  // Initialize the pointers this function will use to null.
   errorMessage = nullptr;
   vertexShaderBuffer = nullptr;
   pixelShaderBuffer = nullptr;
 
-  // Compile the vertex shader code.
-  result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, "PointLightVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+  result = D3DCompileFromFile(vsFilename.c_str(), nullptr, nullptr, "PointLightVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
     &vertexShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-    // If the shader failed to compile it should have writen something to the error message.
-    if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, vsFilenameStdStr);
-
-    // If there was nothing in the error message then it simply could not find the shader file itself.
-    else
-      throw std::runtime_error("Missing Shader File " + vsFilenameStdStr);
+    OutputShaderErrorMessage(errorMessage, vsFilenameStdStr);
   }
 
-  // Compile the pixel shader code.
   result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, "PointLightPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
     &pixelShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-    // If the shader failed to compile it should have writen something to the error message.
-    if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, psFilenameStdStr);
-
-    // If there was nothing in the error message then it simply could not find the file itself.
-    else
-      throw std::runtime_error("Missing Shader File " + psFilenameStdStr);
+    OutputShaderErrorMessage(errorMessage, psFilenameStdStr);
   }
 
-  // Create the vertex shader from the buffer.
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
   {
     throw std::runtime_error("failed vertex shader creation " + vsFilenameStdStr);
   }
 
-  // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
   {
     throw std::runtime_error("failed pixel shader creation " + psFilenameStdStr);
   }
 
-  // Create the vertex input layout description.
-  // This setup needs to match the VertexType stucture in the ModelClass and in the shader.
   polygonLayout[0].SemanticName = "POSITION";
   polygonLayout[0].SemanticIndex = 0;
   polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -101,7 +82,7 @@ void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd,
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + vsFilenameStdStr, __FILE__, __LINE__));
+    RUNTIME_ERROR("failed input layout creation " + vsFilenameStdStr);
   }
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
@@ -120,7 +101,7 @@ void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   matrixBufferDesc.StructureByteStride = 0;
 
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-  result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
+  result = device->CreateBuffer(&matrixBufferDesc, nullptr, &m_matrixBuffer);
   if (FAILED(result))
   {
     throw std::runtime_error("failed input create matrix buffer " + vsFilenameStdStr);
@@ -158,7 +139,7 @@ void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   result = device->CreateBuffer(&worldCoordsUnpackBufferDesc, NULL, &m_worldCoordsUnpackBuffer);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for world coord unpack data " + vsFilenameStdStr, __FILE__, __LINE__));
+    RUNTIME_ERROR("failed create buffer for world coord unpack data " + psFilenameStdStr);
   }
 
   // Setup the description of the light dynamic constant buffer that is in the pixel shader.
@@ -174,7 +155,7 @@ void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   result = device->CreateBuffer(&pointLightBufferDesc, NULL, &m_pointLightBuffer);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for lights " + vsFilenameStdStr, __FILE__, __LINE__));
+    RUNTIME_ERROR("failed create buffer for lights " + psFilenameStdStr);
   }
 }
 
@@ -213,7 +194,7 @@ void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
   // Lock the constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the matrix constant buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the matrix constant buffer");
 
   // Get a pointer to the data in the constant buffer.
   matrixBufferDataPtr = (MatrixBufferType*)mappedResource.pData;
@@ -234,7 +215,7 @@ void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
 
   result = deviceContext->Map(m_worldCoordsUnpackBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the world pos unpack data constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the world pos unpack data constant buffer ");
 
   worldCoordsUnpackBuffer = (WorldCoordsUnpackBuffer*)mappedResource.pData;
   worldCoordsUnpackBuffer->perspectiveValues = perspectiveValues;
@@ -251,7 +232,7 @@ void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_pointLightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the light constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the light constant buffer ");
 
   // Get a pointer to the data in the constant buffer.
   pointLightBufferDataPtr = (PointLightBuffer*)mappedResource.pData;

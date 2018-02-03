@@ -10,7 +10,7 @@ TextureDefferedShader::~TextureDefferedShader()
 {
 }
 
-void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
+void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -33,13 +33,7 @@ void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, co
     &vertexShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-    // If the shader failed to compile it should have writen something to the error message.
-    if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, vsFilenameStdStr);
-
-    // If there was nothing in the error message then it simply could not find the shader file itself.
-    else
-      throw std::runtime_error("Missing Shader File " + vsFilenameStdStr);
+    OutputShaderErrorMessage(errorMessage, vsFilenameStdStr);
   }
 
   // Compile the pixel shader code.
@@ -47,13 +41,7 @@ void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, co
     &pixelShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-    // If the shader failed to compile it should have writen something to the error message.
-    if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, psFilenameStdStr);
-
-    // If there was nothing in the error message then it simply could not find the file itself.
-    else
-      throw std::runtime_error("Missing Shader File " + psFilenameStdStr);
+    OutputShaderErrorMessage(errorMessage, psFilenameStdStr);
   }
 
   // Create the vertex shader from the buffer.

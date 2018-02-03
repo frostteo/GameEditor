@@ -72,7 +72,7 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
   if (m_testLightiningEnabled)
     m_graphicSystem->Render(m_Camera.get(), m_mapEditorViewModel->GetMapEditorPreferences()->GetTestLightiningSystem());
   else
-    m_graphicSystem->RenderDeffered(m_Camera.get(), m_lightininigSystem.get());
+    m_graphicSystem->RenderDefferedTesselated(m_Camera.get(), m_lightininigSystem.get());
 
   // trigger another update as soon as possible 
   update();

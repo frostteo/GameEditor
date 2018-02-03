@@ -36,7 +36,7 @@ void BumpSpecSingleLightSh::ShutdownShader()
   }
 }
 
-void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& psFilename)
+void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -63,11 +63,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
     0, &vertexShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-    if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, vsFilenameStdStr);
-
-    else
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + vsFilenameStdStr, __FILE__, __LINE__));
+    OutputShaderErrorMessage(errorMessage, vsFilenameStdStr);
   }
 
   // Compile the pixel shader code.
@@ -75,11 +71,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
     0, &pixelShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-    if (errorMessage)
-      OutputShaderErrorMessage(errorMessage, hwnd, psFilenameStdStr);
-
-    else
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("Missing Shader File " + psFilenameStdStr, __FILE__, __LINE__));
+    OutputShaderErrorMessage(errorMessage, psFilenameStdStr);
   }
 
   // Create the vertex shader from the buffer.

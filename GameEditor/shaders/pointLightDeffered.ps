@@ -17,10 +17,6 @@ cbuffer PointLightBuffer : register(b1)
 	float linearAttenuation;
 	float3 pointLightPosition;
 	float quadraticAttenuation;
-	float screenWidth;
-	float screenHeight;
-	float padding1;
-	float pading2;
 };
 
 struct GBufferData
@@ -84,11 +80,7 @@ struct PixelInputType
 #define cameraPosition ViewInv[3].xyz
 
 float4 PointLightPixelShader(PixelInputType input) : SV_TARGET
-{	
-	float2 screenSizes = {screenWidth, screenHeight};
-	float2 tex = input.position.xy / screenSizes.xy;
-	tex *= 2.0f - 1.0f;
-	
+{		
 	float4 outputColor;
 	GBufferData gdb = UnpackGBuffer(input.position.xy);
 	

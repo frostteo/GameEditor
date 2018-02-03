@@ -11,7 +11,7 @@ using namespace DirectX;
 
 class GameObject
 {
-private:
+protected:
   XMMATRIX m_scaleMatrix;
   XMMATRIX m_translationMatrix;
   XMMATRIX m_rotationMatrix;

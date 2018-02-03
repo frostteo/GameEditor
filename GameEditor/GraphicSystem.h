@@ -24,6 +24,7 @@ private:
   const static std::string AMBIENT_DEFFERED_SHADER_NAME;
   const static std::string DEPTH_BUFFER_SHADER_NAME;
   const static std::string POINT_LIGHT_DEFFERED_SHADER_NAME;
+  const static std::string POINT_LIGHT_TESSELATED_DEF_SN;
   const static std::string POINT_LIGHT_MODEL_NAME;
 
   std::unique_ptr<D3DConfigurer> m_direct3D;
@@ -55,6 +56,7 @@ public:
   void AddGridToRenderList(GridObject* gridObject, XMMATRIX& worldMatrix);
   ID3D11Device* GetDevice() { return m_direct3D->GetDevice(); }
   void Render(Camera* camera, LightininigSystem* lightiningSystem);
-  void RenderDeffered(Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDefferedStencilVolume(Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDefferedTesselated(Camera* camera, LightininigSystem* lightiningSystem);
 };
 

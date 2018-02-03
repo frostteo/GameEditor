@@ -20,6 +20,7 @@
 #include "AmbientDefferedShader.h"
 #include "DepthBufferShader.h"
 #include "PointLightDefferedShader.h"
+#include "PointLightTesselatedShader.h"
 #include "ShaderConfiguration.h"
 #include "Logger.h"
 
@@ -43,6 +44,7 @@ private:
   static const std::string AMBIENT_DEFFERED_SHADER_NAME;
   static const std::string DEPTH_BUFFER_SHADER_NAME;
   static const std::string POINT_LIGHT_DEFFERED_SHADER_NAME;
+  static const std::string POINT_LIGHT_TESSELATED_SHADER_NAME;
 private:
   std::vector<IShaderCreator* > m_shaderCreators;
   ShaderConfiguration* m_shaderConfiguration;

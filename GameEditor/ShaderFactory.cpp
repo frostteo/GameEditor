@@ -19,6 +19,7 @@ const std::string ShaderFactory::BUMP_SPECMAP_DEFFERED_SHADER_NAME = "bumpSpecMa
 const std::string ShaderFactory::POINT_LIGHT_DEFFERED_SHADER_NAME = "pointLightDeffered";
 const std::string ShaderFactory::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";
 const std::string ShaderFactory::AMBIENT_DEFFERED_SHADER_NAME = "ambientDeffered";
+const std::string ShaderFactory::POINT_LIGHT_TESSELATED_SHADER_NAME = "pointLightTesselated";
 
 ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, ShaderConfiguration* shaderConfiguration)
 {
@@ -45,6 +46,7 @@ ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, Shader
   m_shaderCreators.push_back(new TemplateShaderCreator<AmbientDefferedShader, AMBIENT_DEFFERED_SHADER_NAME>());
   m_shaderCreators.push_back(new TemplateShaderCreator<DepthBufferShader, DEPTH_BUFFER_SHADER_NAME>());
   m_shaderCreators.push_back(new TemplateShaderCreator<PointLightDefferedShader, POINT_LIGHT_DEFFERED_SHADER_NAME>());
+  m_shaderCreators.push_back(new TemplateShaderCreator<PointLightTesselatedShader, POINT_LIGHT_TESSELATED_SHADER_NAME>());
 
   for (auto& creator : m_shaderCreators)
     creator->Initialize(device, hwnd);
@@ -69,15 +71,22 @@ ShaderFactory::~ShaderFactory()
 
 IShader* ShaderFactory::Get(const std::string& shaderName)
 {
-  std::string configuredShaderName = m_shaderConfiguration->GetConfiguredShaderName(shaderName);
+ 
 
-  if (configuredShaderName == "")
+  if (!m_shaderConfiguration->IsThisShaderInMap(shaderName))
     Logger::get().LogMessageWithExceptionDialog("There is no shader with name " + shaderName + " in system", __FILE__, __LINE__);
   
+  std::string configuredShaderName = m_shaderConfiguration->GetConfiguredShaderName(shaderName);
+
   for (auto shaderCreator : m_shaderCreators)
   {
     if (shaderCreator->CanCreate(configuredShaderName))
-      return shaderCreator->Get(m_shaderConfiguration->GetVertexShaderFileName(configuredShaderName), m_shaderConfiguration->GetPixelShaderFileName(configuredShaderName));
+      return shaderCreator->Get(
+      m_shaderConfiguration->GetVertexShaderFileName(shaderName), 
+      m_shaderConfiguration->GetHullShaderFileName(shaderName),
+      m_shaderConfiguration->GetDomainShaderFileName(shaderName),
+      m_shaderConfiguration->GetPixelShaderFileName(shaderName)
+      );
   }
 
   throw new std::runtime_error(Logger::get().GetErrorTraceMessage("there is no shader with name: " + shaderName + " in system", __FILE__, __LINE__));
