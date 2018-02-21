@@ -1,22 +1,29 @@
-#include "PointLightTesselatedShader.h"
+#include "PLShadowedTesselatedShader.h"
 
 
-PointLightTesselatedShader::PointLightTesselatedShader()
+PLShadowedTesselatedShader::PLShadowedTesselatedShader()
 {
   m_lightProjectionBuffer = nullptr;
   m_worldCoordsUnpackBuffer = nullptr;
   m_pointLightBuffer = nullptr;
+  m_sampleState = nullptr;
 }
 
 
-PointLightTesselatedShader::~PointLightTesselatedShader()
+PLShadowedTesselatedShader::~PLShadowedTesselatedShader()
 {
   ShutdownShader();
 }
 
-void PointLightTesselatedShader::ShutdownShader()
+void PLShadowedTesselatedShader::ShutdownShader()
 {
   IShader::ShutdownShader();
+
+  if (m_sampleState)
+  {
+    m_sampleState->Release();
+    m_sampleState = nullptr;
+  }
 
   if (m_lightProjectionBuffer)
   {
@@ -37,7 +44,7 @@ void PointLightTesselatedShader::ShutdownShader()
   }
 }
 
-void PointLightTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& gsFilename, const std::wstring& hsFilename, const std::wstring& dsFileName, const std::wstring& psFilename)
+void PLShadowedTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& gsFilename, const std::wstring& hsFilename, const std::wstring& dsFileName, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -48,6 +55,7 @@ void PointLightTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwn
   D3D11_BUFFER_DESC lightProjectionBufferDesc;
   D3D11_BUFFER_DESC worldCoordsUnpackBufferDesc;
   D3D11_BUFFER_DESC pointLightBufferDesc;
+  D3D11_SAMPLER_DESC samplerDesc;
   unsigned int numElements;
   std::string vsFilenameStdStr = Utils::UnicodeStrToByteStr(vsFilename);
   std::string hsFilenameStdStr = Utils::UnicodeStrToByteStr(hsFilename);
@@ -64,7 +72,7 @@ void PointLightTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwn
     &vertexShaderBuffer, &errorMessage);
   if (FAILED(result))
   {
-      OutputShaderErrorMessage(errorMessage, vsFilenameStdStr);
+    OutputShaderErrorMessage(errorMessage, vsFilenameStdStr);
   }
 
   result = D3DCompileFromFile(hsFilename.c_str(), nullptr, nullptr, "PointLightHS", "hs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &hullShaderBuffer, &errorMessage);
@@ -160,9 +168,26 @@ void PointLightTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwn
   {
     RUNTIME_ERROR("failed create buffer for lights " + psFilenameStdStr);
   }
+
+  ZeroMemory(&samplerDesc, sizeof(samplerDesc));
+  samplerDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+  samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+  samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+  samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+  samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS;
+  samplerDesc.BorderColor[0] = 1.0f;
+  samplerDesc.BorderColor[1] = 1.0f;
+  samplerDesc.BorderColor[2] = 1.0f;
+  samplerDesc.BorderColor[3] = 1.0f;
+
+  result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
+  if (FAILED(result))
+  {
+    throw std::runtime_error("failed create sample state");
+  }
 }
 
-void PointLightTesselatedShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX lightProjection, XMFLOAT3 pointLightColor, XMFLOAT3 pointLightPosition, float linearAttenuation, float quadraticAttenuation, XMVECTOR perspectiveValues, XMMATRIX viewMatrixInv)
+void PLShadowedTesselatedShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX lightProjection, XMFLOAT3 pointLightColor, XMFLOAT3 pointLightPosition, float linearAttenuation, float quadraticAttenuation, XMVECTOR perspectiveValues, XMMATRIX viewMatrixInv, XMFLOAT2 lightPerspectiveValues)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -207,6 +232,7 @@ void PointLightTesselatedShader::SetShaderParameters(ID3D11DeviceContext* device
   pointLightBufferDataPtr->linearAttenuation = linearAttenuation;
   pointLightBufferDataPtr->position = pointLightPosition;
   pointLightBufferDataPtr->quadraticAttenuation = quadraticAttenuation;
+  pointLightBufferDataPtr->lightPerspectiveValues = lightPerspectiveValues;
 
   deviceContext->Unmap(m_pointLightBuffer, 0);
 
@@ -215,26 +241,26 @@ void PointLightTesselatedShader::SetShaderParameters(ID3D11DeviceContext* device
   deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pointLightBuffer);
 }
 
-void PointLightTesselatedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+void PLShadowedTesselatedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
   XMMATRIX pointLightWorldMatrix;
   XMMATRIX pointLightProjection;
   XMFLOAT3 worldPosition;
 
-  auto pointLightDefferedParameters = (PointLightDefferedParameters *) material;
+  auto pointLightDefferedParameters = (PointLightDefferedParameters *)material;
 
   auto pointLight = lightining->GetPointLightToRender();
   pointLight->GetWorldMatrix(pointLightWorldMatrix);
-  pointLightProjection = pointLightWorldMatrix * viewMatrix * projectionMatrix;
-  
   worldPosition = pointLight->GetWorldPosition();
 
-  SetShaderParameters(deviceContext, pointLightProjection, pointLight->GetColor(), worldPosition, pointLight->GetLinearAttenuation(), pointLight->GetQuadraticAttenuation(), pointLightDefferedParameters->GetPerspectiveValues(), pointLightDefferedParameters->GetViewMatrixInverse());
+  pointLightProjection = pointLightWorldMatrix * viewMatrix * projectionMatrix;
+
+  SetShaderParameters(deviceContext, pointLightProjection, pointLight->GetColor(), worldPosition, pointLight->GetLinearAttenuation(), pointLight->GetQuadraticAttenuation(), pointLightDefferedParameters->GetPerspectiveValues(), pointLightDefferedParameters->GetViewMatrixInverse(), pointLight->GetLightPerspectiveValues());
 
   deviceContext->Draw(2, 0);
 }
 
-void PointLightTesselatedShader::EnableShader(ID3D11DeviceContext* deviceContext)
+void PLShadowedTesselatedShader::EnableShader(ID3D11DeviceContext* deviceContext)
 {
   deviceContext->IASetInputLayout(nullptr);
   deviceContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
@@ -245,4 +271,6 @@ void PointLightTesselatedShader::EnableShader(ID3D11DeviceContext* deviceContext
   deviceContext->HSSetShader(m_hullShader, nullptr, 0);
   deviceContext->DSSetShader(m_domainShader, nullptr, 0);
   deviceContext->PSSetShader(m_pixelShader, nullptr, 0);
+
+  deviceContext->PSSetSamplers(0, 1, &m_sampleState);
 }

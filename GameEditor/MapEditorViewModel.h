@@ -47,7 +47,7 @@ public:
   void Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences);
 
   void GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
-  void GetVisiblePointLights(CameraFrustrum* cameraFrustrum, std::vector<PointLight*>* pointLightsToRender);
+  void GetVisiblePointLights(CameraFrustrum* cameraFrustrum, LightininigSystem* lightiningSystem);
 
   void DeleteUnusedNodesInOctTree() { m_octoTree.DeleteUnusedNodes(); }
   void GetSelectedSgos(std::vector<StaticGameObject*>* selectedSgos);

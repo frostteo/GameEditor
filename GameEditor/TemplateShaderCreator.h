@@ -10,7 +10,7 @@ class TemplateShaderCreator :
 public:
   TemplateShaderCreator();
   virtual ~TemplateShaderCreator();
-  virtual IShader* Get(const std::wstring& vertexShaderName, const std::wstring& hullShaderName, const std::wstring& domainShaderName, const std::wstring& pixelShaderName) override;
+  virtual IShader* Get(const std::wstring& vertexShaderName, const std::wstring& geometricShaderName, const std::wstring& hullShaderName, const std::wstring& domainShaderName, const std::wstring& pixelShaderName) override;
 };
 
 template <class Shader, const std::string& ShaderName>
@@ -25,7 +25,7 @@ TemplateShaderCreator<Shader, ShaderName>::~TemplateShaderCreator()
 }
 
 template <class Shader, const std::string& ShaderName>
-IShader* TemplateShaderCreator<Shader, ShaderName>::Get(const std::wstring& vertexShaderName, const std::wstring& hullShaderName, const std::wstring& domainShaderName, const std::wstring& pixelShaderName)
+IShader* TemplateShaderCreator<Shader, ShaderName>::Get(const std::wstring& vertexShaderName, const std::wstring& geometricShaderName, const std::wstring& hullShaderName, const std::wstring& domainShaderName, const std::wstring& pixelShaderName)
 {
   if (m_shader)
   {
@@ -33,7 +33,7 @@ IShader* TemplateShaderCreator<Shader, ShaderName>::Get(const std::wstring& vert
   }
 
   m_shader = new Shader();
-  m_shader->Initialize(m_device, m_hwnd, vertexShaderName, hullShaderName, domainShaderName, pixelShaderName);
+  m_shader->Initialize(m_device, m_hwnd, vertexShaderName, geometricShaderName, hullShaderName, domainShaderName, pixelShaderName);
 
   return m_shader;
 }

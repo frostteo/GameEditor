@@ -52,7 +52,7 @@ void AddOrEditPointLightOnMapDialog::SetPointLightOnMap(PointLightOnMapDbInfo po
       instanceName += QString::number(m_pointLightOnMap.sgoOnMapDbInfo.staticGameObjectDbInfo.countOnMap);
   }
   this->instanceNameTxt->setText(instanceName);
-  this->isFrozenCheckBox->setChecked(m_pointLightOnMap.sgoOnMapDbInfo.isFrozen > 0);
+  this->isFrozenCheckBox->setChecked(m_pointLightOnMap.sgoOnMapDbInfo.isFrozen);
 
   this->redTxt->setText(QString::number(m_pointLightOnMap.red));
   this->greenTxt->setText(QString::number(m_pointLightOnMap.green));
@@ -60,6 +60,7 @@ void AddOrEditPointLightOnMapDialog::SetPointLightOnMap(PointLightOnMapDbInfo po
 
   this->linearAttenuationTxt->setText(QString::number(m_pointLightOnMap.linearAttenuation));
   this->quadraticAttenuationTxt->setText(QString::number(m_pointLightOnMap.quadraticAttenuation));
+  this->castShadowsCheckBox->setChecked(m_pointLightOnMap.castShadows);
 }
 
 PointLightOnMapDbInfo AddOrEditPointLightOnMapDialog::GetPointLightOnMap()
@@ -75,7 +76,7 @@ PointLightOnMapDbInfo AddOrEditPointLightOnMapDialog::GetPointLightOnMap()
   m_pointLightOnMap.sgoOnMapDbInfo.yRotate = fmod(this->yRotateTxt->text().toFloat(), gradesInCircle);
   m_pointLightOnMap.sgoOnMapDbInfo.zRotate = fmod(this->zRotateTxt->text().toFloat(), gradesInCircle);
 
-  m_pointLightOnMap.sgoOnMapDbInfo.isFrozen = this->isFrozenCheckBox->isChecked() ? 1 : 0;
+  m_pointLightOnMap.sgoOnMapDbInfo.isFrozen = this->isFrozenCheckBox->isChecked();
 
   m_pointLightOnMap.red = this->redTxt->text().toFloat();
   m_pointLightOnMap.green = this->greenTxt->text().toFloat();
@@ -83,6 +84,7 @@ PointLightOnMapDbInfo AddOrEditPointLightOnMapDialog::GetPointLightOnMap()
 
   m_pointLightOnMap.linearAttenuation = this->linearAttenuationTxt->text().toFloat();
   m_pointLightOnMap.quadraticAttenuation = this->quadraticAttenuationTxt->text().toFloat();
+  m_pointLightOnMap.castShadows = this->castShadowsCheckBox->isChecked();
 
   return m_pointLightOnMap;
 }

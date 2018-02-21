@@ -4,7 +4,8 @@
 IShader::IShader()
 {
   m_vertexShader = nullptr;
-  m_hullShader = nullptr;;
+  m_geometricShader = nullptr;
+  m_hullShader = nullptr;
   m_domainShader = nullptr;
   m_pixelShader = nullptr;
   m_layout = nullptr;
@@ -28,6 +29,12 @@ void IShader::ShutdownShader()
   {
     m_vertexShader->Release();
     m_vertexShader = nullptr;
+  }
+
+  if (m_geometricShader)
+  {
+    m_geometricShader->Release();
+    m_geometricShader = nullptr;
   }
 
   if (m_hullShader)
@@ -77,10 +84,10 @@ void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, const std::stri
 
 }
 
-void IShader::Initialize(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
+void IShader::Initialize(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& gsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
 {
   // Initialize the vertex and pixel shaders.
-  InitializeShader(device, hwnd, vsFilename, hlFilename, dmShaderFileName, psFilename);
+  InitializeShader(device, hwnd, vsFilename, gsFilename, hlFilename, dmShaderFileName, psFilename);
 }
 
 
@@ -88,9 +95,9 @@ void IShader::EnableShader(ID3D11DeviceContext* deviceContext)
 {
   deviceContext->IASetInputLayout(m_layout);
   deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
+  deviceContext->GSSetShader(nullptr, nullptr, 0);
   deviceContext->HSSetShader(nullptr, nullptr, 0);
   deviceContext->DSSetShader(nullptr, nullptr, 0);
-  deviceContext->GSSetShader(nullptr, nullptr, 0);
   deviceContext->PSSetShader(m_pixelShader, nullptr, 0);
 }
 

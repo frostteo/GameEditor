@@ -4,7 +4,7 @@
 PointLightMetadata::PointLightMetadata()
 {
   m_tableName = "PointLight";
-  m_columnNames = { "name", "sgoId", "relativePosX", "relativePosY", "relativePosZ", "red", "green", "blue", "linearAttenuation", "quadraticAttenuation", "countOnMap" };
+  m_columnNames = { "name", "sgoId", "relativePosX", "relativePosY", "relativePosZ", "red", "green", "blue", "linearAttenuation", "quadraticAttenuation", "castShadows", "countOnMap"};
   AddRelationShip(m_SGOMetadata.GetTableName(), m_columnNames[1], m_SGOMetadata.GetKeyColumnName());
 }
 
@@ -28,7 +28,8 @@ void PointLightMetadata::InitializeFromQuery(PointLightDbInfo& entity, QSqlQuery
   entity.blue = query->value(selectInfos[m_columnNames[7]].aliasColumnName).toFloat();
   entity.linearAttenuation = query->value(selectInfos[m_columnNames[8]].aliasColumnName).toFloat();
   entity.quadraticAttenuation = query->value(selectInfos[m_columnNames[9]].aliasColumnName).toFloat();
-  entity.countOnMap = query->value(selectInfos[m_columnNames[10]].aliasColumnName).toInt();
+  entity.castShadows = query->value(selectInfos[m_columnNames[10]].aliasColumnName).toBool();
+  entity.countOnMap = query->value(selectInfos[m_columnNames[11]].aliasColumnName).toInt();
 
   if (joinTableNames != nullptr && joinTableNames->size() > 0) {
     if (std::find(joinTableNames->begin(), joinTableNames->end(), m_relationships.begin()->first) != joinTableNames->end())
@@ -75,6 +76,9 @@ QVariant PointLightMetadata::GetFieldByName(const PointLightDbInfo& entity, QStr
     return entity.quadraticAttenuation;
 
   if (name == m_columnNames[10])
+    return entity.castShadows;
+
+  if (name == m_columnNames[11])
     return entity.countOnMap;
 
   if (name == GetKeyColumnName())

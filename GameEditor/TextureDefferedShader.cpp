@@ -10,7 +10,7 @@ TextureDefferedShader::~TextureDefferedShader()
 {
 }
 
-void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
+void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& gsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;

@@ -13,7 +13,7 @@ PointLightDefferedShader::~PointLightDefferedShader()
   ShutdownShader();
 }
 
-void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
+void PointLightDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& gsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename)
 {
   HRESULT result;
   ID3D10Blob* errorMessage;
@@ -256,17 +256,15 @@ void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
 void PointLightDefferedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
   XMMATRIX pointLightWorldMatrix;
-  XMVECTOR scale, rotation, position;
-  XMFLOAT3 positionFloat3;
+  XMFLOAT3 worldPosition;
 
   auto pointLightDefferedParameters = (PointLightDefferedParameters *)material;
 
-  auto pointLight = (*lightining->GetPointLights())[0];
+  auto pointLight = lightining->GetPointLightToRender();
   pointLight->GetWorldMatrix(pointLightWorldMatrix);
-  XMMatrixDecompose(&scale, &rotation, &position, pointLightWorldMatrix);
-  XMStoreFloat3(&positionFloat3, position);
+  worldPosition = pointLight->GetWorldPosition();
 
-  SetShaderParameters(deviceContext, pointLightWorldMatrix, viewMatrix, projectionMatrix, pointLight->GetColor(), positionFloat3, pointLight->GetLinearAttenuation(), pointLight->GetQuadraticAttenuation(), pointLightDefferedParameters->GetPerspectiveValues(), pointLightDefferedParameters->GetViewMatrixInverse());
+  SetShaderParameters(deviceContext, pointLightWorldMatrix, viewMatrix, projectionMatrix, pointLight->GetColor(), worldPosition, pointLight->GetLinearAttenuation(), pointLight->GetQuadraticAttenuation(), pointLightDefferedParameters->GetPerspectiveValues(), pointLightDefferedParameters->GetViewMatrixInverse());
 
   RenderShader(deviceContext, indexCount);
 }

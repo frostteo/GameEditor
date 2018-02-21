@@ -54,7 +54,7 @@ SGOOnMapDbInfo AddOrEditSGOOnMapDialog::GetSGOOnMap()
   m_SGOOnMap.yRotate = fmod(this->yRotateTxt->text().toFloat(), gradesInCircle);
   m_SGOOnMap.zRotate = fmod(this->zRotateTxt->text().toFloat(), gradesInCircle);
 
-  m_SGOOnMap.isFrozen = this->isFrozenCheckBox->isChecked()? 1 : 0;
+  m_SGOOnMap.isFrozen = this->isFrozenCheckBox->isChecked();
 
   return m_SGOOnMap;
 }

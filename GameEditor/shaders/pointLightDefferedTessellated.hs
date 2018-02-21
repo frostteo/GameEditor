@@ -16,7 +16,7 @@ HS_CONSTANT_DATA_OUTPUT PointLightConstantHS()
 	return Output;
 }
 
-static const float3 HemiDir[2] = {
+static const float3 HemilDir[2] = {
 	float3(1.0f, 1.0f, 1.0f),
 	float3(-1.0f, 1.0f, -1.0f)
 };
@@ -35,7 +35,7 @@ HS_OUTPUT PointLightHS(uint PatchID : SV_PrimitiveID) : POSITION
 {
 	HS_OUTPUT Output;
 	
-	Output.HemiDir = HemiDir[PatchID];
+	Output.HemiDir = HemilDir[PatchID];
 	
 	return Output;
 }

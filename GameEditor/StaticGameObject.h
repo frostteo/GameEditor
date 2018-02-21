@@ -15,6 +15,7 @@ public:
 
   int dbInfoId;
   bool isFrozen;
+  bool castShadows = true;
 protected:
   void RebuildBBInWorldCoord();
 public:

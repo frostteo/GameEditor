@@ -18,8 +18,8 @@ class QtDirectXWidget : public QWidget, public Ui::QtDirectXWidget
 protected:
   const bool FULL_SCREEN = false;
   const bool VSYNC_ENABLED = false;
-  const float SCREEN_DEPTH = 65536.0f;
-  const float SCREEN_NEAR = 0.1f;
+  float m_screenDepth = 20000.0f;
+  float m_screenNear = 0.1f;
 
   std::string m_pathToMaterials;
   std::string m_pathToModels;

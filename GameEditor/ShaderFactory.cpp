@@ -20,6 +20,8 @@ const std::string ShaderFactory::POINT_LIGHT_DEFFERED_SHADER_NAME = "pointLightD
 const std::string ShaderFactory::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";
 const std::string ShaderFactory::AMBIENT_DEFFERED_SHADER_NAME = "ambientDeffered";
 const std::string ShaderFactory::POINT_LIGHT_TESSELATED_SHADER_NAME = "pointLightTesselated";
+const std::string ShaderFactory::PL_SHADOW_GEN_SHADER_NAME = "PLShadowGeneration";
+const std::string ShaderFactory::PL_SHADOWED_TESS_SHADER_NAME = "pointLightDefferedWithShadow";
 
 ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, ShaderConfiguration* shaderConfiguration)
 {
@@ -47,6 +49,8 @@ ShaderFactory* ShaderFactory::Initialize(ID3D11Device* device, HWND hwnd, Shader
   m_shaderCreators.push_back(new TemplateShaderCreator<DepthBufferShader, DEPTH_BUFFER_SHADER_NAME>());
   m_shaderCreators.push_back(new TemplateShaderCreator<PointLightDefferedShader, POINT_LIGHT_DEFFERED_SHADER_NAME>());
   m_shaderCreators.push_back(new TemplateShaderCreator<PointLightTesselatedShader, POINT_LIGHT_TESSELATED_SHADER_NAME>());
+  m_shaderCreators.push_back(new TemplateShaderCreator<PLShadowGenerationShader, PL_SHADOW_GEN_SHADER_NAME>());
+  m_shaderCreators.push_back(new TemplateShaderCreator<PLShadowedTesselatedShader, PL_SHADOWED_TESS_SHADER_NAME>());
 
   for (auto& creator : m_shaderCreators)
     creator->Initialize(device, hwnd);
@@ -83,11 +87,12 @@ IShader* ShaderFactory::Get(const std::string& shaderName)
     if (shaderCreator->CanCreate(configuredShaderName))
       return shaderCreator->Get(
       m_shaderConfiguration->GetVertexShaderFileName(shaderName), 
+      m_shaderConfiguration->GetGeometricShaderFileName(shaderName),
       m_shaderConfiguration->GetHullShaderFileName(shaderName),
       m_shaderConfiguration->GetDomainShaderFileName(shaderName),
       m_shaderConfiguration->GetPixelShaderFileName(shaderName)
       );
   }
 
-  throw new std::runtime_error(Logger::get().GetErrorTraceMessage("there is no shader with name: " + shaderName + " in system", __FILE__, __LINE__));
+  RUNTIME_ERROR("there is no shader with name: " + shaderName + " in system");
 }

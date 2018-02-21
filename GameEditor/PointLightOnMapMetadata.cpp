@@ -3,7 +3,7 @@
 PointLightOnMapMetadata::PointLightOnMapMetadata()
 {
   m_tableName = "PointLightOnMap";
-  m_columnNames = { "pointLightId", "sgoOnMapId", "red", "green", "blue", "linearAttenuation", "quadraticAttenuation" };
+  m_columnNames = { "pointLightId", "sgoOnMapId", "red", "green", "blue", "linearAttenuation", "quadraticAttenuation", "castShadows" };
   AddRelationShip(m_pointLightMetadata.GetTableName(), m_columnNames[0], m_pointLightMetadata.GetKeyColumnName());
   AddRelationShip(m_SGOOnMapMetadata.GetTableName(), m_columnNames[1], m_SGOOnMapMetadata.GetKeyColumnName());
 }
@@ -31,6 +31,7 @@ void PointLightOnMapMetadata::InitializeFromQuery(PointLightOnMapDbInfo& entity,
   entity.blue = query->value(selectInfos[m_columnNames[4]].aliasColumnName).toFloat();
   entity.linearAttenuation = query->value(selectInfos[m_columnNames[5]].aliasColumnName).toFloat();
   entity.quadraticAttenuation = query->value(selectInfos[m_columnNames[6]].aliasColumnName).toFloat();
+  entity.castShadows = query->value(selectInfos[m_columnNames[7]].aliasColumnName).toBool();
 
   if (joinTableNames != nullptr && joinTableNames->size() > 0) {
     if (std::find(joinTableNames->begin(), joinTableNames->end(), m_pointLightMetadata.GetTableName()) != joinTableNames->end())
@@ -63,6 +64,9 @@ QVariant PointLightOnMapMetadata::GetFieldByName(const PointLightOnMapDbInfo& en
 
   if (name == m_columnNames[6])
     return entity.quadraticAttenuation;
+
+  if (name == m_columnNames[7])
+    return entity.castShadows;
 
   if (name == GetKeyColumnName())
     return entity.id;

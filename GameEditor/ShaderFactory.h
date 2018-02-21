@@ -23,6 +23,8 @@
 #include "PointLightTesselatedShader.h"
 #include "ShaderConfiguration.h"
 #include "Logger.h"
+#include "PLShadowGenerationShader.h"
+#include "PLShadowedTesselatedShader.h"
 
 class ShaderFactory
 {
@@ -45,6 +47,8 @@ private:
   static const std::string DEPTH_BUFFER_SHADER_NAME;
   static const std::string POINT_LIGHT_DEFFERED_SHADER_NAME;
   static const std::string POINT_LIGHT_TESSELATED_SHADER_NAME;
+  static const std::string PL_SHADOW_GEN_SHADER_NAME;
+  static const std::string PL_SHADOWED_TESS_SHADER_NAME;
 private:
   std::vector<IShaderCreator* > m_shaderCreators;
   ShaderConfiguration* m_shaderConfiguration;

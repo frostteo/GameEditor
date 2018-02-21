@@ -23,13 +23,16 @@ protected:
   float m_rotationX, m_rotationY, m_rotationZ;
   float m_scale = 1.0f;
   GameObject* m_parent;
+  XMFLOAT3 m_worldPosition;
 public :
   bool needRebuildDependOnWorldMatrix = true; // Для обозначения что нужно перестроить объекты в наследниках зависящие от изменения матрицы мировых координат, например bounding box
+protected:
+  virtual void RebuildWorldMatrix();
 public:
   GameObject();
   virtual ~GameObject();
 
-  void SetPosition(float x, float y, float z);
+  void virtual SetPosition(float x, float y, float z);
   void SetRotation(float x, float y, float z);
   XMFLOAT3 GetPosition();
   XMFLOAT3 GetRotation();
@@ -56,5 +59,7 @@ public:
   void SetParent(GameObject* gameObject) { m_parent = gameObject; }
   GameObject* GetParent() { return m_parent; }
   void GetParentMatrix(XMMATRIX& parentMatrix) const;
+
+  XMFLOAT3 GetWorldPosition();
 };
 

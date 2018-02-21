@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>346</width>
-    <height>333</height>
+    <width>340</width>
+    <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -209,6 +209,9 @@
      <height>17</height>
     </rect>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
    <property name="text">
     <string>Is frozen</string>
    </property>
@@ -216,8 +219,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>300</y>
+     <x>180</x>
+     <y>310</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -373,6 +376,22 @@
     </property>
    </widget>
   </widget>
+  <widget class="QCheckBox" name="castShadowsCheckBox">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>280</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="text">
+    <string>Cast shadows</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
@@ -388,6 +407,7 @@
   <tabstop>blueTxt</tabstop>
   <tabstop>linearAttenuationTxt</tabstop>
   <tabstop>quadraticAttenuationTxt</tabstop>
+  <tabstop>castShadowsCheckBox</tabstop>
   <tabstop>isFrozenCheckBox</tabstop>
  </tabstops>
  <resources/>

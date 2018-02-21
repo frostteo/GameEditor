@@ -16,6 +16,7 @@ public:
   float blue = 1.0f;
   float linearAttenuation;
   float quadraticAttenuation;
+  bool castShadows = false;
 
   PointLightDbInfo pointLightDbInfo;
   SGOOnMapDbInfo sgoOnMapDbInfo;

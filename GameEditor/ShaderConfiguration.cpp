@@ -4,6 +4,7 @@
 ShaderConfiguration::ShaderConfiguration()
 {
   m_pathToVertexShader = L"../GameEditor/shaders/[shadername].vs";
+  m_pathToGeometricShader = L"../GameEditor/shaders/[shadername].gs";
   m_pathToHullShader = L"../GameEditor/shaders/[shadername].hs";
   m_pathToDomainShader = L"../GameEditor/shaders/[shadername].ds";
   m_pathToPixelShader = L"../GameEditor/shaders/[shadername].ps";
@@ -17,31 +18,34 @@ ShaderConfiguration::~ShaderConfiguration()
 void ShaderConfiguration::ConfigureForwardRenderer()
 {
   m_shaderNameMap.clear();
-  m_shaderNameMap.insert(shaderNameMap::value_type("color", { "colorSingleDirLight", "colorSingleDirLight", "colorSingleDirLight", "colorSingleDirLight", "colorSingleDirLight" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("texture", { "texture", "texture", "texture", "texture", "texture" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("specular", { "specularSingleDirLight", "specularSingleDirLight", "specularSingleDirLight", "specularSingleDirLight", "specularSingleDirLight" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("bump", { "bump", "bump", "bump", "bump", "bump" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpec", { "bumpSpec", "bumpSpec", "bumpSpec", "bumpSpec", "bumpSpec" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpecMap", { "bumpSpecMap", "bumpSpecMap", "bumpSpecMap", "bumpSpecMap", "bumpSpecMap" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("grid", { "grid", "grid", "grid", "grid", "grid" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("color", { "colorSingleDirLight", "colorSingleDirLight", "colorSingleDirLight", "colorSingleDirLight", "colorSingleDirLight", "colorSingleDirLight" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("texture", { "texture", "texture", "texture", "texture", "texture", "texture" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("specular", { "specularSingleDirLight", "specularSingleDirLight", "specularSingleDirLight", "specularSingleDirLight", "specularSingleDirLight", "specularSingleDirLight" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bump", { "bump", "bump", "bump", "bump", "bump", "bump" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpec", { "bumpSpec", "bumpSpec", "bumpSpec", "bumpSpec", "bumpSpec", "bumpSpec" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpecMap", { "bumpSpecMap", "bumpSpecMap", "bumpSpecMap", "bumpSpecMap", "bumpSpecMap", "bumpSpecMap" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("grid", { "grid", "grid", "grid", "grid", "grid", "grid" }));
 }
 
 void ShaderConfiguration::ConfigureDefferedRenderer()
 {
   m_shaderNameMap.clear();
-  m_shaderNameMap.insert(shaderNameMap::value_type("color", { "colorDeffered", "colorDeffered", "colorDeffered", "colorDeffered", "colorDeffered" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("texture", { "textureDeffered", "textureDeffered", "textureDeffered", "textureDeffered", "textureDeffered" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("specular", { "specularDeffered", "specularDeffered", "specularDeffered", "specularDeffered", "specularDeffered" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("bump", { "bumpDeffered", "bumpDeffered", "bumpDeffered", "bumpDeffered", "bumpDeffered" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpec", { "bumpSpecDeffered", "bumpSpecDeffered", "bumpSpecDeffered", "bumpSpecDeffered", "bumpSpecDeffered" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpecMap", { "bumpSpecMapDeffered", "bumpSpecMapDeffered", "bumpSpecMapDeffered", "bumpSpecMapDeffered", "bumpSpecMapDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("color", { "colorDeffered", "colorDeffered", "colorDeffered", "colorDeffered", "colorDeffered", "colorDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("texture", { "textureDeffered", "textureDeffered", "textureDeffered", "textureDeffered", "textureDeffered", "textureDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("specular", { "specularDeffered", "specularDeffered", "specularDeffered", "specularDeffered", "specularDeffered", "specularDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bump", { "bumpDeffered", "bumpDeffered", "bumpDeffered", "bumpDeffered", "bumpDeffered", "bumpDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpec", { "bumpSpecDeffered", "bumpSpecDeffered", "bumpSpecDeffered", "bumpSpecDeffered", "bumpSpecDeffered", "bumpSpecDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("bumpSpecMap", { "bumpSpecMapDeffered", "bumpSpecMapDeffered", "bumpSpecMapDeffered", "bumpSpecMapDeffered", "bumpSpecMapDeffered", "bumpSpecMapDeffered" }));
 
-  m_shaderNameMap.insert(shaderNameMap::value_type("grid", { "grid", "grid", "grid", "grid", "grid" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("grid", { "grid", "grid", "grid", "grid", "grid", "grid" }));
 
-  m_shaderNameMap.insert(shaderNameMap::value_type("ambientDeffered", { "ambientDeffered", "ambientDeffered", "ambientDeffered", "ambientDeffered", "ambientDeffered" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("depthBuffer", { "depthBuffer", "depthBuffer", "depthBuffer", "depthBuffer", "depthBuffer" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("pointLightDeffered", { "pointLightDeffered", "pointLightDeffered", "pointLightDeffered", "pointLightDeffered", "pointLightDeffered" }));
-  m_shaderNameMap.insert(shaderNameMap::value_type("pointLightTesselated", { "pointLightTesselated", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("ambientDeffered", { "ambientDeffered", "ambientDeffered", "ambientDeffered", "ambientDeffered", "ambientDeffered", "ambientDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("depthBuffer", { "depthBuffer", "depthBuffer", "depthBuffer", "depthBuffer", "depthBuffer", "depthBuffer" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("pointLightDeffered", { "pointLightDeffered", "pointLightDeffered", "pointLightDeffered", "pointLightDeffered", "pointLightDeffered", "pointLightDeffered" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("pointLightTesselated", { "pointLightTesselated", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDeffered" }));
+
+  m_shaderNameMap.insert(shaderNameMap::value_type("PLShadowGeneration", { "PLShadowGeneration", "PLShadowGeneration", "PLShadowGeneration", "PLShadowGeneration", "PLShadowGeneration", "PLShadowGeneration" }));
+  m_shaderNameMap.insert(shaderNameMap::value_type("PLWithShadowTessDeff", { "pointLightDefferedWithShadow", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDefferedTessellated", "pointLightDefferedWithShadow" }));
 }
 
 bool ShaderConfiguration::IsThisShaderInMap(const std::string& shaderName)
@@ -61,6 +65,11 @@ std::wstring ShaderConfiguration::GetShaderFileName(const std::string& shaderNam
 std::wstring ShaderConfiguration::GetVertexShaderFileName(const std::string& shaderName)
 {
   return GetShaderFileName(m_shaderNameMap[shaderName].vsShaderName, m_pathToVertexShader);
+}
+
+std::wstring ShaderConfiguration::GetGeometricShaderFileName(const std::string& shaderName)
+{
+  return GetShaderFileName(m_shaderNameMap[shaderName].gsShaderName, m_pathToGeometricShader);
 }
 
 std::wstring ShaderConfiguration::GetHullShaderFileName(const std::string& shaderName)

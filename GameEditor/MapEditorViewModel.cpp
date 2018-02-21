@@ -56,6 +56,7 @@ void MapEditorViewModel::AddSgoToMap(SGOOnMapDbInfo& sgoOnMap)
   sgo.dbInfoId = sgoOnMap.staticGameObjectDbInfo.id;
   sgo.isFrozen = sgoOnMap.isFrozen;
   sgo.uniqueId = sgoOnMap.id;
+  sgo.castShadows = sgoOnMap.castShadows;
   m_staticGameObjectMap[sgoOnMap.id] = sgo;
 }
 
@@ -67,7 +68,7 @@ void MapEditorViewModel::AddPointLightToMap(PointLightOnMapDbInfo& dbInfo)
     dbInfo.quadraticAttenuation,
     XMFLOAT3(dbInfo.pointLightDbInfo.relativePosX, dbInfo.pointLightDbInfo.relativePosY, dbInfo.pointLightDbInfo.relativePosZ),
     XMFLOAT3(dbInfo.red, dbInfo.green, dbInfo.blue),
-    &m_staticGameObjectMap[dbInfo.sgoOnMapId]);
+    &m_staticGameObjectMap[dbInfo.sgoOnMapId], dbInfo.castShadows);
 
   m_pointLightsOnMap[dbInfo.id] = pointLight;
 }
@@ -271,12 +272,13 @@ void MapEditorViewModel::GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vect
   m_octoTree.GetVisibleSgo(cameraFrustrum, sgosToRender);
 }
 
-void MapEditorViewModel::GetVisiblePointLights(CameraFrustrum* cameraFrustrum, std::vector<PointLight*>* pointLightsToRender)
+void MapEditorViewModel::GetVisiblePointLights(CameraFrustrum* cameraFrustrum, LightininigSystem* lightiningSystem)
 {
-  pointLightsToRender->clear();
+  lightiningSystem->ClearLights();
+
   for (auto& pointLight : m_pointLightsOnMap)
   {
-    pointLightsToRender->push_back(&pointLight.second);
+    lightiningSystem->AddPointLight(&pointLight.second);
   }
 }
 

@@ -53,6 +53,7 @@ void AddOrEditPointLightDialog::SetPointLight(PointLightDbInfo pointLight)
   this->blueTxt->setText(QString::number(pointLight.blue));
   this->linearAttenuationTxt->setText(QString::number(pointLight.linearAttenuation));
   this->quadraticAttenuationTxt->setText(QString::number(pointLight.quadraticAttenuation));
+  this->castShadowsCheckBox->setChecked(pointLight.castShadows);
 }
 
 PointLightDbInfo AddOrEditPointLightDialog::GetPointLight()
@@ -77,6 +78,7 @@ PointLightDbInfo AddOrEditPointLightDialog::GetPointLight()
   m_pointLight.blue = this->blueTxt->text().toFloat();
   m_pointLight.linearAttenuation = this->linearAttenuationTxt->text().toFloat();
   m_pointLight.quadraticAttenuation = this->quadraticAttenuationTxt->text().toFloat();
+  m_pointLight.castShadows = this->castShadowsCheckBox->isChecked();
 
   return m_pointLight;
 }

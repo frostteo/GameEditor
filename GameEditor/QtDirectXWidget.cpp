@@ -45,7 +45,7 @@ bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
   // Create the camera object.
   m_Camera = std::unique_ptr<Camera>(new Camera());
-  m_Camera->Initialize(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
+  m_Camera->Initialize(screenWidth, screenHeight, m_screenNear, m_screenDepth);
   if (!m_Camera)
   {
     return false;
@@ -85,7 +85,7 @@ void QtDirectXWidget::resizeEvent(QResizeEvent* evt)
   //TODO FHolod: update resource which depends on aspect ration
   float width = this->width();
   float height = this->height();
-  m_Camera->Initialize(width, height, SCREEN_NEAR, SCREEN_DEPTH);
+  m_Camera->Initialize(width, height, m_screenNear, m_screenDepth);
 }
 
 Model* QtDirectXWidget::GetModel(const std::string& modelName)

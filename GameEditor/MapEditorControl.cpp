@@ -737,6 +737,7 @@ void MapEditorControl::AddPointLightToMap(PointLightDbInfo& pointLight)
   pointLightOnMap.sgoOnMapDbInfo.staticGameObjectId = pointLight.staticGameObjectId;
   pointLightOnMap.sgoOnMapDbInfo.instanceName = pointLight.name;
   pointLightOnMap.sgoOnMapDbInfo.gameObjectType = GameObjectType::POINT_LIGHT;
+  pointLightOnMap.sgoOnMapDbInfo.castShadows = false;
   if (pointLight.countOnMap > 0)
     pointLightOnMap.sgoOnMapDbInfo.instanceName += QString::number(pointLight.countOnMap);
 
@@ -745,6 +746,7 @@ void MapEditorControl::AddPointLightToMap(PointLightDbInfo& pointLight)
   pointLightOnMap.blue = pointLight.blue;
   pointLightOnMap.linearAttenuation = pointLight.linearAttenuation;
   pointLightOnMap.quadraticAttenuation = pointLight.quadraticAttenuation;
+  pointLightOnMap.castShadows = pointLight.castShadows;
 
   dialog.SetPointLightOnMap(pointLightOnMap);
 

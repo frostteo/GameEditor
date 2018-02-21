@@ -9,6 +9,7 @@ private:
   {
     std::string configuredShaderName;
     std::string vsShaderName;
+    std::string gsShaderName;
     std::string hlShaderName;
     std::string dmShaderName;
     std::string psShaderName;
@@ -19,6 +20,7 @@ private:
   shaderNameMap m_shaderNameMap;
 
   std::wstring m_pathToVertexShader;
+  std::wstring m_pathToGeometricShader;
   std::wstring m_pathToHullShader;
   std::wstring m_pathToDomainShader;
   std::wstring m_pathToPixelShader;
@@ -36,6 +38,7 @@ public:
 
   std::string GetConfiguredShaderName(const std::string& shaderName) { return m_shaderNameMap[shaderName].configuredShaderName; }
   std::wstring GetVertexShaderFileName(const std::string& shaderName);
+  std::wstring GetGeometricShaderFileName(const std::string& shaderName);
   std::wstring GetHullShaderFileName(const std::string& shaderName);
   std::wstring GetDomainShaderFileName(const std::string& shaderName);
   std::wstring GetPixelShaderFileName(const std::string& shaderName);

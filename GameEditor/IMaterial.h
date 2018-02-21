@@ -12,7 +12,7 @@ protected:
   std::string m_name;
 public:
   IMaterial(const std::string& name) { m_name = name; }
-  virtual ~IMaterial();
+  virtual ~IMaterial() = 0;
   virtual const std::string& GetType() = 0;
   virtual ID3D11ShaderResourceView** GetTextures() { return nullptr; }
   virtual int GetTexturesCount() { return 0; }

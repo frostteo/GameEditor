@@ -14,6 +14,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFormLayout>
@@ -51,21 +52,22 @@ public:
     QLineEdit *blueTxt;
     QLabel *greenLbl;
     QLineEdit *greenTxt;
+    QCheckBox *castShadowsCheckBox;
 
     void setupUi(QDialog *AddOrEditPointLightDialog)
     {
         if (AddOrEditPointLightDialog->objectName().isEmpty())
             AddOrEditPointLightDialog->setObjectName(QStringLiteral("AddOrEditPointLightDialog"));
-        AddOrEditPointLightDialog->resize(279, 369);
+        AddOrEditPointLightDialog->resize(279, 389);
         AddOrEditPointLightDialog->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         buttonBox = new QDialogButtonBox(AddOrEditPointLightDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(120, 340, 156, 23));
+        buttonBox->setGeometry(QRect(120, 360, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         errorsMsgLbl = new QLabel(AddOrEditPointLightDialog);
         errorsMsgLbl->setObjectName(QStringLiteral("errorsMsgLbl"));
-        errorsMsgLbl->setGeometry(QRect(10, 280, 261, 51));
+        errorsMsgLbl->setGeometry(QRect(10, 300, 261, 51));
         QPalette palette;
         QBrush brush(QColor(255, 0, 0, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -84,7 +86,7 @@ public:
         errorsMsgLbl->setWordWrap(true);
         layoutWidget = new QWidget(AddOrEditPointLightDialog);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 10, 259, 256));
+        layoutWidget->setGeometry(QRect(10, 10, 259, 281));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -197,6 +199,12 @@ public:
 
         formLayout->setWidget(6, QFormLayout::FieldRole, greenTxt);
 
+        castShadowsCheckBox = new QCheckBox(layoutWidget);
+        castShadowsCheckBox->setObjectName(QStringLiteral("castShadowsCheckBox"));
+        castShadowsCheckBox->setLayoutDirection(Qt::RightToLeft);
+
+        formLayout->setWidget(10, QFormLayout::FieldRole, castShadowsCheckBox);
+
         QWidget::setTabOrder(nameTxt, sgoNameTxt);
         QWidget::setTabOrder(sgoNameTxt, relPosXTxt);
         QWidget::setTabOrder(relPosXTxt, relPosYTxt);
@@ -228,6 +236,7 @@ public:
         redLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "red", Q_NULLPTR));
         blueLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "blue", Q_NULLPTR));
         greenLbl->setText(QApplication::translate("AddOrEditPointLightDialog", "green", Q_NULLPTR));
+        castShadowsCheckBox->setText(QApplication::translate("AddOrEditPointLightDialog", "Cast shadows", Q_NULLPTR));
     } // retranslateUi
 
 };

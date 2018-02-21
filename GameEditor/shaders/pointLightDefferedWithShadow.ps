@@ -1,0 +1,131 @@
+
+Texture2D normalTexture : register(t0);
+Texture2D colorTexture : register(t1);
+Texture2D specularTexture : register(t2);
+Texture2D selfIluninationTexture : register(t3);
+Texture2D depthTexture : register(t4);
+TextureCube<float> pointShadowMapTexture : register(t5);
+
+SamplerComparisonState PCFSampler : register(s0);
+
+cbuffer WorldPosUnpackBuffer : register(b0)
+{
+	float4 PerspectiveValues : packoffset(c0);
+	float4x4 ViewInv : packoffset(c1);
+};
+
+cbuffer PointLightBuffer : register(b1)
+{
+    float3 pointLightColor;
+	float linearAttenuation;
+	float3 pointLightPosition;
+	float quadraticAttenuation;
+	float2 lightPerspectiveValues;
+};
+
+struct GBufferData
+{	
+	float linearDepth;
+	float3 diffuseColor;
+	float3 normal;
+	float3 specularColor;
+	float specularPower;
+	float3 worldPos;
+};
+
+float PointShadowPCF(float3 toPixel)
+{
+	float3 toPixelAbs = abs(toPixel);
+	float z = max(toPixelAbs.x, max(toPixelAbs.y, toPixelAbs.z));
+	float depth = (lightPerspectiveValues.x * z + lightPerspectiveValues.y) / z;
+	
+	return pointShadowMapTexture.SampleCmpLevelZero(PCFSampler, toPixel, depth).x;
+}
+
+float3 CalcWorldPos(float2 csPos, float linearDepth)
+{
+	float4 position;
+	
+	position.xy = csPos.xy * PerspectiveValues.xy * linearDepth;
+	position.z = linearDepth;
+	position.w = 1.0f;
+	
+	return mul(position, ViewInv).xyz;
+}
+
+float ConvertDepthToLinear(float depth)
+{
+	float linearDepth = PerspectiveValues.z / (depth + PerspectiveValues.w);
+	return linearDepth;
+}
+
+static const float specPowerRange = 255.0f;
+
+GBufferData UnpackGBuffer(int2 location)
+{
+	GBufferData output;
+	
+	int3 location3 = int3(location, 0);
+	
+	output.diffuseColor = colorTexture.Load(location3).xyz;
+	
+	float4 specularColorAndPower = specularTexture.Load(location3);
+	output.specularColor = specularColorAndPower.xyz;
+	
+	float specularPowerNorm = specularColorAndPower.w;
+	output.specularPower = specularPowerNorm * specPowerRange;
+	
+	output.normal = normalTexture.Load(location3).xyz;
+	output.normal = normalize(output.normal * 2.0f - 1.0f);
+	
+	float depth = depthTexture.Load(location3).x;
+	output.linearDepth = ConvertDepthToLinear(depth);
+	
+	return output;
+}
+
+struct PixelInputType
+{
+    float4 position : SV_POSITION;
+	float2 cpPos : TEXCOORD0;
+};
+
+#define cameraPosition ViewInv[3].xyz
+
+float4 PointLightPixelShader(PixelInputType input) : SV_TARGET
+{		
+	float4 outputColor;
+	GBufferData gdb = UnpackGBuffer(input.position.xy);
+	
+	float3 worldPos = CalcWorldPos(input.cpPos, gdb.linearDepth);
+	float3 pointLightDirection = pointLightPosition - worldPos;
+	
+	float shadowAttenuation = PointShadowPCF(-pointLightDirection);
+	
+	float distance = length(pointLightDirection);
+	pointLightDirection /= distance;
+	distance *= 0.01f;
+	float attenuation = (1.0f + distance * linearAttenuation + distance * distance * quadraticAttenuation);
+	
+	float pointLightIntensity = saturate(dot(gdb.normal, pointLightDirection));	
+	
+	if (pointLightIntensity > 0.0f)
+	{
+		outputColor.xyz = pointLightIntensity * pointLightColor.xyz * gdb.diffuseColor.xyz;
+		
+		if (gdb.specularPower > 0.0f)
+		{	
+			float3 viewDirection = cameraPosition - worldPos;
+			viewDirection = normalize(viewDirection);
+			float3 halfWay = normalize(viewDirection + pointLightDirection);
+			float specularFactor = saturate(dot(halfWay, gdb.normal));
+			outputColor.xyz += gdb.specularColor * pow(specularFactor, gdb.specularPower);
+		}
+		outputColor /= attenuation;
+		outputColor *= shadowAttenuation;
+	}
+	
+	outputColor.w = 1.0f;
+	outputColor = saturate(outputColor);
+    return outputColor;
+}

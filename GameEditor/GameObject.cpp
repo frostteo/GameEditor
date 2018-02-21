@@ -16,6 +16,8 @@ GameObject::GameObject()
   m_needRebuildScaleMatrix = true;
 
   m_parent = nullptr;
+
+  m_worldPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
 }
 
 
@@ -70,49 +72,78 @@ void GameObject::ChangeZRotation(float angle)
   m_needRebuildRotationMatrix = true;
 }
 
+void GameObject::RebuildWorldMatrix()
+{
+  needRebuildDependOnWorldMatrix = true;
+
+  if (m_needRebuildScaleMatrix) {
+    m_scaleMatrix = XMMatrixScaling(m_scale, m_scale, m_scale);
+    m_needRebuildScaleMatrix = false;
+  }
+
+  if (m_needRebuildRotationMatrix) {
+    m_rotationMatrix = XMMatrixRotationRollPitchYaw(XMConvertToRadians(m_rotationX), XMConvertToRadians(m_rotationY), XMConvertToRadians(m_rotationZ));
+    m_needRebuildRotationMatrix = false;
+  }
+
+  if (m_needRebuildTranslationMatrix) {
+    m_translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
+    m_needRebuildTranslationMatrix = false;
+  }
+
+  if (m_scale != 1.0f)
+  {
+    m_worldMatrix = m_scaleMatrix * m_rotationMatrix * m_translationMatrix;
+  }
+  else
+  {
+    m_worldMatrix = m_rotationMatrix * m_translationMatrix;
+  }
+}
+
 void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
 {
   if (NeedRebuildWorldMatrix())
   {
-    needRebuildDependOnWorldMatrix = true;
-
-    if (m_needRebuildScaleMatrix) {
-      m_scaleMatrix = XMMatrixScaling(m_scale, m_scale, m_scale);
-      m_needRebuildScaleMatrix = false;
-    }
-
-    if (m_needRebuildRotationMatrix) {
-      m_rotationMatrix = XMMatrixRotationRollPitchYaw(XMConvertToRadians(m_rotationX), XMConvertToRadians(m_rotationY), XMConvertToRadians(m_rotationZ));
-      m_needRebuildRotationMatrix = false;
-    }
-     
-    if (m_needRebuildTranslationMatrix) {
-      m_translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
-      m_needRebuildTranslationMatrix = false;
-    }
-
-    if (m_scale != 1.0f)
-    {
-      m_worldMatrix = XMMatrixMultiply(m_scaleMatrix, m_rotationMatrix);
-      m_worldMatrix = XMMatrixMultiply(m_worldMatrix, m_translationMatrix);
-    }
-    else
-    {
-      m_worldMatrix = XMMatrixMultiply(m_rotationMatrix, m_translationMatrix);
-    }
+    RebuildWorldMatrix();
   }
 
   if (m_parent)
   {
     XMMATRIX parentMatrix;
     GetParentMatrix(parentMatrix);
-
-    worldMatrix = XMMatrixMultiply(m_worldMatrix, parentMatrix);
+    worldMatrix = m_worldMatrix * parentMatrix;
   }
   else
   {
     worldMatrix = m_worldMatrix;
   }
+}
+
+XMFLOAT3 GameObject::GetWorldPosition()
+{
+  if (NeedRebuildWorldMatrix())
+  {
+    RebuildWorldMatrix();
+  }
+  
+  if (m_parent)
+  {
+    XMMATRIX parentMatrix, worldParentMultiply;
+    XMFLOAT4X4 readableWorldMatrix;
+
+    GetParentMatrix(parentMatrix);
+    worldParentMultiply = m_worldMatrix * parentMatrix;
+
+    XMStoreFloat4x4(&readableWorldMatrix, worldParentMultiply);
+    m_worldPosition = XMFLOAT3(readableWorldMatrix._41, readableWorldMatrix._42, readableWorldMatrix._43);
+  }
+  else
+  {
+    m_worldPosition = XMFLOAT3(m_positionX, m_positionY, m_positionZ);
+  }
+
+  return m_worldPosition;
 }
 
 void GameObject::SetWorldMatrix(XMMATRIX worldMatrix)

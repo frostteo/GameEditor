@@ -18,6 +18,7 @@ public:
   float blue = 1.0f;
   float linearAttenuation;
   float quadraticAttenuation;
+  bool castShadows = false;
   int countOnMap = 0;
 };
 

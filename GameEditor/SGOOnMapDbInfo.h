@@ -19,7 +19,8 @@ struct SGOOnMapDbInfo
   float xRotate = 0.0f;
   float yRotate = 0.0f;
   float zRotate = 0.0f;
-  int isFrozen = 0;
+  bool castShadows = true;
+  bool isFrozen = false;
   GameObjectType gameObjectType = GameObjectType::STATIC_GAME_OBJECT;
 };
 

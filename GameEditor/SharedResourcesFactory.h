@@ -25,7 +25,6 @@ SharedResourcesFactory<T>::SharedResourcesFactory()
 {
 }
 
-
 template <typename T>
 void SharedResourcesFactory<T>::Shutdown()
 {

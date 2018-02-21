@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>279</width>
-    <height>369</height>
+    <height>389</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>340</y>
+     <y>360</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -36,7 +36,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>280</y>
+     <y>300</y>
      <width>261</width>
      <height>51</height>
     </rect>
@@ -145,7 +145,7 @@
      <x>10</x>
      <y>10</y>
      <width>259</width>
-     <height>256</height>
+     <height>281</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -272,6 +272,16 @@
     </item>
     <item row="6" column="1">
      <widget class="QLineEdit" name="greenTxt"/>
+    </item>
+    <item row="10" column="1">
+     <widget class="QCheckBox" name="castShadowsCheckBox">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>Cast shadows</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

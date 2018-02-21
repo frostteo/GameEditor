@@ -58,7 +58,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
 
   // Create the camera object.
   m_Camera = new Camera();
-  m_Camera->Initialize(screenWidth, screenHeight, SCREEN_NEAR, SCREEN_DEPTH);
+  m_Camera->Initialize(screenWidth, screenHeight, m_screenNear, m_screenDepth);
   if (!m_Camera)
   {
     return false;
@@ -135,5 +135,5 @@ void QtGameFrameworkTest::resizeEvent(QResizeEvent* evt)
   //TODO FHolod: update resource which depends on aspect ration
   float width = this->width();
   float height = this->height();
-  m_Camera->Initialize(width, height, SCREEN_NEAR, SCREEN_DEPTH);
+  m_Camera->Initialize(width, height, m_screenNear, m_screenDepth);
 }

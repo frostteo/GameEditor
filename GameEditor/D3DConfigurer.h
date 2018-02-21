@@ -16,6 +16,8 @@ using namespace DirectX;
 class D3DConfigurer
 {
 private:
+  static const int SHADOW_MAP_SIZE;
+private:
   bool m_vsync_enabled;
   int m_videoCardMemorySize;
   std::wstring m_videoCardDescription;
@@ -45,12 +47,20 @@ private:
   ID3D11DepthStencilState* m_greaterEqualReadonlyDepthStensilState;
 
   std::unique_ptr<GBuffer> m_gbuffer;
+
+  ID3D11RasterizerState* m_pointLightShadowRS;
+  ID3D11Texture2D* m_pointLightShadowDepthBuffer;
+  ID3D11DepthStencilView* m_pointLightShadowDSV;
+  ID3D11ShaderResourceView* m_pointLightShadowSRV;
+  D3D11_VIEWPORT m_pointLightShadowViewports[6];
+protected:
+  void InitializeDefferedLightingStructures();
+  void InitializePointLightShadowStructures();
 public:
   D3DConfigurer();
   virtual ~D3DConfigurer();
 
   bool Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen);
-  void InitializeDefferedLightingStructures();
   void Shutdown();
 
   ID3D11Device* GetDevice();
@@ -86,5 +96,8 @@ public:
   void SetGBufferOnlyWriteableDepthBufferToRenderTargets();
   void ClearGBufferStencil();
   void SetGBufferReadonlyDepthBufferToRenderTargets();
+
+  void PrepareToPointLightShadowGeneration();
+  ID3D11ShaderResourceView** GetPointLightsShadowBuffer() { return &m_pointLightShadowSRV; }
 };
 

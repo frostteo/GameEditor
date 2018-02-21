@@ -5,7 +5,7 @@ MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, QString pathToM
 {
   this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
   this->setWindowTitle("Map editor");
-  m_Camera->SetPosition(-500.0f, 0.0f, 0.0f);
+  m_Camera->SetPosition(0.0f, 0.0f, -500.0f);
   m_Camera->SetRotation(0.0f, 0.0f, 0.0f);
 
   m_mapEditorViewModel = std::make_unique<MapEditorViewModel>();
@@ -31,13 +31,13 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
   if (m_Camera->NeedRebuildFrustrum())
   {
     m_mapEditorViewModel->GetVisibleSgo(m_Camera->GetCameraFrustrum(), &m_visibleSgos);
-    m_mapEditorViewModel->GetVisiblePointLights(m_Camera->GetCameraFrustrum(), m_lightininigSystem->GetPointLights());
+    m_mapEditorViewModel->GetVisiblePointLights(m_Camera->GetCameraFrustrum(), m_lightininigSystem.get());
   }
  
   for (auto sgo : m_visibleSgos)
   {
     sgo->GetWorldMatrix(worldMatrix);
-    m_graphicSystem->AddModelToRenderList(sgo->GetModel(), worldMatrix);
+    m_graphicSystem->AddModelToRenderList(sgo->GetModel(), worldMatrix, sgo->castShadows);
   }
 
   m_mapEditorViewModel->GetSelectedSgos(&m_selectedSgos);
@@ -58,7 +58,12 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
 
   if (m_testLightiningEnabled)
   {
-    for (auto pointLight : *m_lightininigSystem->GetPointLights())
+    for (auto pointLight : *m_lightininigSystem->GetPointLightsNonCastShadows())
+    {
+      pointLight->GetWorldMatrix(worldMatrix);
+      m_graphicSystem->AddGridToRenderList(&m_pointLightVolumeGridObject, worldMatrix);
+    }
+    for (auto pointLight : *m_lightininigSystem->GetPointLightsCastShadows())
     {
       pointLight->GetWorldMatrix(worldMatrix);
       m_graphicSystem->AddGridToRenderList(&m_pointLightVolumeGridObject, worldMatrix);

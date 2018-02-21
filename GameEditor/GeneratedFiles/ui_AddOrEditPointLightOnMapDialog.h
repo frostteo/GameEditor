@@ -56,12 +56,13 @@ public:
     QLineEdit *linearAttenuationTxt;
     QLabel *quadraticAttenuationLbl;
     QLineEdit *quadraticAttenuationTxt;
+    QCheckBox *castShadowsCheckBox;
 
     void setupUi(QDialog *AddOrEditPointLightOnMapDialog)
     {
         if (AddOrEditPointLightOnMapDialog->objectName().isEmpty())
             AddOrEditPointLightOnMapDialog->setObjectName(QStringLiteral("AddOrEditPointLightOnMapDialog"));
-        AddOrEditPointLightOnMapDialog->resize(346, 333);
+        AddOrEditPointLightOnMapDialog->resize(340, 341);
         positionGroupBox = new QGroupBox(AddOrEditPointLightOnMapDialog);
         positionGroupBox->setObjectName(QStringLiteral("positionGroupBox"));
         positionGroupBox->setGeometry(QRect(20, 40, 151, 111));
@@ -113,9 +114,10 @@ public:
         isFrozenCheckBox = new QCheckBox(AddOrEditPointLightOnMapDialog);
         isFrozenCheckBox->setObjectName(QStringLiteral("isFrozenCheckBox"));
         isFrozenCheckBox->setGeometry(QRect(260, 280, 70, 17));
+        isFrozenCheckBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox = new QDialogButtonBox(AddOrEditPointLightOnMapDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(170, 300, 156, 23));
+        buttonBox->setGeometry(QRect(180, 310, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -155,6 +157,10 @@ public:
         quadraticAttenuationTxt = new QLineEdit(attenuationGroupBox);
         quadraticAttenuationTxt->setObjectName(QStringLiteral("quadraticAttenuationTxt"));
         quadraticAttenuationTxt->setGeometry(QRect(190, 20, 91, 20));
+        castShadowsCheckBox = new QCheckBox(AddOrEditPointLightOnMapDialog);
+        castShadowsCheckBox->setObjectName(QStringLiteral("castShadowsCheckBox"));
+        castShadowsCheckBox->setGeometry(QRect(160, 280, 91, 17));
+        castShadowsCheckBox->setLayoutDirection(Qt::RightToLeft);
         QWidget::setTabOrder(instanceNameTxt, xPosTxt);
         QWidget::setTabOrder(xPosTxt, yPosTxt);
         QWidget::setTabOrder(yPosTxt, zPosTxt);
@@ -166,7 +172,8 @@ public:
         QWidget::setTabOrder(greenTxt, blueTxt);
         QWidget::setTabOrder(blueTxt, linearAttenuationTxt);
         QWidget::setTabOrder(linearAttenuationTxt, quadraticAttenuationTxt);
-        QWidget::setTabOrder(quadraticAttenuationTxt, isFrozenCheckBox);
+        QWidget::setTabOrder(quadraticAttenuationTxt, castShadowsCheckBox);
+        QWidget::setTabOrder(castShadowsCheckBox, isFrozenCheckBox);
 
         retranslateUi(AddOrEditPointLightOnMapDialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), AddOrEditPointLightOnMapDialog, SLOT(accept()));
@@ -195,6 +202,7 @@ public:
         attenuationGroupBox->setTitle(QApplication::translate("AddOrEditPointLightOnMapDialog", "attenuation", Q_NULLPTR));
         linearAttenuationLbl->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "linear", Q_NULLPTR));
         quadraticAttenuationLbl->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "quadratic", Q_NULLPTR));
+        castShadowsCheckBox->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "Cast shadows", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -22,8 +22,8 @@
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
-const float SCREEN_DEPTH = 5000.0f;
-const float SCREEN_NEAR = 0.1f;
+const float m_screenDepth = 5000.0f;
+const float m_screenNear = 0.1f;
 
 class QtGameFrameworkTest : public QWidget, public Ui::QtGameFrameworkTest
 {
