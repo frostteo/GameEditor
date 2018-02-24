@@ -17,6 +17,7 @@ public:
   float linearAttenuation;
   float quadraticAttenuation;
   bool castShadows = false;
+  int shadowDirections = 63;
 
   PointLightDbInfo pointLightDbInfo;
   SGOOnMapDbInfo sgoOnMapDbInfo;

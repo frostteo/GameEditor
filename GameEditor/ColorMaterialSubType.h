@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ColorMaterialSubType {
+enum class ColorMaterialSubType : int {
   ONLY_COLOR = 0,
   COLOR_SPECULAR = 1,
   COLOR_SELFILUM = 2,
@@ -14,7 +14,7 @@ inline ColorMaterialSubType operator|(ColorMaterialSubType a, ColorMaterialSubTy
 
 inline ColorMaterialSubType operator &(ColorMaterialSubType a, ColorMaterialSubType b)
 {
-  return static_cast<ColorMaterialSubType>(static_cast<int>(a)& static_cast<int>(b));
+  return static_cast<ColorMaterialSubType>(static_cast<int>(a) & static_cast<int>(b));
 }
 
 inline ColorMaterialSubType& operator |=(ColorMaterialSubType& a, ColorMaterialSubType b)

@@ -61,6 +61,15 @@ void AddOrEditPointLightOnMapDialog::SetPointLightOnMap(PointLightOnMapDbInfo po
   this->linearAttenuationTxt->setText(QString::number(m_pointLightOnMap.linearAttenuation));
   this->quadraticAttenuationTxt->setText(QString::number(m_pointLightOnMap.quadraticAttenuation));
   this->castShadowsCheckBox->setChecked(m_pointLightOnMap.castShadows);
+
+  this->minusXShadowDir->setChecked(m_pointLightOnMap.shadowDirections & PointLightShadowDirection::MINUS_X);
+  this->plusXShadowDir->setChecked(m_pointLightOnMap.shadowDirections & PointLightShadowDirection::PLUS_X);
+  this->minusYShadowDir->setChecked(m_pointLightOnMap.shadowDirections & PointLightShadowDirection::MINUS_Y);
+  this->plusYShadowDir->setChecked(m_pointLightOnMap.shadowDirections & PointLightShadowDirection::PLUS_Y);
+  this->minusZShadowDir->setChecked(m_pointLightOnMap.shadowDirections & PointLightShadowDirection::MINUS_Z);
+  this->plusZShadowDir->setChecked(m_pointLightOnMap.shadowDirections & PointLightShadowDirection::PLUS_Z);
+
+  on_castShadowsCheckBox_clicked(m_pointLightOnMap.castShadows);
 }
 
 PointLightOnMapDbInfo AddOrEditPointLightOnMapDialog::GetPointLightOnMap()
@@ -86,10 +95,40 @@ PointLightOnMapDbInfo AddOrEditPointLightOnMapDialog::GetPointLightOnMap()
   m_pointLightOnMap.quadraticAttenuation = this->quadraticAttenuationTxt->text().toFloat();
   m_pointLightOnMap.castShadows = this->castShadowsCheckBox->isChecked();
 
+  m_pointLightOnMap.shadowDirections = 0;
+
+  if (this->minusXShadowDir->isChecked())
+    m_pointLightOnMap.shadowDirections |= PointLightShadowDirection::MINUS_X;
+
+  if (this->plusXShadowDir->isChecked())
+    m_pointLightOnMap.shadowDirections |= PointLightShadowDirection::PLUS_X;
+
+  if (this->minusYShadowDir->isChecked())
+    m_pointLightOnMap.shadowDirections |= PointLightShadowDirection::MINUS_Y;
+
+  if (this->plusYShadowDir->isChecked())
+    m_pointLightOnMap.shadowDirections |= PointLightShadowDirection::PLUS_Y;
+
+  if (this->minusZShadowDir->isChecked())
+    m_pointLightOnMap.shadowDirections |= PointLightShadowDirection::MINUS_Z;
+
+  if (this->plusZShadowDir->isChecked())
+    m_pointLightOnMap.shadowDirections |= PointLightShadowDirection::PLUS_Z;
+
   return m_pointLightOnMap;
 }
 
 void AddOrEditPointLightOnMapDialog::done(int result)
 {
   QDialog::done(result);
+}
+
+void AddOrEditPointLightOnMapDialog::on_castShadowsCheckBox_clicked(bool checked)
+{
+  this->minusXShadowDir->setEnabled(checked);
+  this->plusXShadowDir->setEnabled(checked);
+  this->minusYShadowDir->setEnabled(checked);
+  this->plusYShadowDir->setEnabled(checked);
+  this->minusZShadowDir->setEnabled(checked);
+  this->plusZShadowDir->setEnabled(checked);
 }

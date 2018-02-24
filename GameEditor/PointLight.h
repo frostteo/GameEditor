@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include <math.h>
 #include "GameObject.h"
+#include "PointLightShadowDirection.h"
 
 class PointLight :
   public GameObject
@@ -19,15 +20,20 @@ protected:
   XMMATRIX m_cubeViewProjection[6];
   XMFLOAT2 m_lightPerspectiveValues;
   XMFLOAT3 m_oldWorldPosition;
+
+  PointLightShadowDirection m_shadowDirections;
+  int m_shadowDirectionsArr[6];
+  int m_shadowDirectionsArrSize;
 protected:
   void RebuildPerspectiveValues();
   void RebuildCubeViewProjection(XMFLOAT3 worldPosition);
+  void SetShadowDirections(PointLightShadowDirection shadowDirections);
 public:
   bool castShadows = false;
 public:
   PointLight();
   void virtual SetPosition(float x, float y, float z) override;
-  void Initialize(float linearAttenuation, float quadraticAttenuation, XMFLOAT3 position, XMFLOAT3 color, GameObject* parent, bool castShadows = false);
+  void Initialize(float linearAttenuation, float quadraticAttenuation, XMFLOAT3 position, XMFLOAT3 color, GameObject* parent, bool castShadows = false, PointLightShadowDirection shadowDirections = static_cast<PointLightShadowDirection>(63));
   void SetAttenuation(float linearAttenuation, float quadraticAttenuation);
   float GetLinearAttenuation() { return m_linerarAttenuation; }
   float GetQuadraticAttenuation() { return m_quadraticAttenuation; }
@@ -38,5 +44,8 @@ public:
 
   XMMATRIX* GetCubeViewProjection();
   XMFLOAT2 GetLightPerspectiveValues();
+
+  const int* const GetShaderShadowDirectionsArr() const;
+  const int GetShaderShadowDirectionsArrSize() const;
 };
 

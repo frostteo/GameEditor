@@ -57,12 +57,19 @@ public:
     QLabel *quadraticAttenuationLbl;
     QLineEdit *quadraticAttenuationTxt;
     QCheckBox *castShadowsCheckBox;
+    QGroupBox *shadowDirectionGroupBox;
+    QCheckBox *minusXShadowDir;
+    QCheckBox *plusXShadowDir;
+    QCheckBox *minusYShadowDir;
+    QCheckBox *plusYShadowDir;
+    QCheckBox *minusZShadowDir;
+    QCheckBox *plusZShadowDir;
 
     void setupUi(QDialog *AddOrEditPointLightOnMapDialog)
     {
         if (AddOrEditPointLightOnMapDialog->objectName().isEmpty())
             AddOrEditPointLightOnMapDialog->setObjectName(QStringLiteral("AddOrEditPointLightOnMapDialog"));
-        AddOrEditPointLightOnMapDialog->resize(340, 341);
+        AddOrEditPointLightOnMapDialog->resize(340, 401);
         positionGroupBox = new QGroupBox(AddOrEditPointLightOnMapDialog);
         positionGroupBox->setObjectName(QStringLiteral("positionGroupBox"));
         positionGroupBox->setGeometry(QRect(20, 40, 151, 111));
@@ -113,11 +120,11 @@ public:
         instanceNameTxt->setGeometry(QRect(90, 10, 241, 20));
         isFrozenCheckBox = new QCheckBox(AddOrEditPointLightOnMapDialog);
         isFrozenCheckBox->setObjectName(QStringLiteral("isFrozenCheckBox"));
-        isFrozenCheckBox->setGeometry(QRect(260, 280, 70, 17));
+        isFrozenCheckBox->setGeometry(QRect(250, 340, 70, 17));
         isFrozenCheckBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox = new QDialogButtonBox(AddOrEditPointLightOnMapDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(180, 310, 156, 23));
+        buttonBox->setGeometry(QRect(170, 370, 156, 23));
         buttonBox->setLayoutDirection(Qt::RightToLeft);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -159,8 +166,35 @@ public:
         quadraticAttenuationTxt->setGeometry(QRect(190, 20, 91, 20));
         castShadowsCheckBox = new QCheckBox(AddOrEditPointLightOnMapDialog);
         castShadowsCheckBox->setObjectName(QStringLiteral("castShadowsCheckBox"));
-        castShadowsCheckBox->setGeometry(QRect(160, 280, 91, 17));
+        castShadowsCheckBox->setGeometry(QRect(150, 340, 91, 17));
         castShadowsCheckBox->setLayoutDirection(Qt::RightToLeft);
+        shadowDirectionGroupBox = new QGroupBox(AddOrEditPointLightOnMapDialog);
+        shadowDirectionGroupBox->setObjectName(QStringLiteral("shadowDirectionGroupBox"));
+        shadowDirectionGroupBox->setGeometry(QRect(20, 280, 311, 51));
+        minusXShadowDir = new QCheckBox(shadowDirectionGroupBox);
+        minusXShadowDir->setObjectName(QStringLiteral("minusXShadowDir"));
+        minusXShadowDir->setGeometry(QRect(10, 20, 31, 20));
+        minusXShadowDir->setLayoutDirection(Qt::RightToLeft);
+        plusXShadowDir = new QCheckBox(shadowDirectionGroupBox);
+        plusXShadowDir->setObjectName(QStringLiteral("plusXShadowDir"));
+        plusXShadowDir->setGeometry(QRect(50, 20, 31, 20));
+        plusXShadowDir->setLayoutDirection(Qt::RightToLeft);
+        minusYShadowDir = new QCheckBox(shadowDirectionGroupBox);
+        minusYShadowDir->setObjectName(QStringLiteral("minusYShadowDir"));
+        minusYShadowDir->setGeometry(QRect(100, 20, 31, 20));
+        minusYShadowDir->setLayoutDirection(Qt::RightToLeft);
+        plusYShadowDir = new QCheckBox(shadowDirectionGroupBox);
+        plusYShadowDir->setObjectName(QStringLiteral("plusYShadowDir"));
+        plusYShadowDir->setGeometry(QRect(140, 20, 31, 20));
+        plusYShadowDir->setLayoutDirection(Qt::RightToLeft);
+        minusZShadowDir = new QCheckBox(shadowDirectionGroupBox);
+        minusZShadowDir->setObjectName(QStringLiteral("minusZShadowDir"));
+        minusZShadowDir->setGeometry(QRect(190, 20, 31, 20));
+        minusZShadowDir->setLayoutDirection(Qt::RightToLeft);
+        plusZShadowDir = new QCheckBox(shadowDirectionGroupBox);
+        plusZShadowDir->setObjectName(QStringLiteral("plusZShadowDir"));
+        plusZShadowDir->setGeometry(QRect(230, 20, 31, 20));
+        plusZShadowDir->setLayoutDirection(Qt::RightToLeft);
         QWidget::setTabOrder(instanceNameTxt, xPosTxt);
         QWidget::setTabOrder(xPosTxt, yPosTxt);
         QWidget::setTabOrder(yPosTxt, zPosTxt);
@@ -203,6 +237,13 @@ public:
         linearAttenuationLbl->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "linear", Q_NULLPTR));
         quadraticAttenuationLbl->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "quadratic", Q_NULLPTR));
         castShadowsCheckBox->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "Cast shadows", Q_NULLPTR));
+        shadowDirectionGroupBox->setTitle(QApplication::translate("AddOrEditPointLightOnMapDialog", "Shadow direction", Q_NULLPTR));
+        minusXShadowDir->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "-X", Q_NULLPTR));
+        plusXShadowDir->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "+X", Q_NULLPTR));
+        minusYShadowDir->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "-Y", Q_NULLPTR));
+        plusYShadowDir->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "+Y", Q_NULLPTR));
+        minusZShadowDir->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "-Z", Q_NULLPTR));
+        plusZShadowDir->setText(QApplication::translate("AddOrEditPointLightOnMapDialog", "+Z", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -4,7 +4,7 @@
 PLShadowGenerationShader::PLShadowGenerationShader()
 {
   m_worldMatrixBuffer = nullptr;
-  m_shadowMapCubeBuffer = nullptr;
+  m_geometricShaderShadowBuffer = nullptr;
 }
 
 
@@ -98,7 +98,7 @@ void PLShadowGenerationShader::InitializeShader(ID3D11Device* device, HWND hwnd,
   shadowMapCubeBufferDesc.MiscFlags = 0;
   shadowMapCubeBufferDesc.StructureByteStride = 0;
 
-  result = device->CreateBuffer(&shadowMapCubeBufferDesc, nullptr, &m_shadowMapCubeBuffer);
+  result = device->CreateBuffer(&shadowMapCubeBufferDesc, nullptr, &m_geometricShaderShadowBuffer);
   if (FAILED(result))
   {
     RUNTIME_ERROR("failed create shadow map cube buffer " + gsFilenameStdStr);
@@ -115,14 +115,14 @@ void PLShadowGenerationShader::ShutdownShader()
     m_worldMatrixBuffer = nullptr;
   }
 
-  if (m_shadowMapCubeBuffer)
+  if (m_geometricShaderShadowBuffer)
   {
-    m_shadowMapCubeBuffer->Release();
-    m_shadowMapCubeBuffer = nullptr;
+    m_geometricShaderShadowBuffer->Release();
+    m_geometricShaderShadowBuffer = nullptr;
   }
 }
 
-void PLShadowGenerationShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX* cubeViewProjections)
+void PLShadowGenerationShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX* cubeViewProjections, const int* const shadowDirectionsArr, const int shadowDirectionsArrSize)
 {
   HRESULT result;
   D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -143,21 +143,24 @@ void PLShadowGenerationShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
 
   deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_worldMatrixBuffer);
 
-  result = deviceContext->Map(m_shadowMapCubeBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+  result = deviceContext->Map(m_geometricShaderShadowBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    RUNTIME_ERROR("can't lock the world pos unpack data constant buffer ");
+    RUNTIME_ERROR("can't lock the geometric shader shadow constant buffer ");
 
   shadowMapCubeBufferDataPtr = (CubeViewProjectionsBuffer*)mappedResource.pData;
   for (int i = 0; i < 6; ++i)
   {
     shadowMapCubeBufferDataPtr->cubeViewProjections[i] = cubeViewProjections[i];
   }
+  for (int i = 0; i < shadowDirectionsArrSize; ++i)
+  {
+    shadowMapCubeBufferDataPtr->shadowDirections[i].x = shadowDirectionsArr[i];
+  }
+  shadowMapCubeBufferDataPtr->shadowDirectionsSize.x = shadowDirectionsArrSize;
 
-  deviceContext->Unmap(m_shadowMapCubeBuffer, 0);
-
+  deviceContext->Unmap(m_geometricShaderShadowBuffer, 0);
   bufferNumber = 0;
-
-  deviceContext->GSSetConstantBuffers(bufferNumber, 1, &m_shadowMapCubeBuffer);
+  deviceContext->GSSetConstantBuffers(bufferNumber, 1, &m_geometricShaderShadowBuffer);
 }
 
 void PLShadowGenerationShader::EnableShader(ID3D11DeviceContext* deviceContext)
@@ -173,6 +176,6 @@ void PLShadowGenerationShader::EnableShader(ID3D11DeviceContext* deviceContext)
 void PLShadowGenerationShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
 {
   auto pointLight = lightining->GetPointLightToRender();
-  SetShaderParameters(deviceContext, worldMatrix, pointLight->GetCubeViewProjection());
+  SetShaderParameters(deviceContext, worldMatrix, pointLight->GetCubeViewProjection(), pointLight->GetShaderShadowDirectionsArr(), pointLight->GetShaderShadowDirectionsArrSize());
   deviceContext->DrawIndexed(indexCount, 0, 0);
 }

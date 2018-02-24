@@ -68,7 +68,7 @@ void MapEditorViewModel::AddPointLightToMap(PointLightOnMapDbInfo& dbInfo)
     dbInfo.quadraticAttenuation,
     XMFLOAT3(dbInfo.pointLightDbInfo.relativePosX, dbInfo.pointLightDbInfo.relativePosY, dbInfo.pointLightDbInfo.relativePosZ),
     XMFLOAT3(dbInfo.red, dbInfo.green, dbInfo.blue),
-    &m_staticGameObjectMap[dbInfo.sgoOnMapId], dbInfo.castShadows);
+    &m_staticGameObjectMap[dbInfo.sgoOnMapId], dbInfo.castShadows, static_cast<PointLightShadowDirection>(dbInfo.shadowDirections));
 
   m_pointLightsOnMap[dbInfo.id] = pointLight;
 }

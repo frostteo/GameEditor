@@ -203,8 +203,6 @@ void GraphicSystem::RenderDefferedTesselated(Camera* camera, LightininigSystem* 
   camera->GetViewMatrix(viewMatrix);
   camera->GetProjectionMatrix(projectionMatrix);
 
-  XMFLOAT4X4 viewMatrixReadable;
-  XMStoreFloat4x4(&viewMatrixReadable, viewMatrix);
   cameraPosition = camera->GetPosition();
 
   GeneratePointLightShadows(lightiningSystem);

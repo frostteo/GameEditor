@@ -4,7 +4,7 @@ const float PointLight::SHADOW_NEAR_PLANE = 0.01f;
 
 PointLight::PointLight()
 {
-  
+
 }
 
 
@@ -12,13 +12,45 @@ PointLight::~PointLight()
 {
 }
 
-void PointLight::Initialize(float linearAttenuation, float quadraticAttenuation, XMFLOAT3 position, XMFLOAT3 color, GameObject* parent, bool castShadows)
+void PointLight::Initialize(float linearAttenuation, float quadraticAttenuation, XMFLOAT3 position, XMFLOAT3 color, GameObject* parent, bool castShadows, PointLightShadowDirection shadowDirections)
 {
   SetParent(parent);
   SetColor(color);
   SetAttenuation(linearAttenuation, quadraticAttenuation);
   SetPosition(position.x, position.y, position.z);
   this->castShadows = castShadows;
+  SetShadowDirections(shadowDirections);
+}
+
+void PointLight::SetShadowDirections(PointLightShadowDirection shadowDirections)
+{
+  if (m_shadowDirections != shadowDirections)
+  {
+    int shadowDirectionEnumHighBorder = PointLightShadowDirection::MINUS_Z;
+    int i = 0;
+    for (int shadowDirectionChar = 1, pass = 0; shadowDirectionChar <= shadowDirectionEnumHighBorder; shadowDirectionChar *= 2, ++pass)
+    {
+      if (shadowDirections & shadowDirectionChar)
+      {
+        m_shadowDirectionsArr[i] = pass;
+        ++i;
+      }
+    }
+
+    m_shadowDirectionsArrSize = i;
+  }
+
+  m_shadowDirections = shadowDirections;
+}
+
+const int* const PointLight::GetShaderShadowDirectionsArr() const
+{
+  return m_shadowDirectionsArr;
+}
+
+const int PointLight::GetShaderShadowDirectionsArrSize() const
+{
+  return m_shadowDirectionsArrSize;
 }
 
 void PointLight::SetAttenuation(float linearAttenuation, float quadraticAttenuation)

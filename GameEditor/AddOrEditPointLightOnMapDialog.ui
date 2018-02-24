@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>341</height>
+    <height>401</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -203,8 +203,8 @@
   <widget class="QCheckBox" name="isFrozenCheckBox">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>280</y>
+     <x>250</x>
+     <y>340</y>
      <width>70</width>
      <height>17</height>
     </rect>
@@ -219,8 +219,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>310</y>
+     <x>170</x>
+     <y>370</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -379,8 +379,8 @@
   <widget class="QCheckBox" name="castShadowsCheckBox">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>280</y>
+     <x>150</x>
+     <y>340</y>
      <width>91</width>
      <height>17</height>
     </rect>
@@ -391,6 +391,115 @@
    <property name="text">
     <string>Cast shadows</string>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="shadowDirectionGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>280</y>
+     <width>311</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Shadow direction</string>
+   </property>
+   <widget class="QCheckBox" name="minusXShadowDir">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>-X</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="plusXShadowDir">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>20</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>+X</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="minusYShadowDir">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>20</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>-Y</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="plusYShadowDir">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>20</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>+Y</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="minusZShadowDir">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>20</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>-Z</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="plusZShadowDir">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>20</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>+Z</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

@@ -1,7 +1,9 @@
 
 cbuffer ShadowMapCubeViewProj : register( b0 )
 {
-    float4x4 cubeViewProj[6] : packoffset(c0);
+    float4x4 cubeViewProj[6];
+	int4 shadowDirectionsSize;
+	int4 shadowDirections[6];
 };
 
 struct GS_OUTPUT
@@ -13,9 +15,10 @@ struct GS_OUTPUT
 [maxvertexcount(18)]
 void PointShadowGenGS(triangle float4 InPos[3] : SV_Position, inout TriangleStream<GS_OUTPUT> OutStream)
 {
-	for (int iFace = 0; iFace < 6; ++iFace)
+	for (int i = 0; i < shadowDirectionsSize.x; ++i)
 	{
 		GS_OUTPUT output;
+		int iFace = shadowDirections[i].x;
 		
 		output.RTIndex = iFace;
 		
