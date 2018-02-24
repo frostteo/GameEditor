@@ -106,10 +106,16 @@ BoundingBox::~BoundingBox()
 
 XMFLOAT3 BoundingBox::GetMinPoint()
 {
+  if (m_vertices.size() < 8)
+    RUNTIME_ERROR("Bounding box was not initialized");
+
   return m_vertices[0];
 }
 
 XMFLOAT3 BoundingBox::GetMaxPoint()
 {
+  if (m_vertices.size() < 8)
+    RUNTIME_ERROR("Bounding box was not initialized");
+
   return m_vertices[6];
 }

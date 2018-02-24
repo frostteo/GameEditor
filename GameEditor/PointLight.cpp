@@ -156,3 +156,35 @@ XMFLOAT2 PointLight::GetLightPerspectiveValues()
 {
   return m_lightPerspectiveValues;
 }
+
+void PointLight::RebuildBBInWorldCoord()
+{
+  RUNTIME_ERROR("There is no bounding box in point light object now");
+}
+
+void PointLight::RebuildWorldMatrix()
+{
+  GameObject::RebuildWorldMatrix();
+
+  float radius20Percent = m_radius * 0.2f;
+  m_20percentLightVolumeMatrix = XMMatrixScaling(radius20Percent, radius20Percent, radius20Percent) * m_translationMatrix;
+}
+
+void PointLight::Get20PercentLightVolumeMatrix(XMMATRIX& lightVolume)
+{
+  if (NeedRebuildWorldMatrix())
+  {
+    RebuildWorldMatrix();
+  }
+
+  if (m_parent)
+  {
+    XMMATRIX parentMatrix;
+    GetParentMatrix(parentMatrix);
+    lightVolume = m_20percentLightVolumeMatrix * parentMatrix;
+  }
+  else
+  {
+    lightVolume = m_20percentLightVolumeMatrix;
+  }
+}

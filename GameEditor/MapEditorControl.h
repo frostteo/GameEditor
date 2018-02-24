@@ -37,7 +37,8 @@ protected:
 
   XMFLOAT3 m_accumulativeRotationForSnap;
   bool m_needRecalculateAcumulativeRotationForSnap = true;
-  
+public:
+  bool m_objectsCountInVisibleAreaWasChanged = true;
 protected:
   bool RayAABBIntersect(XMFLOAT3& minPoint, XMFLOAT3& maxPoint, XMFLOAT3& position, XMFLOAT3& direction, float& result);
   void PickObject(InputState* inputState, int mouseXCoor, int mouseYCoor);

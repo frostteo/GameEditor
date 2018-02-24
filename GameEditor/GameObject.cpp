@@ -74,7 +74,7 @@ void GameObject::ChangeZRotation(float angle)
 
 void GameObject::RebuildWorldMatrix()
 {
-  needRebuildDependOnWorldMatrix = true;
+  m_needRebuildBBInWorldCoords = true;
 
   if (m_needRebuildScaleMatrix) {
     m_scaleMatrix = XMMatrixScaling(m_scale, m_scale, m_scale);
@@ -280,4 +280,15 @@ void GameObject::GetParentMatrix(XMMATRIX& parentMatrix) const
   {
     m_parent->GetWorldMatrix(parentMatrix);
   }
+}
+
+BoundingBox* GameObject::GetBBInWorldCoords()
+{
+  if (this->NeedRebuildWorldMatrix() || m_needRebuildBBInWorldCoords)
+  {
+    RebuildBBInWorldCoord();
+    m_needRebuildBBInWorldCoords = false;
+  }
+
+  return &m_bbInWorldCoord;
 }

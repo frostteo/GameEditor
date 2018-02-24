@@ -72,9 +72,9 @@ void MapEditorControl::Delete(std::vector<int>& ids)
         DeletePointLight(pointLight.id);
         break;
     }
-    m_camera->needRebuildDependOnWorldMatrix = true;
+    m_objectsCountInVisibleAreaWasChanged = true;
   }
-}
+} 
 
 void MapEditorControl::DeleteSgo(int id)
 {

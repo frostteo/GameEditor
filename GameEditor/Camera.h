@@ -17,6 +17,10 @@ private:
   XMMATRIX m_projectionMatrix;
 
   CameraFrustrum m_cameraFrustrum;
+  bool m_needRebuildFrustrum = true;
+protected:
+  virtual void RebuildWorldMatrix() override;
+  virtual void RebuildBBInWorldCoord() override;
 public:
   Camera();
   void Initialize(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView = XM_PIDIV4);
@@ -28,7 +32,7 @@ public:
   float GetScreenHeight() { return m_screenHeight; }
   float GetFieldOfView() { return m_fieldOfView; }
 
-  bool NeedRebuildFrustrum() { return this->needRebuildDependOnWorldMatrix; }
+  bool NeedRebuildFrustrum() const { return this->m_needRebuildFrustrum; }
   CameraFrustrum* GetCameraFrustrum();
 };
 

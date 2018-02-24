@@ -24,10 +24,14 @@ protected:
   PointLightShadowDirection m_shadowDirections;
   int m_shadowDirectionsArr[6];
   int m_shadowDirectionsArrSize;
+
+  XMMATRIX m_20percentLightVolumeMatrix;
 protected:
   void RebuildPerspectiveValues();
   void RebuildCubeViewProjection(XMFLOAT3 worldPosition);
   void SetShadowDirections(PointLightShadowDirection shadowDirections);
+  virtual void RebuildBBInWorldCoord() override;
+  virtual void RebuildWorldMatrix() override;
 public:
   bool castShadows = false;
 public:
@@ -47,5 +51,7 @@ public:
 
   const int* const GetShaderShadowDirectionsArr() const;
   const int GetShaderShadowDirectionsArrSize() const;
+
+  void Get20PercentLightVolumeMatrix(XMMATRIX& lightVolume);
 };
 

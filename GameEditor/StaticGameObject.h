@@ -8,7 +8,6 @@ class StaticGameObject :
 {
 private:
   Model* m_model;
-  BoundingBox m_bbInWorldCoord;
   DrawableBoundingBox m_drawableBoundingBox;
 public:
   int uniqueId;
@@ -17,13 +16,12 @@ public:
   bool isFrozen;
   bool castShadows = true;
 protected:
-  void RebuildBBInWorldCoord();
+  virtual void RebuildBBInWorldCoord() override;
 public:
   StaticGameObject();
   virtual ~StaticGameObject();
   Model* GetModel() { return m_model; }
   void SetModel(Model* model);
-  BoundingBox* GetBBInWorldCoords();
   DrawableBoundingBox* GetDrawableBoundingBox() { return &m_drawableBoundingBox; }
 };
 

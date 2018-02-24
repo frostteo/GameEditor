@@ -41,11 +41,21 @@ void Camera::GetProjectionMatrix(XMMATRIX& projectionMatrix)
 
 CameraFrustrum* Camera::GetCameraFrustrum()
 {
-  if (this->needRebuildDependOnWorldMatrix){
+  if (this->m_needRebuildFrustrum){
     m_cameraFrustrum.ConstructFrustrum(this);
-    this->needRebuildDependOnWorldMatrix = false;
+    m_needRebuildFrustrum = false;
   }
    
-
   return &m_cameraFrustrum;
+}
+
+void Camera::RebuildWorldMatrix()
+{
+  GameObject::RebuildWorldMatrix();
+  m_needRebuildFrustrum = true;
+}
+
+void Camera::RebuildBBInWorldCoord()
+{
+  RUNTIME_ERROR("There is no bounding box in camera object");
 }

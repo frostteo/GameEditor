@@ -6,6 +6,7 @@
 
 #include <d3d11.h>
 #include <directxmath.h>
+#include "BoundingBox.h"
 
 using namespace DirectX;
 
@@ -24,10 +25,12 @@ protected:
   float m_scale = 1.0f;
   GameObject* m_parent;
   XMFLOAT3 m_worldPosition;
-public :
-  bool needRebuildDependOnWorldMatrix = true; // Для обозначения что нужно перестроить объекты в наследниках зависящие от изменения матрицы мировых координат, например bounding box
+
+  bool m_needRebuildBBInWorldCoords = true;
+  BoundingBox m_bbInWorldCoord;
 protected:
   virtual void RebuildWorldMatrix();
+  virtual void RebuildBBInWorldCoord() = 0;
 public:
   GameObject();
   virtual ~GameObject();
@@ -61,5 +64,6 @@ public:
   void GetParentMatrix(XMMATRIX& parentMatrix) const;
 
   XMFLOAT3 GetWorldPosition();
+  BoundingBox* GetBBInWorldCoords();
 };
 

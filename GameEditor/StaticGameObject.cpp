@@ -17,17 +17,6 @@ void StaticGameObject::SetModel(Model* model)
   RebuildBBInWorldCoord();
 }
 
-BoundingBox* StaticGameObject::GetBBInWorldCoords()
-{
-  if (this->NeedRebuildWorldMatrix() || this->needRebuildDependOnWorldMatrix)
-  {
-    RebuildBBInWorldCoord();
-    this->needRebuildDependOnWorldMatrix = false;
-  }
-
-  return &m_bbInWorldCoord;
-}
-
 void StaticGameObject::RebuildBBInWorldCoord()
 {
   BoundingBox* modelBB = this->GetModel()->GetBoundingBox();

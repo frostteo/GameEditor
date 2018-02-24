@@ -28,10 +28,11 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
 
   m_inputSystem->Frame();
 
-  if (m_Camera->NeedRebuildFrustrum())
+  if (m_Camera->NeedRebuildFrustrum() || m_mapEditorControl->m_objectsCountInVisibleAreaWasChanged)
   {
     m_mapEditorViewModel->GetVisibleSgo(m_Camera->GetCameraFrustrum(), &m_visibleSgos);
     m_mapEditorViewModel->GetVisiblePointLights(m_Camera->GetCameraFrustrum(), m_lightininigSystem.get());
+    m_mapEditorControl->m_objectsCountInVisibleAreaWasChanged = false;
   }
  
   for (auto sgo : m_visibleSgos)
@@ -60,12 +61,12 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
   {
     for (auto pointLight : *m_lightininigSystem->GetPointLightsNonCastShadows())
     {
-      pointLight->GetWorldMatrix(worldMatrix);
+      pointLight->Get20PercentLightVolumeMatrix(worldMatrix);
       m_graphicSystem->AddGridToRenderList(&m_pointLightVolumeGridObject, worldMatrix);
     }
     for (auto pointLight : *m_lightininigSystem->GetPointLightsCastShadows())
     {
-      pointLight->GetWorldMatrix(worldMatrix);
+      pointLight->Get20PercentLightVolumeMatrix(worldMatrix);
       m_graphicSystem->AddGridToRenderList(&m_pointLightVolumeGridObject, worldMatrix);
     }
   }
