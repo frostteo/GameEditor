@@ -30,6 +30,8 @@ private:
   IPointLightOnMapService* m_pointLightOnMapService;
 
   BoundingBox m_aabbForPointLight;
+
+  D3DConfigurer* m_d3dConfigurer;
 protected:
   Model* GetModel(const std::string& modelName);
 
@@ -47,7 +49,7 @@ public:
   MapEditorViewModel();
   virtual ~MapEditorViewModel();
 
-  void Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences);
+  void Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences, D3DConfigurer* d3dConfigurer);
 
   void GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
   void GetVisiblePointLights(Camera* camera, LightininigSystem* lightiningSystem);

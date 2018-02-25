@@ -4,12 +4,31 @@ const float PointLight::SHADOW_NEAR_PLANE = 0.01f;
 
 PointLight::PointLight()
 {
-
+  m_pointLightShadowDepthBuffer = nullptr;
+  m_pointLightShadowDSV = nullptr;
+  m_pointLightShadowSRV = nullptr;
 }
 
 
 PointLight::~PointLight()
 {
+  if (m_pointLightShadowDepthBuffer)
+  {
+    m_pointLightShadowDepthBuffer->Release();
+    m_pointLightShadowDepthBuffer = nullptr;
+  }
+
+  if (m_pointLightShadowDSV)
+  {
+    m_pointLightShadowDSV->Release();
+    m_pointLightShadowDSV = nullptr;
+  }
+
+  if (m_pointLightShadowSRV)
+  {
+    m_pointLightShadowSRV->Release();
+    m_pointLightShadowSRV = nullptr;
+  }
 }
 
 void PointLight::Initialize(float linearAttenuation, float quadraticAttenuation, XMFLOAT3 position, XMFLOAT3 color, GameObject* parent, bool castShadows, PointLightShadowDirection shadowDirections)
@@ -20,6 +39,64 @@ void PointLight::Initialize(float linearAttenuation, float quadraticAttenuation,
   SetPosition(position.x, position.y, position.z);
   this->castShadows = castShadows;
   SetShadowDirections(shadowDirections);
+}
+
+void PointLight::InitializeShadowResources(ID3D11Device* device)
+{
+  bool result;
+
+  D3D11_TEXTURE2D_DESC pointLightShadowDepthBufferDesc;
+  ZeroMemory(&pointLightShadowDepthBufferDesc, sizeof(pointLightShadowDepthBufferDesc));
+  pointLightShadowDepthBufferDesc.Width = D3DConfigurer::SHADOW_MAP_SIZE;
+  pointLightShadowDepthBufferDesc.Height = D3DConfigurer::SHADOW_MAP_SIZE;
+  pointLightShadowDepthBufferDesc.MipLevels = 1;
+  pointLightShadowDepthBufferDesc.ArraySize = 6;
+  pointLightShadowDepthBufferDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+  pointLightShadowDepthBufferDesc.SampleDesc.Count = 1;
+  pointLightShadowDepthBufferDesc.SampleDesc.Quality = 0;
+  pointLightShadowDepthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+  pointLightShadowDepthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+  pointLightShadowDepthBufferDesc.CPUAccessFlags = 0;
+  pointLightShadowDepthBufferDesc.MiscFlags = D3D10_RESOURCE_MISC_TEXTURECUBE;
+
+  result = device->CreateTexture2D(&pointLightShadowDepthBufferDesc, nullptr, &m_pointLightShadowDepthBuffer);
+  if (FAILED(result))
+  {
+    RUNTIME_ERROR("Can't create point light shadow depth buffer");
+  }
+
+  D3D11_DEPTH_STENCIL_VIEW_DESC pointLightShadowDSVDesc;
+  ZeroMemory(&pointLightShadowDSVDesc, sizeof(pointLightShadowDSVDesc));
+  pointLightShadowDSVDesc.Format = DXGI_FORMAT_D32_FLOAT;
+  pointLightShadowDSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+  pointLightShadowDSVDesc.Flags = 0;
+  pointLightShadowDSVDesc.Texture2DArray.MipSlice = 0;
+  pointLightShadowDSVDesc.Texture2DArray.FirstArraySlice = 0;
+  pointLightShadowDSVDesc.Texture2DArray.ArraySize = 6;
+
+  result = device->CreateDepthStencilView(m_pointLightShadowDepthBuffer, &pointLightShadowDSVDesc, &m_pointLightShadowDSV);
+  if (FAILED(result))
+  {
+    RUNTIME_ERROR("Can't create point light shadow depth stencil view");
+  }
+
+  D3D11_SHADER_RESOURCE_VIEW_DESC pointLightShadowSRVDesc;
+  pointLightShadowSRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
+  pointLightShadowSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+  pointLightShadowSRVDesc.Texture2D.MostDetailedMip = 0;
+  pointLightShadowSRVDesc.Texture2D.MipLevels = 1;
+
+  result = device->CreateShaderResourceView(m_pointLightShadowDepthBuffer, &pointLightShadowSRVDesc, &m_pointLightShadowSRV);
+  if (FAILED(result))
+  {
+    RUNTIME_ERROR("Can't create point light shadow shader resource view");
+  }
+}
+
+void PointLight::PrepareToShadowGeneration(ID3D11DeviceContext* deviceContext)
+{
+  deviceContext->OMSetRenderTargets(0, nullptr, m_pointLightShadowDSV);
+  deviceContext->ClearDepthStencilView(m_pointLightShadowDSV, D3D11_CLEAR_DEPTH, 1.0, 0);
 }
 
 void PointLight::SetShadowDirections(PointLightShadowDirection shadowDirections)

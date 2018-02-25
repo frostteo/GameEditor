@@ -5,6 +5,7 @@
 #include <math.h>
 #include "GameObject.h"
 #include "PointLightShadowDirection.h"
+#include "D3DConfigurer.h"
 
 class PointLight :
   public GameObject
@@ -26,6 +27,10 @@ protected:
   int m_shadowDirectionsArrSize;
 
   XMMATRIX m_20percentLightVolumeMatrix;
+
+  ID3D11Texture2D* m_pointLightShadowDepthBuffer;
+  ID3D11DepthStencilView* m_pointLightShadowDSV;
+  ID3D11ShaderResourceView* m_pointLightShadowSRV;
 protected:
   void RebuildPerspectiveValues();
   void RebuildCubeViewProjection(XMFLOAT3 worldPosition);
@@ -38,6 +43,11 @@ public:
   PointLight();
   void virtual SetPosition(float x, float y, float z) override;
   void Initialize(float linearAttenuation, float quadraticAttenuation, XMFLOAT3 position, XMFLOAT3 color, GameObject* parent, bool castShadows = false, PointLightShadowDirection shadowDirections = static_cast<PointLightShadowDirection>(63));
+
+  void InitializeShadowResources(ID3D11Device* device);
+  void PrepareToShadowGeneration(ID3D11DeviceContext* deviceContext);
+  ID3D11ShaderResourceView** GetPointLightShadowBuffer() { return &m_pointLightShadowSRV; }
+
   void SetAttenuation(float linearAttenuation, float quadraticAttenuation);
   float GetLinearAttenuation() { return m_linerarAttenuation; }
   float GetQuadraticAttenuation() { return m_quadraticAttenuation; }

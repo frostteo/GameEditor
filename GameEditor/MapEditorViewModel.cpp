@@ -8,8 +8,9 @@ MapEditorViewModel::MapEditorViewModel()
   connect(&m_sgoOnMapTM, SIGNAL(SelectionChanged(std::vector<int>)), this, SLOT(SelectionChanged(std::vector<int>)));
 }
 
-void MapEditorViewModel::Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences)
+void MapEditorViewModel::Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences, D3DConfigurer* d3dConfigurer)
 {
+  m_d3dConfigurer = d3dConfigurer;
   m_pathToModels = pathToModels;
   m_modelFactory = modelFactory;
   m_mapEditorPreferences = mapEditorPreferences;
@@ -62,15 +63,22 @@ void MapEditorViewModel::AddSgoToMap(SGOOnMapDbInfo& sgoOnMap)
 
 void MapEditorViewModel::AddPointLightToMap(PointLightOnMapDbInfo& dbInfo)
 {
-  PointLight pointLight;
-  pointLight.Initialize(
+  if (m_pointLightsOnMap.count(dbInfo.id) == 0)
+  {
+    PointLight pointLight;
+    m_pointLightsOnMap[dbInfo.id] = pointLight;
+    m_pointLightsOnMap[dbInfo.id].InitializeShadowResources(m_d3dConfigurer->GetDevice());
+  }
+  
+  m_pointLightsOnMap[dbInfo.id].Initialize(
     dbInfo.linearAttenuation,
     dbInfo.quadraticAttenuation,
     XMFLOAT3(dbInfo.pointLightDbInfo.relativePosX, dbInfo.pointLightDbInfo.relativePosY, dbInfo.pointLightDbInfo.relativePosZ),
     XMFLOAT3(dbInfo.red, dbInfo.green, dbInfo.blue),
-    &m_staticGameObjectMap[dbInfo.sgoOnMapId], dbInfo.castShadows, static_cast<PointLightShadowDirection>(dbInfo.shadowDirections));
-
-  m_pointLightsOnMap[dbInfo.id] = pointLight;
+    &m_staticGameObjectMap[dbInfo.sgoOnMapId], 
+    dbInfo.castShadows,
+    static_cast<PointLightShadowDirection>(dbInfo.shadowDirections)
+    );
 }
 
 Model* MapEditorViewModel::GetModel(const std::string& modelName)

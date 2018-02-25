@@ -28,9 +28,6 @@ D3DConfigurer::D3DConfigurer()
   m_gbuffer = nullptr;
 
   m_pointLightShadowRS = nullptr;
-  m_pointLightShadowDepthBuffer = nullptr;
-  m_pointLightShadowDSV = nullptr;
-  m_pointLightShadowSRV = nullptr;
 }
 
 
@@ -435,11 +432,8 @@ bool D3DConfigurer::Initialize(int screenWidth, int screenHeight, bool vsync, HW
 
 void D3DConfigurer::InitializePointLightShadowStructures()
 {
-  D3D11_RASTERIZER_DESC pointLightShadowRSDesc;
-  D3D11_TEXTURE2D_DESC pointLightShadowDepthBufferDesc;
-  D3D11_DEPTH_STENCIL_VIEW_DESC pointLightShadowDSVDesc;
-  D3D11_SHADER_RESOURCE_VIEW_DESC pointLightShadowSRVDesc;
   bool result;
+  D3D11_RASTERIZER_DESC pointLightShadowRSDesc;
 
   pointLightShadowRSDesc.FillMode = D3D11_FILL_SOLID;
   pointLightShadowRSDesc.CullMode = D3D11_CULL_BACK;
@@ -454,50 +448,6 @@ void D3DConfigurer::InitializePointLightShadowStructures()
 
   m_device->CreateRasterizerState(&pointLightShadowRSDesc, &m_pointLightShadowRS);
 
-  ZeroMemory(&pointLightShadowDepthBufferDesc, sizeof(pointLightShadowDepthBufferDesc));
-  pointLightShadowDepthBufferDesc.Width = SHADOW_MAP_SIZE;
-  pointLightShadowDepthBufferDesc.Height = SHADOW_MAP_SIZE;
-  pointLightShadowDepthBufferDesc.MipLevels = 1;
-  pointLightShadowDepthBufferDesc.ArraySize = 6;
-  pointLightShadowDepthBufferDesc.Format = DXGI_FORMAT_R32_TYPELESS;
-  pointLightShadowDepthBufferDesc.SampleDesc.Count = 1;
-  pointLightShadowDepthBufferDesc.SampleDesc.Quality = 0;
-  pointLightShadowDepthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-  pointLightShadowDepthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
-  pointLightShadowDepthBufferDesc.CPUAccessFlags = 0;
-  pointLightShadowDepthBufferDesc.MiscFlags = D3D10_RESOURCE_MISC_TEXTURECUBE;
-
-  ZeroMemory(&pointLightShadowDSVDesc, sizeof(pointLightShadowDSVDesc));
-  pointLightShadowDSVDesc.Format = DXGI_FORMAT_D32_FLOAT;
-  pointLightShadowDSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
-  pointLightShadowDSVDesc.Flags = 0;
-  pointLightShadowDSVDesc.Texture2DArray.MipSlice = 0;
-  pointLightShadowDSVDesc.Texture2DArray.FirstArraySlice = 0;
-  pointLightShadowDSVDesc.Texture2DArray.ArraySize = 6;
-
-  pointLightShadowSRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
-  pointLightShadowSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-  pointLightShadowSRVDesc.Texture2D.MostDetailedMip = 0;
-  pointLightShadowSRVDesc.Texture2D.MipLevels = 1;
-
-  result = m_device->CreateTexture2D(&pointLightShadowDepthBufferDesc, nullptr, &m_pointLightShadowDepthBuffer);
-  if (FAILED(result))
-  {
-    RUNTIME_ERROR("Can't create point light shadow depth buffer");
-  }
-
-  result = m_device->CreateDepthStencilView(m_pointLightShadowDepthBuffer, &pointLightShadowDSVDesc, &m_pointLightShadowDSV);
-  if (FAILED(result))
-  {
-    RUNTIME_ERROR("Can't create point light shadow depth stencil view");
-  }
-
-  result = m_device->CreateShaderResourceView(m_pointLightShadowDepthBuffer, &pointLightShadowSRVDesc, &m_pointLightShadowSRV);
-  if (FAILED(result))
-  {
-    RUNTIME_ERROR("Can't create point light shadow shader resource view");
-  }
-
   for (auto& viewport : m_pointLightShadowViewports)
   {
     viewport = { 0, 0, SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 0.0f, 1.0f };
@@ -509,10 +459,7 @@ void D3DConfigurer::PrepareToPointLightShadowGeneration()
   this->EnableDepthTest();
   // Set raster state with bias
   m_deviceContext->RSSetState(m_pointLightShadowRS);
-  
   m_deviceContext->RSSetViewports(6, m_pointLightShadowViewports);
-  m_deviceContext->OMSetRenderTargets(0, nullptr, m_pointLightShadowDSV);
-  m_deviceContext->ClearDepthStencilView(m_pointLightShadowDSV, D3D11_CLEAR_DEPTH, 1.0, 0);
 }
 
 void D3DConfigurer::InitializeDefferedLightingStructures()
@@ -708,24 +655,6 @@ void D3DConfigurer::Shutdown()
   {
     m_gbuffer->Shutdown();
     m_gbuffer = nullptr;
-  }
-
-  if (m_pointLightShadowDepthBuffer)
-  {
-    m_pointLightShadowDepthBuffer->Release();
-    m_pointLightShadowDepthBuffer = nullptr;
-  }
-
-  if (m_pointLightShadowDSV)
-  {
-    m_pointLightShadowDSV->Release();
-    m_pointLightShadowDSV = nullptr;
-  }
-
-  if (m_pointLightShadowSRV)
-  {
-    m_pointLightShadowSRV->Release();
-    m_pointLightShadowSRV = nullptr;
   }
 
   if (m_pointLightShadowRS)

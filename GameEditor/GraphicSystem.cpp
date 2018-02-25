@@ -166,15 +166,15 @@ void GraphicSystem::GeneratePointLightShadows(LightininigSystem* lightiningSyste
   ID3D11DeviceContext* deviceContext = m_direct3D->GetDeviceContext();
 
   m_direct3D->PrepareToPointLightShadowGeneration();
-  
   auto pointLightShadowGenerateShader = m_shaderFactory->Get(POINT_LIGHT_SHADOW_GEN_SHADER_NAME);
   pointLightShadowGenerateShader->EnableShader(deviceContext);
-
   deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
   for (int i = 0; i < lightiningSystem->GetPointLightsCastShadows()->size(); ++i)
   {
     lightiningSystem->SetPointLightToRenderSelector(true, i);
+    auto pointLight = lightiningSystem->GetPointLightToRender();
+    pointLight->PrepareToShadowGeneration(m_direct3D->GetDeviceContext());
 
     for (auto shaderInfo : m_modelRenderList)
     {
@@ -238,12 +238,13 @@ void GraphicSystem::RenderDefferedTesselated(Camera* camera, LightininigSystem* 
   // Отрисовать вначале все источники с тенями
   auto pointLightWithShadow = m_shaderFactory->Get(PL_SHADOWED_TESS_SHADER_NAME);
   pointLightWithShadow->SetTextures(m_direct3D->GetDeviceContext(), m_direct3D->GetGBufferShaderResourceViewes(), GBuffer::SHADER_RESOURCE_VIEW_COUNT);
-  deviceContext->PSSetShaderResources(GBuffer::SHADER_RESOURCE_VIEW_COUNT, 1, m_direct3D->GetPointLightsShadowBuffer());
   pointLightWithShadow->EnableShader(deviceContext);
 
   for (int i = 0; i < lightiningSystem->GetPointLightsCastShadows()->size(); ++i)
   {
     lightiningSystem->SetPointLightToRenderSelector(true, i);
+    auto pointLight = lightiningSystem->GetPointLightToRender();
+    deviceContext->PSSetShaderResources(GBuffer::SHADER_RESOURCE_VIEW_COUNT, 1, pointLight->GetPointLightShadowBuffer());
     pointLightWithShadow->Render(deviceContext, 0, spaceMatrix, viewMatrix, projectionMatrix, &m_pointLightDefferedParemeters, lightiningSystem, cameraPosition);
   }
 

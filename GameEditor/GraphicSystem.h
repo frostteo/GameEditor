@@ -70,5 +70,7 @@ public:
   void Render(Camera* camera, LightininigSystem* lightiningSystem);
   void RenderDefferedStencilVolume(Camera* camera, LightininigSystem* lightiningSystem);
   void RenderDefferedTesselated(Camera* camera, LightininigSystem* lightiningSystem);
+
+  D3DConfigurer* GetD3dConfigurer() { return m_direct3D.get(); }
 };
 
