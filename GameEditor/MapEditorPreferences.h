@@ -37,6 +37,10 @@ private:
   float m_redAmbientColor = 0.0f;
   float m_greenAmbientColor = 0.0f;
   float m_blueAmbientColor = 0.0f;
+
+  float m_radiusOfAddingLightSourcesToTheRender = 3000.0f;
+public:
+  static const float MIN_RADIUS_OF_ADD_LIGHT_SOURCES_TO_RENDER;
 protected:
   void ReadPreferencesFromStr(std::string& str);
 public:
@@ -83,6 +87,9 @@ public:
   float GetGreenAmbientLightColor() { return m_greenAmbientColor; }
   float GetBlueAmbientLightColor() { return m_blueAmbientColor; }
   void SetAmbientLightColor(float red, float green, float blue);
+
+  void SetRadiusOfAddingLightSourcesToRender(float radius);
+  float GetRadiusOfAddingLightSourcesToRender() const { return m_radiusOfAddingLightSourcesToTheRender; }
 
   LightininigSystem* GetTestLightiningSystem() { return m_testLightiningSystem.get(); }
   MapEditorPreferences();

@@ -18,6 +18,7 @@ protected:
   std::vector<StaticGameObject*> m_selectedSgos;
   bool m_testLightiningEnabled = true;
   PointLightVolumeGridObject m_pointLightVolumeGridObject;
+  bool m_radiusOfAddingLightSourcesToRenderChanged = true;
 protected:
   virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
@@ -26,4 +27,5 @@ public:
   MapEditorControl* GetMapEditorControl() { return m_mapEditorControl; }
   void EnableTestLightining(bool testLightining);
   void SetAmbientLight(float red, float green, float blue);
+  void RadiusOfAddingLightSourcesToRenderChanged() { m_radiusOfAddingLightSourcesToRenderChanged = true; }
 };

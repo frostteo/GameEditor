@@ -1,6 +1,7 @@
 #include "MapEditorPreferences.h"
 
 const std::string MapEditorPreferences::m_preferencesFileName = "map_editor.ini";
+const float MapEditorPreferences::MIN_RADIUS_OF_ADD_LIGHT_SOURCES_TO_RENDER = 250.0f;
 
 MapEditorPreferences::MapEditorPreferences()
 {
@@ -47,6 +48,8 @@ void MapEditorPreferences::ReadPreferencesFromStr(std::string& str)
   ss >> place >> std::boolalpha >> m_useTestLightining;
 
   ss >> place >> m_redAmbientColor >> m_greenAmbientColor >> m_blueAmbientColor;
+
+  ss >> place >> m_radiusOfAddingLightSourcesToTheRender;
 }
 
 MapEditorPreferences::~MapEditorPreferences()
@@ -78,6 +81,8 @@ MapEditorPreferences::~MapEditorPreferences()
   fout << "use_test_lightining: " << std::boolalpha << m_useTestLightining << std::endl;
 
   fout << "ambient_colors_rgb: " << m_redAmbientColor << " " << m_greenAmbientColor << " " << m_blueAmbientColor << std::endl;
+
+  fout << "radius_of_adding_light_sources_to_the_render: " << m_radiusOfAddingLightSourcesToTheRender << std::endl;
 }
 
 void MapEditorPreferences::SetAngleSnap(float angle)
@@ -134,4 +139,12 @@ void MapEditorPreferences::SetAmbientLightColor(float red, float green, float bl
   m_redAmbientColor = red;
   m_greenAmbientColor = green;
   m_blueAmbientColor = blue;
+}
+
+void MapEditorPreferences::SetRadiusOfAddingLightSourcesToRender(float radius)
+{
+  if (radius < MIN_RADIUS_OF_ADD_LIGHT_SOURCES_TO_RENDER)
+    radius = MIN_RADIUS_OF_ADD_LIGHT_SOURCES_TO_RENDER;
+
+  m_radiusOfAddingLightSourcesToTheRender = radius;
 }

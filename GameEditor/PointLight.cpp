@@ -159,7 +159,22 @@ XMFLOAT2 PointLight::GetLightPerspectiveValues()
 
 void PointLight::RebuildBBInWorldCoord()
 {
-  RUNTIME_ERROR("There is no bounding box in point light object now");
+  float radius50Percent = m_radius * 0.5;
+  XMFLOAT3 worldPosition = this->GetWorldPosition();
+
+  m_bbInWorldCoord.Initialize(
+    worldPosition.x - radius50Percent,
+    worldPosition.y - radius50Percent,
+    worldPosition.z - radius50Percent,
+    worldPosition.x + radius50Percent,
+    worldPosition.y + radius50Percent,
+    worldPosition.z + radius50Percent
+    );
+}
+
+BoundingBox* PointLight::GetAABBBoundingBox()
+{
+  return this->GetBBInWorldCoords();
 }
 
 void PointLight::RebuildWorldMatrix()

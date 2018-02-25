@@ -21,6 +21,9 @@ MapEditorPreferencesDialog::MapEditorPreferencesDialog(QWidget *parent)
     auto testDirectLightDirectionValidator = new QDoubleValidator(INT_MIN, INT_MAX, 2);
     testDirectLightDirectionValidator->setLocale(QLocale::English);
 
+    auto radiusOfAddlightSourcesToRenderValidator = new QDoubleValidator(MapEditorPreferences::MIN_RADIUS_OF_ADD_LIGHT_SOURCES_TO_RENDER, INT_MAX, 2);
+    radiusOfAddlightSourcesToRenderValidator->setLocale(QLocale::English);
+
     this->objectMoveTxt->setValidator(moveRotateValidator);
     this->objectRotationTxt->setValidator(moveRotateValidator);
     this->cameraZoomTxt->setValidator(moveRotateValidator);
@@ -44,6 +47,8 @@ MapEditorPreferencesDialog::MapEditorPreferencesDialog(QWidget *parent)
     this->realRedAmbientTxt->setValidator(colorValidator);
     this->realGreenAmbientTxt->setValidator(colorValidator);
     this->realBlueAmbientTxt->setValidator(colorValidator);
+
+    this->radiusOfAddingPointLightToRenderTxt->setValidator(radiusOfAddlightSourcesToRenderValidator);
 }
 
 MapEditorPreferencesDialog::~MapEditorPreferencesDialog()
@@ -80,6 +85,8 @@ void MapEditorPreferencesDialog::SetMapEditorPreferences(MapEditorPreferences* m
   this->realRedAmbientTxt->setText(QString::number(m_mapEditorPreferences->GetRedAmbientLightColor()));
   this->realGreenAmbientTxt->setText(QString::number(m_mapEditorPreferences->GetGreenAmbientLightColor()));
   this->realBlueAmbientTxt->setText(QString::number(m_mapEditorPreferences->GetBlueAmbientLightColor()));
+
+  this->radiusOfAddingPointLightToRenderTxt->setText(QString::number(m_mapEditorPreferences->GetRadiusOfAddingLightSourcesToRender()));
 }
 
 void MapEditorPreferencesDialog::done(int result)
@@ -102,6 +109,8 @@ void MapEditorPreferencesDialog::done(int result)
     m_mapEditorPreferences->SetUseTestLightiningFlag(this->useTestLightiningCheckBox->isChecked());
 
     m_mapEditorPreferences->SetAmbientLightColor(this->realRedAmbientTxt->text().toFloat(), this->realGreenAmbientTxt->text().toFloat(), this->realBlueAmbientTxt->text().toFloat());
+
+    m_mapEditorPreferences->SetRadiusOfAddingLightSourcesToRender(this->radiusOfAddingPointLightToRenderTxt->text().toFloat());
 
     QDialog::done(result);
   }

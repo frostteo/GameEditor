@@ -31,6 +31,8 @@ private:
   std::unique_ptr<MapEditorData> m_mapEditorData;
   std::unique_ptr<MapEditor> m_mapEditor;
   std::unique_ptr<MapEditorPreferences> m_mapEditorPreferences;
+
+  float m_oldRadiusOfAddingLightSourcesToRender = 0.0f;
 private:
   void configureUI();
 private slots:

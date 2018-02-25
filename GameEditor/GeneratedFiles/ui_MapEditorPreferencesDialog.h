@@ -80,12 +80,14 @@ public:
     QLineEdit *realRedAmbientTxt;
     QLineEdit *realGreenAmbientTxt;
     QLineEdit *realBlueAmbientTxt;
+    QLabel *radiusOfAddingPointLightToRenderLbl;
+    QLineEdit *radiusOfAddingPointLightToRenderTxt;
 
     void setupUi(QWidget *MapEditorPreferencesDialog)
     {
         if (MapEditorPreferencesDialog->objectName().isEmpty())
             MapEditorPreferencesDialog->setObjectName(QStringLiteral("MapEditorPreferencesDialog"));
-        MapEditorPreferencesDialog->resize(388, 530);
+        MapEditorPreferencesDialog->resize(383, 571);
         MapEditorPreferencesDialog->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
         movementSpeedsGroup = new QGroupBox(MapEditorPreferencesDialog);
         movementSpeedsGroup->setObjectName(QStringLiteral("movementSpeedsGroup"));
@@ -150,7 +152,7 @@ public:
 
         buttonBox = new QDialogButtonBox(MapEditorPreferencesDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(220, 500, 156, 23));
+        buttonBox->setGeometry(QRect(220, 540, 156, 23));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         snapsGroup = new QGroupBox(MapEditorPreferencesDialog);
         snapsGroup->setObjectName(QStringLiteral("snapsGroup"));
@@ -264,7 +266,7 @@ public:
         useTestLightiningCheckBox->setChecked(true);
         groupBox_5 = new QGroupBox(MapEditorPreferencesDialog);
         groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
-        groupBox_5->setGeometry(QRect(10, 410, 271, 81));
+        groupBox_5->setGeometry(QRect(10, 410, 271, 121));
         groupBox_6 = new QGroupBox(groupBox_5);
         groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
         groupBox_6->setGeometry(QRect(10, 20, 251, 51));
@@ -286,6 +288,13 @@ public:
         realBlueAmbientTxt = new QLineEdit(groupBox_6);
         realBlueAmbientTxt->setObjectName(QStringLiteral("realBlueAmbientTxt"));
         realBlueAmbientTxt->setGeometry(QRect(200, 20, 41, 20));
+        radiusOfAddingPointLightToRenderLbl = new QLabel(groupBox_5);
+        radiusOfAddingPointLightToRenderLbl->setObjectName(QStringLiteral("radiusOfAddingPointLightToRenderLbl"));
+        radiusOfAddingPointLightToRenderLbl->setGeometry(QRect(10, 80, 131, 31));
+        radiusOfAddingPointLightToRenderLbl->setWordWrap(true);
+        radiusOfAddingPointLightToRenderTxt = new QLineEdit(groupBox_5);
+        radiusOfAddingPointLightToRenderTxt->setObjectName(QStringLiteral("radiusOfAddingPointLightToRenderTxt"));
+        radiusOfAddingPointLightToRenderTxt->setGeometry(QRect(120, 90, 131, 20));
         QWidget::setTabOrder(objectRotationTxt, objectMoveTxt);
         QWidget::setTabOrder(objectMoveTxt, cameraRotationTxt);
         QWidget::setTabOrder(cameraRotationTxt, cameraZoomTxt);
@@ -343,6 +352,7 @@ public:
         redRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "red", Q_NULLPTR));
         greenRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "green", Q_NULLPTR));
         blueRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "blue", Q_NULLPTR));
+        radiusOfAddingPointLightToRenderLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "Radius of adding light sources to the render", Q_NULLPTR));
     } // retranslateUi
 
 };

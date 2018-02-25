@@ -39,3 +39,16 @@ bool AxisAlignedBBHelper::PointContains(BoundingBox* aabb, XMFLOAT3 point)
 
   return true;
 }
+
+bool AxisAlignedBBHelper::TwoAABBIntersects(BoundingBox* firstAabb, BoundingBox* secondAabb)
+{
+  XMFLOAT3 firstMinPoint = firstAabb->GetMinPoint();
+  XMFLOAT3 firstMaxPoint = firstAabb->GetMaxPoint();
+  XMFLOAT3 secondMinPoint = secondAabb->GetMinPoint();
+  XMFLOAT3 secondMaxPoint = secondAabb->GetMaxPoint();
+
+  auto test = (firstMinPoint.x <= secondMaxPoint.x && firstMaxPoint.x >= secondMinPoint.x) &&
+    (firstMinPoint.y <= secondMaxPoint.y && firstMaxPoint.y >= secondMinPoint.y) &&
+    (firstMinPoint.z <= secondMaxPoint.z && firstMaxPoint.z >= secondMinPoint.z);
+  return test;
+}

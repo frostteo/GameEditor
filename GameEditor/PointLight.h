@@ -53,5 +53,6 @@ public:
   const int GetShaderShadowDirectionsArrSize() const;
 
   void Get20PercentLightVolumeMatrix(XMMATRIX& lightVolume);
+  BoundingBox* GetAABBBoundingBox();
 };
 

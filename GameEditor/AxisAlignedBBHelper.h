@@ -7,7 +7,8 @@ class AxisAlignedBBHelper
 public:
   AxisAlignedBBHelper();
   ~AxisAlignedBBHelper();
-  bool static IsCompletelyInside(BoundingBox* aabb, BoundingBox* bb);
-  bool static PointContains(BoundingBox* aabb, XMFLOAT3 point);
+  static bool IsCompletelyInside(BoundingBox* aabb, BoundingBox* bb);
+  static bool PointContains(BoundingBox* aabb, XMFLOAT3 point);
+  static bool TwoAABBIntersects(BoundingBox* firstAabb, BoundingBox* secondAabb);
 };
 

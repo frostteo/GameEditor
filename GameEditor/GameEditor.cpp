@@ -78,6 +78,12 @@ void GameEditor::on_editPreferencesAction_triggered()
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
   this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
   m_mapEditor->SetAmbientLight(m_mapEditorPreferences->GetRedAmbientLightColor(), m_mapEditorPreferences->GetGreenAmbientLightColor(), m_mapEditorPreferences->GetBlueAmbientLightColor());
+
+  if (m_oldRadiusOfAddingLightSourcesToRender != m_mapEditorPreferences->GetRadiusOfAddingLightSourcesToRender())
+  {
+    m_mapEditor->RadiusOfAddingLightSourcesToRenderChanged();
+    m_oldRadiusOfAddingLightSourcesToRender = m_mapEditorPreferences->GetRadiusOfAddingLightSourcesToRender();
+  }
 }
 
 void GameEditor::on_actionSnap_to_angle_toggled(bool checked)

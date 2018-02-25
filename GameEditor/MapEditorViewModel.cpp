@@ -272,13 +272,25 @@ void MapEditorViewModel::GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vect
   m_octoTree.GetVisibleSgo(cameraFrustrum, sgosToRender);
 }
 
-void MapEditorViewModel::GetVisiblePointLights(CameraFrustrum* cameraFrustrum, LightininigSystem* lightiningSystem)
+void MapEditorViewModel::GetVisiblePointLights(Camera* camera, LightininigSystem* lightiningSystem)
 {
   lightiningSystem->ClearLights();
 
+  XMFLOAT3 cameraPosition = camera->GetWorldPosition();
+  float radius = m_mapEditorPreferences->GetRadiusOfAddingLightSourcesToRender();
+  m_aabbForPointLight.Initialize(
+    cameraPosition.x - radius,
+    cameraPosition.y - radius,
+    cameraPosition.z - radius,
+    cameraPosition.x + radius,
+    cameraPosition.y + radius,
+    cameraPosition.z + radius
+    );
+
   for (auto& pointLight : m_pointLightsOnMap)
   {
-    lightiningSystem->AddPointLight(&pointLight.second);
+    if (AxisAlignedBBHelper::TwoAABBIntersects(&m_aabbForPointLight, pointLight.second.GetAABBBoundingBox()))
+        lightiningSystem->AddPointLight(&pointLight.second);
   }
 }
 

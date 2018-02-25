@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>388</width>
-    <height>530</height>
+    <width>383</width>
+    <height>571</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,7 +101,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>500</y>
+     <y>540</y>
      <width>156</width>
      <height>23</height>
     </rect>
@@ -449,7 +449,7 @@
      <x>10</x>
      <y>410</y>
      <width>271</width>
-     <height>81</height>
+     <height>121</height>
     </rect>
    </property>
    <property name="title">
@@ -536,6 +536,32 @@
       </rect>
      </property>
     </widget>
+   </widget>
+   <widget class="QLabel" name="radiusOfAddingPointLightToRenderLbl">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Radius of adding light sources to the render</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="radiusOfAddingPointLightToRenderTxt">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>90</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
    </widget>
   </widget>
  </widget>
