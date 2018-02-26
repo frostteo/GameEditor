@@ -50,6 +50,7 @@ void MapEditorPreferences::ReadPreferencesFromStr(std::string& str)
   ss >> place >> m_redAmbientColor >> m_greenAmbientColor >> m_blueAmbientColor;
 
   ss >> place >> m_radiusOfAddingLightSourcesToTheRender;
+  ss >> place >> std::boolalpha >> m_showShadows;
 }
 
 MapEditorPreferences::~MapEditorPreferences()
@@ -83,6 +84,7 @@ MapEditorPreferences::~MapEditorPreferences()
   fout << "ambient_colors_rgb: " << m_redAmbientColor << " " << m_greenAmbientColor << " " << m_blueAmbientColor << std::endl;
 
   fout << "radius_of_adding_light_sources_to_the_render: " << m_radiusOfAddingLightSourcesToTheRender << std::endl;
+  fout << "show_shadows: " << std::boolalpha << m_showShadows << std::endl;
 }
 
 void MapEditorPreferences::SetAngleSnap(float angle)

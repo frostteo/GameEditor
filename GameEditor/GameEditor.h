@@ -43,6 +43,7 @@ private slots:
   void on_actionSnap_to_angle_toggled(bool checked);
   void on_actionSnap_to_grid_toggled(bool checked);
   void on_actionUseTestLightining_toggled(bool checked);
+  void on_actionShowShadows_toggled(bool checked);
 public:
     GameEditor(QWidget *parent = Q_NULLPTR);
     ~GameEditor() { }

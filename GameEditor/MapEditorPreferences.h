@@ -39,6 +39,7 @@ private:
   float m_blueAmbientColor = 0.0f;
 
   float m_radiusOfAddingLightSourcesToTheRender = 3000.0f;
+  bool m_showShadows = true;
 public:
   static const float MIN_RADIUS_OF_ADD_LIGHT_SOURCES_TO_RENDER;
 protected:
@@ -90,6 +91,9 @@ public:
 
   void SetRadiusOfAddingLightSourcesToRender(float radius);
   float GetRadiusOfAddingLightSourcesToRender() const { return m_radiusOfAddingLightSourcesToTheRender; }
+
+  void SetShowShadows(bool showShadows) { m_showShadows = showShadows; }
+  bool GetShowShadows() const { return m_showShadows; }
 
   LightininigSystem* GetTestLightiningSystem() { return m_testLightiningSystem.get(); }
   MapEditorPreferences();

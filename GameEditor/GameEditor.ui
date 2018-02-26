@@ -80,6 +80,7 @@
    <addaction name="actionSnap_to_angle"/>
    <addaction name="actionSnap_to_grid"/>
    <addaction name="actionUseTestLightining"/>
+   <addaction name="actionShowShadows"/>
   </widget>
   <action name="actionObjConverter">
    <property name="text">
@@ -140,10 +141,25 @@
      <normaloff>:/GameEditor/use_test_lightining.png</normaloff>:/GameEditor/use_test_lightining.png</iconset>
    </property>
    <property name="text">
-    <string>UseTestLightining</string>
+    <string>Use test lightining</string>
    </property>
    <property name="toolTip">
     <string>Use test lightining</string>
+   </property>
+  </action>
+  <action name="actionShowShadows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="GameEditor.qrc">
+     <normaloff>:/GameEditor/enableShadows.png</normaloff>:/GameEditor/enableShadows.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show shadows</string>
+   </property>
+   <property name="toolTip">
+    <string>Show shadows</string>
    </property>
   </action>
  </widget>

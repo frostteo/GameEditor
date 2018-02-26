@@ -77,6 +77,7 @@ void GameEditor::on_editPreferencesAction_triggered()
   this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
   this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
+  this->ui.actionShowShadows->setChecked(m_mapEditorPreferences->GetShowShadows());
   m_mapEditor->SetAmbientLight(m_mapEditorPreferences->GetRedAmbientLightColor(), m_mapEditorPreferences->GetGreenAmbientLightColor(), m_mapEditorPreferences->GetBlueAmbientLightColor());
 
   if (m_oldRadiusOfAddingLightSourcesToRender != m_mapEditorPreferences->GetRadiusOfAddingLightSourcesToRender())
@@ -102,4 +103,9 @@ void GameEditor::on_actionUseTestLightining_toggled(bool checked)
 
   if (m_mapEditor)
     m_mapEditor->EnableTestLightining(checked);
+}
+
+void GameEditor::on_actionShowShadows_toggled(bool checked)
+{
+  m_mapEditorPreferences->SetShowShadows(checked);
 }

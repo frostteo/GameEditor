@@ -82,6 +82,7 @@ public:
     QLineEdit *realBlueAmbientTxt;
     QLabel *radiusOfAddingPointLightToRenderLbl;
     QLineEdit *radiusOfAddingPointLightToRenderTxt;
+    QCheckBox *showShadowsCheckBox;
 
     void setupUi(QWidget *MapEditorPreferencesDialog)
     {
@@ -266,7 +267,7 @@ public:
         useTestLightiningCheckBox->setChecked(true);
         groupBox_5 = new QGroupBox(MapEditorPreferencesDialog);
         groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
-        groupBox_5->setGeometry(QRect(10, 410, 271, 121));
+        groupBox_5->setGeometry(QRect(10, 410, 361, 121));
         groupBox_6 = new QGroupBox(groupBox_5);
         groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
         groupBox_6->setGeometry(QRect(10, 20, 251, 51));
@@ -295,6 +296,10 @@ public:
         radiusOfAddingPointLightToRenderTxt = new QLineEdit(groupBox_5);
         radiusOfAddingPointLightToRenderTxt->setObjectName(QStringLiteral("radiusOfAddingPointLightToRenderTxt"));
         radiusOfAddingPointLightToRenderTxt->setGeometry(QRect(120, 90, 131, 20));
+        showShadowsCheckBox = new QCheckBox(groupBox_5);
+        showShadowsCheckBox->setObjectName(QStringLiteral("showShadowsCheckBox"));
+        showShadowsCheckBox->setGeometry(QRect(260, 90, 91, 17));
+        showShadowsCheckBox->setLayoutDirection(Qt::RightToLeft);
         QWidget::setTabOrder(objectRotationTxt, objectMoveTxt);
         QWidget::setTabOrder(objectMoveTxt, cameraRotationTxt);
         QWidget::setTabOrder(cameraRotationTxt, cameraZoomTxt);
@@ -353,6 +358,7 @@ public:
         greenRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "green", Q_NULLPTR));
         blueRealAmbientLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "blue", Q_NULLPTR));
         radiusOfAddingPointLightToRenderLbl->setText(QApplication::translate("MapEditorPreferencesDialog", "Radius of adding light sources to the render", Q_NULLPTR));
+        showShadowsCheckBox->setText(QApplication::translate("MapEditorPreferencesDialog", "Show shadows", Q_NULLPTR));
     } // retranslateUi
 
 };

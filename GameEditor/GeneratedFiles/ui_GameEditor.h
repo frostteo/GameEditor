@@ -33,6 +33,7 @@ public:
     QAction *actionSnap_to_angle;
     QAction *actionSnap_to_grid;
     QAction *actionUseTestLightining;
+    QAction *actionShowShadows;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QGridLayout *gridLayout_3;
@@ -78,6 +79,12 @@ public:
         QIcon icon3;
         icon3.addFile(QStringLiteral(":/GameEditor/use_test_lightining.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionUseTestLightining->setIcon(icon3);
+        actionShowShadows = new QAction(GameEditorClass);
+        actionShowShadows->setObjectName(QStringLiteral("actionShowShadows"));
+        actionShowShadows->setCheckable(true);
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/GameEditor/enableShadows.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionShowShadows->setIcon(icon4);
         centralWidget = new QWidget(GameEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -134,6 +141,7 @@ public:
         mainToolBar->addAction(actionSnap_to_angle);
         mainToolBar->addAction(actionSnap_to_grid);
         mainToolBar->addAction(actionUseTestLightining);
+        mainToolBar->addAction(actionShowShadows);
 
         retranslateUi(GameEditorClass);
 
@@ -159,9 +167,13 @@ public:
 #ifndef QT_NO_TOOLTIP
         actionSnap_to_grid->setToolTip(QApplication::translate("GameEditorClass", "Snap to grid", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        actionUseTestLightining->setText(QApplication::translate("GameEditorClass", "UseTestLightining", Q_NULLPTR));
+        actionUseTestLightining->setText(QApplication::translate("GameEditorClass", "Use test lightining", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
         actionUseTestLightining->setToolTip(QApplication::translate("GameEditorClass", "Use test lightining", Q_NULLPTR));
+#endif // QT_NO_TOOLTIP
+        actionShowShadows->setText(QApplication::translate("GameEditorClass", "Show shadows", Q_NULLPTR));
+#ifndef QT_NO_TOOLTIP
+        actionShowShadows->setToolTip(QApplication::translate("GameEditorClass", "Show shadows", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
         tabWidget->setTabText(tabWidget->indexOf(tab_11), QApplication::translate("GameEditorClass", "\320\241\321\202\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\270\320\265 \320\270\320\263\321\200\320\276\320\262\321\213\320\265 \320\276\320\261\321\212\320\265\320\272\321\202\321\213", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_12), QApplication::translate("GameEditorClass", "Tab 2", Q_NULLPTR));

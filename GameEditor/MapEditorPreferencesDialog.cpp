@@ -87,6 +87,7 @@ void MapEditorPreferencesDialog::SetMapEditorPreferences(MapEditorPreferences* m
   this->realBlueAmbientTxt->setText(QString::number(m_mapEditorPreferences->GetBlueAmbientLightColor()));
 
   this->radiusOfAddingPointLightToRenderTxt->setText(QString::number(m_mapEditorPreferences->GetRadiusOfAddingLightSourcesToRender()));
+  this->showShadowsCheckBox->setChecked(m_mapEditorPreferences->GetShowShadows());
 }
 
 void MapEditorPreferencesDialog::done(int result)
@@ -111,6 +112,7 @@ void MapEditorPreferencesDialog::done(int result)
     m_mapEditorPreferences->SetAmbientLightColor(this->realRedAmbientTxt->text().toFloat(), this->realGreenAmbientTxt->text().toFloat(), this->realBlueAmbientTxt->text().toFloat());
 
     m_mapEditorPreferences->SetRadiusOfAddingLightSourcesToRender(this->radiusOfAddingPointLightToRenderTxt->text().toFloat());
+    m_mapEditorPreferences->SetShowShadows(this->showShadowsCheckBox->isChecked());
 
     QDialog::done(result);
   }

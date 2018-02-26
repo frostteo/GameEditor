@@ -69,7 +69,8 @@ public:
   ID3D11Device* GetDevice() { return m_direct3D->GetDevice(); }
   void Render(Camera* camera, LightininigSystem* lightiningSystem);
   void RenderDefferedStencilVolume(Camera* camera, LightininigSystem* lightiningSystem);
-  void RenderDefferedTesselated(Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDefferedTesselatedWithShadows(Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDefferedTesselatedWithoutShadows(Camera* camera, LightininigSystem* lightiningSystem);
 
   D3DConfigurer* GetD3dConfigurer() { return m_direct3D.get(); }
 };

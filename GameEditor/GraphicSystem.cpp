@@ -193,7 +193,7 @@ void GraphicSystem::GeneratePointLightShadows(LightininigSystem* lightiningSyste
   }
 }
 
-void GraphicSystem::RenderDefferedTesselated(Camera* camera, LightininigSystem* lightiningSystem)
+void GraphicSystem::RenderDefferedTesselatedWithShadows(Camera* camera, LightininigSystem* lightiningSystem)
 {
   XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
   XMMATRIX spaceMatrix;
@@ -250,7 +250,6 @@ void GraphicSystem::RenderDefferedTesselated(Camera* camera, LightininigSystem* 
 
   // Отрисовать источники света без теней
   auto pointLightShader = m_shaderFactory->Get(POINT_LIGHT_TESSELATED_DEF_SN);
-  //pointLightShader->SetTextures(m_direct3D->GetDeviceContext(), m_direct3D->GetGBufferShaderResourceViewes(), GBuffer::SHADER_RESOURCE_VIEW_COUNT);
   pointLightShader->EnableShader(deviceContext);
 
   for (int i = 0; i < lightiningSystem->GetPointLightsNonCastShadows()->size(); ++i)
@@ -267,6 +266,74 @@ void GraphicSystem::RenderDefferedTesselated(Camera* camera, LightininigSystem* 
 
   m_direct3D->EndScene();
 }
+
+void GraphicSystem::RenderDefferedTesselatedWithoutShadows(Camera* camera, LightininigSystem* lightiningSystem)
+{
+  XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
+  XMMATRIX spaceMatrix;
+  XMFLOAT3 spaceFloat3, cameraPosition;
+  ID3D11DeviceContext* deviceContext = m_direct3D->GetDeviceContext();
+
+  camera->GetViewMatrix(viewMatrix);
+  camera->GetProjectionMatrix(projectionMatrix);
+
+  cameraPosition = camera->GetPosition();
+
+  m_direct3D->SetCullBackRasterState();
+  m_direct3D->SetGBufferRenderTargets();
+  m_direct3D->ClearGBufferRenderTargets();
+  m_direct3D->DisableBlending();
+
+  DrawModels(viewMatrix, projectionMatrix, nullptr, cameraPosition);
+
+  m_direct3D->SetBackBufferRenderTarget();
+  m_direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+  m_direct3D->DisableDepthTest();
+  m_direct3D->SetNullAsDepthBuffer();
+  m_direct3D->PrepareToFullScreenDefferedEffect();
+
+  auto ambientDefferedShader = m_shaderFactory->Get(AMBIENT_DEFFERED_SHADER_NAME);
+  ambientDefferedShader->EnableShader(deviceContext);
+  ambientDefferedShader->SetTextures(deviceContext, m_direct3D->GetGBufferShaderResourceViewes(), GBuffer::SHADER_RESOURCE_VIEW_COUNT);
+  ambientDefferedShader->Render(deviceContext, 0, spaceMatrix, spaceMatrix, spaceMatrix, nullptr, lightiningSystem, spaceFloat3);
+
+  m_direct3D->EnableAditiveBlending();
+
+  camera->GetWorldMatrix(worldMatrix);
+  m_pointLightDefferedParemeters.SetViewMatrixInverse(worldMatrix);
+  m_pointLightDefferedParemeters.SetPerspectiveValues(projectionMatrix);
+
+  m_direct3D->SetGBufferReadonlyDepthBufferToRenderTargets();
+  m_direct3D->EnableGreaterEqualReadonlyDepthTest();
+  m_direct3D->SetCullFrontRasterState();
+
+  auto pointLightShader = m_shaderFactory->Get(POINT_LIGHT_TESSELATED_DEF_SN);
+  pointLightShader->SetTextures(m_direct3D->GetDeviceContext(), m_direct3D->GetGBufferShaderResourceViewes(), GBuffer::SHADER_RESOURCE_VIEW_COUNT);
+  pointLightShader->EnableShader(deviceContext);
+
+  // Отрисовать без теней все источники с тенями
+  for (int i = 0; i < lightiningSystem->GetPointLightsCastShadows()->size(); ++i)
+  {
+    lightiningSystem->SetPointLightToRenderSelector(true, i);
+    pointLightShader->Render(deviceContext, 0, spaceMatrix, viewMatrix, projectionMatrix, &m_pointLightDefferedParemeters, lightiningSystem, cameraPosition);
+  }
+
+  // Отрисовать источники света без теней
+  for (int i = 0; i < lightiningSystem->GetPointLightsNonCastShadows()->size(); ++i)
+  {
+    lightiningSystem->SetPointLightToRenderSelector(false, i);
+    pointLightShader->Render(deviceContext, 0, spaceMatrix, viewMatrix, projectionMatrix, &m_pointLightDefferedParemeters, lightiningSystem, cameraPosition);
+  }
+
+  m_direct3D->SetCullBackRasterState();
+  m_direct3D->EnableDepthTest();
+  m_direct3D->DisableBlending();
+
+  DrawGrids(viewMatrix, projectionMatrix);
+
+  m_direct3D->EndScene();
+}
+
 
 void GraphicSystem::RenderDefferedStencilVolume(Camera* camera, LightininigSystem* lightiningSystem)
 {

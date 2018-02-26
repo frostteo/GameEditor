@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="GameEditor">
     <file>unfreeze.png</file>
+    <file>enableShadows.png</file>
     <file>clone.png</file>
     <file>snowflake.png</file>
     <file>edit icon.png</file>
