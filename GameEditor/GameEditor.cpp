@@ -15,6 +15,7 @@ void GameEditor::configureUI()
   this->ui.actionSnap_to_angle->setChecked(m_mapEditorPreferences->GetSnapToAngleState());
   this->ui.actionSnap_to_grid->setChecked(m_mapEditorPreferences->GetSnapToGridState());
   this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
+  this->ui.actionShowShadows->setChecked(m_mapEditorPreferences->GetShowShadows());
 
   m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
   m_mapEditor->show();

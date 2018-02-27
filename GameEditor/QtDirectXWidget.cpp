@@ -3,6 +3,8 @@
 QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QWidget(parent)
 {
+  m_screenDepth = 10000.0f;
+
   setupUi(this);
 
   this->setWindowFlags(Qt::Window);

@@ -436,11 +436,11 @@ void D3DConfigurer::InitializePointLightShadowStructures()
   D3D11_RASTERIZER_DESC pointLightShadowRSDesc;
 
   pointLightShadowRSDesc.FillMode = D3D11_FILL_SOLID;
-  pointLightShadowRSDesc.CullMode = D3D11_CULL_BACK;
+  pointLightShadowRSDesc.CullMode = D3D11_CULL_FRONT;
   pointLightShadowRSDesc.FrontCounterClockwise = FALSE;
-  pointLightShadowRSDesc.DepthBias = 85;
+  pointLightShadowRSDesc.DepthBias = 30;
   pointLightShadowRSDesc.DepthBiasClamp = D3D11_DEFAULT_DEPTH_BIAS_CLAMP;
-  pointLightShadowRSDesc.SlopeScaledDepthBias = 15.0f;
+  pointLightShadowRSDesc.SlopeScaledDepthBias = 5.0f;
   pointLightShadowRSDesc.DepthClipEnable = TRUE;
   pointLightShadowRSDesc.ScissorEnable = FALSE;
   pointLightShadowRSDesc.MultisampleEnable = FALSE;

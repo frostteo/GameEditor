@@ -1,6 +1,6 @@
 #include "PointLight.h"
 
-const float PointLight::SHADOW_NEAR_PLANE = 0.01f;
+const float PointLight::SHADOW_NEAR_PLANE = 5.0f;
 
 PointLight::PointLight()
 {
@@ -172,7 +172,7 @@ void PointLight::RebuildCubeViewProjection(XMFLOAT3 worldPosition)
   XMMATRIX lightProjection, positionMatrix, spotView, toShadow;
 
   positionMatrix = XMMatrixTranslation(-worldPosition.x, -worldPosition.y, -worldPosition.z);
-  lightProjection = XMMatrixPerspectiveFovLH(XM_PIDIV2, 1.0f, SHADOW_NEAR_PLANE, m_radius * 1000);
+  lightProjection = XMMatrixPerspectiveFovLH(XM_PIDIV2, 1.0f, SHADOW_NEAR_PLANE, m_radius);
 
   // Cube +X
   spotView = XMMatrixRotationY(XM_PI + XM_PIDIV2);
