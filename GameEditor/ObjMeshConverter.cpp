@@ -411,7 +411,7 @@ void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTx
   float vector1[3], vector2[3];
   float tuVector[2], tvVector[2];
   float den;
-  VertexObj normal, tangent, binormal;
+  VertexObj tangent, binormal;
 
   // Calculate the two vectors for this face.
   vector1[0] = second.coord.x - first.coord.x;
@@ -424,26 +424,29 @@ void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTx
 
   // Calculate the tu and tv texture space vectors.
   tuVector[0] = second.tu - first.tu;
-  tvVector[0] = third.tv - first.tv;
+  tvVector[0] = second.tv - first.tv;
 
   tuVector[1] = third.tu - first.tu;
-  tvVector[1] = second.tv - first.tv;
+  tvVector[1] = third.tv - first.tv;
 
 
   // Calculate the denominator of the tangent/binormal equation.
-  float textCoordDiff = tuVector[0] * tvVector[0] - tuVector[1] * tvVector[1];
+  float textCoordDiff = tuVector[0] * tvVector[1] - tuVector[1] * tvVector[0];
   if (textCoordDiff == 0)
     den = 1.0f;
   else
     den = 1.0f / textCoordDiff;
 
-  tangent = CalculateTangentOrBinormal(tvVector, vector1, vector2, den);
-  binormal = CalculateTangentOrBinormal(tuVector, vector2, vector1, den);
+  tangent.x = (tvVector[1] * vector1[0] - tvVector[0] * vector2[0]) * den;
+  tangent.y = (tvVector[1] * vector1[1] - tvVector[0] * vector2[1]) * den;
+  tangent.z = (tvVector[1] * vector1[2] - tvVector[0] * vector2[2]) * den;
+
+  binormal.x = (tuVector[0] * vector2[0] - tuVector[1] * vector1[0]) * den;
+  binormal.y = (tuVector[0] * vector2[1] - tuVector[1] * vector1[1]) * den;
+  binormal.z = (tuVector[0] * vector2[2] - tuVector[1] * vector1[2]) * den;
 
   Normalize(tangent);
   Normalize(binormal);
-  normal = CrossProduct(tangent, binormal);
-  Normalize(normal);
 
   first.tangent = tangent;
   second.tangent = tangent;
@@ -452,17 +455,6 @@ void ObjMeshConverter::CalculateNormalTangentBinormal(VertexTxt& first, VertexTx
   first.binormal = binormal;
   second.binormal = binormal;
   third.binormal = binormal;
-}
-
-VertexObj ObjMeshConverter::CalculateTangentOrBinormal(float textureVector[2], float modelVectorFirst[3], float modelVectorSecond[3], const float& denominator)
-{
-  VertexObj result;
-
-  result.x = (textureVector[0] * modelVectorFirst[0] - textureVector[1] * modelVectorSecond[0]) * denominator;
-  result.y = (textureVector[0] * modelVectorFirst[1] - textureVector[1] * modelVectorSecond[1]) * denominator;
-  result.z = (textureVector[0] * modelVectorFirst[2] - textureVector[1] * modelVectorSecond[2]) * denominator;
-
-  return result;
 }
 
 void ObjMeshConverter::Normalize(VertexObj& vertex)

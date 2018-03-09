@@ -57,10 +57,11 @@ float4 BumpMapSpecularPixelShader(PixelInputType input) : SV_TARGET
 	
     // Sample the pixel in the bump map.
     bumpMap = shaderTextures[1].Sample(SampleType, input.tex);
-
+	
+	bumpMap *= float4(bumpDepth, bumpDepth, 1.0f, 1.0f);
+	
     // Expand the range of the normal value from (0, +1) to (-1, +1).
     bumpMap = (bumpMap * 2.0f) - 1.0f;
-	bumpMap *= bumpDepth;
 
     // Calculate the normal from the data in the bump map.
     bumpNormal = bumpMap.x * input.tangent + bumpMap.y * input.binormal + input.normal;

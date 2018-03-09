@@ -32,7 +32,6 @@ private:
   std::map<std::string, std::vector<int>> m_meshIndexesInfo;
   BoundingBox m_modelBoundingBox;
 private:
-  VertexObj CalculateTangentOrBinormal(float textureVector[2], float modelVectorFirst[3], float modelVectorSecond[3], const float& denominator);
   void Normalize(VertexObj& vertex);
   VertexObj CrossProduct(const VertexObj& first, const VertexObj& second);
   void CenterToCoordCenter();

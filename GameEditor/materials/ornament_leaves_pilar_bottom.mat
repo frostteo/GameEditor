@@ -1,4 +1,4 @@
 type: bump
 textureFileName: maps/ornament leaves.tga
 normalMap: maps/Map__55_Normal Bump.tga
-bumpDepth: 0.3
+bumpDepth: 1.0f
