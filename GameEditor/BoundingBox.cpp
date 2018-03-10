@@ -1,4 +1,5 @@
 #include "BoundingBox.h"
+#include "Logger.h"
 
 const char BoundingBox::BOUNDING_BOX_SERIALIZE_NAME[BOUNDING_BOX_SERIALIZE_NAME_LENGTH] = "bounding box: ";
 
@@ -94,7 +95,7 @@ void BoundingBox::Deserialize(std::istream& istream)
   istream.read(space, BOUNDING_BOX_SERIALIZE_NAME_LENGTH - 1);
 
   if (strncmp(space, BOUNDING_BOX_SERIALIZE_NAME, BOUNDING_BOX_SERIALIZE_NAME_LENGTH - 1))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Cant read bounding box from stream", __FILE__, __LINE__));
+    RUNTIME_ERROR("Cant read bounding box from stream");
 
   istream >> minX >> minY >> minZ >> maxX >> maxY >> maxZ;
   Initialize(minX, minY, minZ, maxX, maxY, maxZ);

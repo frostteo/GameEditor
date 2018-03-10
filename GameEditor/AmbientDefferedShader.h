@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IShader.h"
+class Logger;
 
 class AmbientDefferedShader :
   public IShader

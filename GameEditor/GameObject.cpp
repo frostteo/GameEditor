@@ -1,5 +1,6 @@
 
 #include "GameObject.h"
+#include "Logger.h"
 
 GameObject::GameObject()
 {

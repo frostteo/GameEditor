@@ -40,5 +40,5 @@ QVariant SGOMetadata::GetFieldByName(const StaticGameObjectDbInfo& entity, QStri
   if (name == GetKeyColumnName())
     return entity.id;
 
-  throw std::runtime_error(Logger::get().GetErrorTraceMessage(("There is no field with name = " + name + " in entity").toStdString(), __FILE__, __LINE__));
+  RUNTIME_ERROR(("There is no field with name = " + name + " in entity").toStdString());
 }

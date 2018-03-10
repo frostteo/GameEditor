@@ -1,4 +1,5 @@
 #include "OctoTree.h"
+#include "Logger.h"
 
 const float OctoTree::MIN_HALF_LENGTH = 64.0f;
 

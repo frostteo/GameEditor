@@ -1,5 +1,5 @@
 #include "InputSystem.h"
-
+#include "Logger.h"
 
 InputSystem::InputSystem()
 {
@@ -21,37 +21,37 @@ void InputSystem::Initialize(HINSTANCE hinstance , HWND hwnd)
   // Initialize the main direct input interface.
   result = DirectInput8Create(hinstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_directInput, NULL);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cannot create direct input object.", __FILE__, __LINE__));
+    RUNTIME_ERROR("cannot create direct input object.");
 
   // Initialize the direct input interface for the keyboard.
   result = m_directInput->CreateDevice(GUID_SysKeyboard, &m_keyboard, NULL);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant initialize direct input interface for the keybord.", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant initialize direct input interface for the keybord.");
 
   // Set the data format.  In this case since it is a keyboard we can use the predefined data format.
   result = m_keyboard->SetDataFormat(&c_dfDIKeyboard);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant set data format.", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant set data format.");
 
   // Set the cooperative level of the keyboard to not share with other programs.
   result = m_keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant set cooperative lvl.", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant set cooperative lvl.");
 
   // Initialize the direct input interface for the mouse.
   result = m_directInput->CreateDevice(GUID_SysMouse, &m_mouse, NULL);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create direct input mouse.", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create direct input mouse.");
 
   // Set the data format for the mouse using the pre-defined mouse data format.
   result = m_mouse->SetDataFormat(&c_dfDIMouse);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant set mouse data format.", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant set mouse data format.");
 
   // Set the cooperative level of the mouse to share with other programs.
   result = m_mouse->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant set cooperative lvl.", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant set cooperative lvl.");
 }
 
 void InputSystem::Shutdown()

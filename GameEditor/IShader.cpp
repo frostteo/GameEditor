@@ -1,5 +1,5 @@
 #include "IShader.h"
-
+#include "Logger.h"
 
 IShader::IShader()
 {
@@ -75,11 +75,11 @@ void IShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, const std::stri
     // Release the error message.
     errorMessage->Release();
     errorMessage = 0;
-    throw std::runtime_error("Error compiling shader. " + shaderFilename + "  Check " + Logger::get().GetLogFileName() + " for message.");
+    RUNTIME_ERROR("Error compiling shader. " + shaderFilename + "  Check " + Logger::get().GetLogFileName() + " for message.");
   }
   else
   {
-    throw std::runtime_error("Missing Shader File " + shaderFilename);
+    RUNTIME_ERROR("Missing Shader File " + shaderFilename);
   }
 
 }

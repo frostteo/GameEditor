@@ -1,5 +1,5 @@
 #include "AmbientDefferedShader.h"
-
+#include "Logger.h"
 
 AmbientDefferedShader::AmbientDefferedShader()
 {
@@ -52,15 +52,13 @@ void AmbientDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, co
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed vertex shader creation " + vsFilenameStdStr);
+    RUNTIME_ERROR("failed vertex shader creation " + vsFilenameStdStr);
   }
 
   // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed pixel shader creation " + psFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed pixel shader creation " + psFilenameStdStr);
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
@@ -114,7 +112,7 @@ void AmbientDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceConte
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the light constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the light constant buffer "); 
 
   // Get a pointer to the data in the constant buffer.
   lightBufferDataPtr = (LightBufferType*)mappedResource.pData;

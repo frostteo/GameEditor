@@ -1,5 +1,5 @@
 #include "Texture.h"
-
+#include "Logger.h"
 
 Texture::Texture()
 {

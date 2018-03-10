@@ -8,8 +8,9 @@
 #include <directxmath.h>
 #include <memory>
 #include <string>
-#include "Logger.h"
+
 #include "GBuffer.h"
+class Logger;
 
 using namespace DirectX;
 

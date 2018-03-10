@@ -1,16 +1,6 @@
 #include "Timer.h"
 
-
-Timer::Timer()
-{
-}
-
-
-Timer::~Timer()
-{
-}
-
-const std::string & Timer::getCurrentTime()
+const std::string Timer::getCurrentTime()
 {
   const int charBufferSize = 50;
   char timeBufferChar[charBufferSize];
@@ -20,11 +10,10 @@ const std::string & Timer::getCurrentTime()
   localtime_s(&timeStructure, &seconds);
 
   strftime(timeBufferChar, charBufferSize, m_timeFormat.c_str(), &timeStructure);
-  m_CurrentTime = std::string(timeBufferChar);
-  return m_CurrentTime;
+  return std::string(timeBufferChar);
 }
 
-void Timer::setTimeFormat(std::string &timeFormat)
+void Timer::setTimeFormat(const std::string &timeFormat)
 {
   m_timeFormat = timeFormat;
 }

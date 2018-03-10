@@ -1,4 +1,5 @@
 #include "PointLightDefferedParameters.h"
+#include "Logger.h"
 
 const std::string PointLightDefferedParameters::pointLightDefferedParametersType = "pointLightDefferedParameters";
 

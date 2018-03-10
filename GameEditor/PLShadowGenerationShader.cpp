@@ -1,5 +1,5 @@
 #include "PLShadowGenerationShader.h"
-
+#include "Logger.h"
 
 PLShadowGenerationShader::PLShadowGenerationShader()
 {
@@ -45,15 +45,11 @@ void PLShadowGenerationShader::InitializeShader(ID3D11Device* device, HWND hwnd,
 
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &m_vertexShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed vertex shader creation " + vsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed vertex shader creation " + vsFilenameStdStr);
 
   result = device->CreateGeometryShader(geometryShaderBuffer->GetBufferPointer(), geometryShaderBuffer->GetBufferSize(), nullptr, &m_geometricShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed geometry shader creation " + gsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed geometry shader creation " + gsFilenameStdStr);
 
   polygonLayout[0].SemanticName = "POSITION";
   polygonLayout[0].SemanticIndex = 0;
@@ -87,9 +83,7 @@ void PLShadowGenerationShader::InitializeShader(ID3D11Device* device, HWND hwnd,
 
   result = device->CreateBuffer(&worldMatrixBufferDesc, nullptr, &m_worldMatrixBuffer);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed input create world matrix buffer " + vsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed input create world matrix buffer " + vsFilenameStdStr);
 
   shadowMapCubeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
   shadowMapCubeBufferDesc.ByteWidth = sizeof(CubeViewProjectionsBuffer);

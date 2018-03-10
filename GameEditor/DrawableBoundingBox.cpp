@@ -1,4 +1,5 @@
 #include "DrawableBoundingBox.h"
+#include "Logger.h"
 
 const XMFLOAT3 DrawableBoundingBox::UNFROZEN_COLOR_FIRST = XMFLOAT3(1.0f, 0.0f, 0.0f);
 const XMFLOAT3 DrawableBoundingBox::UNFROZEN_COLOR_SECOND = XMFLOAT3(0.0f, 1.0f, 0.0f);
@@ -102,7 +103,7 @@ void DrawableBoundingBox::InitializeBuffers(ID3D11Device* device, bool isFrozen)
   // Now create the vertex buffer.
   result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create vertex buffer for bounding box", __FILE__, __LINE__));
+    RUNTIME_ERROR("Can't create vertex buffer for bounding box");
 
   // Set up the description of the static index buffer.
   indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -120,7 +121,7 @@ void DrawableBoundingBox::InitializeBuffers(ID3D11Device* device, bool isFrozen)
   // Create the index buffer.
   result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create index buffer for bounding box", __FILE__, __LINE__));
+    RUNTIME_ERROR("Can't create index buffer for bounding box");
 }
 
 void DrawableBoundingBox::ShutdownBuffers()

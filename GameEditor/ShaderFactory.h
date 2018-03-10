@@ -22,9 +22,10 @@
 #include "PointLightDefferedShader.h"
 #include "PointLightTesselatedShader.h"
 #include "ShaderConfiguration.h"
-#include "Logger.h"
 #include "PLShadowGenerationShader.h"
 #include "PLShadowedTesselatedShader.h"
+
+class Logger;
 
 class ShaderFactory
 {

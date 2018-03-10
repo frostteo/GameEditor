@@ -1,6 +1,7 @@
 #pragma once
 #include "IMaterial.h"
-#include "Logger.h"
+
+class Logger;
 
 class PointLightDefferedParameters :
   public IMaterial

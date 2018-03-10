@@ -1,5 +1,5 @@
 #include "PLShadowedTesselatedShader.h"
-
+#include "Logger.h"
 
 PLShadowedTesselatedShader::PLShadowedTesselatedShader()
 {
@@ -96,27 +96,19 @@ void PLShadowedTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwn
 
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), nullptr, &m_vertexShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed vertex shader creation " + vsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed vertex shader creation " + vsFilenameStdStr);
 
   result = device->CreateHullShader(hullShaderBuffer->GetBufferPointer(), hullShaderBuffer->GetBufferSize(), nullptr, &m_hullShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed vertex shader creation " + hsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed hull shader creation " + hsFilenameStdStr);
 
   result = device->CreateDomainShader(domainShaderBuffer->GetBufferPointer(), domainShaderBuffer->GetBufferSize(), nullptr, &m_domainShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed vertex shader creation " + dsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed domain shader creation " + dsFilenameStdStr);
 
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), nullptr, &m_pixelShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed pixel shader creation " + psFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed pixel shader creation " + psFilenameStdStr);
 
   vertexShaderBuffer->Release();
   vertexShaderBuffer = nullptr;
@@ -139,9 +131,7 @@ void PLShadowedTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwn
 
   result = device->CreateBuffer(&lightProjectionBufferDesc, nullptr, &m_lightProjectionBuffer);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed input create light projection buffer " + dsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed input create light projection buffer ");
 
   worldCoordsUnpackBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
   worldCoordsUnpackBufferDesc.ByteWidth = sizeof(WorldCoordsUnpackBuffer);
@@ -182,9 +172,7 @@ void PLShadowedTesselatedShader::InitializeShader(ID3D11Device* device, HWND hwn
 
   result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed create sample state");
-  }
+    RUNTIME_ERROR("failed create sample state");
 }
 
 void PLShadowedTesselatedShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX lightProjection, XMFLOAT3 pointLightColor, XMFLOAT3 pointLightPosition, float linearAttenuation, float quadraticAttenuation, XMVECTOR perspectiveValues, XMMATRIX viewMatrixInv, XMFLOAT2 lightPerspectiveValues)

@@ -1,5 +1,5 @@
 #include "ColorShader.h"
-
+#include "Logger.h"
 
 ColorShader::ColorShader()
 {
@@ -89,12 +89,12 @@ void ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::w
   // Create the vertex shader from the buffer.
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the vertex shader from the buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the vertex shader from the buffer");
 
   // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the pixel shader from the buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the pixel shader from the buffer");
 
   // Create the vertex input layout description.
   // This setup needs to match the VertexType stucture in the ModelClass and in the shader.
@@ -128,7 +128,7 @@ void ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::w
   result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
     &m_layout);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the vertex input layout", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the vertex input layout");
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
@@ -148,7 +148,7 @@ void ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::w
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the matrix constant buffer pointer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the matrix constant buffer pointer");
 
   // Setup the description of the camera dynamic constant buffer that is in the vertex shader.
   cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -161,7 +161,7 @@ void ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::w
   // Create the camera constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&cameraBufferDesc, NULL, &m_cameraBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the camera constant buffer pointer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the camera constant buffer pointer");
 
   // Setup the description of the light dynamic constant buffer that is in the pixel shader.
   // Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
@@ -175,7 +175,7 @@ void ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::w
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the light constant buffer pointer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the light constant buffer pointer");
 
   materialBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
   materialBufferDesc.ByteWidth = sizeof(ColorMaterialBufferType);
@@ -186,7 +186,7 @@ void ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, const std::w
 
   result = device->CreateBuffer(&materialBufferDesc, NULL, &m_materialBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the material constant buffer pointer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the material constant buffer pointer");
 }
 
 void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
@@ -209,7 +209,7 @@ void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
   // Lock the constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the constant buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the constant buffer");
 
   // Get a pointer to the data in the constant buffer.
   dataPtr = (MatrixBufferType*)mappedResource.pData;
@@ -231,7 +231,7 @@ void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
   // Lock the camera constant buffer so it can be written to.
   result = deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the camera constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the camera constant buffer ");
 
   // Get a pointer to the data in the constant buffer.
   dataPtr3 = (CameraBufferType*)mappedResource.pData;
@@ -252,7 +252,7 @@ void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the light constant buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the light constant buffer");
 
   // Get a pointer to the data in the constant buffer.
   dataPtr2 = (LightBufferColorType*)mappedResource.pData;
@@ -274,7 +274,7 @@ void ColorShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
   // Lock the material constant buffer so it can be written to.
   result = deviceContext->Map(m_materialBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the material constant buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the material constant buffer");
 
   // Get a pointer to the data in the constant buffer.
   dataPtr4 = (ColorMaterialBufferType*)mappedResource.pData;

@@ -1,4 +1,5 @@
 #include "ColorMaterialCreator.h"
+#include "Logger.h"
 
 ColorMaterialCreator::~ColorMaterialCreator()
 {
@@ -23,7 +24,7 @@ IMaterial* ColorMaterialCreator::Get(const std::string& fileInStr, const std::st
   fileStrStream >> type;
 
   if (type != m_type)
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("It is not material with color type", __FILE__, __LINE__));
+    RUNTIME_ERROR("It is not material with color type");
 
   do {
     fileStrStream.get(input);

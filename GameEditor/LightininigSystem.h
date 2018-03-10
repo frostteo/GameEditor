@@ -3,7 +3,8 @@
 #include <directxmath.h>
 #include <vector>
 #include "PointLight.h"
-#include "Logger.h"
+
+class Logger;
 
 using namespace DirectX;
 

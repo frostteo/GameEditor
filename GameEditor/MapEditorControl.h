@@ -3,13 +3,15 @@
 #include <algorithm>
 #include <iterator>
 #include "InputListener.h"
-#include "Logger.h"
+
 #include "Camera.h"
 #include "MapEditorViewModel.h"
 #include "AddOrEditSGOOnMapDialog.h"
 #include "StaticGameObjectDbInfo.h"
 #include "GEMath.h"
 #include "AddOrEditPointLightOnMapDialog.h"
+
+class Logger;
 
 class MapEditorControl :
   public InputListener

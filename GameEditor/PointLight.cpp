@@ -1,4 +1,5 @@
 #include "PointLight.h"
+#include "Logger.h"
 
 const float PointLight::SHADOW_NEAR_PLANE = 5.0f;
 

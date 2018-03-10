@@ -5,10 +5,11 @@
 #include <d3dcompiler.h>
 #include <string>
 #include "IMaterial.h"
-#include "Logger.h"
 #include "FileProcessor.h"
 #include "LightininigSystem.h"
 #include "Utils.h"
+
+class Logger;
 
 using namespace DirectX;
 

@@ -1,5 +1,5 @@
 #include "SingleDirectLightShader.h"
-
+#include "Logger.h"
 
 SingleDirectLightShader::SingleDirectLightShader()
 {
@@ -60,16 +60,12 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   // Create the vertex shader from the buffer.
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed vertex shader creation " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed vertex shader creation " + vsFilenameStdStr);
 
   // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed pixel shader creation " + psFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed pixel shader creation " + psFilenameStdStr);
 
   // Create the vertex input layout description.
   // This setup needs to match the VertexType stucture in the ModelClass and in the shader.
@@ -104,9 +100,7 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(),
     &m_layout);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed input layout creation " + vsFilenameStdStr);
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
@@ -126,9 +120,7 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input create matrix buffer " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed input create matrix buffer " + vsFilenameStdStr);
 
   // Create a texture sampler state description.
   samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -149,7 +141,7 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create sample state for texture " + vsFilenameStdStr, __FILE__, __LINE__));
+    RUNTIME_ERROR("failed create sample state for texture " + vsFilenameStdStr);
   }
 
   
@@ -166,7 +158,7 @@ void SingleDirectLightShader::InitializeShader(ID3D11Device* device, HWND hwnd, 
   result = device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
   if (FAILED(result))
   {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for lights " + vsFilenameStdStr, __FILE__, __LINE__));
+    RUNTIME_ERROR("failed create buffer for lights " + vsFilenameStdStr);
   }
 }
 
@@ -188,7 +180,7 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
   // Lock the constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the matrix constant buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the matrix constant buffer");
 
   // Get a pointer to the data in the constant buffer.
   dataPtr = (MatrixBufferType*)mappedResource.pData;
@@ -210,7 +202,7 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the light constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the light constant buffer ");
   
   // Get a pointer to the data in the constant buffer.
   dataPtr2 = (LightBufferType*)mappedResource.pData;

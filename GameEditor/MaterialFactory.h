@@ -13,8 +13,9 @@
 #include "BumpSpecMaterialCreator.h"
 #include "BumpSpecMapMaterialCreator.h"
 #include "FileProcessor.h"
-#include "Logger.h"
 #include "TextureFactory.h"
+
+class Logger;
 
 class MaterialFactory : public SharedResourcesFactory<IMaterial>
 {

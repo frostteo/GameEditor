@@ -1,4 +1,5 @@
 #include "PreviewGameObject.h"
+#include "Logger.h"
 
 PreviewGameObject::PreviewGameObject(Camera* camera, StaticGameObject* sgo, MapEditorPreferences* preferences)
 {

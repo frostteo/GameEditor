@@ -3,6 +3,8 @@
 #include <d3d11.h>
 #include <directxmath.h>
 
+class Logger;
+
 using namespace DirectX;
 
 class GridObject

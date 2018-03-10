@@ -2,7 +2,8 @@
 
 #include <vector>
 #include "GridObject.h"
-#include "Logger.h"
+
+class Logger;
 
 class PointLightVolumeGridObject :
   public GridObject

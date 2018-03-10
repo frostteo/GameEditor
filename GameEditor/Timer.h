@@ -1,15 +1,15 @@
 #pragma once
 #include <ctime>
 #include <string>
+#include "Uncopyable.h"
 
-class Timer
+class Timer : private Uncopyable
 {
 private:
-  std::string m_CurrentTime;
   std::string m_timeFormat = "%A, %B %d, %Y %H:%M:%S";
 public:
-  Timer();
-  const std::string &getCurrentTime();
-  void setTimeFormat(std::string &timeFormat);
-  virtual ~Timer();
+  Timer() = default;
+  virtual ~Timer() = default;
+  const std::string getCurrentTime();
+  void setTimeFormat(const std::string &timeFormat);
 };

@@ -4,6 +4,8 @@
 #include "IMaterial.h"
 #include "TextureFactory.h"
 
+class Logger;
+
 class IMaterialCreator
 {
 protected:

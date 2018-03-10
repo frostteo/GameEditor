@@ -2,11 +2,12 @@
 
 #include <algorithm>
 #include "IConverter.h"
-#include "Logger.h"
 #include "BumpMaterial.h"
 #include "ColorMaterial.h"
 #include "SpecularMaterial.h"
 #include "Utils.h"
+
+class Logger;
 
 class MtlMatLibConverter : public IConverter
 {

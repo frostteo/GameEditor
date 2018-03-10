@@ -1,5 +1,6 @@
 
 #include "D3DConfigurer.h"
+#include "Logger.h"
 
 const int D3DConfigurer::SHADOW_MAP_SIZE = 1024.0f;
 

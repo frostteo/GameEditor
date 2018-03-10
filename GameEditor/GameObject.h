@@ -8,6 +8,8 @@
 #include <directxmath.h>
 #include "BoundingBox.h"
 
+class Logger;
+
 using namespace DirectX;
 
 class GameObject

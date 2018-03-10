@@ -77,7 +77,7 @@ QString QtRepository<T>::ToString(JoinOperator joinOperator)
       return RIGHT_JOIN_OP_STR;
       break;
     default:
-      throw std::runtime_error(Logger::get().GetErrorTraceMessage("There is such join operator", __FILE__, __LINE__));
+      RUNTIME_ERROR("There is such join operator");
   }
 }
 
@@ -127,7 +127,7 @@ std::vector<T> QtRepository<T>::GetAll(std::vector<JoinInfo>* joinInfos = nullpt
   query.prepare(selectAllStr);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(query.lastError().text().toStdString());
 
   return QueryToEntities(&query, &joinTableNames);
 }
@@ -189,7 +189,7 @@ std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pa
   }
    
   else {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(countQuery.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(countQuery.lastError().text().toStdString());
   }
 
   pagingInfo.pageCount = ceil((float) allRowCount / (float) parameters.onPage);
@@ -205,8 +205,8 @@ std::vector<T> QtRepository<T>::GetAll(GetParameters& parameters, PagingInfo& pa
   selectQueryString = QString("SELECT %1 FROM %2 %3 WHERE %4 ORDER BY %5 %6 LIMIT %7, %8").arg(selectColumnStr, m_tableMetadata->GetTableName(), allJoinCondition, whereCondition, orderField, orderDirection, QString::number(offset), QString::number(parameters.onPage));
    selectQuery.prepare(selectQueryString);
 
-  if (!selectQuery.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(selectQuery.lastError().text().toStdString(), __FILE__, __LINE__));
+   if (!selectQuery.exec())
+     RUNTIME_ERROR(selectQuery.lastError().text().toStdString());
 
   return QueryToEntities(&selectQuery, &joinTableNames);
 }
@@ -228,7 +228,7 @@ T QtRepository<T>::Get(int id, std::vector<JoinInfo>* joinInfos)
   query.bindValue(":id", id);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(query.lastError().text().toStdString());
 
   return QueryToEntities(&query, &joinTableNames)[0];
 }
@@ -242,7 +242,7 @@ void QtRepository<T>::Delete(int id)
   query.bindValue(":" + m_tableMetadata->GetKeyColumnName(), id);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(query.lastError().text().toStdString());
 }
 
 template <class T>
@@ -260,7 +260,7 @@ void QtRepository<T>::Update(T& entity)
   query.bindValue(":" + m_tableMetadata->GetKeyColumnName(), value);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(query.lastError().text().toStdString());
 }
 
 template <class T>
@@ -281,7 +281,7 @@ int QtRepository<T>::Create(T& entity)
   }
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(query.lastError().text().toStdString());
  
   lastInsertRowIdQuery.prepare(lastInsertRowIdQueryStr);
 

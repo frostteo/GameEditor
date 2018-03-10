@@ -5,10 +5,11 @@
 #include "IMeshConverter.h"
 #include <vector>
 #include <map>
-#include "Logger.h"
 #include "MtlMatLibConverter.h"
 #include "VertexTxt.h"
 #include "BoundingBox.h"
+
+class Logger;
 
 class ObjMeshConverter :
   public IMeshConverter

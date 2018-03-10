@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Logger::get().SetPlatformDependentLoggerPart(new QtLoggerPart());
+    Logger::get().SetLogFileName("gameEditorLog.txt");
+
     try {
       GameEditor w;
 

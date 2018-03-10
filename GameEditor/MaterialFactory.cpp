@@ -1,5 +1,5 @@
 #include "MaterialFactory.h"
-
+#include "Logger.h"
 
 MaterialFactory::MaterialFactory()
 {
@@ -46,7 +46,7 @@ IMaterial* MaterialFactory::GetNewResource(const std::string& filename)
 
   result = FileProcessor::GetFileAsString(m_pathToMaterials + FileProcessor::FILE_SEPARATOR + filename, fileInStr);
   if (!result) {
-    Logger::get().LogMessageWithExceptionDialog(Logger::cantReadFile + filename, __FILE__, __LINE__);
+    CANT_READ_FILE_ERROR(filename);
     //TODO FHolod: подставить здесь стандартный материал
   }
 
@@ -65,5 +65,5 @@ IMaterial* MaterialFactory::GetNewResource(const std::string& filename)
       return materialCreator->Get(fileInStr, filename);
   }
 
-  throw std::runtime_error(Logger::get().GetErrorTraceMessage("there is no material creator for: " + type, __FILE__, __LINE__));
+  RUNTIME_ERROR("there is no material creator for: " + type);
 }

@@ -1,4 +1,5 @@
 #include "GraphicSystem.h"
+#include "Logger.h"
 
 const std::string GraphicSystem::GRID_SHADER_NAME = "grid";
 const std::string GraphicSystem::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";
@@ -24,7 +25,7 @@ void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnab
   m_direct3D = std::unique_ptr<D3DConfigurer>(new D3DConfigurer);
   result = m_direct3D->Initialize(screenWidth, screenHeight, vsyncEnabled, hwnd, fullScreen);
   if (!result)
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant initialize direct 3D", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant initialize direct 3D");
 
   m_pathToModels = pathToModels;
 

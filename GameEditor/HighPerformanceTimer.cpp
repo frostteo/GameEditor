@@ -1,5 +1,5 @@
 #include "HighPerformanceTimer.h"
-
+#include "Logger.h"
 
 HighPerformanceTimer::HighPerformanceTimer()
 {
@@ -17,7 +17,7 @@ void HighPerformanceTimer::Initialize()
   // Check to see if this system supports high performance timers.
   QueryPerformanceFrequency((LARGE_INTEGER*)&m_frequency);
   if (m_frequency == 0)
-    std::runtime_error(Logger::get().GetErrorTraceMessage("system doesn't supports high performance timers.", __FILE__, __LINE__));
+    RUNTIME_ERROR("system doesn't supports high performance timers.");
 
   // Find out how many times the frequency counter ticks every millisecond.
   m_ticksPerMs = (float)(m_frequency / milisecondsInSecond);

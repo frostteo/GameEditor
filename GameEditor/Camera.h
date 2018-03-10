@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "CameraFrustrum.h"
 
+class Logger;
+
 using namespace DirectX;
 
 class Camera : public GameObject

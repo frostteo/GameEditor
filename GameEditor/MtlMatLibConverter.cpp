@@ -1,4 +1,5 @@
 #include "MtlMatLibConverter.h"
+#include "Logger.h"
 
 const std::string MtlMatLibConverter::GE_MAT_EXT = ".mat";
 const std::string MtlMatLibConverter::MTL_MAT_EXT = ".mtl";
@@ -22,7 +23,7 @@ void MtlMatLibConverter::ConvertMtlMaterials(std::string& sourceFileName, bool n
   result = GetFileAsString(sourceFileName, sourceFileContents);
   if (!result)
   {
-    Logger::get().LogMessageWithExceptionDialog(Logger::cantReadFile + sourceFileName, __FILE__, __LINE__);
+    CANT_READ_FILE_ERROR(sourceFileName);
     return;
   }
 

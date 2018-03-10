@@ -1,4 +1,5 @@
 #include "ShaderFactory.h"
+#include "Logger.h"
 
 const std::string ShaderFactory::COLOR_SHADER_NAME = "colorSingleDirLight";
 const std::string ShaderFactory::TEXTURE_SHADER_NAME = "texture";

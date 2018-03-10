@@ -1,7 +1,5 @@
 #pragma once
 
-#define DIRECTINPUT_VERSION 0x0800
-
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
@@ -10,11 +8,13 @@
 #include <list>
 #include <cstring>
 #include <dinput.h>
-#include "Logger.h"
+
 #include "InputListener.h"
 #include "InputState.h"
 #include "windows.h"
 #include "HighPerformanceTimer.h"
+
+class Logger;
 
 class InputSystem
 {

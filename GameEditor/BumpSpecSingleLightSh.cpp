@@ -1,5 +1,5 @@
 #include "BumpSpecSingleLightSh.h"
-
+#include "Logger.h"
 
 BumpSpecSingleLightSh::BumpSpecSingleLightSh()
 {
@@ -78,17 +78,13 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL,
     &m_vertexShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed vertex shader creation " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed vertex shader creation " + vsFilenameStdStr);
 
   // Create the vertex shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL,
     &m_pixelShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed pixel shader creation " + psFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed pixel shader creation " + psFilenameStdStr);
 
   // Create the vertex input layout description.
   // This setup needs to match the VertexType stucture in the ModelClass and in the shader.
@@ -139,7 +135,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
   result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(),
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + vsFilenameStdStr, __FILE__, __LINE__));
+    RUNTIME_ERROR("failed input layout creation " + vsFilenameStdStr);
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
@@ -159,9 +155,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
   // Create the matrix constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input create matrix buffer " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed input create matrix buffer " + vsFilenameStdStr);
 
   // Setup the description of the camera dynamic constant buffer that is in the vertex shader.
   cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -174,7 +168,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
   // Create the camera constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&cameraBufferDesc, NULL, &m_cameraBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the camera constant buffer pointer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the camera constant buffer pointer");
 
   // Create a texture sampler state description.
   samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -194,9 +188,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
   // Create the texture sampler state.
   result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create sample state for texture " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed create sample state for texture " + vsFilenameStdStr);
 
   // Setup the description of the light dynamic constant buffer that is in the pixel shader.
   lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -209,9 +201,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed create buffer for lights " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed create buffer for lights " + vsFilenameStdStr);
 
   // Setup the description of the camera dynamic constant buffer that is in the vertex shader.
   materialBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -223,7 +213,7 @@ void BumpSpecSingleLightSh::InitializeShader(ID3D11Device* device, HWND hwnd, co
 
   result = device->CreateBuffer(&materialBufferDesc, NULL, &m_materialBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant create the material constant buffer pointer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant create the material constant buffer pointer");
 }
 
 void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
@@ -246,7 +236,7 @@ void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceConte
   // Lock the matrix constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the matrix constant buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the matrix constant buffer");
 
   // Get a pointer to the data in the constant buffer.
   matrixBufferPtr = (MatrixBufferType*)mappedResource.pData;
@@ -268,7 +258,7 @@ void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceConte
   // Lock the camera constant buffer so it can be written to.
   result = deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the camera constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the camera constant buffer ");
 
   // Get a pointer to the data in the constant buffer.
   cameraBufferPtr = (CameraBufferType*)mappedResource.pData;
@@ -288,7 +278,7 @@ void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceConte
   // Lock the light constant buffer so it can be written to.
   result = deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the light constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the light constant buffer ");
 
   // Get a pointer to the data in the constant buffer.
   lightBufferPtr = (LightBufferType*)mappedResource.pData;
@@ -310,7 +300,7 @@ void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceConte
   // Lock the material constant buffer so it can be written to.
   result = deviceContext->Map(m_materialBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the material constant buffer ", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the material constant buffer ");
 
   // Get a pointer to the data in the constant buffer.
   materialBufferPtr = (MaterialBufferType*)mappedResource.pData;

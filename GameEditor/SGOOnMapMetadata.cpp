@@ -75,7 +75,7 @@ QVariant SGOOnMapMetadata::GetFieldByName(const SGOOnMapDbInfo& entity, QString 
   if (name == GetKeyColumnName())
     return entity.id;
   
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(("There is no field with name = " + name + " in entity").toStdString(), __FILE__, __LINE__));
+  RUNTIME_ERROR(("There is no field with name = " + name + " in entity").toStdString());
 }
 
 QString SGOOnMapMetadata::GetSelectColumnString(std::vector<QString>* joinTableNames)
@@ -89,7 +89,7 @@ QString SGOOnMapMetadata::GetSelectColumnString(std::vector<QString>* joinTableN
   if (std::find(joinTableNames->begin(), joinTableNames->end(), m_relationships.begin()->first) != joinTableNames->end())
     return m_selectColumnsStr + COMA + m_SGOMetadata.GetSelectColumnString();
 
-  throw std::runtime_error(Logger::get().GetErrorTraceMessage("Incorrect table for relationship", __FILE__, __LINE__));
+  RUNTIME_ERROR("Incorrect table for relationship");
 }
 
 QString SGOOnMapMetadata::GetRelationShipAlias(QString tableName, int columnIndex)

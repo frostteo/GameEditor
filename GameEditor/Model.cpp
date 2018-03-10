@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "BoundingBox.h"
+#include "Logger.h"
 
 Model::Model(
   std::string fileName,
@@ -20,7 +21,7 @@ void Model::LoadData(
   bool result = FileProcessor::GetFileAsString(m_fileName, fileInStr);
 
   if (!result)
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't read file " + m_fileName, __FILE__, __LINE__));
+    RUNTIME_ERROR("Can't read file " + m_fileName);
 
   std::stringstream fileStrStream(fileInStr);
   m_boundingBox.Deserialize(fileStrStream);

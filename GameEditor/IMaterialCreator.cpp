@@ -1,5 +1,5 @@
 #include "IMaterialCreator.h"
-
+#include "Logger.h"
 
 IMaterialCreator::IMaterialCreator()
 {

@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "Logger.h"
 
 Mesh::Mesh(ID3D11Device* device,
   std::string gameObjectName,
@@ -36,7 +37,7 @@ void Mesh::InitializeBuffers(ID3D11Device* device, std::vector<VertexInBuffer>& 
   // Now create the vertex buffer.
   result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create vertex buffer for mesh of " + m_gameObjectName + " with material " + m_materialName, __FILE__, __LINE__));
+    RUNTIME_ERROR("Can't create vertex buffer for mesh of " + m_gameObjectName + " with material " + m_materialName);
 
   // Set up the description of the static index buffer.
   indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -54,7 +55,7 @@ void Mesh::InitializeBuffers(ID3D11Device* device, std::vector<VertexInBuffer>& 
   // Create the index buffer.
   result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create index buffer" + m_gameObjectName + " with material " + m_materialName, __FILE__, __LINE__));
+    RUNTIME_ERROR("Can't create index buffer" + m_gameObjectName + " with material " + m_materialName);
 }
 
 void Mesh::SetMaterial(std::string materialName, MaterialFactory* materialFactory)

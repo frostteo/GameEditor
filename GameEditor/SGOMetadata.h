@@ -2,7 +2,6 @@
 
 #include "DbTableMetadata.h"
 #include "StaticGameObjectDbInfo.h"
-#include "Logger.h"
 
 class SGOMetadata :
   public DbTableMetadata<StaticGameObjectDbInfo>

@@ -1,5 +1,5 @@
 #include "GBuffer.h"
-
+#include "Logger.h"
 
 GBuffer::GBuffer()
 {

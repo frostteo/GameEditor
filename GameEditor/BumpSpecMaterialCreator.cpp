@@ -1,4 +1,5 @@
 #include "BumpSpecMaterialCreator.h"
+#include "Logger.h"
 
 BumpSpecMaterialCreator::~BumpSpecMaterialCreator()
 {
@@ -7,7 +8,7 @@ BumpSpecMaterialCreator::~BumpSpecMaterialCreator()
 IMaterial* BumpSpecMaterialCreator::Get(const std::string& fileInStr, const std::string& fileName)
 {
   if (!m_textureFactory)
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Texture factory was not initialized!", __FILE__, __LINE__));
+    RUNTIME_ERROR("Texture factory was not initialized!");
 
   char input;
   std::string type;
@@ -26,7 +27,7 @@ IMaterial* BumpSpecMaterialCreator::Get(const std::string& fileInStr, const std:
   fileStrStream >> type;
 
   if (type != m_type)
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("It is not material with texture type", __FILE__, __LINE__));
+    RUNTIME_ERROR("It is not material with texture type");
 
   fileStrStream.get(input);
   while (input != ':')

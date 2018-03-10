@@ -2,7 +2,8 @@
 
 #include <d3d11.h>
 #include <directxmath.h>
-#include "Logger.h"
+
+class Logger;
 
 using namespace DirectX;
 

@@ -1,5 +1,6 @@
 #include "ConfigurePLRelPosControl.h"
 #include "ConfigurePLRelativePosWidget.h"
+#include "Logger.h"
 
 ConfigurePLRelPosControl::ConfigurePLRelPosControl(ConfigurePLRelativePosWidget* configurePLRelativePosWidget, Camera* camera, StaticGameObject* pointLightSgo, MapEditorPreferences* preferences)
 {

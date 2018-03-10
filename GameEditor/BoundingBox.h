@@ -4,7 +4,8 @@
 #include <directxmath.h>
 #include <vector>
 #include <iostream>
-#include "Logger.h"
+
+class Logger;
 
 using namespace DirectX;
 

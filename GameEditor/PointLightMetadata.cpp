@@ -1,5 +1,5 @@
 #include "PointLightMetadata.h"
-
+#include "Logger.h"
 
 PointLightMetadata::PointLightMetadata()
 {
@@ -84,7 +84,7 @@ QVariant PointLightMetadata::GetFieldByName(const PointLightDbInfo& entity, QStr
   if (name == GetKeyColumnName())
     return entity.id;
 
-  throw std::runtime_error(Logger::get().GetErrorTraceMessage(("There is no field with name = " + name + " in entity").toStdString(), __FILE__, __LINE__));
+  RUNTIME_ERROR(("There is no field with name = " + name + " in entity").toStdString());
 }
 
 QString PointLightMetadata::GetSelectColumnString(std::vector<QString>* joinTableNames)
@@ -98,7 +98,7 @@ QString PointLightMetadata::GetSelectColumnString(std::vector<QString>* joinTabl
   if (std::find(joinTableNames->begin(), joinTableNames->end(), m_relationships.begin()->first) != joinTableNames->end())
     return m_selectColumnsStr + COMA + m_SGOMetadata.GetSelectColumnString();
 
-  throw std::runtime_error(Logger::get().GetErrorTraceMessage("Incorrect table for relationship", __FILE__, __LINE__));
+  RUNTIME_ERROR("Incorrect table for relationship");
 }
 
 QString PointLightMetadata::GetRelationShipAlias(QString tableName, int columnIndex)

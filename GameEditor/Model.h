@@ -5,6 +5,7 @@
 #include "VertexTxt.h"
 #include "BoundingBox.h"
 
+class Logger;
 class BoundingBox;
 
 class Model

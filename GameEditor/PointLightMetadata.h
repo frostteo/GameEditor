@@ -2,7 +2,6 @@
 
 #include "SGOMetadata.h"
 #include "PointLightDbInfo.h"
-#include "Logger.h"
 
 class PointLightMetadata :
   public DbTableMetadata<PointLightDbInfo>

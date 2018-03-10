@@ -1,5 +1,5 @@
 #include "QtUnitOfWork.h"
-
+#include "Logger.h"
 
 QtUnitOfWork::QtUnitOfWork()
 {
@@ -18,7 +18,7 @@ void QtUnitOfWork::Initialize(std::string hostName, std::string databaseName, st
   m_db.setDatabaseName(databaseName.c_str());
 
   if (!m_db.open())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(m_db.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(m_db.lastError().text().toStdString());
 
   m_staticGORepository = std::unique_ptr<IRepository<StaticGameObjectDbInfo>>(
     DALDependencyResolver::GetStaticGameObjectRepository()->Initialize(connectionName)

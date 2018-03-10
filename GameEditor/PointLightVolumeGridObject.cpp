@@ -1,4 +1,5 @@
 #include "PointLightVolumeGridObject.h"
+#include "Logger.h"
 
 const XMFLOAT3 PointLightVolumeGridObject::LIGHT_COLOR = XMFLOAT3(1.0f, 0.5f, 0.0f);
 
@@ -106,7 +107,7 @@ void PointLightVolumeGridObject::InitializeBuffers(ID3D11Device* device)
   // Now create the vertex buffer.
   result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create vertex buffer for point light volume grid object", __FILE__, __LINE__));
+    RUNTIME_ERROR("Can't create vertex buffer for point light volume grid object");
 
   // Set up the description of the static index buffer.
   indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -124,7 +125,7 @@ void PointLightVolumeGridObject::InitializeBuffers(ID3D11Device* device)
   // Create the index buffer.
   result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("Can't create index buffer for point light volume grid object", __FILE__, __LINE__));
+    RUNTIME_ERROR("Can't create index buffer for point light volume grid object");
 }
 
 void PointLightVolumeGridObject::PrepareToRender(ID3D11DeviceContext* deviceContext)

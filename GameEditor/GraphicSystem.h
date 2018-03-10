@@ -5,7 +5,6 @@
 #include <map>
 #include <stdexcept>
 #include "D3DConfigurer.h"
-#include "Logger.h"
 #include "Camera.h"
 #include "LightininigSystem.h"
 #include "ShaderConfiguration.h"
@@ -16,6 +15,8 @@
 #include "GridObject.h"
 #include "StaticGameObject.h"
 #include "PointLightDefferedParameters.h"
+
+class Logger;
 
 class GraphicSystem
 {

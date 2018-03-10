@@ -4,9 +4,10 @@
 #include <string>
 #include <d3d11.h>
 #include <directxmath.h>
-#include "Logger.h"
 #include "IMaterial.h"
 #include "MaterialFactory.h"
+
+class Logger;
 
 using namespace DirectX;
 

@@ -3,6 +3,8 @@
 #include "TextureShader.h"
 #include "BumpMaterial.h"
 
+class Logger;
+
 class BumpDefferedShader :
   public TextureShader
 {

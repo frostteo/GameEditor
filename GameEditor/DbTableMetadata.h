@@ -90,7 +90,7 @@ QString DbTableMetadata<T>::JoinOpToString(JoinOperator joinOperator)
     return RIGHT_JOIN_OP_STR;
     break;
   default:
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("There is such join operator", __FILE__, __LINE__));
+    RUNTIME_ERROR("There is such join operator");
   }
 }
 

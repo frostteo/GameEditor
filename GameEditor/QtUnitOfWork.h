@@ -3,7 +3,6 @@
 #include <QSqlDatabase>
 #include <memory>
 #include "IUnitOfWork.h"
-#include "Logger.h"
 #include "QtUtils.h"
 #include "IRepository.h"
 #include "StaticGameObjectDbInfo.h"
@@ -12,6 +11,8 @@
 #include "SGOOnMapRepository.h"
 #include "PointLightRepository.h"
 #include "PointLightOnMapRepository.h"
+
+class Logger;
 
 class QtUnitOfWork :
   public IUnitOfWork

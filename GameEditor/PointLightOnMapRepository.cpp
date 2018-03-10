@@ -38,7 +38,7 @@ IRepository<PointLightOnMapDbInfo>* PointLightOnMapRepository::Initialize(std::s
   query.prepare(createTableString);
 
   if (!query.exec())
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage(query.lastError().text().toStdString(), __FILE__, __LINE__));
+    RUNTIME_ERROR(query.lastError().text().toStdString());
 
   return this;
 }

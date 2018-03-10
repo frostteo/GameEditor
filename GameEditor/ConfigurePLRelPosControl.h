@@ -2,11 +2,11 @@
 
 #include "InputListener.h"
 #include "Camera.h"
-#include "Logger.h"
 #include "StaticGameObject.h"
 #include "MapEditorPreferences.h"
 #include "GEMath.h"
 
+class Logger;
 class ConfigurePLRelativePosWidget;
 
 class ConfigurePLRelPosControl :

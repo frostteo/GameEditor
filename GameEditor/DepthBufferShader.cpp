@@ -1,5 +1,5 @@
 #include "DepthBufferShader.h"
-
+#include "Logger.h"
 
 DepthBufferShader::DepthBufferShader()
 {
@@ -41,9 +41,7 @@ void DepthBufferShader::InitializeShader(ID3D11Device* device, HWND hwnd, const 
   // Create the vertex shader from the buffer.
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed vertex shader creation " + vsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed vertex shader creation " + vsFilenameStdStr);
 
   // Create the vertex input layout description.
   // This setup needs to match the VertexType stucture in the ModelClass and in the shader.
@@ -62,9 +60,7 @@ void DepthBufferShader::InitializeShader(ID3D11Device* device, HWND hwnd, const 
   result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(),
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
-  {
     RUNTIME_ERROR("failed input layout creation " + vsFilenameStdStr);
-  }
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
@@ -81,9 +77,7 @@ void DepthBufferShader::InitializeShader(ID3D11Device* device, HWND hwnd, const 
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed input create matrix buffer " + vsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed input create matrix buffer " + vsFilenameStdStr);
 }
 
 void DepthBufferShader::ShutdownShader()
@@ -113,7 +107,7 @@ void DepthBufferShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, 
   // Lock the constant buffer so it can be written to.
   result = deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
   if (FAILED(result))
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("cant lock the matrix constant buffer", __FILE__, __LINE__));
+    RUNTIME_ERROR("cant lock the matrix constant buffer");
 
   // Get a pointer to the data in the constant buffer.
   dataPtr = (MatrixBufferType*)mappedResource.pData;

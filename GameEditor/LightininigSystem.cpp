@@ -1,5 +1,5 @@
 #include "LightininigSystem.h"
-
+#include "Logger.h"
 
 LightininigSystem::LightininigSystem()
 {

@@ -7,6 +7,8 @@
 #include "AxisAlignedBBHelper.h"
 #include "CameraFrustrum.h"
 
+class Logger;
+
 class OctoTree
 {
 protected:

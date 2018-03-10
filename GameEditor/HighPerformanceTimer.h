@@ -1,8 +1,9 @@
 #pragma once
 
 #include <windows.h>
-#include "Logger.h"
 #include "Singleton.h"
+
+class Logger;
 
 class HighPerformanceTimer : public Singleton<HighPerformanceTimer>
 {

@@ -1,5 +1,5 @@
 #include "TextureDefferedShader.h"
-
+#include "Logger.h"
 
 TextureDefferedShader::TextureDefferedShader()
 {
@@ -48,14 +48,14 @@ void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, co
   result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed vertex shader creation " + vsFilenameStdStr);
+    RUNTIME_ERROR("failed vertex shader creation " + vsFilenameStdStr);
   }
 
   // Create the pixel shader from the buffer.
   result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &m_pixelShader);
   if (FAILED(result))
   {
-    throw std::runtime_error("failed pixel shader creation " + psFilenameStdStr);
+    RUNTIME_ERROR("failed pixel shader creation " + psFilenameStdStr);
   }
 
   // Create the vertex input layout description.
@@ -91,9 +91,7 @@ void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, co
   result = device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(),
     vertexShaderBuffer->GetBufferSize(), &m_layout);
   if (FAILED(result))
-  {
-    throw std::runtime_error(Logger::get().GetErrorTraceMessage("failed input layout creation " + vsFilenameStdStr, __FILE__, __LINE__));
-  }
+    RUNTIME_ERROR("failed input layout creation " + vsFilenameStdStr);
 
   // Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
   vertexShaderBuffer->Release();
@@ -113,9 +111,7 @@ void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, co
   // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
   result = device->CreateBuffer(&matrixBufferDesc, NULL, &m_matrixBuffer);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed input create matrix buffer " + vsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed input create matrix buffer " + vsFilenameStdStr);
 
   // Create a texture sampler state description.
   samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
@@ -135,7 +131,5 @@ void TextureDefferedShader::InitializeShader(ID3D11Device* device, HWND hwnd, co
   // Create the texture sampler state.
   result = device->CreateSamplerState(&samplerDesc, &m_sampleState);
   if (FAILED(result))
-  {
-    throw std::runtime_error("failed create sample state for texture " + vsFilenameStdStr);
-  }
+    RUNTIME_ERROR("failed create sample state for texture " + vsFilenameStdStr);
 }
