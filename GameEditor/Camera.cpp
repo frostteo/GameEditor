@@ -2,11 +2,6 @@
 #include "Camera.h"
 #include "Logger.h"
 
-Camera::Camera()
-{
- 
-}
-
 void Camera::Initialize(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView)
 {
   m_screenWidth = screenWidth;
@@ -19,43 +14,40 @@ void Camera::Initialize(float screenWidth, float screenHeight, float screenNear,
   m_projectionMatrix = XMMatrixPerspectiveFovLH(m_fieldOfView, screenAspect, screenNear, screenDepth);
   m_orthoMatrix = XMMatrixOrthographicLH(screenWidth, screenHeight, screenNear, screenDepth);
 }
-Camera::~Camera()
-{
-}
 
-void Camera::GetViewMatrix(XMMATRIX& viewMatrix)
+void Camera::GetViewMatrix(XMMATRIX& viewMatrix) const
 {
   GetWorldMatrix(viewMatrix);
   viewMatrix = XMMatrixInverse(nullptr, viewMatrix);
 }
 
-void Camera::GetOrthoMatrix(XMMATRIX& orthoMatrix)
+void Camera::GetOrthoMatrix(XMMATRIX& orthoMatrix) const
 {
   orthoMatrix = m_orthoMatrix;
 }
 
-void Camera::GetProjectionMatrix(XMMATRIX& projectionMatrix)
+void Camera::GetProjectionMatrix(XMMATRIX& projectionMatrix) const
 {
   projectionMatrix = m_projectionMatrix;
 }
 
-CameraFrustrum* Camera::GetCameraFrustrum()
+const CameraFrustrum* Camera::GetCameraFrustrum()
 {
   if (this->m_needRebuildFrustrum){
-    m_cameraFrustrum.ConstructFrustrum(this);
+    m_cameraFrustrum.ConstructFrustrum(*this);
     m_needRebuildFrustrum = false;
   }
    
   return &m_cameraFrustrum;
 }
 
-void Camera::RebuildWorldMatrix()
+void Camera::RebuildWorldMatrix() const
 {
   GameObject::RebuildWorldMatrix();
   m_needRebuildFrustrum = true;
 }
 
-void Camera::RebuildBBInWorldCoord()
+void Camera::RebuildBBInWorldCoord() const
 {
   RUNTIME_ERROR("There is no bounding box in camera object");
 }

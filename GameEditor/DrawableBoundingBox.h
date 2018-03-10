@@ -1,7 +1,12 @@
 #pragma once
 
-#include "BoundingBox.h"
+#include <DirectXMath.h>
+#include <vector>
 #include "GridObject.h"
+
+class BoundingBox;
+
+using namespace DirectX;
 
 class DrawableBoundingBox : public GridObject
 {
@@ -26,7 +31,7 @@ public:
   DrawableBoundingBox();
   virtual ~DrawableBoundingBox();
 
-  void Initialize(BoundingBox* boundingBox);
+  void Initialize(const BoundingBox& boundingBox);
   void InitializeBuffers(ID3D11Device* device, bool isFrozen = false);
   void ShutdownBuffers();
   virtual void PrepareToRender(ID3D11DeviceContext* deviceContext) override;

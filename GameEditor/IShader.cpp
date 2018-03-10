@@ -1,5 +1,6 @@
 #include "IShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
 
 IShader::IShader()
 {

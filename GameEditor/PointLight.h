@@ -26,7 +26,7 @@ protected:
   int m_shadowDirectionsArr[6];
   int m_shadowDirectionsArrSize;
 
-  XMMATRIX m_20percentLightVolumeMatrix;
+  mutable XMMATRIX m_20percentLightVolumeMatrix;
 
   ID3D11Texture2D* m_pointLightShadowDepthBuffer;
   ID3D11DepthStencilView* m_pointLightShadowDSV;
@@ -35,8 +35,8 @@ protected:
   void RebuildPerspectiveValues();
   void RebuildCubeViewProjection(XMFLOAT3 worldPosition);
   void SetShadowDirections(PointLightShadowDirection shadowDirections);
-  virtual void RebuildBBInWorldCoord() override;
-  virtual void RebuildWorldMatrix() override;
+  virtual void RebuildBBInWorldCoord() const override;
+  virtual void RebuildWorldMatrix() const override;
 public:
   bool castShadows = false;
 public:
@@ -63,6 +63,6 @@ public:
   const int GetShaderShadowDirectionsArrSize() const;
 
   void Get20PercentLightVolumeMatrix(XMMATRIX& lightVolume);
-  BoundingBox* GetAABBBoundingBox();
+  const BoundingBox* GetAABBBoundingBox() const;
 };
 

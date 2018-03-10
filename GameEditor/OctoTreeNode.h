@@ -2,7 +2,6 @@
 
 #include <map>
 #include "StaticGameObject.h"
-#include "AxisAlignedBBHelper.h"
 
 class OctoTree;
 

@@ -1,6 +1,7 @@
 #pragma once
+
 #include "IShader.h"
-#include "BoundingBox.h"
+
 class GridShader :
   public IShader
 {
@@ -16,6 +17,6 @@ public:
   GridShader();
   virtual ~GridShader();
   virtual void Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-    XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition) override;
+    XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition) override;
 };
 

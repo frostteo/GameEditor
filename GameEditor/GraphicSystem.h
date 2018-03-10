@@ -5,8 +5,6 @@
 #include <map>
 #include <stdexcept>
 #include "D3DConfigurer.h"
-#include "Camera.h"
-#include "LightininigSystem.h"
 #include "ShaderConfiguration.h"
 #include "ModelFactory.h"
 #include "MaterialFactory.h"
@@ -17,6 +15,8 @@
 #include "PointLightDefferedParameters.h"
 
 class Logger;
+class LightininigSystem;
+class Camera;
 
 class GraphicSystem
 {

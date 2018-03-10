@@ -1,5 +1,6 @@
 #include "BumpSingleDirLightShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
 
 BumpSingleDirLightShader::BumpSingleDirLightShader()
 {
@@ -226,7 +227,7 @@ void BumpSingleDirLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
 }
 
 void BumpSingleDirLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   BumpMaterial* bumpMaterial = (BumpMaterial*)material;
 

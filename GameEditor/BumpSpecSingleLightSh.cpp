@@ -1,5 +1,6 @@
 #include "BumpSpecSingleLightSh.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
 
 BumpSpecSingleLightSh::BumpSpecSingleLightSh()
 {
@@ -321,7 +322,7 @@ void BumpSpecSingleLightSh::SetShaderParameters(ID3D11DeviceContext* deviceConte
 }
 
 void BumpSpecSingleLightSh::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   BumpSpecMaterial* bumpMaterial = (BumpSpecMaterial*)material;
 

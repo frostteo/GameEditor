@@ -1,4 +1,6 @@
 #include "QtDirectXWidget.h"
+#include "LightininigSystem.h"
+#include "Camera.h"
 
 QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QWidget(parent)

@@ -1,5 +1,6 @@
 #include "MapEditorControl.h"
 #include "Logger.h"
+#include "Camera.h"
 
 MapEditorControl::MapEditorControl(MapEditorViewModel* mapEditorViewModel, std::vector<StaticGameObject*>* visibleSgos, Camera* camera)
 {

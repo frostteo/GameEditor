@@ -1,5 +1,7 @@
 #include "PLShadowGenerationShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
+#include "PointLight.h"
 
 PLShadowGenerationShader::PLShadowGenerationShader()
 {
@@ -167,7 +169,7 @@ void PLShadowGenerationShader::EnableShader(ID3D11DeviceContext* deviceContext)
   deviceContext->PSSetShader(nullptr, nullptr, 0);
 }
 
-void PLShadowGenerationShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+void PLShadowGenerationShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   auto pointLight = lightining->GetPointLightToRender();
   SetShaderParameters(deviceContext, worldMatrix, pointLight->GetCubeViewProjection(), pointLight->GetShaderShadowDirectionsArr(), pointLight->GetShaderShadowDirectionsArrSize());

@@ -1,5 +1,7 @@
 #include "PointLightTesselatedShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
+#include "PointLight.h"
 
 PointLightTesselatedShader::PointLightTesselatedShader()
 {
@@ -205,7 +207,7 @@ void PointLightTesselatedShader::SetShaderParameters(ID3D11DeviceContext* device
   deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pointLightBuffer);
 }
 
-void PointLightTesselatedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+void PointLightTesselatedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   XMMATRIX pointLightWorldMatrix;
   XMMATRIX pointLightProjection;

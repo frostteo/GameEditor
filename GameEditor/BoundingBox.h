@@ -27,23 +27,23 @@ public:
   /*
   * Serialize with same algorithm as class member Serialize function, deserialize can restore object
   */
-  static void SerializeStatic(std::ostream& ostream, float& minX, float& minY, float& minZ, float& maxX, float& maxY, float& maxZ);
+  static void SerializeStatic(std::ostream& ostream, const float& minX, const float& minY, const float& minZ, const float& maxX, const float& maxY, const float& maxZ);
 public:
-  BoundingBox();
+  BoundingBox() = default;
 
   /*
   * Serialize in format: minX, minY, minZ, maxX, maxY, maxZ
   */
-  void Serialize(std::ostream& ostream);
+  void Serialize(std::ostream& ostream) const;
   void Deserialize(std::istream& istream);
   void Initialize(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
-  void Initialize(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, XMMATRIX worldMatrix);
-  virtual ~BoundingBox();
+  void Initialize(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, const XMMATRIX& worldMatrix);
+  virtual ~BoundingBox() = default;
  
-  XMFLOAT3 GetMinPoint();
-  XMFLOAT3 GetMaxPoint();
-  XMFLOAT3 GetVertex(int index) { return m_vertices[index]; }
+  const XMFLOAT3 GetMinPoint() const;
+  const XMFLOAT3 GetMaxPoint() const;
+  const XMFLOAT3 GetVertex(int index) const { return m_vertices[index]; }
 
-  std::vector<XMFLOAT3>* GetVertices() { return &m_vertices; }
+  const std::vector<XMFLOAT3>* GetVertices() const { return &m_vertices; }
 };
 

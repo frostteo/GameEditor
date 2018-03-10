@@ -11,7 +11,9 @@
 #include "SGOOnMapTM.h"
 #include "IPointLightOnMapService.h"
 #include "PointLight.h"
-#include "Camera.h"
+
+class Camera;
+class LightininigSystem;
 
 class MapEditorViewModel : public QObject
 {
@@ -51,7 +53,7 @@ public:
 
   void Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences, D3DConfigurer* d3dConfigurer);
 
-  void GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
+  void GetVisibleSgo(const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
   void GetVisiblePointLights(Camera* camera, LightininigSystem* lightiningSystem);
 
   void DeleteUnusedNodesInOctTree() { m_octoTree.DeleteUnusedNodes(); }

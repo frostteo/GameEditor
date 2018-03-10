@@ -2,30 +2,6 @@
 #include "GameObject.h"
 #include "Logger.h"
 
-GameObject::GameObject()
-{
-  m_positionX = 0;
-  m_positionY = 0;
-  m_positionZ = 0;
-
-  m_rotationX = 0;
-  m_rotationY = 0;
-  m_rotationZ = 0;
- 
-  m_needRebuildTranslationMatrix = true;
-  m_needRebuildRotationMatrix = true;
-  m_needRebuildScaleMatrix = true;
-
-  m_parent = nullptr;
-
-  m_worldPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
-}
-
-
-GameObject::~GameObject()
-{
-}
-
 void GameObject::SetPosition(float x, float y, float z)
 {
   m_positionX = x;
@@ -42,12 +18,18 @@ void GameObject::SetRotation(float x, float y, float z)
   m_needRebuildRotationMatrix = true;
 }
 
-XMFLOAT3 GameObject::GetPosition()
+void GameObject::SetScale(float scale)
+{ 
+  m_scale = scale;
+  m_needRebuildScaleMatrix = true; 
+}
+
+const XMFLOAT3 GameObject::GetPosition() const
 {
   return XMFLOAT3(m_positionX, m_positionY, m_positionZ);
 }
 
-XMFLOAT3 GameObject::GetRotation()
+const XMFLOAT3 GameObject::GetRotation() const
 {
   return XMFLOAT3(m_rotationX, m_rotationY, m_rotationZ);
 }
@@ -73,7 +55,7 @@ void GameObject::ChangeZRotation(float angle)
   m_needRebuildRotationMatrix = true;
 }
 
-void GameObject::RebuildWorldMatrix()
+void GameObject::RebuildWorldMatrix() const
 {
   m_needRebuildBBInWorldCoords = true;
 
@@ -102,7 +84,7 @@ void GameObject::RebuildWorldMatrix()
   }
 }
 
-void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
+void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix) const
 {
   if (NeedRebuildWorldMatrix())
   {
@@ -121,7 +103,7 @@ void GameObject::GetWorldMatrix(XMMATRIX& worldMatrix)
   }
 }
 
-XMFLOAT3 GameObject::GetWorldPosition()
+const XMFLOAT3 GameObject::GetWorldPosition() const
 {
   if (NeedRebuildWorldMatrix())
   {
@@ -184,7 +166,7 @@ void GameObject::SetWorldMatrix(XMMATRIX worldMatrix)
   m_needRebuildRotationMatrix = true;
 }
 
-XMVECTOR GameObject::GetRight()
+const XMVECTOR GameObject::GetRight() const
 {
   XMFLOAT4X4 worldReadableMatrix;
 
@@ -203,7 +185,7 @@ XMVECTOR GameObject::GetRight()
   return rightVector;
 }
 
-XMVECTOR GameObject::GetUp()
+const XMVECTOR GameObject::GetUp() const
 {
   XMFLOAT4X4 worldReadableMatrix;
 
@@ -222,7 +204,7 @@ XMVECTOR GameObject::GetUp()
   return upVector;
 }
 
-XMVECTOR GameObject::GetForward()
+const XMVECTOR GameObject::GetForward() const
 {
   XMFLOAT4X4 worldReadableMatrix;
 
@@ -283,7 +265,7 @@ void GameObject::GetParentMatrix(XMMATRIX& parentMatrix) const
   }
 }
 
-BoundingBox* GameObject::GetBBInWorldCoords()
+const BoundingBox* GameObject::GetBBInWorldCoords() const
 {
   if (this->NeedRebuildWorldMatrix() || m_needRebuildBBInWorldCoords)
   {

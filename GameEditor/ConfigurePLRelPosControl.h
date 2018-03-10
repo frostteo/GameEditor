@@ -1,13 +1,13 @@
 #pragma once
 
 #include "InputListener.h"
-#include "Camera.h"
-#include "StaticGameObject.h"
 #include "MapEditorPreferences.h"
 #include "GEMath.h"
 
-class Logger;
 class ConfigurePLRelativePosWidget;
+class Logger;
+class Camera;
+class StaticGameObject;
 
 class ConfigurePLRelPosControl :
   public InputListener

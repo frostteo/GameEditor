@@ -1,5 +1,6 @@
 #include "DrawableBoundingBox.h"
 #include "Logger.h"
+#include "BoundingBox.h"
 
 const XMFLOAT3 DrawableBoundingBox::UNFROZEN_COLOR_FIRST = XMFLOAT3(1.0f, 0.0f, 0.0f);
 const XMFLOAT3 DrawableBoundingBox::UNFROZEN_COLOR_SECOND = XMFLOAT3(0.0f, 1.0f, 0.0f);
@@ -157,7 +158,7 @@ void DrawableBoundingBox::PrepareToRender(ID3D11DeviceContext* deviceContext)
   deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
 
-void DrawableBoundingBox::Initialize(BoundingBox* boundingBox)
+void DrawableBoundingBox::Initialize(const BoundingBox& boundingBox)
 {
-  m_vertices = std::vector<XMFLOAT3>(*boundingBox->GetVertices());
+  m_vertices = std::vector<XMFLOAT3>(*boundingBox.GetVertices());
 }

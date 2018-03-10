@@ -1,5 +1,7 @@
 #include "OctoTree.h"
 #include "Logger.h"
+#include "AxisAlignedBBHelper.h"
+#include "CameraFrustrum.h"
 
 const float OctoTree::MIN_HALF_LENGTH = 64.0f;
 
@@ -106,7 +108,7 @@ OctoTreeNode* OctoTree::GetNewNode(std::map<int, StaticGameObject*>* objectsMap,
 
   for (auto& sgo : (*objectsMap))
   {
-    if (AxisAlignedBBHelper::IsCompletelyInside(&(newNode->boundingBox), sgo.second->GetBBInWorldCoords())){
+    if (AxisAlignedBBHelper::IsCompletelyInside(newNode->boundingBox, *sgo.second->GetBBInWorldCoords())){
       newNode->staticGameObjects[sgo.first] = sgo.second;
       idsToErase.push_back(sgo.first);
     }
@@ -213,7 +215,7 @@ void OctoTree::AddSgoHelper(OctoTreeNode* node, int id, StaticGameObject* sgo)
   for (int i = 0; i < OctoTreeNode::CHILD_NODES_COUNT; ++i)
   {
     if (node->childNodes[i]) {
-      if (AxisAlignedBBHelper::IsCompletelyInside(&(node->childNodes[i]->boundingBox), sgo->GetBBInWorldCoords()))
+      if (AxisAlignedBBHelper::IsCompletelyInside(node->childNodes[i]->boundingBox, *sgo->GetBBInWorldCoords()))
       {
         AddSgoHelper(node->childNodes[i], id, sgo);
         isCompletyInsideInChilds = true;
@@ -268,7 +270,7 @@ void OctoTree::DeleteSgoHelper(OctoTreeNode* node, int id, StaticGameObject* sgo
   {
     XMFLOAT3 centerOfObject = sgo->GetPosition();
 
-    if (node->childNodes[i] && AxisAlignedBBHelper::PointContains(&(node->childNodes[i]->boundingBox), centerOfObject))
+    if (node->childNodes[i] && AxisAlignedBBHelper::PointContains(node->childNodes[i]->boundingBox, centerOfObject))
     {
       DeleteSgoHelper(node->childNodes[i], id, sgo);
       break;
@@ -296,7 +298,7 @@ void OctoTree::ObjectChangedPosition(int id, StaticGameObject* sgo)
 
 void OctoTree::MoveObjectToSmallerOcts(OctoTreeNode* node, int id, StaticGameObject* sgo)
 {
-  if (AxisAlignedBBHelper::IsCompletelyInside(&(node->boundingBox), sgo->GetBBInWorldCoords()))
+  if (AxisAlignedBBHelper::IsCompletelyInside(node->boundingBox, *sgo->GetBBInWorldCoords()))
   {
     node->staticGameObjects[id] = sgo;
     node->countOfObjectsInBranch += 1;
@@ -328,7 +330,7 @@ void OctoTree::ObjectChangedPositionHelper(OctoTreeNode* node, int id, StaticGam
 {
   if (node->staticGameObjects.count(id) > 0)
   {
-    if (AxisAlignedBBHelper::IsCompletelyInside(&(node->boundingBox), sgo->GetBBInWorldCoords())) // объект находится в данном узле
+    if (AxisAlignedBBHelper::IsCompletelyInside(node->boundingBox, *sgo->GetBBInWorldCoords())) // объект находится в данном узле
     {
       float childsHalfLength = node->halfLength / 2;
 
@@ -376,13 +378,13 @@ void OctoTree::ObjectChangedPositionHelper(OctoTreeNode* node, int id, StaticGam
 
 bool OctoTree::CanOctTreeContainObject(StaticGameObject* sgo)
 {
-  if (AxisAlignedBBHelper::IsCompletelyInside(&(m_root->boundingBox), sgo->GetBBInWorldCoords()))
+  if (AxisAlignedBBHelper::IsCompletelyInside(m_root->boundingBox, *sgo->GetBBInWorldCoords()))
     return true;
 
   return false;
 }
 
-void OctoTree::GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
+void OctoTree::GetVisibleSgo(const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
 {
   if (!m_root)
     RUNTIME_ERROR("It is impossible to get visible sgos, because oct tree has not been initialized yet");
@@ -390,9 +392,9 @@ void OctoTree::GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vector<StaticG
   GetVisibleSgoHelper(m_root, cameraFrustrum, sgosToRender);
 }
 
-void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
+void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
 {
-  if (cameraFrustrum->IntersectsAABB(&node->boundingBox))
+  if (cameraFrustrum.IntersectsAABB(node->boundingBox))
   {
     for (auto& sgo : node->staticGameObjects)
     {
@@ -401,10 +403,10 @@ void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, CameraFrustrum* cameraFru
 
       if (isAABB)
       {
-        if (cameraFrustrum->IntersectsAABB(sgo.second->GetBBInWorldCoords()))
+        if (cameraFrustrum.IntersectsAABB(*sgo.second->GetBBInWorldCoords()))
           sgosToRender->push_back(sgo.second);
       }
-      else if (cameraFrustrum->IntersectsBB(sgo.second->GetBBInWorldCoords()))
+      else if (cameraFrustrum.IntersectsBB(*sgo.second->GetBBInWorldCoords()))
       {
         sgosToRender->push_back(sgo.second);
       }

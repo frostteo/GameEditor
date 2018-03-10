@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QMessageBox>
 #include "ui_QtGameFrameworkTest.h"
-#include "Camera.h"
+
 #include "D3DConfigurer.h"
 #include "TextureShader.h"
 #include "ModelFactory.h"
@@ -11,7 +11,6 @@
 #include "ShaderConfiguration.h"
 #include "ShaderFactory.h"
 #include "MaterialFactory.h"
-#include "LightininigSystem.h"
 #include "GraphicSystem.h"
 #include "InputSystem.h"
 #include "PreviewGameObject.h"
@@ -19,6 +18,9 @@
 #include "ObjMeshConverter.h"
 #include "MtlMatLibConverter.h"
 #include "StaticGameObject.h"
+
+class LightininigSystem;
+class Camera;
 
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;

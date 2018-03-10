@@ -235,7 +235,7 @@ XMFLOAT2 PointLight::GetLightPerspectiveValues()
   return m_lightPerspectiveValues;
 }
 
-void PointLight::RebuildBBInWorldCoord()
+void PointLight::RebuildBBInWorldCoord() const
 {
   float radius50Percent = m_radius * 0.5;
   XMFLOAT3 worldPosition = this->GetWorldPosition();
@@ -250,12 +250,12 @@ void PointLight::RebuildBBInWorldCoord()
     );
 }
 
-BoundingBox* PointLight::GetAABBBoundingBox()
+const BoundingBox* PointLight::GetAABBBoundingBox() const
 {
   return this->GetBBInWorldCoords();
 }
 
-void PointLight::RebuildWorldMatrix()
+void PointLight::RebuildWorldMatrix() const
 {
   GameObject::RebuildWorldMatrix();
 

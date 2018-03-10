@@ -7,10 +7,11 @@
 #include <string>
 #include <memory>
 #include "InputSystem.h"
-#include "Camera.h"
 #include "ShaderConfiguration.h"
-#include "LightininigSystem.h"
 #include "GraphicSystem.h"
+
+class LightininigSystem;
+class Camera;
 
 class QtDirectXWidget : public QWidget, public Ui::QtDirectXWidget
 {

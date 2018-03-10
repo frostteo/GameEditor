@@ -1,23 +1,24 @@
 #pragma once
 
-#include "BoundingBox.h"
+#include <directxmath.h>
 
 class Camera;
+class BoundingBox;
 
-class CameraFrustrum
+using namespace DirectX;
+
+class CameraFrustrum final
 {
 protected:
   static const int COUNT_OF_PLANES = 6;
 
   XMVECTOR m_frustrumPlanes[COUNT_OF_PLANES];
 public:
-  XMFLOAT3 cameraCenter;
-
-  CameraFrustrum();
-  void ConstructFrustrum(Camera* camera);
-  bool CheckPoint(XMVECTOR point);
-  bool IntersectsBB(BoundingBox* boundingBox);
-  bool IntersectsAABB(BoundingBox* boundingBox);
-  virtual ~CameraFrustrum();
+  CameraFrustrum() = default;
+  void ConstructFrustrum(const Camera& camera);
+  bool CheckPoint(const XMVECTOR& point) const;
+  bool IntersectsBB(const BoundingBox& boundingBox) const;
+  bool IntersectsAABB(const BoundingBox& boundingBox) const;
+  ~CameraFrustrum() = default;
 };
 

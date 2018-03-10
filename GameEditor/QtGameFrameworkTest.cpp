@@ -1,4 +1,6 @@
 #include "QtGameFrameworkTest.h"
+#include "LightininigSystem.h"
+#include "Camera.h"
 
 QtGameFrameworkTest::QtGameFrameworkTest(QWidget *parent)
   : QWidget(parent)

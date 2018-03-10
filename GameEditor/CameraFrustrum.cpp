@@ -1,26 +1,16 @@
 #include "CameraFrustrum.h"
 #include "Camera.h"
+#include "BoundingBox.h"
 
-CameraFrustrum::CameraFrustrum()
-{
-}
-
-
-CameraFrustrum::~CameraFrustrum()
-{
-}
-
-void CameraFrustrum::ConstructFrustrum(Camera* camera)
+void CameraFrustrum::ConstructFrustrum(const Camera& camera)
 {
   XMMATRIX projectionMatrix;
   XMMATRIX viewMatrix;
   XMMATRIX viewProjMultiply;
   XMFLOAT4X4 viewProjMultiplyReadable;
 
-  cameraCenter = camera->GetPosition();
-
-  camera->GetViewMatrix(viewMatrix);
-  camera->GetProjectionMatrix(projectionMatrix);
+  camera.GetViewMatrix(viewMatrix);
+  camera.GetProjectionMatrix(projectionMatrix);
   viewProjMultiply = XMMatrixMultiply(viewMatrix, projectionMatrix);
 
   XMStoreFloat4x4(&viewProjMultiplyReadable, viewProjMultiply);
@@ -78,7 +68,7 @@ void CameraFrustrum::ConstructFrustrum(Camera* camera)
     m_frustrumPlanes[i] = XMPlaneNormalize(m_frustrumPlanes[i]);
 }
 
-bool CameraFrustrum::CheckPoint(XMVECTOR point)
+bool CameraFrustrum::CheckPoint(const XMVECTOR& point) const
 {
   for (int i = 0; i < CameraFrustrum::COUNT_OF_PLANES; ++i)
   {
@@ -89,49 +79,49 @@ bool CameraFrustrum::CheckPoint(XMVECTOR point)
   return true;
 }
 
-bool CameraFrustrum::IntersectsBB(BoundingBox* boundingBox)
+bool CameraFrustrum::IntersectsBB(const BoundingBox& boundingBox) const
 {
   XMFLOAT3 point;
   XMVECTOR pointXm;
 
   for (int i = 0; i < COUNT_OF_PLANES; ++i)
   {
-    point = boundingBox->GetVertex(0);
+    point = boundingBox.GetVertex(0);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
 
-    point = boundingBox->GetVertex(1);
+    point = boundingBox.GetVertex(1);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
 
-    point = boundingBox->GetVertex(2);
+    point = boundingBox.GetVertex(2);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
 
-    point = boundingBox->GetVertex(3);
+    point = boundingBox.GetVertex(3);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
 
-    point = boundingBox->GetVertex(4);
+    point = boundingBox.GetVertex(4);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
 
-    point = boundingBox->GetVertex(5);
+    point = boundingBox.GetVertex(5);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
 
-    point = boundingBox->GetVertex(6);
+    point = boundingBox.GetVertex(6);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
 
-    point = boundingBox->GetVertex(7);
+    point = boundingBox.GetVertex(7);
     pointXm = XMLoadFloat3(&point);
     if (XMVectorGetX(XMPlaneDotCoord(m_frustrumPlanes[i], pointXm)) > 0.0f)
       continue;
@@ -141,10 +131,10 @@ bool CameraFrustrum::IntersectsBB(BoundingBox* boundingBox)
   return true;
 }
 
-bool CameraFrustrum::IntersectsAABB(BoundingBox* boundingBox)
+bool CameraFrustrum::IntersectsAABB(const BoundingBox& boundingBox) const
 {
-  XMFLOAT3 minPoint = boundingBox->GetMinPoint();
-  XMFLOAT3 maxPoint = boundingBox->GetMaxPoint();
+  XMFLOAT3 minPoint = boundingBox.GetMinPoint();
+  XMFLOAT3 maxPoint = boundingBox.GetMaxPoint();
 
   for (int i = 0; i < COUNT_OF_PLANES; ++i)
   {

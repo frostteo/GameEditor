@@ -1,5 +1,6 @@
 #include "ObjMeshConverter.h"
 #include "Logger.h"
+#include "BoundingBox.h"
 
 const std::string ObjMeshConverter::m_materialExtension = MtlMatLibConverter::GE_MAT_EXT;
 
@@ -35,9 +36,9 @@ bool ObjMeshConverter::ConvertModel(const std::string& sourceFileName, const std
     return false;
   }
 
-  CenterToCoordCenter();
+  auto boundingBox = CenterToCoordCenterAndCaclulateBB();
 
-  result = SaveModel(destinationFileName);
+  result = SaveModel(destinationFileName, boundingBox);
 
   if (!result)
   {
@@ -47,7 +48,7 @@ bool ObjMeshConverter::ConvertModel(const std::string& sourceFileName, const std
   return true;
 }
 
-void ObjMeshConverter::CenterToCoordCenter()
+std::shared_ptr<BoundingBox> ObjMeshConverter::CenterToCoordCenterAndCaclulateBB()
 {
   float minX, minY, minZ, maxX, maxY, maxZ;
   float xCenter, yCenter, zCenter;
@@ -104,17 +105,20 @@ void ObjMeshConverter::CenterToCoordCenter()
   maxX -= xCenter;
   maxY -= yCenter;
   maxZ -= zCenter;
-  m_modelBoundingBox.Initialize(minX, minY, minZ, maxX, maxY, maxZ);
+
+  auto boundingBox = std::make_shared<BoundingBox>();
+  boundingBox->Initialize(minX, minY, minZ, maxX, maxY, maxZ);
+  return boundingBox;
 }
 
-bool ObjMeshConverter::SaveModel(const std::string& destinationFileName)
+bool ObjMeshConverter::SaveModel(const std::string& destinationFileName, std::shared_ptr<BoundingBox> bb)
 {
   char space = ' ';
   std::ofstream outputFileStream(destinationFileName.c_str());
   if (outputFileStream.fail())
     return false;
 
-  m_modelBoundingBox.Serialize(outputFileStream);
+  bb->Serialize(outputFileStream);
 
   for (const auto& meshInfo : m_meshVertexesInfo)
   {

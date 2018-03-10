@@ -1,5 +1,5 @@
 #include "BumpSpecMapDefferedShader.h"
-
+#include "LightininigSystem.h"
 
 BumpSpecMapDefferedShader::BumpSpecMapDefferedShader()
 {
@@ -11,7 +11,7 @@ BumpSpecMapDefferedShader::~BumpSpecMapDefferedShader()
 }
 
 void BumpSpecMapDefferedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   BumpSpecMapMaterial* bumpMaterial = (BumpSpecMapMaterial*)material;
 

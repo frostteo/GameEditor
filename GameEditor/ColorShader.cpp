@@ -1,5 +1,6 @@
 #include "ColorShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
 
 ColorShader::ColorShader()
 {
@@ -303,7 +304,7 @@ void ColorShader::RenderShader(ID3D11DeviceContext* deviceContext, int indexCoun
 }
 
 void ColorShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   ColorMaterial* colorMaterial = (ColorMaterial *)material;
 

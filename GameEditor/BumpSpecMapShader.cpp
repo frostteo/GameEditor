@@ -1,5 +1,5 @@
 #include "BumpSpecMapShader.h"
-
+#include "LightininigSystem.h"
 
 BumpSpecMapShader::BumpSpecMapShader()
 {
@@ -11,7 +11,7 @@ BumpSpecMapShader::~BumpSpecMapShader()
 }
 
 void BumpSpecMapShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   BumpSpecMapMaterial* bumpMaterial = (BumpSpecMapMaterial*)material;
 

@@ -1,5 +1,7 @@
 #include "PointLightDefferedShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
+#include "PointLight.h"
 
 PointLightDefferedShader::PointLightDefferedShader()
 {
@@ -245,7 +247,7 @@ void PointLightDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceCo
   deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_pointLightBuffer);
 }
 
-void PointLightDefferedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+void PointLightDefferedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   XMMATRIX pointLightWorldMatrix;
   XMFLOAT3 worldPosition;

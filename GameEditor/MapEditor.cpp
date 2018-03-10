@@ -1,4 +1,7 @@
 #include "MapEditor.h"
+#include "Camera.h"
+#include "LightininigSystem.h"
+#include "PointLight.h"
 
 MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent)
   : QtDirectXWidget(pathToModels, pathToMaterials, parent)
@@ -30,7 +33,7 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
 
   if (m_Camera->NeedRebuildFrustrum() || m_mapEditorControl->m_objectsCountInVisibleAreaWasChanged || m_radiusOfAddingLightSourcesToRenderChanged)
   {
-    m_mapEditorViewModel->GetVisibleSgo(m_Camera->GetCameraFrustrum(), &m_visibleSgos);
+    m_mapEditorViewModel->GetVisibleSgo(*m_Camera->GetCameraFrustrum(), &m_visibleSgos);
     m_mapEditorViewModel->GetVisiblePointLights(m_Camera.get(), m_lightininigSystem.get());
     m_mapEditorControl->m_objectsCountInVisibleAreaWasChanged = false;
     m_radiusOfAddingLightSourcesToRenderChanged = false;

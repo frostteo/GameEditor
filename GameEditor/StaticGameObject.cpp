@@ -1,23 +1,14 @@
 #include "StaticGameObject.h"
-
-
-StaticGameObject::StaticGameObject()
-{
-}
-
-
-StaticGameObject::~StaticGameObject()
-{
-}
+#include "Model.h"
 
 void StaticGameObject::SetModel(Model* model)
 {
   m_model = model;
-  m_drawableBoundingBox.Initialize(model->GetBoundingBox());
+  m_drawableBoundingBox.Initialize(*model->GetBoundingBox());
   RebuildBBInWorldCoord();
 }
 
-void StaticGameObject::RebuildBBInWorldCoord()
+void StaticGameObject::RebuildBBInWorldCoord() const
 {
   BoundingBox* modelBB = this->GetModel()->GetBoundingBox();
   XMFLOAT3 modelBBMinPoint = modelBB->GetMinPoint();

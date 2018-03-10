@@ -7,9 +7,9 @@
 #include <map>
 #include "MtlMatLibConverter.h"
 #include "VertexTxt.h"
-#include "BoundingBox.h"
 
 class Logger;
+class BoundingBox;
 
 class ObjMeshConverter :
   public IMeshConverter
@@ -31,16 +31,15 @@ private:
 private:
   std::map<std::string, std::vector<VertexTxt>> m_meshVertexesInfo;
   std::map<std::string, std::vector<int>> m_meshIndexesInfo;
-  BoundingBox m_modelBoundingBox;
 private:
   void Normalize(VertexObj& vertex);
   VertexObj CrossProduct(const VertexObj& first, const VertexObj& second);
-  void CenterToCoordCenter();
+  std::shared_ptr<BoundingBox> CenterToCoordCenterAndCaclulateBB();
 protected:
   void ReadFileCounts(const std::string& fileInStr, int& vertexCount, int& textureCoordCount, int& normalCount, std::map<std::string, int>& materialFacesCountMap);
   bool LoadDataStructures(const std::string& fileInStr, int vertexCount, int textureCount, int normalCount, std::map<std::string, int>& materialFacesCountMap);
   void CalculateNormalTangentBinormal(VertexTxt& first, VertexTxt& second, VertexTxt& third);
-  bool SaveModel(const std::string& destinationFileName);
+  bool SaveModel(const std::string& destinationFileName, std::shared_ptr<BoundingBox> bb);
   void AddVertex(const VertexTxt& vertexTxt, const std::string& materialName);
   void FreeMemory();
 public:

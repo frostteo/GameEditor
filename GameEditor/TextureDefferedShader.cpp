@@ -1,5 +1,6 @@
 #include "TextureDefferedShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
 
 TextureDefferedShader::TextureDefferedShader()
 {

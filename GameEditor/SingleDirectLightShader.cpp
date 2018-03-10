@@ -1,5 +1,6 @@
 #include "SingleDirectLightShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
 
 SingleDirectLightShader::SingleDirectLightShader()
 {
@@ -224,7 +225,7 @@ void SingleDirectLightShader::SetShaderParameters(ID3D11DeviceContext* deviceCon
 }
 
 void SingleDirectLightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix, lightining->GetDirectLightDirection(), lightining->GetAmbientColor(), lightining->GetDirectLightColor());
 

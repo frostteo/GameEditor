@@ -2,9 +2,9 @@
 
 #include <directxmath.h>
 #include <vector>
-#include "PointLight.h"
 
 class Logger;
+class PointLight;
 
 using namespace DirectX;
 

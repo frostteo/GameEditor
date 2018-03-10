@@ -1,5 +1,6 @@
 #include "LightininigSystem.h"
 #include "Logger.h"
+#include "PointLight.h"
 
 LightininigSystem::LightininigSystem()
 {

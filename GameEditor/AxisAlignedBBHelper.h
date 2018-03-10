@@ -1,14 +1,18 @@
 #pragma once
 
-#include "BoundingBox.h"
+#include <DirectXMath.h>
 
-class AxisAlignedBBHelper
+using namespace DirectX;
+
+class BoundingBox;
+
+class AxisAlignedBBHelper final
 {
 public:
-  AxisAlignedBBHelper();
-  ~AxisAlignedBBHelper();
-  static bool IsCompletelyInside(BoundingBox* aabb, BoundingBox* bb);
-  static bool PointContains(BoundingBox* aabb, XMFLOAT3 point);
-  static bool TwoAABBIntersects(BoundingBox* firstAabb, BoundingBox* secondAabb);
+  AxisAlignedBBHelper() = default;
+  ~AxisAlignedBBHelper() = default;
+  static bool IsCompletelyInside(const BoundingBox& aabb, const BoundingBox& bb);
+  static bool PointContains(const BoundingBox& aabb, XMFLOAT3 point);
+  static bool TwoAABBIntersects(const BoundingBox& firstAabb, const BoundingBox& secondAabb);
 };
 

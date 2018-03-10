@@ -4,7 +4,7 @@
 #include <iterator>
 #include "InputListener.h"
 
-#include "Camera.h"
+
 #include "MapEditorViewModel.h"
 #include "AddOrEditSGOOnMapDialog.h"
 #include "StaticGameObjectDbInfo.h"
@@ -12,6 +12,7 @@
 #include "AddOrEditPointLightOnMapDialog.h"
 
 class Logger;
+class Camera;
 
 class MapEditorControl :
   public InputListener

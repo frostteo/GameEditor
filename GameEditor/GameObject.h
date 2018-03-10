@@ -15,57 +15,59 @@ using namespace DirectX;
 class GameObject
 {
 protected:
-  XMMATRIX m_scaleMatrix;
-  XMMATRIX m_translationMatrix;
-  XMMATRIX m_rotationMatrix;
-  XMMATRIX m_worldMatrix;
-  bool m_needRebuildTranslationMatrix;
-  bool m_needRebuildRotationMatrix;
-  bool m_needRebuildScaleMatrix;
-  float m_positionX, m_positionY, m_positionZ;
-  float m_rotationX, m_rotationY, m_rotationZ;
+  mutable XMMATRIX m_scaleMatrix;
+  mutable XMMATRIX m_translationMatrix;
+  mutable XMMATRIX m_rotationMatrix;
+  mutable XMMATRIX m_worldMatrix;
+  mutable bool m_needRebuildTranslationMatrix = true;
+  mutable bool m_needRebuildRotationMatrix = true;
+  mutable bool m_needRebuildScaleMatrix = true;
+  float m_positionX = 0.0f, m_positionY = 0.0f, m_positionZ = 0.0f;
+  float m_rotationX = 0.0f, m_rotationY= 0.0f, m_rotationZ = 0.0f;
   float m_scale = 1.0f;
-  GameObject* m_parent;
-  XMFLOAT3 m_worldPosition;
+  GameObject* m_parent = nullptr;
+  mutable XMFLOAT3 m_worldPosition;
 
-  bool m_needRebuildBBInWorldCoords = true;
-  BoundingBox m_bbInWorldCoord;
+  mutable bool m_needRebuildBBInWorldCoords;
+  mutable BoundingBox m_bbInWorldCoord;
 protected:
-  virtual void RebuildWorldMatrix();
-  virtual void RebuildBBInWorldCoord() = 0;
+  virtual void RebuildWorldMatrix() const;
+  virtual void RebuildBBInWorldCoord() const = 0;
 public:
-  GameObject();
-  virtual ~GameObject();
+  GameObject() = default;
+  virtual ~GameObject() = default;
 
   void virtual SetPosition(float x, float y, float z);
+  const XMFLOAT3 GetPosition() const;
+
   void SetRotation(float x, float y, float z);
-  XMFLOAT3 GetPosition();
-  XMFLOAT3 GetRotation();
+  const XMFLOAT3 GetRotation() const;
+
   void ChangeXRotation(float angle);
   void ChangeYRotation(float angle);
   void ChangeZRotation(float angle);
 
-  void SetScale(float scale) { m_scale = scale; m_needRebuildScaleMatrix = true; }
-  float GetScale() { return m_scale; }
+  void SetScale(float scale);
+  float GetScale() const { return m_scale; }
 
-  void virtual GetWorldMatrix(XMMATRIX& worldMatrix);
+  void virtual GetWorldMatrix(XMMATRIX& worldMatrix) const;
   void SetWorldMatrix(XMMATRIX worldMatrix);
 
-  XMVECTOR GetRight();
-  XMVECTOR GetUp();
-  XMVECTOR GetForward();
+  const XMVECTOR GetRight() const;
+  const XMVECTOR GetUp() const;
+  const XMVECTOR GetForward() const;
 
   void MoveRight(float distance);
   void MoveUp(float distance);
   void MoveForward(float distance);
 
-  inline bool NeedRebuildWorldMatrix() { return m_needRebuildTranslationMatrix || m_needRebuildRotationMatrix || m_needRebuildScaleMatrix; }
+  inline bool NeedRebuildWorldMatrix() const { return m_needRebuildTranslationMatrix || m_needRebuildRotationMatrix || m_needRebuildScaleMatrix; }
 
   void SetParent(GameObject* gameObject) { m_parent = gameObject; }
-  GameObject* GetParent() { return m_parent; }
+  const GameObject* GetParent() const { return m_parent; }
   void GetParentMatrix(XMMATRIX& parentMatrix) const;
 
-  XMFLOAT3 GetWorldPosition();
-  BoundingBox* GetBBInWorldCoords();
+  const XMFLOAT3 GetWorldPosition() const;
+  const BoundingBox* GetBBInWorldCoords() const;
 };
 

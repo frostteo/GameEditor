@@ -19,22 +19,23 @@ private:
   XMMATRIX m_projectionMatrix;
 
   CameraFrustrum m_cameraFrustrum;
-  bool m_needRebuildFrustrum = true;
+  mutable bool m_needRebuildFrustrum = true;
 protected:
-  virtual void RebuildWorldMatrix() override;
-  virtual void RebuildBBInWorldCoord() override;
+  virtual void RebuildWorldMatrix() const override;
+  virtual void RebuildBBInWorldCoord() const override;
 public:
-  Camera();
+  Camera() = default;
+  virtual ~Camera() = default;
+
   void Initialize(float screenWidth, float screenHeight, float screenNear, float screenDepth, float fieldOfView = XM_PIDIV4);
-  virtual ~Camera();
-  void GetViewMatrix(XMMATRIX& viewMatrix);
-  void GetOrthoMatrix(XMMATRIX& orthoMatrix);
-  void GetProjectionMatrix(XMMATRIX& projectionMatrix);
-  float GetScreenWidth() { return m_screenWidth; }
-  float GetScreenHeight() { return m_screenHeight; }
-  float GetFieldOfView() { return m_fieldOfView; }
+  void GetViewMatrix(XMMATRIX& viewMatrix) const;
+  void GetOrthoMatrix(XMMATRIX& orthoMatrix) const;
+  void GetProjectionMatrix(XMMATRIX& projectionMatrix) const;
+  float GetScreenWidth() const { return m_screenWidth; }
+  float GetScreenHeight() const { return m_screenHeight; }
+  float GetFieldOfView() const { return m_fieldOfView; }
 
   bool NeedRebuildFrustrum() const { return this->m_needRebuildFrustrum; }
-  CameraFrustrum* GetCameraFrustrum();
+  const CameraFrustrum* GetCameraFrustrum();
 };
 

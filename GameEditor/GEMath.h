@@ -1,7 +1,12 @@
 #pragma once
 
-#include "StaticGameObject.h"
-#include "Camera.h"
+#include <d3d11.h>
+#include <directxmath.h>
+
+class StaticGameObject;
+class Camera;
+
+using namespace DirectX;
 
 class GEMath
 {

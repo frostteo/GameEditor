@@ -4,7 +4,8 @@
 #include <sstream>
 #include <memory>
 #include "FileProcessor.h"
-#include "LightininigSystem.h"
+
+class LightininigSystem;
 
 class MapEditorPreferences
 {

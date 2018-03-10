@@ -1,5 +1,8 @@
 #include "GraphicSystem.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
+#include "Camera.h"
+#include "PointLight.h"
 
 const std::string GraphicSystem::GRID_SHADER_NAME = "grid";
 const std::string GraphicSystem::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";

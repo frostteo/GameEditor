@@ -1,5 +1,6 @@
 #include "SpecularDefferedShader.h"
 #include "Logger.h"
+#include "LightininigSystem.h"
 
 SpecularDefferedShader::SpecularDefferedShader()
 {
@@ -31,7 +32,7 @@ void SpecularDefferedShader::ShutdownShader()
 }
 
 void SpecularDefferedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   SpecularMaterial* specMaterial = (SpecularMaterial *)material;
   XMFLOAT3 specularColor;

@@ -6,10 +6,10 @@
 #include <string>
 #include "IMaterial.h"
 #include "FileProcessor.h"
-#include "LightininigSystem.h"
 #include "Utils.h"
 
 class Logger;
+class LightininigSystem;
 
 using namespace DirectX;
 
@@ -39,7 +39,7 @@ public:
   virtual void EnableShader(ID3D11DeviceContext* deviceContext);
   void SetTextures(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView** textures, int textureCount);
   virtual void Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-    XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, XMFLOAT3& cameraPosition) = 0;
+    XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition) = 0;
   void Initialize(ID3D11Device* device, HWND hwnd, const std::wstring& vsFilename, const std::wstring& gsFilename, const std::wstring& hlFilename, const std::wstring& dmShaderFileName, const std::wstring& psFilename);
 };
 

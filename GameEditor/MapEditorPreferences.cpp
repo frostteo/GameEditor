@@ -1,4 +1,5 @@
 #include "MapEditorPreferences.h"
+#include "LightininigSystem.h"
 
 const std::string MapEditorPreferences::m_preferencesFileName = "map_editor.ini";
 const float MapEditorPreferences::MIN_RADIUS_OF_ADD_LIGHT_SOURCES_TO_RENDER = 250.0f;

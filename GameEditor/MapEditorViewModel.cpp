@@ -1,5 +1,7 @@
 #include "MapEditorViewModel.h"
-
+#include "Camera.h"
+#include "LightininigSystem.h"
+#include "AxisAlignedBBHelper.h"
 
 MapEditorViewModel::MapEditorViewModel()
 {
@@ -274,7 +276,7 @@ void MapEditorViewModel::SelectionChanged(std::vector<int> selectedSgoIds)
   SetSelectedObjectIds(selectedSgoIds);
 }
 
-void MapEditorViewModel::GetVisibleSgo(CameraFrustrum* cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
+void MapEditorViewModel::GetVisibleSgo(const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
 {
   sgosToRender->clear();
   m_octoTree.GetVisibleSgo(cameraFrustrum, sgosToRender);
@@ -297,7 +299,7 @@ void MapEditorViewModel::GetVisiblePointLights(Camera* camera, LightininigSystem
 
   for (auto& pointLight : m_pointLightsOnMap)
   {
-    if (AxisAlignedBBHelper::TwoAABBIntersects(&m_aabbForPointLight, pointLight.second.GetAABBBoundingBox()))
+    if (AxisAlignedBBHelper::TwoAABBIntersects(m_aabbForPointLight, *pointLight.second.GetAABBBoundingBox()))
         lightiningSystem->AddPointLight(&pointLight.second);
   }
 }
