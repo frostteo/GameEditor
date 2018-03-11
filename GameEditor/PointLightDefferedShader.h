@@ -1,7 +1,6 @@
 #pragma once
 
 #include "TextureShader.h"
-#include "Mesh.h"
 #include "PointLightDefferedParameters.h"
 
 class PointLightDefferedShader :
@@ -32,6 +31,6 @@ public:
   PointLightDefferedShader();
   virtual ~PointLightDefferedShader();
   virtual void Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-    XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition) override;
+    XMMATRIX projectionMatrix, const IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition) override;
 };
 

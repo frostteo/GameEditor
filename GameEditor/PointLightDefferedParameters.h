@@ -14,7 +14,7 @@ public:
 public:
   PointLightDefferedParameters();
   virtual ~PointLightDefferedParameters();
-  virtual const std::string& GetType() override { return PointLightDefferedParameters::pointLightDefferedParametersType; }
+  virtual const std::string GetType() const override { return PointLightDefferedParameters::pointLightDefferedParametersType; }
   XMVECTOR GetPerspectiveValues() { return m_perspectiveValues; }
   XMMATRIX GetViewMatrixInverse() { return m_viewMatrixInv; }
   void SetPerspectiveValues(XMMATRIX projectionMatrix);

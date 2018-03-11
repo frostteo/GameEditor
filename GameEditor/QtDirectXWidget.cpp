@@ -3,7 +3,9 @@
 #include "Camera.h"
 
 QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent)
-  : QWidget(parent)
+  : QWidget(parent),
+  m_pathToModels(pathToModels.toStdString()), 
+  m_pathToMaterials(pathToMaterials.toStdString())
 {
   m_screenDepth = 10000.0f;
 
@@ -11,14 +13,10 @@ QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, 
 
   this->setWindowFlags(Qt::Window);
 
-  //I dont know what it do? but it is for Qt working
   setMinimumSize(m_minWidth, m_minHeight);
   setAttribute(Qt::WA_OpaquePaintEvent, true);
   setAttribute(Qt::WA_PaintOnScreen, true);
   setAttribute(Qt::WA_NativeWindow, true);
-
-  SetPathToModels(pathToModels);
-  SetPathToMaterials(pathToMaterials);
 
   bool result = Initialize(width(), height(), (HWND)winId());
   if (!result) {
@@ -45,7 +43,7 @@ bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
   if (!m_graphicSystem)
     return false;
 
-  m_graphicSystem->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, m_shaderConfiguration.get(), m_pathToMaterials, m_pathToModels);
+  m_graphicSystem->Initialize(screenWidth, screenHeight, m_vsyncEnabled, hwnd, m_fullScreen, m_shaderConfiguration.get(), m_pathToMaterials, m_pathToModels);
 
   // Create the camera object.
   m_Camera = std::unique_ptr<Camera>(new Camera());

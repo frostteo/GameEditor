@@ -17,13 +17,13 @@ class QtDirectXWidget : public QWidget, public Ui::QtDirectXWidget
 {
     Q_OBJECT
 protected:
-  const bool FULL_SCREEN = false;
-  const bool VSYNC_ENABLED = false;
+  const std::string m_pathToModels;
+  const std::string m_pathToMaterials;
+
+  bool m_fullScreen = false;
+  bool m_vsyncEnabled = false;
   float m_screenDepth = 20000.0f;
   float m_screenNear = 0.1f;
-
-  std::string m_pathToMaterials;
-  std::string m_pathToModels;
 
   int m_minWidth = 800;
   int m_minHeight = 600;
@@ -48,9 +48,6 @@ public:
 
   /** Initialized the D3D environment */
   bool Initialize(int screenWidth, int screenHeight, HWND hwnd);
-
-  void SetPathToModels(QString pathToModels) { m_pathToModels = pathToModels.toStdString(); }
-  void SetPathToMaterials(QString pathToMaterials) { m_pathToMaterials = pathToMaterials.toStdString(); }
 
   ModelFactory* GetModelFactory() { m_graphicSystem->GetModelFactory(); }
 

@@ -21,7 +21,7 @@ protected:
 public:
   StaticGameObject() = default;
   virtual ~StaticGameObject() = default;
-  Model* GetModel() const { return m_model; }
+  const Model* GetModel() const { return m_model; }
   void SetModel(Model* model);
   DrawableBoundingBox* GetDrawableBoundingBox() { return &m_drawableBoundingBox; }
 };

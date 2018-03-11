@@ -129,7 +129,7 @@ void DepthBufferShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, 
 }
 
 void DepthBufferShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, const IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   SetShaderParameters(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
   deviceContext->DrawIndexed(indexCount, 0, 0);

@@ -18,11 +18,13 @@ private:
   XMMATRIX m_orthoMatrix;
   XMMATRIX m_projectionMatrix;
 
-  CameraFrustrum m_cameraFrustrum;
+  mutable CameraFrustrum m_cameraFrustrum;
   mutable bool m_needRebuildFrustrum = true;
 protected:
   virtual void RebuildWorldMatrix() const override;
   virtual void RebuildBBInWorldCoord() const override;
+
+  const CameraFrustrum* GetCameraFrustrum() const;
 public:
   Camera() = default;
   virtual ~Camera() = default;
@@ -36,6 +38,9 @@ public:
   float GetFieldOfView() const { return m_fieldOfView; }
 
   bool NeedRebuildFrustrum() const { return this->m_needRebuildFrustrum; }
-  const CameraFrustrum* GetCameraFrustrum();
+ 
+  inline bool IsCameraFrustrumIntersectsBB(const BoundingBox& boundingBox) const { return GetCameraFrustrum()->IntersectsBB(boundingBox); }
+  inline bool IsCameraFrustrumIntersectsAABB(const BoundingBox& boundingBox) const { return GetCameraFrustrum()->IntersectsAABB(boundingBox); }
+  inline bool IsPointInCameraFrustrum(const XMVECTOR& point) const { return GetCameraFrustrum()->CheckPoint(point); }
 };
 

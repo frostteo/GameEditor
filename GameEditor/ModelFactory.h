@@ -3,6 +3,8 @@
 #include "SharedResourcesFactory.h"
 #include "Model.h"
 
+class MaterialFactory;
+
 class ModelFactory : public SharedResourcesFactory<Model>
 {
 private:

@@ -31,7 +31,7 @@ void Camera::GetProjectionMatrix(XMMATRIX& projectionMatrix) const
   projectionMatrix = m_projectionMatrix;
 }
 
-const CameraFrustrum* Camera::GetCameraFrustrum()
+const CameraFrustrum* Camera::GetCameraFrustrum() const
 {
   if (this->m_needRebuildFrustrum){
     m_cameraFrustrum.ConstructFrustrum(*this);

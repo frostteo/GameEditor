@@ -11,10 +11,13 @@ class IMaterial
 protected:
   std::string m_name;
 public:
-  IMaterial(const std::string& name) { m_name = name; }
-  virtual ~IMaterial() = 0;
-  virtual const std::string& GetType() = 0;
-  virtual ID3D11ShaderResourceView** GetTextures() { return nullptr; }
-  virtual int GetTexturesCount() { return 0; }
+  IMaterial(const std::string& name) : m_name(name) { }
+  virtual ~IMaterial() = default;
+ 
+  virtual const std::string GetType() const = 0;
+  const std::string GetName() const { return m_name; }
+
+  virtual ID3D11ShaderResourceView* const* GetTextures() const { return nullptr; }
+  virtual int GetTexturesCount() const { return 0; }
 };
 

@@ -15,6 +15,6 @@ public:
 public:
   SpecularMaterial(const std::string& name, Texture* texture, XMVECTOR specularColor, float specularPower);
   virtual ~SpecularMaterial();
-  virtual const std::string& GetType() override { return SpecularMaterial::specularMaterialType; }
+  virtual const std::string GetType() const override { return SpecularMaterial::specularMaterialType; }
 };
 

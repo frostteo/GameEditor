@@ -10,7 +10,7 @@ void StaticGameObject::SetModel(Model* model)
 
 void StaticGameObject::RebuildBBInWorldCoord() const
 {
-  BoundingBox* modelBB = this->GetModel()->GetBoundingBox();
+  const BoundingBox* modelBB = this->GetModel()->GetBoundingBox();
   XMFLOAT3 modelBBMinPoint = modelBB->GetMinPoint();
   XMFLOAT3 modelBBMaxPoint = modelBB->GetMaxPoint();
   XMMATRIX worldMatrix;

@@ -33,6 +33,8 @@ protected:
 protected:
   virtual void RebuildWorldMatrix() const;
   virtual void RebuildBBInWorldCoord() const = 0;
+
+  const GameObject* GetParent() const { return m_parent; }
 public:
   GameObject() = default;
   virtual ~GameObject() = default;
@@ -64,7 +66,7 @@ public:
   inline bool NeedRebuildWorldMatrix() const { return m_needRebuildTranslationMatrix || m_needRebuildRotationMatrix || m_needRebuildScaleMatrix; }
 
   void SetParent(GameObject* gameObject) { m_parent = gameObject; }
-  const GameObject* GetParent() const { return m_parent; }
+ 
   void GetParentMatrix(XMMATRIX& parentMatrix) const;
 
   const XMFLOAT3 GetWorldPosition() const;

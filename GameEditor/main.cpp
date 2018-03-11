@@ -10,7 +10,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Logger::get().SetPlatformDependentLoggerPart(new QtLoggerPart());
+    auto platformDependentLoggerPart = std::unique_ptr<QtLoggerPart>(new QtLoggerPart());
+    Logger::get().SetPlatformDependentLoggerPart(std::move(platformDependentLoggerPart));
     Logger::get().SetLogFileName("gameEditorLog.txt");
 
     try {

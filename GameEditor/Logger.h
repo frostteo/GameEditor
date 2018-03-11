@@ -36,6 +36,6 @@ public:
   void LogMessageWithExceptionDialog(const std::string& info, const std::string& filename, const int lineNumber);
   void ShowCriticalMessage(const std::string& message);
   const std::string GetLogFileName() const { return m_filename; }
-  void SetPlatformDependentLoggerPart(IPlatformDependentLoggerPart* platformDependentLoggerPart);
+  void SetPlatformDependentLoggerPart(std::unique_ptr<IPlatformDependentLoggerPart> platformDependentLoggerPart);
   void SetLogFileName(const std::string& logFileName);
 };

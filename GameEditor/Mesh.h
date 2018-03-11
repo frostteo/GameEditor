@@ -4,49 +4,38 @@
 #include <string>
 #include <d3d11.h>
 #include <directxmath.h>
+#include "DrawableIndexed.h"
 #include "IMaterial.h"
-#include "MaterialFactory.h"
 
 class Logger;
 
 using namespace DirectX;
 
-class Mesh
+struct MeshVertex
 {
-public:
-  struct VertexInBuffer
-  {
-    XMFLOAT3 position;
-    XMFLOAT2 texture;
-    XMFLOAT3 normal;
-    XMFLOAT3 tangent;
-    XMFLOAT3 binormal;
-  };
+  XMFLOAT3 position;
+  XMFLOAT2 texture;
+  XMFLOAT3 normal;
+  XMFLOAT3 tangent;
+  XMFLOAT3 binormal;
+};
+
+class Mesh : public DrawableIndexed<MeshVertex>
+{
 private:
   std::string m_gameObjectName;
-  std::string m_materialName;
-  std::string m_materialType;
-  int m_indexCount;
-  ID3D11Buffer* m_vertexBuffer;
-  ID3D11Buffer* m_indexBuffer;
   IMaterial* m_material;
-protected:
-  void ShutdownBuffers();
 public:
   Mesh(ID3D11Device* device,
     std::string gameObjectName, 
-    std::string materialName,
-    std::vector<VertexInBuffer>& vertices, 
+    std::vector<MeshVertex>& vertices,
     std::vector<unsigned long>& indexes,
-    MaterialFactory* materialFactory);
+    IMaterial* material);
 
-  void InitializeBuffers(ID3D11Device* device, std::vector<VertexInBuffer>& vertices, std::vector<unsigned long>& indexes);
-  void SetMaterial(std::string materialName, MaterialFactory* materialFactory);
-  IMaterial* GetMaterial() { return m_material; }
-  const std::string GetMaterialName() { return m_materialName; }
-  const std::string GetMaterialType() { return m_materialType; }
-  void PrepareToRender(ID3D11DeviceContext* deviceContext);
-  int GetIndexCount() { return m_indexCount; }
-  virtual ~Mesh();
+  void SetMaterial(IMaterial* material) { m_material = material; }
+  const IMaterial* GetMaterial() const { return m_material; }
+  const std::string GetMaterialName() const { return m_material->GetName(); }
+  const std::string GetMaterialType() const { return m_material->GetType(); }
+  virtual ~Mesh() = default;
 };
 

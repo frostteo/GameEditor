@@ -38,10 +38,10 @@ void ConfigurePLRelativePosWidget::paintEvent(QPaintEvent* pEvent)
 {
   XMMATRIX worldMatrix;
   m_sgo.GetWorldMatrix(worldMatrix);
-  m_graphicSystem->AddModelToRenderList(m_sgo.GetModel(), worldMatrix);
+  m_graphicSystem->AddModelToRenderList(*m_sgo.GetModel(), worldMatrix);
 
   m_pointLightSgo.GetWorldMatrix(worldMatrix);
-  m_graphicSystem->AddModelToRenderList(m_pointLightSgo.GetModel(), worldMatrix);
+  m_graphicSystem->AddModelToRenderList(*m_pointLightSgo.GetModel(), worldMatrix);
 
   QtDirectXWidget::paintEvent(pEvent);
 }

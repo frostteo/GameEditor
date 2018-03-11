@@ -18,7 +18,7 @@ public:
     textures[2] = m_specularMap->GetTexture();
   }
   virtual ~BumpSpecMapMaterial();
-  virtual const std::string& GetType() override { return BumpSpecMapMaterial::bumpSpecMapMaterialType; }
-  virtual int GetTexturesCount() override { return TEXTURE_COUNT; }
+  virtual const std::string GetType() const override { return BumpSpecMapMaterial::bumpSpecMapMaterialType; }
+  virtual int GetTexturesCount() const override { return TEXTURE_COUNT; }
 };
 

@@ -33,7 +33,7 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
 
   if (m_Camera->NeedRebuildFrustrum() || m_mapEditorControl->m_objectsCountInVisibleAreaWasChanged || m_radiusOfAddingLightSourcesToRenderChanged)
   {
-    m_mapEditorViewModel->GetVisibleSgo(*m_Camera->GetCameraFrustrum(), &m_visibleSgos);
+    m_mapEditorViewModel->GetVisibleSgo(*m_Camera, &m_visibleSgos);
     m_mapEditorViewModel->GetVisiblePointLights(m_Camera.get(), m_lightininigSystem.get());
     m_mapEditorControl->m_objectsCountInVisibleAreaWasChanged = false;
     m_radiusOfAddingLightSourcesToRenderChanged = false;
@@ -42,7 +42,7 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
   for (auto sgo : m_visibleSgos)
   {
     sgo->GetWorldMatrix(worldMatrix);
-    m_graphicSystem->AddModelToRenderList(sgo->GetModel(), worldMatrix, sgo->castShadows);
+    m_graphicSystem->AddModelToRenderList(*sgo->GetModel(), worldMatrix, sgo->castShadows);
   }
 
   m_mapEditorViewModel->GetSelectedSgos(&m_selectedSgos);

@@ -1,41 +1,49 @@
 #pragma once
 
-#include "Mesh.h"
-#include "FileProcessor.h"
-#include "VertexTxt.h"
-#include "BoundingBox.h"
+#include <string>
+#include <vector>
+#include <memory>
+#include <d3d11.h>
+#include <directxmath.h>
+#include "Uncopyable.h"
 
 class Logger;
+class FileProcessor;
+class MaterialFactory;
+class VertexTxt;
 class BoundingBox;
+class Mesh;
 
-class Model
+using namespace DirectX;
+
+class Model : private Uncopyable
 {
 protected:
   std::string m_fileName;
-  std::vector<Mesh*> m_meshes;
-  BoundingBox m_boundingBox;
+  std::vector<std::unique_ptr<Mesh> > m_meshes;
+  std::unique_ptr<BoundingBox> m_boundingBox;
 protected:
-  void LoadData(
+  void LoadModel(
     ID3D11Device* device,
-    MaterialFactory* materialFactory
+    MaterialFactory& materialFactory
     );
 
   void LoadMesh(
     std::stringstream& stream,
     ID3D11Device* device,
-    MaterialFactory* materialFactory
+    MaterialFactory& materialFactory
     );
 
 public:
   Model(
     std::string fileName,
     ID3D11Device* device,
-    MaterialFactory* materialFactory
+    MaterialFactory& materialFactory
     );
 
-  Mesh* GetMesh(int index) { return m_meshes[index]; }
-  const int GetMeshCount() { return m_meshes.size(); }
-  BoundingBox* GetBoundingBox() { return &m_boundingBox; }
+  const Mesh* GetMesh(int index) const { return m_meshes[index].get(); }
+  int GetMeshCount() const { return m_meshes.size(); }
+  const BoundingBox* GetBoundingBox() const { return m_boundingBox.get(); }
   virtual ~Model();
 };
 

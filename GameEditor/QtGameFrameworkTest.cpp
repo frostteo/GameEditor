@@ -125,7 +125,7 @@ void QtGameFrameworkTest::paintEvent(QPaintEvent* evt) {
   m_inputSystem->Frame();
   XMMATRIX worldMatrix;
   m_sgo.GetWorldMatrix(worldMatrix);
-  m_graphicSystem->AddModelToRenderList(m_sgo.GetModel(), worldMatrix);
+  m_graphicSystem->AddModelToRenderList(*m_sgo.GetModel(), worldMatrix);
   m_graphicSystem->Render(m_Camera, m_lightininigSystem);
 
   // trigger another update as soon as possible 

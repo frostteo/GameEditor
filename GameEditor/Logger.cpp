@@ -70,9 +70,9 @@ void Logger::ShowCriticalMessage(const std::string& message)
   }
 }
 
-void Logger::SetPlatformDependentLoggerPart(IPlatformDependentLoggerPart* platformDependentLoggerPart)
+void Logger::SetPlatformDependentLoggerPart(std::unique_ptr<IPlatformDependentLoggerPart> platformDependentLoggerPart)
 {
-  m_platformDependentLoggerPart = std::unique_ptr<IPlatformDependentLoggerPart>(platformDependentLoggerPart);
+  m_platformDependentLoggerPart = std::move(platformDependentLoggerPart);
 }
 
 void Logger::SetLogFileName(const std::string& logFileName)

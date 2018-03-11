@@ -3,6 +3,7 @@
 #include "LightininigSystem.h"
 #include "Camera.h"
 #include "PointLight.h"
+#include "Mesh.h"
 
 const std::string GraphicSystem::GRID_SHADER_NAME = "grid";
 const std::string GraphicSystem::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";
@@ -38,7 +39,7 @@ void GraphicSystem::Initialize(int screenWidth, int screenHeight, bool vsyncEnab
   m_materialFactory = std::unique_ptr<MaterialFactory>((new MaterialFactory())->Initialize(m_textureFactory.get(), pathToMaterials));
   m_modelFactory = std::unique_ptr<ModelFactory>((new ModelFactory())->Initialize(m_direct3D->GetDevice(), m_materialFactory.get()));
 
-  m_pointLightMesh = m_modelFactory->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + POINT_LIGHT_MODEL_NAME)->GetMesh(0);
+  m_pointLightMesh = const_cast<Mesh*>( m_modelFactory->GetResource(m_pathToModels + FileProcessor::FILE_SEPARATOR + POINT_LIGHT_MODEL_NAME)->GetMesh(0));
 }
 
 ModelFactory* GraphicSystem::GetModelFactory()
@@ -58,11 +59,11 @@ MaterialFactory* GraphicSystem::GetMaterialFactory()
   return m_materialFactory.get();
 }
 
-void GraphicSystem::AddModelToRenderList(Model* model, XMMATRIX& worldMatrix, bool castShadows)
+void GraphicSystem::AddModelToRenderList(const Model& model, XMMATRIX& worldMatrix, bool castShadows)
 {
-  for (int i = 0; i < model->GetMeshCount(); ++i)
+  for (int i = 0; i < model.GetMeshCount(); ++i)
   {
-    Mesh* mesh = model->GetMesh(i);
+    const Mesh* mesh = model.GetMesh(i);
     MeshRenderInfo renderInfo(worldMatrix, mesh, castShadows);
     m_modelRenderList[mesh->GetMaterialType()][mesh->GetMaterialName()].push_back(renderInfo);
   }
@@ -98,7 +99,7 @@ void GraphicSystem::DrawModels(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix,
 
     for (auto materialInfo : shaderInfo.second)
     {
-      IMaterial* material = materialInfo.second[0].mesh->GetMaterial();
+      const IMaterial* material = materialInfo.second[0].mesh->GetMaterial();
       if (material->GetTexturesCount() > 0)
         shader->SetTextures(deviceContext, material->GetTextures(), material->GetTexturesCount());
 

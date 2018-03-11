@@ -13,7 +13,6 @@ void MaterialFactory::Shutdown()
     materialCreator = nullptr;
   }
   m_materialCreators.clear();
-  SharedResourcesFactory<IMaterial>::Shutdown();
 }
 
 MaterialFactory::~MaterialFactory()

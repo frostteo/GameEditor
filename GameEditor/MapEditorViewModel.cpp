@@ -276,10 +276,10 @@ void MapEditorViewModel::SelectionChanged(std::vector<int> selectedSgoIds)
   SetSelectedObjectIds(selectedSgoIds);
 }
 
-void MapEditorViewModel::GetVisibleSgo(const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
+void MapEditorViewModel::GetVisibleSgo(const Camera& camera, std::vector<StaticGameObject*>* sgosToRender)
 {
   sgosToRender->clear();
-  m_octoTree.GetVisibleSgo(cameraFrustrum, sgosToRender);
+  m_octoTree.GetVisibleSgo(camera, sgosToRender);
 }
 
 void MapEditorViewModel::GetVisiblePointLights(Camera* camera, LightininigSystem* lightiningSystem)

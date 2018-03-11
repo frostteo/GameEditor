@@ -11,7 +11,7 @@ BumpSpecMapDefferedShader::~BumpSpecMapDefferedShader()
 }
 
 void BumpSpecMapDefferedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, const IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   BumpSpecMapMaterial* bumpMaterial = (BumpSpecMapMaterial*)material;
 

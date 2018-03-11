@@ -1,6 +1,7 @@
 #include "OctoTree.h"
 #include "Logger.h"
 #include "AxisAlignedBBHelper.h"
+#include "Camera.h"
 #include "CameraFrustrum.h"
 
 const float OctoTree::MIN_HALF_LENGTH = 64.0f;
@@ -384,17 +385,17 @@ bool OctoTree::CanOctTreeContainObject(StaticGameObject* sgo)
   return false;
 }
 
-void OctoTree::GetVisibleSgo(const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
+void OctoTree::GetVisibleSgo(const Camera& camera, std::vector<StaticGameObject*>* sgosToRender)
 {
   if (!m_root)
     RUNTIME_ERROR("It is impossible to get visible sgos, because oct tree has not been initialized yet");
 
-  GetVisibleSgoHelper(m_root, cameraFrustrum, sgosToRender);
+  GetVisibleSgoHelper(m_root, camera, sgosToRender);
 }
 
-void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender)
+void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, const Camera& camera, std::vector<StaticGameObject*>* sgosToRender)
 {
-  if (cameraFrustrum.IntersectsAABB(node->boundingBox))
+  if (camera.IsCameraFrustrumIntersectsAABB(node->boundingBox))
   {
     for (auto& sgo : node->staticGameObjects)
     {
@@ -403,10 +404,10 @@ void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, const CameraFrustrum& cam
 
       if (isAABB)
       {
-        if (cameraFrustrum.IntersectsAABB(*sgo.second->GetBBInWorldCoords()))
+        if (camera.IsCameraFrustrumIntersectsAABB(*sgo.second->GetBBInWorldCoords()))
           sgosToRender->push_back(sgo.second);
       }
-      else if (cameraFrustrum.IntersectsBB(*sgo.second->GetBBInWorldCoords()))
+      else if (camera.IsCameraFrustrumIntersectsBB(*sgo.second->GetBBInWorldCoords()))
       {
         sgosToRender->push_back(sgo.second);
       }
@@ -415,7 +416,7 @@ void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, const CameraFrustrum& cam
     for (int i = 0; i < OctoTreeNode::CHILD_NODES_COUNT; ++i)
     {
       if (node->childNodes[i] && node->childNodes[i]->countOfObjectsInBranch > 0)
-        GetVisibleSgoHelper(node->childNodes[i], cameraFrustrum, sgosToRender);
+        GetVisibleSgoHelper(node->childNodes[i], camera, sgosToRender);
     }
   }
 }

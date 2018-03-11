@@ -17,16 +17,17 @@
 class Logger;
 class LightininigSystem;
 class Camera;
+class Mesh;
 
 class GraphicSystem
 {
 private:
   struct MeshRenderInfo
   {
-    MeshRenderInfo(XMMATRIX worldMatrixArg, Mesh* meshArg, bool castShadowsArg) : worldMatrix(worldMatrixArg), mesh(meshArg), castShadows(castShadowsArg) {}
+    MeshRenderInfo(XMMATRIX worldMatrixArg, const Mesh* meshArg, bool castShadowsArg) : worldMatrix(worldMatrixArg), mesh(meshArg), castShadows(castShadowsArg) {}
 
     XMMATRIX worldMatrix;
-    Mesh* mesh;
+    const Mesh* mesh;
     bool castShadows;
   };
 private:
@@ -65,7 +66,7 @@ public:
   ShaderFactory* GetShaderFactory();
   MaterialFactory* GetMaterialFactory();
 
-  void AddModelToRenderList(Model* model, XMMATRIX& worldMatrix, bool castShadow = true);
+  void AddModelToRenderList(const Model& model, XMMATRIX& worldMatrix, bool castShadow = true);
   void AddGridToRenderList(GridObject* gridObject, XMMATRIX& worldMatrix);
   ID3D11Device* GetDevice() { return m_direct3D->GetDevice(); }
   void Render(Camera* camera, LightininigSystem* lightiningSystem);

@@ -132,7 +132,7 @@ void AmbientDefferedShader::SetShaderParameters(ID3D11DeviceContext* deviceConte
 }
 
 void AmbientDefferedShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX worldMatrix, XMMATRIX viewMatrix,
-  XMMATRIX projectionMatrix, IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
+  XMMATRIX projectionMatrix, const IMaterial* material, LightininigSystem* lightining, const XMFLOAT3& cameraPosition)
 {
   SetShaderParameters(deviceContext, lightining->GetAmbientColor());
   deviceContext->Draw(4, 0);

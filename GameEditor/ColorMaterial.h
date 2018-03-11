@@ -20,5 +20,5 @@ public:
 public:
   ColorMaterial(const std::string& name, XMVECTOR diffuseColor, XMVECTOR specularColor, XMVECTOR selfIluminationColor, float specularPower, float opacity, ColorMaterialSubType subType);
   virtual ~ColorMaterial();
-  virtual const std::string& GetType() override { return ColorMaterial::colorMaterialType; }
+  virtual const std::string GetType() const override { return ColorMaterial::colorMaterialType; }
 };

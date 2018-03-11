@@ -582,7 +582,7 @@ void MapEditorControl::PickObject(InputState* inputState, int mouseXCoor, int mo
   m_mapEditorViewModel->ClearSelectionInSgoOnMapTable();
   for (auto sgo : *m_visibleSgos)
   {
-    BoundingBox* box = sgo->GetModel()->GetBoundingBox();
+    const BoundingBox* box = sgo->GetModel()->GetBoundingBox();
     XMFLOAT3 minPoint = box->GetMinPoint();
     XMFLOAT3 maxPoint = box->GetMaxPoint();
     XMFLOAT3 rayPosReadable;

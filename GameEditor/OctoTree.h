@@ -8,7 +8,7 @@
 
 class Logger;
 class AxisAlignedBBHelper;
-class CameraFrustrum;
+class Camera;
 
 class OctoTree
 {
@@ -28,7 +28,7 @@ protected:
   void ObjectChangedPositionHelper(OctoTreeNode* node, int id, StaticGameObject* sgo);
   void MoveObjectToSmallerOcts(OctoTreeNode* node, int id, StaticGameObject* sgo);
   bool CanOctTreeContainObject(StaticGameObject* sgo);
-  void GetVisibleSgoHelper(OctoTreeNode* node, const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
+  void GetVisibleSgoHelper(OctoTreeNode* node, const Camera& camera, std::vector<StaticGameObject*>* sgosToRender);
 
   void InitializeAllBBsHelper(OctoTreeNode* node);
 public:
@@ -39,7 +39,7 @@ public:
   void DeleteSgo(int id, StaticGameObject* sgo);
   void ObjectChangedPosition(int id, StaticGameObject* sgo);
 
-  void GetVisibleSgo(const CameraFrustrum& cameraFrustrum, std::vector<StaticGameObject*>* sgosToRender);
+  void GetVisibleSgo(const Camera& camera, std::vector<StaticGameObject*>* sgosToRender);
 
   virtual ~OctoTree();
 

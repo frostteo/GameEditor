@@ -14,8 +14,8 @@ public:
 public:
   TextureMaterial(const std::string& name, Texture* texture) : IMaterial(name) { m_texture = texture; textures[0] = m_texture->GetTexture(); }
   virtual ~TextureMaterial();
-  virtual const std::string& GetType() override { return TextureMaterial::textureMaterialType; }
-  virtual ID3D11ShaderResourceView** GetTextures() override { return textures; }
-  virtual int GetTexturesCount() override { return TEXTURE_COUNT; }
+  virtual const std::string GetType() const override { return TextureMaterial::textureMaterialType; }
+  virtual ID3D11ShaderResourceView* const*GetTextures() const override { return textures; }
+  virtual int GetTexturesCount() const override { return TEXTURE_COUNT; }
 };
 

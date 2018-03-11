@@ -1,20 +1,26 @@
 #include "Model.h"
 #include "BoundingBox.h"
 #include "Logger.h"
+#include "MaterialFactory.h"
+#include "FileProcessor.h"
+#include "VertexTxt.h"
+#include "Mesh.h"
 
 Model::Model(
   std::string fileName,
   ID3D11Device* device,
-  MaterialFactory* materialFactory
+  MaterialFactory& materialFactory
   )
+  : m_fileName(fileName),
+    m_meshes(),
+    m_boundingBox(new BoundingBox)
 {
-  m_fileName = fileName;
-  LoadData(device, materialFactory);
+  LoadModel(device, materialFactory);
 }
 
-void Model::LoadData(
+void Model::LoadModel(
   ID3D11Device* device,
-  MaterialFactory* materialFactory
+  MaterialFactory& materialFactory
   )
 {
   std::string fileInStr;
@@ -24,7 +30,7 @@ void Model::LoadData(
     RUNTIME_ERROR("Can't read file " + m_fileName);
 
   std::stringstream fileStrStream(fileInStr);
-  m_boundingBox.Deserialize(fileStrStream);
+  m_boundingBox->Deserialize(fileStrStream);
   while (!fileStrStream.eof())
     LoadMesh(fileStrStream, device, materialFactory);
 }
@@ -32,18 +38,19 @@ void Model::LoadData(
 void Model::LoadMesh(
   std::stringstream& stream,
   ID3D11Device* device,
-  MaterialFactory* materialFactory
+  MaterialFactory& materialFactory
   )
 {
   char input;
   std::string materialName;
   int vertexCount;
   int indexCount;
-  std::vector<Mesh::VertexInBuffer> vertexes;
+  std::vector<MeshVertex> vertexes;
   std::vector<unsigned long> indexes;
   VertexTxt vertexTxt;
-  Mesh::VertexInBuffer vertexInBuffer;
+  MeshVertex vertexInBuffer;
   unsigned long index;
+  std::unique_ptr<Mesh> mesh;
 
   stream.get(input);
   while (input != ':')
@@ -99,15 +106,11 @@ void Model::LoadMesh(
     indexes.push_back(index);
   }
 
-  Mesh* mesh = new Mesh(device, m_fileName, materialName, vertexes, indexes, materialFactory);
-  m_meshes.push_back(mesh);
+  mesh = std::unique_ptr<Mesh>(new Mesh(device, m_fileName, vertexes, indexes, materialFactory.GetResource(materialName)));
+  m_meshes.push_back(std::move(mesh));
 }
 
 Model::~Model()
 {
-  for (auto mesh : m_meshes)
-  {
-    delete mesh;
-    mesh = nullptr;
-  }
+
 }

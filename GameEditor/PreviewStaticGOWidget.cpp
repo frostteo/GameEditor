@@ -39,7 +39,7 @@ void PreviewStaticGOWidget::Shutdown()
 void PreviewStaticGOWidget::paintEvent(QPaintEvent* evt) {
   XMMATRIX worldMatrix;
   m_sgo.GetWorldMatrix(worldMatrix);
-  m_graphicSystem->AddModelToRenderList(m_sgo.GetModel(), worldMatrix);
+  m_graphicSystem->AddModelToRenderList(*m_sgo.GetModel(), worldMatrix);
 
   QtDirectXWidget::paintEvent(evt);
 }

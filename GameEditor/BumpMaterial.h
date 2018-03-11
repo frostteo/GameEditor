@@ -20,8 +20,8 @@ public:
     textures[1] = m_normalMap->GetTexture();
   }
   virtual ~BumpMaterial();
-  virtual const std::string& GetType() override { return BumpMaterial::bumpMaterialType; }
-  virtual ID3D11ShaderResourceView** GetTextures() { return textures; }
-  virtual int GetTexturesCount() { return TEXTURES_COUNT; }
+  virtual const std::string GetType() const override { return BumpMaterial::bumpMaterialType; }
+  virtual ID3D11ShaderResourceView* const* GetTextures() const override { return textures; }
+  virtual int GetTexturesCount() const { return TEXTURES_COUNT; }
 };
 

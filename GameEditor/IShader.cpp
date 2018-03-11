@@ -102,7 +102,7 @@ void IShader::EnableShader(ID3D11DeviceContext* deviceContext)
   deviceContext->PSSetShader(m_pixelShader, nullptr, 0);
 }
 
-void IShader::SetTextures(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView** textures, int textureCount)
+void IShader::SetTextures(ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView* const* textures, int textureCount)
 {
   // Set shader texture array resource in the pixel shader.
   deviceContext->PSSetShaderResources(0, textureCount, textures);
