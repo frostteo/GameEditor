@@ -7,7 +7,7 @@ class StaticGameObject :
   public GameObject
 {
 private:
-  Model* m_model = nullptr;
+  const Model* m_model = nullptr;
 public:
   int uniqueId = 0;
 
@@ -20,6 +20,6 @@ public:
   StaticGameObject() = default;
   virtual ~StaticGameObject() = default;
   const Model* GetModel() const { return m_model; }
-  void SetModel(Model* model);
+  void SetModel(const Model* model);
 };
 

@@ -6,7 +6,8 @@ enum PointLightShadowDirection : int {
   PLUS_Y = 4,
   MINUS_Y = 8,
   PLUS_Z = 16,
-  MINUS_Z = 32
+  MINUS_Z = 32,
+  ALL_SHADOW_DIRECTIONS = 63
 };
 
 inline PointLightShadowDirection operator |(PointLightShadowDirection a, PointLightShadowDirection b)

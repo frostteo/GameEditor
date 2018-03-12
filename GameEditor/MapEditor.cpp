@@ -1,7 +1,6 @@
 #include "MapEditor.h"
 #include "Camera.h"
 #include "LightininigSystem.h"
-#include "PointLight.h"
 #include "PointLightVolumeGridObject.h"
 #include "UnfrozenDrawableBBFactory.h"
 #include "FrozenDrawableBBFactory.h"

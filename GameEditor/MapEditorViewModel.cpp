@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "LightininigSystem.h"
 #include "AxisAlignedBBHelper.h"
+#include "D3DConfigurer.h"
 
 MapEditorViewModel::MapEditorViewModel()
 {
@@ -71,7 +72,7 @@ void MapEditorViewModel::AddPointLightToMap(PointLightOnMapDbInfo& dbInfo)
     m_pointLightsOnMap[dbInfo.id] = pointLight;
     m_pointLightsOnMap[dbInfo.id].InitializeShadowResources(m_d3dConfigurer->GetDevice());
   }
-  
+
   m_pointLightsOnMap[dbInfo.id].Initialize(
     dbInfo.linearAttenuation,
     dbInfo.quadraticAttenuation,

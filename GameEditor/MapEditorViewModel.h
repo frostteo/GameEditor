@@ -12,8 +12,10 @@
 #include "IPointLightOnMapService.h"
 #include "PointLight.h"
 
+
 class Camera;
 class LightininigSystem;
+class D3DConfigurer;
 
 class MapEditorViewModel : public QObject
 {

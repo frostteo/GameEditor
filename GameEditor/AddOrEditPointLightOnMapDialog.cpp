@@ -1,4 +1,5 @@
 #include "AddOrEditPointLightOnMapDialog.h"
+#include "PointLightShadowDirection.h"
 
 AddOrEditPointLightOnMapDialog::AddOrEditPointLightOnMapDialog(QWidget *parent)
     : QDialog(parent)

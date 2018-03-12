@@ -3,14 +3,6 @@
 
 const float PointLight::SHADOW_NEAR_PLANE = 5.0f;
 
-PointLight::PointLight()
-{
-  m_pointLightShadowDepthBuffer = nullptr;
-  m_pointLightShadowDSV = nullptr;
-  m_pointLightShadowSRV = nullptr;
-}
-
-
 PointLight::~PointLight()
 {
   if (m_pointLightShadowDepthBuffer)
@@ -168,7 +160,7 @@ void PointLight::SetPosition(float x, float y, float z)
   RebuildCubeViewProjection(worldPosition);
 }
 
-void PointLight::RebuildCubeViewProjection(XMFLOAT3 worldPosition)
+void PointLight::RebuildCubeViewProjection(XMFLOAT3 worldPosition) const
 {
   XMMATRIX lightProjection, positionMatrix, spotView, toShadow;
 
@@ -207,7 +199,7 @@ void PointLight::RebuildCubeViewProjection(XMFLOAT3 worldPosition)
   m_oldWorldPosition = worldPosition;
 }
 
-XMMATRIX* PointLight::GetCubeViewProjection()
+XMMATRIX* PointLight::GetCubeViewProjection() const
 {
   XMFLOAT3 worldPosition = this->GetWorldPosition();
 
@@ -230,7 +222,7 @@ void PointLight::RebuildPerspectiveValues()
   m_lightPerspectiveValues = XMFLOAT2(lightProjectionReadable._33, lightProjectionReadable._43);
 }
 
-XMFLOAT2 PointLight::GetLightPerspectiveValues()
+XMFLOAT2 PointLight::GetLightPerspectiveValues() const
 {
   return m_lightPerspectiveValues;
 }
@@ -263,7 +255,7 @@ void PointLight::RebuildWorldMatrix() const
   m_20percentLightVolumeMatrix = XMMatrixScaling(radius20Percent, radius20Percent, radius20Percent) * m_translationMatrix;
 }
 
-void PointLight::Get20PercentLightVolumeMatrix(XMMATRIX& lightVolume)
+void PointLight::Get20PercentLightVolumeMatrix(XMMATRIX& lightVolume) const
 {
   if (NeedRebuildWorldMatrix())
   {

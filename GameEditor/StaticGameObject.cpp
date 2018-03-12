@@ -1,7 +1,7 @@
 #include "StaticGameObject.h"
 #include "Model.h"
 
-void StaticGameObject::SetModel(Model* model)
+void StaticGameObject::SetModel(const Model* model)
 {
   m_model = model;
   RebuildBBInWorldCoord();

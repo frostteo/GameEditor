@@ -4,7 +4,8 @@
 #include <QDialog>
 #include "ui_AddOrEditPointLightOnMapDialog.h"
 #include "PointLightOnMapDbInfo.h"
-#include "PointLightShadowDirection.h"
+
+enum PointLightShadowDirection;
 
 class AddOrEditPointLightOnMapDialog : public QDialog, public Ui::AddOrEditPointLightOnMapDialog
 {
