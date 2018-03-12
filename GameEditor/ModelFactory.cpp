@@ -20,7 +20,6 @@ ModelFactory* ModelFactory::Initialize(ID3D11Device* device, MaterialFactory* ma
 
 Model* ModelFactory::GetNewResource(const std::string& filename)
 {
-  bool result;
   Model* newModel = new Model(filename, m_device, *m_materialFactory);
   return newModel;
 }

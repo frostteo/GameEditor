@@ -4,6 +4,7 @@
 #include "ConfigurePLRelPosControl.h"
 #include "PointLightDbInfo.h"
 #include "DependencyResolver.h"
+#include "StaticGameObject.h"
 
 class ConfigurePLRelativePosWidget :
   public QtDirectXWidget

@@ -2,9 +2,15 @@
 #include "Camera.h"
 #include "LightininigSystem.h"
 #include "PointLight.h"
+#include "PointLightVolumeGridObject.h"
+#include "UnfrozenDrawableBBFactory.h"
+#include "FrozenDrawableBBFactory.h"
 
 MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent)
-  : QtDirectXWidget(pathToModels, pathToMaterials, parent)
+  : QtDirectXWidget(pathToModels, pathToMaterials, parent),
+  m_pointLightVolumeGridObject(new PointLightVolumeGridObject(m_graphicSystem->GetDevice())),
+  m_unfrozedDrawableBBFactory(new UnfrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory())),
+  m_frozedDrawableBBFactory(new FrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory()))
 {
   this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
   this->setWindowTitle("Map editor");
@@ -17,8 +23,12 @@ MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, QString pathToM
   m_inputSystem->AddInputListener(m_mapEditorControl);
 
   EnableTestLightining(mapEditorPreferences->GetUseTestLightiningFlag());
-  m_pointLightVolumeGridObject.InitializeBuffers(m_graphicSystem->GetDevice());
+
+  //m_pointLightVolumeGridObject = std::unique_ptr<PointLightVolumeGridObject>());
   SetAmbientLight(mapEditorPreferences->GetRedAmbientLightColor(), mapEditorPreferences->GetBlueAmbientLightColor(), mapEditorPreferences->GetBlueAmbientLightColor());
+
+  /*m_unfrozedDrawableBBFactory = std::unique_ptr<UnfrozenDrawableBBFactory>(new UnfrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory()));*/
+  //m_frozedDrawableBBFactory = std::unique_ptr<FrozenDrawableBBFactory>(new FrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory()));
 }
 
 MapEditor::~MapEditor()
@@ -48,9 +58,8 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
   m_mapEditorViewModel->GetSelectedSgos(&m_selectedSgos);
   for (auto sgo : m_selectedSgos)
   {
-    sgo->GetDrawableBoundingBox()->InitializeBuffers(m_graphicSystem->GetDevice(), sgo->isFrozen);
     sgo->GetWorldMatrix(worldMatrix);
-    m_graphicSystem->AddGridToRenderList(sgo->GetDrawableBoundingBox(), worldMatrix);
+    m_graphicSystem->AddGridToRenderList(GetSGODrawableBB(sgo->GetModel()->GetName(), sgo->isFrozen), worldMatrix);
   }
 
   static int counter = 0;
@@ -66,12 +75,12 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
     for (auto pointLight : *m_lightininigSystem->GetPointLightsNonCastShadows())
     {
       pointLight->Get20PercentLightVolumeMatrix(worldMatrix);
-      m_graphicSystem->AddGridToRenderList(&m_pointLightVolumeGridObject, worldMatrix);
+      m_graphicSystem->AddGridToRenderList(m_pointLightVolumeGridObject.get(), worldMatrix);
     }
     for (auto pointLight : *m_lightininigSystem->GetPointLightsCastShadows())
     {
       pointLight->Get20PercentLightVolumeMatrix(worldMatrix);
-      m_graphicSystem->AddGridToRenderList(&m_pointLightVolumeGridObject, worldMatrix);
+      m_graphicSystem->AddGridToRenderList(m_pointLightVolumeGridObject.get(), worldMatrix);
     }
   }
   else
@@ -93,6 +102,14 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
 
   // trigger another update as soon as possible 
   update();
+}
+
+GridObject* MapEditor::GetSGODrawableBB(const std::string& modelName, bool isFrozen)
+{
+  if (isFrozen)
+    return m_frozedDrawableBBFactory->GetResource(modelName);
+
+  return m_unfrozedDrawableBBFactory->GetResource(modelName);
 }
 
 void MapEditor::EnableTestLightining(bool testLightining)

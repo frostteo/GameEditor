@@ -3,11 +3,11 @@
 #include <cstdlib>
 #include <math.h>
 #include "InputListener.h"
-#include "StaticGameObject.h"
 #include "MapEditorPreferences.h"
 
 class Logger;
 class Camera;
+class StaticGameObject;
 
 class PreviewGameObject :
   public InputListener

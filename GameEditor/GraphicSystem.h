@@ -10,14 +10,13 @@
 #include "MaterialFactory.h"
 #include "TextureFactory.h"
 #include "ShaderFactory.h"
-#include "GridObject.h"
-#include "StaticGameObject.h"
 #include "PointLightDefferedParameters.h"
 
 class Logger;
 class LightininigSystem;
 class Camera;
 class Mesh;
+class GridObject;
 
 class GraphicSystem
 {

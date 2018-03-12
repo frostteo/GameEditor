@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "DrawableBoundingBox.h"
 
 class Model;
 
@@ -8,13 +7,12 @@ class StaticGameObject :
   public GameObject
 {
 private:
-  Model* m_model;
-  DrawableBoundingBox m_drawableBoundingBox;
+  Model* m_model = nullptr;
 public:
-  int uniqueId;
+  int uniqueId = 0;
 
-  int dbInfoId;
-  bool isFrozen;
+  int dbInfoId = 0;
+  bool isFrozen = false;
   bool castShadows = true;
 protected:
   virtual void RebuildBBInWorldCoord() const override;
@@ -23,6 +21,5 @@ public:
   virtual ~StaticGameObject() = default;
   const Model* GetModel() const { return m_model; }
   void SetModel(Model* model);
-  DrawableBoundingBox* GetDrawableBoundingBox() { return &m_drawableBoundingBox; }
 };
 

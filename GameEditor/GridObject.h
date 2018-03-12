@@ -2,18 +2,21 @@
 
 #include <d3d11.h>
 #include <directxmath.h>
+#include "DrawableIndexed.h"
 
 class Logger;
 
 using namespace DirectX;
 
-class GridObject
+struct GridVertex {
+  XMFLOAT3 position;
+  XMFLOAT3 color;
+};
+
+class GridObject : public DrawableIndexed<GridVertex>
 {
 public:
-  GridObject();
-  virtual ~GridObject();
-
-  virtual void PrepareToRender(ID3D11DeviceContext* deviceContext) = 0;
-  virtual int GetIndexCount() = 0;
+  GridObject() = default;
+  virtual ~GridObject() = default;
 };
 

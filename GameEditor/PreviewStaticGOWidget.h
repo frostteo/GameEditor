@@ -9,6 +9,7 @@
 #include "QtUtils.h"
 #include "QtDirectXWidget.h"
 #include "GEMath.h"
+#include "StaticGameObject.h"
 
 class PreviewStaticGOWidget : public QtDirectXWidget, public Ui::PreviewStaticGOWidget
 {

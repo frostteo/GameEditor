@@ -1,9 +1,14 @@
 #pragma once
 
 #include <map>
-#include "StaticGameObject.h"
+#include <d3d11.h>
+#include <DirectXMath.h>
+#include "BoundingBox.h"
+
+using namespace DirectX;
 
 class OctoTree;
+class StaticGameObject;
 
 class OctoTreeNode
 {

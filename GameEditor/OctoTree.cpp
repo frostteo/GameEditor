@@ -3,6 +3,7 @@
 #include "AxisAlignedBBHelper.h"
 #include "Camera.h"
 #include "CameraFrustrum.h"
+#include "StaticGameObject.h"
 
 const float OctoTree::MIN_HALF_LENGTH = 64.0f;
 

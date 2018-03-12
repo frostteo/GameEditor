@@ -19,7 +19,7 @@ using namespace DirectX;
 class Model : private Uncopyable
 {
 protected:
-  std::string m_fileName;
+  const std::string m_fileName;
   std::vector<std::unique_ptr<Mesh> > m_meshes;
   std::unique_ptr<BoundingBox> m_boundingBox;
 protected:
@@ -45,5 +45,6 @@ public:
   int GetMeshCount() const { return m_meshes.size(); }
   const BoundingBox* GetBoundingBox() const { return m_boundingBox.get(); }
   virtual ~Model();
+  const std::string GetName() const { return m_fileName; }
 };
 

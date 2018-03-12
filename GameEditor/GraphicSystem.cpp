@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include "Mesh.h"
+#include "GridObject.h"
 
 const std::string GraphicSystem::GRID_SHADER_NAME = "grid";
 const std::string GraphicSystem::DEPTH_BUFFER_SHADER_NAME = "depthBuffer";
