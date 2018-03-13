@@ -1,3 +1,21 @@
+*.obj
+x64
+*.user
+*.filters
+*.vspscc
+*.vcxproj
 GameEditor/gameEditorLog.txt
 *.opensdf
+*.sln
+*.sdf
+*.pro
+*.lib
+*.suo
+*.pdb
+*.idb
+*.log
+*.tlog
 *.exe
+*.ilk
+*.mtl
+GameEditor/obj models
