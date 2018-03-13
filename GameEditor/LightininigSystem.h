@@ -22,15 +22,15 @@ public:
   void SetAmbientColor(float red, float green, float blue, float alpha) { m_ambientColor = XMVectorSet(red, green, blue, alpha); }
   void SetDirectLightColor(float red, float green, float blue, float alpha) { m_directLightColor = XMVectorSet(red, green, blue, alpha); }
   void SetDirectLightDirection(float x, float y, float z)  { m_directLightDirection = XMFLOAT3(x, y, z); }
-  XMVECTOR& GetAmbientColor() { return m_ambientColor; }
-  XMVECTOR& GetDirectLightColor() { return m_directLightColor; }
-  XMFLOAT3& GetDirectLightDirection() { return m_directLightDirection; }
+  XMVECTOR GetAmbientColor() const { return m_ambientColor; }
+  XMVECTOR GetDirectLightColor() const { return m_directLightColor; }
+  XMFLOAT3 GetDirectLightDirection() const { return m_directLightDirection; }
   void AddPointLight(PointLight* pointLight);
   const std::vector<PointLight*>* GetPointLightsNonCastShadows() const { return &m_pointLightsNonCastShadows; }
   const std::vector<PointLight*>* GetPointLightsCastShadows() const { return &m_pointLightsCastShadows; }
   void ClearLights();
-  LightininigSystem();
-  virtual ~LightininigSystem();
+  LightininigSystem() = default;
+  virtual ~LightininigSystem() = default;
   void SetPointLightToRenderSelector(bool castShadow, int index);
   PointLight* GetPointLightToRender() const;
 };

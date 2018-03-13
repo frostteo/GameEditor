@@ -19,12 +19,12 @@ protected:
   ConfigurePLRelativePosWidget* m_configurePLRelativePosWidget;
   float m_timeInSecondsBetweenFrames;
 protected:
-  void RotateCameraAroundSGO(InputState* inputState);
-  void MovePointLight(InputState* inputState);
-  void ZoomCamera(InputState* inputState);
+  void RotateCameraAroundSGO(const InputState* inputState);
+  void MovePointLight(const InputState* inputState);
+  void ZoomCamera(const InputState* inputState);
 public:
   ConfigurePLRelPosControl(ConfigurePLRelativePosWidget* configurePLRelativePosWidget, Camera* camera, StaticGameObject* pointLightSgo, MapEditorPreferences* preferences);
   virtual ~ConfigurePLRelPosControl();
-  virtual void ProcessUserInput(InputState* inputState) override;
+  virtual void ProcessUserInput(const InputState* inputState) override;
 };
 

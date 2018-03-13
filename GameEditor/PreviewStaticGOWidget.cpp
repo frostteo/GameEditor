@@ -16,7 +16,7 @@ bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND h
 
 PreviewStaticGOWidget::~PreviewStaticGOWidget()
 {
-  Shutdown();
+  
 }
 
 void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGameObject)
@@ -26,14 +26,10 @@ void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGam
   m_sgo = StaticGameObject();
   m_sgo.SetModel(GetModel(staticGameObject.modelFileName.toStdString()));
 
-  PreviewGameObject* previewGameObject = new PreviewGameObject(m_Camera.get(), &m_sgo, m_mapEditorPreferences);
-  GEMath::LookToObjectFromWorldFront(m_Camera.get(), &m_sgo);
+  std::shared_ptr<PreviewGameObject> previewGameObject(new PreviewGameObject(m_Camera.get(), &m_sgo, m_mapEditorPreferences));
   m_inputSystem->AddInputListener(previewGameObject);
-}
 
-void PreviewStaticGOWidget::Shutdown()
-{
-  QtDirectXWidget::Shutdown();
+  GEMath::LookToObjectFromWorldFront(m_Camera.get(), &m_sgo);
 }
 
 void PreviewStaticGOWidget::paintEvent(QPaintEvent* evt) {

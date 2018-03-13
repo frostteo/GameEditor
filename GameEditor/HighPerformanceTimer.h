@@ -13,12 +13,12 @@ private:
   INT64 m_startTime;
   float m_frameTime;
 public:
-  HighPerformanceTimer();
-  virtual ~HighPerformanceTimer();
+  HighPerformanceTimer() = default;
+  virtual ~HighPerformanceTimer() = default;
 
   void Initialize();
   void Frame();
 
-  float GetTime();
+  float GetTime() const;
 };
 

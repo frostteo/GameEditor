@@ -36,17 +36,12 @@ protected:
   std::unique_ptr<GraphicSystem> m_graphicSystem;
 
 protected:
-  /** Destroys the D3D environment */
-  void Shutdown();
-
-  /** paints the scene */
   virtual void paintEvent(QPaintEvent* pEvent);
   Model* GetModel(const std::string& modelName);
 public:
-  QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
+  QtDirectXWidget(const QString& pathToModels, const QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
   ~QtDirectXWidget();
-
-  /** Initialized the D3D environment */
+  
   bool Initialize(int screenWidth, int screenHeight, HWND hwnd);
 
   ModelFactory* GetModelFactory() { m_graphicSystem->GetModelFactory(); }

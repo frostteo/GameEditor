@@ -9,7 +9,7 @@ enum MouseButtons
   WheelMouseBtn = 2
 };
 
-struct InputState
+struct InputState final
 {
   friend class InputSystem;
 protected:
@@ -25,38 +25,38 @@ public:
   int mouseXCoor = 0;
   int mouseYCoor = 0;
   DIMOUSESTATE m_mouseState;
-  bool IsKeyDown(BYTE key) { return m_keyboardState[key] & 0x80; }
-  bool IsKeyUp(BYTE key) { return !(m_keyboardState[key] & 0x80); }
-  bool IsMouseBtnDown(MouseButtons btn) { return m_mouseState.rgbButtons[btn]; }
-  bool IsMouseBtnUp(MouseButtons btn) { return !(m_mouseState.rgbButtons[btn]); }
-  bool IsKeyPressed(BYTE key)
+  bool IsKeyDown(BYTE key) const { return m_keyboardState[key] & 0x80; }
+  bool IsKeyUp(BYTE key) const { return !(m_keyboardState[key] & 0x80); }
+  bool IsMouseBtnDown(MouseButtons btn) const { return m_mouseState.rgbButtons[btn]; }
+  bool IsMouseBtnUp(MouseButtons btn) const{ return !(m_mouseState.rgbButtons[btn]); }
+  bool IsKeyPressed(BYTE key) const
   {
     if (m_keyboardState[key] & 0x80 && !(m_previousKeyboardState[key] & 0x80))
       return true;
 
     return false;
   }
-  bool IsMouseBtnPressed(MouseButtons btn)
+  bool IsMouseBtnPressed(MouseButtons btn) const
   {
     if (m_mouseState.rgbButtons[btn] && !(m_previousMouseBtnState[btn]))
       return true;
 
     return false;
   }
-  bool IsKeyReleased(BYTE key)
+  bool IsKeyReleased(BYTE key) const
   {
     if (!(m_keyboardState[key] & 0x80) && m_previousKeyboardState[key] & 0x80)
       return true;
 
     return false;
   }
-  bool IsMouseBtnReleased(MouseButtons btn)
+  bool IsMouseBtnReleased(MouseButtons btn) const
   {
     if (!(m_mouseState.rgbButtons[btn]) && m_previousMouseBtnState[btn])
       return true;
 
     return false;
   }
-  InputState() {}
-  virtual ~InputState();
+  InputState() = default;
+  ~InputState() = default;
 };

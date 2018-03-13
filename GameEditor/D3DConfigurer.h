@@ -8,8 +8,8 @@
 #include <directxmath.h>
 #include <memory>
 #include <string>
-
 #include "GBuffer.h"
+
 class Logger;
 
 using namespace DirectX;
@@ -20,34 +20,34 @@ private:
   bool m_vsync_enabled;
   int m_videoCardMemorySize;
   std::wstring m_videoCardDescription;
-  IDXGISwapChain* m_swapChain;
-  ID3D11Device* m_device;
-  ID3D11DeviceContext* m_deviceContext;
-  ID3D11RenderTargetView* m_renderTargetView;
+  IDXGISwapChain* m_swapChain = nullptr;
+  ID3D11Device* m_device = nullptr;
+  ID3D11DeviceContext* m_deviceContext = nullptr;
+  ID3D11RenderTargetView* m_renderTargetView = nullptr;
 
-  ID3D11Texture2D* m_depthStencilBuffer;
-  ID3D11DepthStencilState* m_depthStencilState;
-  ID3D11DepthStencilState* m_depthDisabledStencilState;
+  ID3D11Texture2D* m_depthStencilBuffer = nullptr;
+  ID3D11DepthStencilState* m_depthStencilState = nullptr;
+  ID3D11DepthStencilState* m_depthDisabledStencilState = nullptr;
 
-  ID3D11DepthStencilView* m_depthStencilView;
+  ID3D11DepthStencilView* m_depthStencilView = nullptr;
   
-  ID3D11BlendState* m_alphaEnableBlendingState;
-  ID3D11BlendState* m_alphaDisableBlendingState;
-  ID3D11BlendState* m_additiveBlendingState;
+  ID3D11BlendState* m_alphaEnableBlendingState = nullptr;
+  ID3D11BlendState* m_alphaDisableBlendingState = nullptr;
+  ID3D11BlendState* m_additiveBlendingState = nullptr;
 
   D3D11_VIEWPORT m_viewport;
 
-  ID3D11RasterizerState* m_cullNoneRasterState;
-  ID3D11RasterizerState* m_cullBackRasterState;
-  ID3D11RasterizerState* m_cullFrontRasterState;
+  ID3D11RasterizerState* m_cullNoneRasterState = nullptr;
+  ID3D11RasterizerState* m_cullBackRasterState = nullptr;
+  ID3D11RasterizerState* m_cullFrontRasterState = nullptr;
 
-  ID3D11DepthStencilState* m_depthStencilLightVolumeState;
-  ID3D11DepthStencilState* m_depthStencilDefferedLightState;
-  ID3D11DepthStencilState* m_greaterEqualReadonlyDepthStensilState;
+  ID3D11DepthStencilState* m_depthStencilLightVolumeState = nullptr;
+  ID3D11DepthStencilState* m_depthStencilDefferedLightState = nullptr;
+  ID3D11DepthStencilState* m_greaterEqualReadonlyDepthStensilState = nullptr;
 
   std::unique_ptr<GBuffer> m_gbuffer;
 
-  ID3D11RasterizerState* m_pointLightShadowRS;
+  ID3D11RasterizerState* m_pointLightShadowRS = nullptr;
   D3D11_VIEWPORT m_pointLightShadowViewports[6];
 protected:
   void InitializeDefferedLightingStructures();
@@ -55,7 +55,7 @@ protected:
 public:
   static const int SHADOW_MAP_SIZE;
 public:
-  D3DConfigurer();
+  D3DConfigurer() = default;
   virtual ~D3DConfigurer();
 
   bool Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen);

@@ -4,6 +4,8 @@
 #include <string>
 #include "InputState.h"
 
+class InputState;
+
 class InputListener
 {
 protected:
@@ -11,8 +13,8 @@ protected:
 public:
   InputListener();
   virtual ~InputListener();
-  virtual void ProcessUserInput(InputState* inputState) = 0;
+  virtual void ProcessUserInput(const InputState* inputState) = 0;
   bool operator== (const InputListener& other) const { return this->m_name == other.m_name; }
-  std::string GetName() { return m_name; }
+  const std::string GetName() const { return m_name; }
 };
 

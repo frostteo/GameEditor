@@ -2,10 +2,15 @@
 #include "LightininigSystem.h"
 #include "Camera.h"
 
-QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, QWidget *parent)
+QtDirectXWidget::QtDirectXWidget(const QString& pathToModels, const QString& pathToMaterials, QWidget *parent)
   : QWidget(parent),
   m_pathToModels(pathToModels.toStdString()), 
-  m_pathToMaterials(pathToMaterials.toStdString())
+  m_pathToMaterials(pathToMaterials.toStdString()),
+  m_inputSystem(nullptr),
+  m_Camera(nullptr),
+  m_shaderConfiguration(nullptr),
+  m_lightininigSystem(nullptr),
+  m_graphicSystem(nullptr)
 {
   m_screenDepth = 10000.0f;
 
@@ -29,7 +34,7 @@ QtDirectXWidget::QtDirectXWidget(QString pathToModels, QString pathToMaterials, 
 
 QtDirectXWidget::~QtDirectXWidget()
 {
-  Shutdown();
+  
 }
 
 bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
@@ -68,11 +73,6 @@ bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
   m_inputSystem->Initialize(GetModuleHandle(NULL), hwnd);
   
   return true;
-}
-
-void QtDirectXWidget::Shutdown()
-{
-
 }
 
 void QtDirectXWidget::paintEvent(QPaintEvent* evt) {

@@ -1,9 +1,15 @@
 #include "InputSystem.h"
 #include "Logger.h"
+#include "HighPerformanceTimer.h"
 
 InputSystem::InputSystem()
+  : m_listenersList(),
+  m_directInput(nullptr),
+  m_keyboard(nullptr),
+  m_mouse(nullptr),
+  m_inputState(),
+  m_timer(new HighPerformanceTimer)
 {
-  m_timer = std::unique_ptr<HighPerformanceTimer>(new HighPerformanceTimer);
 }
 
 InputSystem::~InputSystem()
@@ -146,33 +152,16 @@ void InputSystem::Frame()
 
 void InputSystem::RemoveInputListener(const std::string name)
 {
-  auto lambda = [name](InputListener* listener) -> bool { return listener->GetName() == name; };
-
-  std::list<InputListener*>::iterator findIter = std::find_if(m_listenersList.begin(), m_listenersList.end(), lambda);
-  InputListener* temp = (*findIter);
+  auto lambda = [name](std::shared_ptr<InputListener> listener) -> bool { return listener->GetName() == name; };
   m_listenersList.remove_if(lambda);
-  delete temp;
-  temp = nullptr;
+}
+
+void InputSystem::RemoveInputListener(std::shared_ptr<InputListener> inputListener)
+{
+  m_listenersList.remove(inputListener);
 }
 
 void InputSystem::ClearListenersList()
 {
-  for (auto listener : m_listenersList)
-  {
-    if (listener)
-    {
-      delete listener;
-      listener = nullptr;
-    }
-  }
   m_listenersList.clear();
-}
-
-void InputSystem::RemoveInputListener(InputListener* inputListener)
-{
-  std::list<InputListener*>::iterator findIter = std::find(m_listenersList.begin(), m_listenersList.end(), inputListener);
-  InputListener* temp = (*findIter);
-  m_listenersList.remove(inputListener);
-  delete temp;
-  temp = nullptr;
 }

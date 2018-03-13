@@ -10,14 +10,15 @@ ConfigurePLRelativePosWidget::ConfigurePLRelativePosWidget(MapEditorPreferences*
 
   m_pointLightSgo.SetModel(GetModel(defautPointLightSgo.modelFileName.toStdString()));
   m_pointLightSgo.SetParent(&m_sgo);
-  m_control = new ConfigurePLRelPosControl(this, m_Camera.get(), &m_pointLightSgo, m_mapEditorPreferences);
-  m_inputSystem->AddInputListener(m_control);
+  
+  std::shared_ptr<ConfigurePLRelPosControl> control(new ConfigurePLRelPosControl(this, m_Camera.get(), &m_pointLightSgo, m_mapEditorPreferences));
+  m_inputSystem->AddInputListener(control);
 }
 
 
 ConfigurePLRelativePosWidget::~ConfigurePLRelativePosWidget()
 {
-  Shutdown();
+  
 }
 
 void ConfigurePLRelativePosWidget::SetPointLight(PointLightDbInfo& pointLight)

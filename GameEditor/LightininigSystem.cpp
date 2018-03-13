@@ -2,14 +2,6 @@
 #include "Logger.h"
 #include "PointLight.h"
 
-LightininigSystem::LightininigSystem()
-{
-}
-
-LightininigSystem::~LightininigSystem()
-{
-}
-
 void LightininigSystem::AddPointLight(PointLight* pointLight)
 {
   if (pointLight->castShadows)

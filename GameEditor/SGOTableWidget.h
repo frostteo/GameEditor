@@ -47,7 +47,7 @@ public slots:
   void UpdateTable();
   void CountOnMapChanged(int id);
 public:
-    SGOTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
+  SGOTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
     ~SGOTableWidget();
     void SetPathToModels(QString& path) { m_pathToModels = path; }
     void SetPathToMaterials(QString& path) { m_pathToMaterials = path; }

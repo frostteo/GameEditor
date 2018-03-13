@@ -26,6 +26,6 @@ public:
   void SetCamera(Camera* camera) { m_camera = camera; }
   void SetSGO(StaticGameObject* sgo) { m_sgo = sgo; }
   void SetMapEditorPreferences(MapEditorPreferences* preferences) { m_preferences = preferences; }
-  virtual void ProcessUserInput(InputState* inputState) override;
+  virtual void ProcessUserInput(const InputState* inputState) override;
 };
 

@@ -14,7 +14,6 @@ private:
   MapEditorPreferences* m_mapEditorPreferences;
   StaticGameObject m_sgo;
   StaticGameObject m_pointLightSgo;
-  ConfigurePLRelPosControl* m_control;
 
   int m_pointLightId;
 protected:

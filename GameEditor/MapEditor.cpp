@@ -18,7 +18,7 @@ MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, QString pathToM
 
   m_mapEditorViewModel = std::make_unique<MapEditorViewModel>();
   m_mapEditorViewModel->Initialize(pathToModels.toStdString(), m_graphicSystem->GetModelFactory(), mapEditorPreferences, m_graphicSystem->GetD3dConfigurer());
-  m_mapEditorControl = new MapEditorControl(m_mapEditorViewModel.get(), &m_visibleSgos, m_Camera.get());
+  m_mapEditorControl = std::shared_ptr<MapEditorControl>(new MapEditorControl(m_mapEditorViewModel.get(), &m_visibleSgos, m_Camera.get()));
   m_inputSystem->AddInputListener(m_mapEditorControl);
 
   EnableTestLightining(mapEditorPreferences->GetUseTestLightiningFlag());

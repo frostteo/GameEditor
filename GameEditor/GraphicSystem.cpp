@@ -60,7 +60,7 @@ MaterialFactory* GraphicSystem::GetMaterialFactory()
   return m_materialFactory.get();
 }
 
-void GraphicSystem::AddModelToRenderList(const Model& model, XMMATRIX& worldMatrix, bool castShadows)
+void GraphicSystem::AddModelToRenderList(const Model& model, const XMMATRIX& worldMatrix, const bool castShadows)
 {
   for (int i = 0; i < model.GetMeshCount(); ++i)
   {
@@ -70,7 +70,7 @@ void GraphicSystem::AddModelToRenderList(const Model& model, XMMATRIX& worldMatr
   }
 }
 
-void GraphicSystem::Render(Camera* camera, LightininigSystem* lightiningSystem)
+void GraphicSystem::Render(const Camera* camera, LightininigSystem* lightiningSystem)
 {
   XMMATRIX viewMatrix, projectionMatrix;
 
@@ -160,9 +160,9 @@ void GraphicSystem::DrawGrids(XMMATRIX& viewMatrix, XMMATRIX& projectionMatrix)
   m_gridObjectRenderList.clear();
 }
 
-void GraphicSystem::AddGridToRenderList(GridObject* gridObject, XMMATRIX& worldMatrix)
+void GraphicSystem::AddGridToRenderList(const GridObject* gridObject, const XMMATRIX& worldMatrix)
 {
-  m_gridObjectRenderList.push_back(std::pair<XMMATRIX, GridObject*>(worldMatrix, gridObject));
+  m_gridObjectRenderList.push_back(std::pair<const XMMATRIX, const GridObject*>(worldMatrix, gridObject));
 }
 
 void GraphicSystem::GeneratePointLightShadows(LightininigSystem* lightiningSystem)
@@ -199,7 +199,7 @@ void GraphicSystem::GeneratePointLightShadows(LightininigSystem* lightiningSyste
   }
 }
 
-void GraphicSystem::RenderDefferedTesselatedWithShadows(Camera* camera, LightininigSystem* lightiningSystem)
+void GraphicSystem::RenderDefferedTesselatedWithShadows(const Camera* camera, LightininigSystem* lightiningSystem)
 {
   XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
   XMMATRIX spaceMatrix;
@@ -273,7 +273,7 @@ void GraphicSystem::RenderDefferedTesselatedWithShadows(Camera* camera, Lightini
   m_direct3D->EndScene();
 }
 
-void GraphicSystem::RenderDefferedTesselatedWithoutShadows(Camera* camera, LightininigSystem* lightiningSystem)
+void GraphicSystem::RenderDefferedTesselatedWithoutShadows(const Camera* camera, LightininigSystem* lightiningSystem)
 {
   XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
   XMMATRIX spaceMatrix;
@@ -341,7 +341,7 @@ void GraphicSystem::RenderDefferedTesselatedWithoutShadows(Camera* camera, Light
 }
 
 
-void GraphicSystem::RenderDefferedStencilVolume(Camera* camera, LightininigSystem* lightiningSystem)
+void GraphicSystem::RenderDefferedStencilVolume(const Camera* camera, LightininigSystem* lightiningSystem)
 {
   XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
   XMMATRIX spaceMatrix;

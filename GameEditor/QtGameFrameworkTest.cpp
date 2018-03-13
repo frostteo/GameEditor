@@ -80,7 +80,7 @@ bool QtGameFrameworkTest::Initialize(int screenWidth, int screenHeight, HWND hwn
   m_inputSystem = new InputSystem();
   m_inputSystem->Initialize(GetModuleHandle(NULL), hwnd);
 
-  PreviewGameObject* previewGameObject = new PreviewGameObject(m_Camera, &m_sgo, m_mapEditorPreferences.get());
+  std::shared_ptr<PreviewGameObject> previewGameObject(new PreviewGameObject(m_Camera, &m_sgo, m_mapEditorPreferences.get()));
   previewGameObject->SetCamera(m_Camera);
   previewGameObject->SetSGO(&m_sgo);
   m_inputSystem->AddInputListener(previewGameObject);

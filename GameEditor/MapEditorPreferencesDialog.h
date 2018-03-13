@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <QDialog>
 #include "ui_MapEditorPreferencesDialog.h"
 #include "MapEditorPreferences.h"

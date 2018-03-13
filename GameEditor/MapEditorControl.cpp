@@ -141,7 +141,7 @@ void MapEditorControl::ClonePointLight(int id)
   }
 }
 
-void MapEditorControl::ProcessUserInput(InputState* inputState)
+void MapEditorControl::ProcessUserInput(const InputState* inputState)
 {
   if (m_camera)
   {
@@ -241,7 +241,7 @@ void MapEditorControl::SaveChangedRotationsInDB()
   }
 }
 
-void MapEditorControl::RotateCameraAroundObject(InputState* inputState)
+void MapEditorControl::RotateCameraAroundObject(const InputState* inputState)
 {
   const float angleDirectCameraToObject = 0.05f;
   XMMATRIX newCameraMatrix;
@@ -344,7 +344,7 @@ void MapEditorControl::CalculateDifferenceWithPoint(std::map<int, XMFLOAT3>* dif
   }
 }
 
-void MapEditorControl::MoveObjects(InputState* inputState)
+void MapEditorControl::MoveObjects(const InputState* inputState)
 {
   if (AllSelectedObjectsAreFrozen())
     return;
@@ -430,7 +430,7 @@ void MapEditorControl::MoveObjects(InputState* inputState)
   m_sgoTranslated = true;
 }
 
-void MapEditorControl::RotateObjects(InputState* inputState)
+void MapEditorControl::RotateObjects(const InputState* inputState)
 {
   if (AllSelectedObjectsAreFrozen())
     return;
@@ -515,7 +515,7 @@ void MapEditorControl::RotateObjects(InputState* inputState)
   m_sgoRotated = true;
 }
 
-void MapEditorControl::MoveCamera(InputState* inputState)
+void MapEditorControl::MoveCamera(const InputState* inputState)
 {
   int deltaZ = inputState->m_mouseState.lZ;
 
@@ -536,7 +536,7 @@ void MapEditorControl::MoveCamera(InputState* inputState)
   }
 }
 
-void MapEditorControl::RotateCamera(InputState* inputState)
+void MapEditorControl::RotateCamera(const InputState* inputState)
 {
   float deltaX = inputState->m_mouseState.lX;
   float deltaY = inputState->m_mouseState.lY;
@@ -548,7 +548,7 @@ void MapEditorControl::RotateCamera(InputState* inputState)
   m_camera->ChangeXRotation(deltaY * m_mapEditorPreferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
 }
 
-void MapEditorControl::PickObject(InputState* inputState, int mouseXCoor, int mouseYCoor)
+void MapEditorControl::PickObject(const InputState* inputState, int mouseXCoor, int mouseYCoor)
 {
   XMMATRIX projectionMatrix;
   XMMATRIX cameraWorldMatrix;

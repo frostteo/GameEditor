@@ -1,15 +1,6 @@
 #include "HighPerformanceTimer.h"
 #include "Logger.h"
 
-HighPerformanceTimer::HighPerformanceTimer()
-{
-}
-
-
-HighPerformanceTimer::~HighPerformanceTimer()
-{
-}
-
 void HighPerformanceTimer::Initialize()
 {
   const int milisecondsInSecond = 1000;
@@ -39,7 +30,7 @@ void HighPerformanceTimer::Frame()
   m_startTime = currentTime;
 }
 
-float HighPerformanceTimer::GetTime()
+float HighPerformanceTimer::GetTime() const
 {
   return m_frameTime;
 }

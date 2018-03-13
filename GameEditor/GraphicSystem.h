@@ -25,9 +25,9 @@ private:
   {
     MeshRenderInfo(XMMATRIX worldMatrixArg, const Mesh* meshArg, bool castShadowsArg) : worldMatrix(worldMatrixArg), mesh(meshArg), castShadows(castShadowsArg) {}
 
-    XMMATRIX worldMatrix;
+    const XMMATRIX worldMatrix;
     const Mesh* mesh;
-    bool castShadows;
+    const bool castShadows;
   };
 private:
   const static std::string GRID_SHADER_NAME;
@@ -46,7 +46,7 @@ private:
   std::unique_ptr<MaterialFactory> m_materialFactory;
 
   std::map<std::string, std::map<std::string, std::vector<MeshRenderInfo>>> m_modelRenderList;
-  std::vector<std::pair<XMMATRIX, GridObject*> > m_gridObjectRenderList;
+  std::vector<std::pair<const XMMATRIX, const GridObject*> > m_gridObjectRenderList;
 
   std::string m_pathToModels;
   Mesh* m_pointLightMesh;
@@ -65,13 +65,13 @@ public:
   ShaderFactory* GetShaderFactory();
   MaterialFactory* GetMaterialFactory();
 
-  void AddModelToRenderList(const Model& model, XMMATRIX& worldMatrix, bool castShadow = true);
-  void AddGridToRenderList(GridObject* gridObject, XMMATRIX& worldMatrix);
+  void AddModelToRenderList(const Model& model, const XMMATRIX& worldMatrix, const bool castShadow = true);
+  void AddGridToRenderList(const GridObject* gridObject, const XMMATRIX& worldMatrix);
   ID3D11Device* GetDevice() { return m_direct3D->GetDevice(); }
-  void Render(Camera* camera, LightininigSystem* lightiningSystem);
-  void RenderDefferedStencilVolume(Camera* camera, LightininigSystem* lightiningSystem);
-  void RenderDefferedTesselatedWithShadows(Camera* camera, LightininigSystem* lightiningSystem);
-  void RenderDefferedTesselatedWithoutShadows(Camera* camera, LightininigSystem* lightiningSystem);
+  void Render(const Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDefferedStencilVolume(const Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDefferedTesselatedWithShadows(const Camera* camera, LightininigSystem* lightiningSystem);
+  void RenderDefferedTesselatedWithoutShadows(const Camera* camera, LightininigSystem* lightiningSystem);
 
   D3DConfigurer* GetD3dConfigurer() { return m_direct3D.get(); }
 };

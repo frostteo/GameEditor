@@ -44,13 +44,13 @@ public:
   bool m_objectsCountInVisibleAreaWasChanged = true;
 protected:
   bool RayAABBIntersect(XMFLOAT3& minPoint, XMFLOAT3& maxPoint, XMFLOAT3& position, XMFLOAT3& direction, float& result);
-  void PickObject(InputState* inputState, int mouseXCoor, int mouseYCoor);
-  void RotateCamera(InputState* inputState);
-  void MoveCamera(InputState* inputState);
-  void RotateObjects(InputState* inputState);
-  void MoveObjects(InputState* inputState);
+  void PickObject(const InputState* inputState, int mouseXCoor, int mouseYCoor);
+  void RotateCamera(const InputState* inputState);
+  void MoveCamera(const InputState* inputState);
+  void RotateObjects(const InputState* inputState);
+  void MoveObjects(const InputState* inputState);
 
-  void RotateCameraAroundObject(InputState* inputState);
+  void RotateCameraAroundObject(const InputState* inputState);
 
   XMMATRIX GetCameraMatrixRotateAroundTarget(XMVECTOR cameraPosition, XMVECTOR targetPoint, float deltaXRadians, float deltaYRadians);
 
@@ -74,7 +74,7 @@ public:
   MapEditorControl(MapEditorViewModel* mapEditorViewModel, std::vector<StaticGameObject*>* visibleSgos, Camera* camera);
   virtual ~MapEditorControl();
 
-  virtual void ProcessUserInput(InputState* inputState) override;
+  virtual void ProcessUserInput(const InputState* inputState) override;
 
   MapEditorViewModel* GetMapEditorViewModel() { return m_mapEditorViewModel; }
 

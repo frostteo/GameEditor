@@ -16,7 +16,7 @@ ConfigurePLRelPosControl::~ConfigurePLRelPosControl()
 {
 }
 
-void ConfigurePLRelPosControl::ProcessUserInput(InputState* inputState)
+void ConfigurePLRelPosControl::ProcessUserInput(const InputState* inputState)
 {
   m_timeInSecondsBetweenFrames = inputState->time * 0.001f;
   if (m_camera)
@@ -40,7 +40,7 @@ void ConfigurePLRelPosControl::ProcessUserInput(InputState* inputState)
   }
 }
 
-void ConfigurePLRelPosControl::RotateCameraAroundSGO(InputState* inputState)
+void ConfigurePLRelPosControl::RotateCameraAroundSGO(const InputState* inputState)
 {
   float deltaXRadians = XMConvertToRadians(inputState->m_mouseState.lX * m_preferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
   float deltaYRadians = XMConvertToRadians(inputState->m_mouseState.lY * m_preferences->GetCameraRotationSpeed() * m_timeInSecondsBetweenFrames);
@@ -53,7 +53,7 @@ void ConfigurePLRelPosControl::RotateCameraAroundSGO(InputState* inputState)
   m_camera->SetWorldMatrix(XMMatrixInverse(&helper, newCameraMatrix));
 }
 
-void ConfigurePLRelPosControl::MovePointLight(InputState* inputState)
+void ConfigurePLRelPosControl::MovePointLight(const InputState* inputState)
 {
   float deltaX = inputState->m_mouseState.lX * m_preferences->GetObjectMoveSpeed() * m_timeInSecondsBetweenFrames;
   float deltaY = inputState->m_mouseState.lY * m_preferences->GetObjectMoveSpeed() * m_timeInSecondsBetweenFrames;
@@ -95,7 +95,7 @@ void ConfigurePLRelPosControl::MovePointLight(InputState* inputState)
   m_pointLightSgo->SetPosition(plPosition.x, plPosition.y, plPosition.z);
 }
 
-void ConfigurePLRelPosControl::ZoomCamera(InputState* inputState)
+void ConfigurePLRelPosControl::ZoomCamera(const InputState* inputState)
 {
   int deltaZ = inputState->m_mouseState.lZ;
   XMFLOAT3 position = m_camera->GetPosition();

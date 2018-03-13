@@ -4,34 +4,6 @@
 
 const int D3DConfigurer::SHADOW_MAP_SIZE = 1024.0f;
 
-D3DConfigurer::D3DConfigurer()
-{
-  m_swapChain = nullptr;
-  m_device = nullptr;
-  m_deviceContext = nullptr;
-  m_renderTargetView = nullptr;
-  m_depthStencilBuffer = nullptr;
-  m_depthStencilState = nullptr;
-  m_depthStencilView = nullptr;
-  
-  m_depthDisabledStencilState = nullptr;
-  m_alphaEnableBlendingState = nullptr;
-  m_alphaDisableBlendingState = nullptr;
-  m_additiveBlendingState = nullptr;
-
-  m_cullNoneRasterState = nullptr;
-  m_cullFrontRasterState = nullptr;
-  m_cullBackRasterState = nullptr;
-
-  m_depthStencilLightVolumeState = nullptr;
-  m_depthStencilDefferedLightState = nullptr;
-
-  m_gbuffer = nullptr;
-
-  m_pointLightShadowRS = nullptr;
-}
-
-
 D3DConfigurer::~D3DConfigurer()
 {
   Shutdown();

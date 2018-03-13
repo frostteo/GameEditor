@@ -17,7 +17,7 @@ PreviewGameObject::~PreviewGameObject()
 {
 }
 
-void PreviewGameObject::ProcessUserInput(InputState* inputState)
+void PreviewGameObject::ProcessUserInput(const InputState* inputState)
 {
   m_timeInSecondsBetweenFrames = inputState->time * 0.001f;
   if (m_camera) 
