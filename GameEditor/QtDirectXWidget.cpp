@@ -1,14 +1,20 @@
 #include "QtDirectXWidget.h"
 #include "LightininigSystem.h"
 #include "Camera.h"
+#include "PathesToShaderSet.h"
+#include "ShaderConfiguration.h"
 
-QtDirectXWidget::QtDirectXWidget(const QString& pathToModels, const QString& pathToMaterials, QWidget *parent)
+QtDirectXWidget::QtDirectXWidget(
+  const std::string& pathToModels,
+  const std::string& pathToMaterials, 
+  const PathesToShaderSet& pathesToShaderSet,
+  QWidget *parent)
   : QWidget(parent),
-  m_pathToModels(pathToModels.toStdString()), 
-  m_pathToMaterials(pathToMaterials.toStdString()),
+  m_pathToModels(pathToModels), 
+  m_pathToMaterials(pathToMaterials),
   m_inputSystem(nullptr),
   m_Camera(nullptr),
-  m_shaderConfiguration(nullptr),
+  m_shaderConfiguration(new ShaderConfiguration(pathesToShaderSet)),
   m_lightininigSystem(nullptr),
   m_graphicSystem(nullptr)
 {
@@ -41,7 +47,6 @@ bool QtDirectXWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 {
   bool result;
 
-  m_shaderConfiguration = std::unique_ptr<ShaderConfiguration>(new ShaderConfiguration());
   m_shaderConfiguration->ConfigureForwardRenderer();
 
   m_graphicSystem = std::unique_ptr<GraphicSystem>(new GraphicSystem);

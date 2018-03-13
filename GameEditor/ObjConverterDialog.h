@@ -3,9 +3,9 @@
 #include <QDialog>
 #include <qfiledialog.h>
 #include "ui_ObjConverterDialog.h"
-#include "QtUtils.h"
-#include "ObjMeshConverter.h"
-#include "MtlMatLibConverter.h"
+
+class ObjMeshConverter;
+class MtlMatLibConverter;
 
 class ObjConverterDialog : public QDialog, public Ui::ObjConverterDialog
 {
@@ -13,14 +13,11 @@ class ObjConverterDialog : public QDialog, public Ui::ObjConverterDialog
 private slots:
     void on_selectObjFileBtn_clicked();
 protected:
-  QString m_pathToObjModels;
-  QString m_pathToGEModels;
-  std::string m_pathToGEMaterials;
+  const std::string m_pathToObjModels;
+  const std::string m_pathToGEModels;
+  const std::string m_pathToGEMaterials;
 public:
-    ObjConverterDialog(QWidget *parent = Q_NULLPTR);
-    ~ObjConverterDialog();
-    void SetPathToGEModels(QString pathToGEModels) { m_pathToGEModels = pathToGEModels; }
-    void SetPathToObjModels(QString pathToObjModels) { m_pathToObjModels = pathToObjModels; }
-    void SetPathToGEMaterials(std::string pathTOGEMaterials) { m_pathToGEMaterials = pathTOGEMaterials; }
-    void done(int result) override;
+  ObjConverterDialog(const std::string& pathToObjModels, const std::string& pathToGEModels, const std::string& pathTOGEMaterials, QWidget *parent = Q_NULLPTR);
+  ~ObjConverterDialog() = default;
+  void done(int result) override;
 };

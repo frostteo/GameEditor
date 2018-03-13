@@ -3,16 +3,19 @@
 #include <QWidget>
 #include "ui_PointLightTableWidget.h"
 #include <memory>
+#include <string>
 #include <algorithm>
 #include <qtableview.h>
 #include <qboxlayout.h>
-#include "PointLightWidgetToolBox.h"
-#include "PointLightTM.h"
-#include "QtGEPaginator.h"
-#include "AddOrEditPointLightDialog.h"
-#include "ConfigurePLRelativePosWidget.h"
-#include "MapEditorPreferences.h"
 #include "IPointLightService.h"
+
+class PointLightWidgetToolBox;
+class PointLightTM;
+class QtGEPaginator;
+class AddOrEditPointLightDialog;
+class MapEditorPreferences;
+class ConfigurePLRelativePosWidget;
+class PathesToShaderSet;
 
 class PointLightTableWidget : public QWidget, public Ui::PointLightTableWidget
 {
@@ -24,9 +27,6 @@ private:
   std::unique_ptr<QtGEPaginator> m_paginator;
   std::unique_ptr<ConfigurePLRelativePosWidget> m_configurePLRelativePosWidget;
 
-  QString m_pathToModels;
-  QString m_pathToMaterials;
-  MapEditorPreferences* m_mapEditorPreferences;
   IPointLightService* m_pointLightService;
 protected slots:
   void on_addPointLightBtn_clicked();
@@ -51,7 +51,14 @@ public slots:
   void PointLightCountChanged(int id);
   void BeforeDeleteSgo(int id);
 public:
-  PointLightTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
+  PointLightTableWidget(
+    MapEditorPreferences* mapEditorPreferences,
+    const std::string& pathToModels,
+    const std::string& pathToMaterials, 
+    const PathesToShaderSet& pathesToShaderSet, 
+    QWidget *parent = Q_NULLPTR
+    );
+
     ~PointLightTableWidget();
 signals:
     void AddToMap(PointLightDbInfo& pointLight);

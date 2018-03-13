@@ -1,20 +1,15 @@
 #include "MapEditorData.h"
 
-MapEditorData::MapEditorData(MapEditorControl* mapEditorControl, QWidget *parent)
-    : QWidget(parent)
+MapEditorData::MapEditorData(std::shared_ptr<MapEditorControl> mapEditorControl, QWidget *parent)
+    : QWidget(parent),
+    m_tableWidget(new SGOOnMapTableWidget(mapEditorControl))
 {
     setupUi(this);
-    configureUI(mapEditorControl);
+    this->tabWidget->clear();
+    this->tabWidget->addTab(m_tableWidget.get(), "game objects");
     this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
 }
 
 MapEditorData::~MapEditorData()
 {
-}
-
-void MapEditorData::configureUI(MapEditorControl* mapEditorControl)
-{
-  m_tableWidget = std::unique_ptr<SGOOnMapTableWidget>(new SGOOnMapTableWidget(mapEditorControl));
-  this->tabWidget->clear();
-  this->tabWidget->addTab(m_tableWidget.get(), "game objects");
 }

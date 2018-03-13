@@ -7,15 +7,14 @@
 #include "StaticGameObject.h"
 #include "OctoTree.h"
 #include "MapEditorPreferences.h"
-#include "ModelFactory.h"
 #include "SGOOnMapTM.h"
 #include "IPointLightOnMapService.h"
 #include "PointLight.h"
 
-
 class Camera;
 class LightininigSystem;
 class D3DConfigurer;
+class ModelFactory;
 
 class MapEditorViewModel : public QObject
 {
@@ -50,10 +49,9 @@ protected:
   void DeletePointLightFromMap(int id);
   void EditPointLightOnMap(PointLightOnMapDbInfo& dbInfo);
 public:
-  MapEditorViewModel();
-  virtual ~MapEditorViewModel();
+  MapEditorViewModel(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences, D3DConfigurer* d3dConfigurer);
 
-  void Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences, D3DConfigurer* d3dConfigurer);
+  virtual ~MapEditorViewModel();
 
   void GetVisibleSgo(const Camera& camera, std::vector<StaticGameObject*>* sgosToRender);
   void GetVisiblePointLights(Camera* camera, LightininigSystem* lightiningSystem);

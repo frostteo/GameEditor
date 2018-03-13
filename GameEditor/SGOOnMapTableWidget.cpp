@@ -1,9 +1,11 @@
 #include "SGOOnMapTableWidget.h"
+#include "MapEditorControl.h"
+#include "MapEditorViewModel.h"
 
-SGOOnMapTableWidget::SGOOnMapTableWidget(MapEditorControl* mapEditorControl, QWidget *parent)
-    : QWidget(parent)
+SGOOnMapTableWidget::SGOOnMapTableWidget(std::shared_ptr<MapEditorControl> mapEditorControl, QWidget *parent)
+    : QWidget(parent),
+    m_mapEditorControl(mapEditorControl)
 {
-  m_mapEditorControl = mapEditorControl;
   setupUi(this);
   configureUI();
 }

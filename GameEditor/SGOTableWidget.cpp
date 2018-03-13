@@ -1,11 +1,27 @@
 #include "SGOTableWidget.h"
+#include "MapEditorPreferences.h"
+#include "SGOWidgetToolBox.h"
+#include "StaticGameObjectTM.h"
+#include "QtGEPaginator.h"
+#include "PreviewStaticGOWidget.h"
+#include "AddStaticGameObjectDialog.h"
+#include "PathesToShaderSet.h"
 
-SGOTableWidget::SGOTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent)
-    : QWidget(parent)
+SGOTableWidget::SGOTableWidget(
+  MapEditorPreferences* mapEditorPreferences,
+  const std::string& pathToModels,
+  const std::string& pathToMaterials,
+  const PathesToShaderSet& pathesToShaders,
+  QWidget *parent
+  )
+  : QWidget(parent),
+  m_pathToModels(pathToModels),
+  m_SGOToolBox(new SGOWidgetToolBox),
+  m_SGOTable(new QTableView),
+  m_SGOTableModel(new StaticGameObjectTM(10)),
+  m_SGOPaginator(new QtGEPaginator),
+  m_previewStaticGOWidget(new PreviewStaticGOWidget(mapEditorPreferences, m_pathToModels, pathToMaterials, pathesToShaders, this))
 {
-  m_mapEditorPreferences = mapEditorPreferences;
-  SetPathToModels(pathToModels);
-  SetPathToMaterials(pathToMaterials);
   ui.setupUi(this);
   configureUI();
 }
@@ -16,11 +32,6 @@ SGOTableWidget::~SGOTableWidget()
 
 void SGOTableWidget::configureTable()
 {
-  m_previewStaticGOWidget = std::unique_ptr<PreviewStaticGOWidget>(new PreviewStaticGOWidget(m_mapEditorPreferences, m_pathToModels, m_pathToMaterials, this));
-
-  m_SGOTable = std::unique_ptr<QTableView>(new QTableView);
-  m_SGOTableModel = std::unique_ptr<StaticGameObjectTM>(new StaticGameObjectTM(10));
-
   m_SGOTable->setModel(m_SGOTableModel.get());
 
   m_SGOTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -58,9 +69,6 @@ void SGOTableWidget::configurePaginator()
 
 void SGOTableWidget::configureUI()
 {
-  m_SGOPaginator = std::unique_ptr<QtGEPaginator>(new QtGEPaginator);
-  m_SGOToolBox = std::unique_ptr<SGOWidgetToolBox>(new SGOWidgetToolBox);
-
   configureTable();
   configurePaginator();
   QVBoxLayout* vertToolBoxLayout = new QVBoxLayout;
@@ -92,9 +100,7 @@ void SGOTableWidget::on_previewSGOBtn_clicked()
 
 void SGOTableWidget::on_addSGOBtn_clicked()
 {
-  AddStaticGameObjectDialog dialog(this);
-  dialog.SetPathToModels(m_pathToModels);
-  dialog.SetPathToMaterials(m_pathToMaterials);
+  AddStaticGameObjectDialog dialog(m_pathToModels, this);
   if (dialog.exec() == QDialog::Accepted) {
     m_SGOTableModel->append(dialog.GetStaticGameObject());
   }
@@ -105,9 +111,7 @@ void SGOTableWidget::on_editSGOBtn_clicked()
   int selectedRow = m_SGOTable->selectionModel()->currentIndex().row();
   StaticGameObjectDbInfo gameObject = m_SGOTableModel->GetEntity(selectedRow);
 
-  AddStaticGameObjectDialog dialog(this);
-  dialog.SetPathToModels(m_pathToModels);
-  dialog.SetPathToMaterials(m_pathToMaterials);
+  AddStaticGameObjectDialog dialog(m_pathToModels, this);
   dialog.SetStaticGameObject(gameObject);
 
   if (dialog.exec() == QDialog::Accepted) {

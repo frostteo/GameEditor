@@ -19,7 +19,7 @@ private:
   SGOOnMapTM* m_tableModel;
   std::unique_ptr<QtGEPaginator> m_paginator;
 
-  MapEditorControl* m_mapEditorControl;
+  std::shared_ptr<MapEditorControl> m_mapEditorControl;
 protected slots:
   void editBtnsStateConfigure();
   void TableRowSelected(const QItemSelection& selected, const QItemSelection& deselected);
@@ -41,6 +41,6 @@ protected:
   void configureToolBox();
   std::vector<int> GetSelectedIds();
 public:
-  SGOOnMapTableWidget(MapEditorControl* mapEditorControl, QWidget *parent = Q_NULLPTR);
+  SGOOnMapTableWidget(std::shared_ptr<MapEditorControl> mapEditorControl, QWidget *parent = Q_NULLPTR);
   ~SGOOnMapTableWidget();
 };

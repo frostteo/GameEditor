@@ -1,32 +1,36 @@
 #pragma once
 
+#include <string>
 #include <memory>
 #include <algorithm>
 #include <QWidget>
 #include <qtableview.h>
 #include <qboxlayout.h>
 #include "ui_SGOTableWidget.h"
-#include "SGOWidgetToolBox.h"
-#include "StaticGameObjectTM.h"
-#include "AddStaticGameObjectDialog.h"
-#include "QtGEPaginator.h"
-#include "PreviewStaticGOWidget.h"
+
+class MapEditorPreferences;
+class SGOWidgetToolBox;
+class StaticGameObjectTM;
+class QtGEPaginator;
+class PreviewStaticGOWidget;
+class AddStaticGameObjectDialog;
+class StaticGameObjectDbInfo;
+class PathesToShaderSet;
 
 class SGOTableWidget : public QWidget
 {
     Q_OBJECT
 private:
   Ui::SGOTableWidget ui;
+
+  std::string m_pathToModels;
+
   std::unique_ptr<SGOWidgetToolBox> m_SGOToolBox;
   std::unique_ptr<QTableView> m_SGOTable;
   std::unique_ptr<StaticGameObjectTM> m_SGOTableModel;
   std::unique_ptr<QtGEPaginator> m_SGOPaginator;
-
-  QString m_pathToModels;
-  QString m_pathToMaterials;
+  
   std::unique_ptr<PreviewStaticGOWidget> m_previewStaticGOWidget;
-  MapEditorPreferences* m_mapEditorPreferences;
-
 protected slots:
   void on_addSGOBtn_clicked();
   void on_editSGOBtn_clicked();
@@ -47,10 +51,15 @@ public slots:
   void UpdateTable();
   void CountOnMapChanged(int id);
 public:
-  SGOTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
+  SGOTableWidget(
+    MapEditorPreferences* mapEditorPreferences,
+    const std::string& pathToModels,
+    const std::string& pathToMaterials,
+    const PathesToShaderSet& pathesToShaders,
+    QWidget *parent = Q_NULLPTR
+    );
+
     ~SGOTableWidget();
-    void SetPathToModels(QString& path) { m_pathToModels = path; }
-    void SetPathToMaterials(QString& path) { m_pathToMaterials = path; }
 signals:
     void AddToMap(StaticGameObjectDbInfo& gameObject);
     void BeforeDeleteSgo(int sgoId);

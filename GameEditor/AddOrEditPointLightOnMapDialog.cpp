@@ -35,7 +35,7 @@ AddOrEditPointLightOnMapDialog::~AddOrEditPointLightOnMapDialog()
 {
 }
 
-void AddOrEditPointLightOnMapDialog::SetPointLightOnMap(PointLightOnMapDbInfo pointLight)
+void AddOrEditPointLightOnMapDialog::SetPointLightOnMap(const PointLightOnMapDbInfo& pointLight)
 {
   m_pointLightOnMap = pointLight;
   this->xPosTxt->setText(QString::number(m_pointLightOnMap.sgoOnMapDbInfo.xPos));

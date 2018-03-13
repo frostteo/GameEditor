@@ -1,12 +1,23 @@
 #include "PreviewStaticGOWidget.h"
+#include "GEMath.h"
+#include "PreviewGameObject.h"
+#include "StaticGameObject.h"
+#include "StaticGameObjectDbInfo.h"
+#include "MapEditorPreferences.h"
+#include "PathesToShaderSet.h"
 
-
-
-PreviewStaticGOWidget::PreviewStaticGOWidget(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent)
-  : QtDirectXWidget(pathToModels, pathToMaterials, parent)
+PreviewStaticGOWidget::PreviewStaticGOWidget(
+  MapEditorPreferences* mapEditorPreferences,
+  const std::string& pathToModels,
+  const std::string& pathToMaterials,
+  const PathesToShaderSet& pathesToShaderSet,
+  QWidget *parent
+  )
+  : QtDirectXWidget(pathToModels, pathToMaterials, pathesToShaderSet, parent),
+  m_mapEditorPreferences(mapEditorPreferences),
+  m_sgo(nullptr)
 {
   this->setWindowTitle("Preview static game object");
-  m_mapEditorPreferences = mapEditorPreferences;
 }
 
 bool PreviewStaticGOWidget::Initialize(int screenWidth, int screenHeight, HWND hwnd)
@@ -19,23 +30,23 @@ PreviewStaticGOWidget::~PreviewStaticGOWidget()
   
 }
 
-void PreviewStaticGOWidget::SetStaticGameObject(StaticGameObjectDbInfo staticGameObject)
+void PreviewStaticGOWidget::SetStaticGameObject(const StaticGameObjectDbInfo& staticGameObject)
 {
   m_inputSystem->ClearListenersList();
 
-  m_sgo = StaticGameObject();
-  m_sgo.SetModel(GetModel(staticGameObject.modelFileName.toStdString()));
+  m_sgo.reset(new StaticGameObject());
+  m_sgo->SetModel(GetModel(staticGameObject.modelFileName.toStdString()));
 
-  std::shared_ptr<PreviewGameObject> previewGameObject(new PreviewGameObject(m_Camera.get(), &m_sgo, m_mapEditorPreferences));
+  std::shared_ptr<PreviewGameObject> previewGameObject(new PreviewGameObject(m_Camera.get(), m_sgo.get(), m_mapEditorPreferences));
   m_inputSystem->AddInputListener(previewGameObject);
 
-  GEMath::LookToObjectFromWorldFront(m_Camera.get(), &m_sgo);
+  GEMath::LookToObjectFromWorldFront(m_Camera.get(), m_sgo.get());
 }
 
 void PreviewStaticGOWidget::paintEvent(QPaintEvent* evt) {
   XMMATRIX worldMatrix;
-  m_sgo.GetWorldMatrix(worldMatrix);
-  m_graphicSystem->AddModelToRenderList(*m_sgo.GetModel(), worldMatrix);
+  m_sgo->GetWorldMatrix(worldMatrix);
+  m_graphicSystem->AddModelToRenderList(*m_sgo->GetModel(), worldMatrix);
 
   QtDirectXWidget::paintEvent(evt);
 }

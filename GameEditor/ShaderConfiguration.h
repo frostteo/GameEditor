@@ -2,6 +2,8 @@
 #include <string>
 #include <map>
 
+class PathesToShaderSet;
+
 class ShaderConfiguration
 {
 private:
@@ -14,6 +16,8 @@ private:
     std::string dmShaderName;
     std::string psShaderName;
   };
+public:
+ 
 private:
   typedef std::map<std::string, ShaderNamesSet, std::less<>> shaderNameMap;
 private:
@@ -25,11 +29,11 @@ private:
   std::wstring m_pathToDomainShader;
   std::wstring m_pathToPixelShader;
 
-  std::wstring m_shaderNameParam = L"[shadername]";
+  std::wstring m_shaderNameParam;
 protected:
   std::wstring GetShaderFileName(const std::string& shaderName, std::wstring& m_pathToShaderType);
 public:
-  ShaderConfiguration();
+  ShaderConfiguration(const PathesToShaderSet& pathesToShaderSet);
   virtual ~ShaderConfiguration();
   void ConfigureForwardRenderer();
   void ConfigureDefferedRenderer();

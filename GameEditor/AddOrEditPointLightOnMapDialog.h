@@ -17,7 +17,7 @@ protected slots:
 public:
     AddOrEditPointLightOnMapDialog(QWidget *parent = Q_NULLPTR);
     ~AddOrEditPointLightOnMapDialog();
-    void SetPointLightOnMap(PointLightOnMapDbInfo pointLight);
+    void SetPointLightOnMap(const PointLightOnMapDbInfo& pointLight);
     PointLightOnMapDbInfo GetPointLightOnMap();
     void done(int result) override;
 };

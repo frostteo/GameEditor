@@ -1,7 +1,8 @@
 #include "AddOrEditSGOOnMapDialog.h"
 
 AddOrEditSGOOnMapDialog::AddOrEditSGOOnMapDialog(QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent),
+    m_SGOOnMap()
 {
     setupUi(this);
 
@@ -16,11 +17,7 @@ AddOrEditSGOOnMapDialog::AddOrEditSGOOnMapDialog(QWidget *parent)
     this->zRotateTxt->setValidator(validator);
 }
 
-AddOrEditSGOOnMapDialog::~AddOrEditSGOOnMapDialog()
-{
-}
-
-void AddOrEditSGOOnMapDialog::setSGOOnMap(SGOOnMapDbInfo gameObject)
+void AddOrEditSGOOnMapDialog::SetSGOOnMap(const SGOOnMapDbInfo& gameObject)
 {
   m_SGOOnMap = gameObject;
   this->xPosTxt->setText(QString::number(m_SGOOnMap.xPos));
@@ -38,7 +35,7 @@ void AddOrEditSGOOnMapDialog::setSGOOnMap(SGOOnMapDbInfo gameObject)
       instanceName += QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
   }
   this->instanceNameTxt->setText(instanceName);
-  this->isFrozenCheckBox->setChecked(m_SGOOnMap.isFrozen > 0);
+  this->isFrozenCheckBox->setChecked(m_SGOOnMap.isFrozen);
 }
 
 SGOOnMapDbInfo AddOrEditSGOOnMapDialog::GetSGOOnMap()

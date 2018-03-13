@@ -109,12 +109,6 @@
     <ClCompile Include="QtGameFrameworkTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QtGameFrameworkTest.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_QtGameFrameworkTest.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>GameFramework\SourceFiles</Filter>
     </ClCompile>
@@ -1189,6 +1183,9 @@
     </ClInclude>
     <ClInclude Include="UnfrozenDrawableBBFactory.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PathesToShaderSet.h">
+      <Filter>GameFramework\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

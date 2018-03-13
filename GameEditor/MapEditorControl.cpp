@@ -1,6 +1,15 @@
 #include "MapEditorControl.h"
 #include "Logger.h"
 #include "Camera.h"
+#include "AddOrEditSGOOnMapDialog.h"
+#include "AddOrEditPointLightOnMapDialog.h"
+#include "GEMath.h"
+#include "MapEditorViewModel.h"
+#include "StaticGameObjectDbInfo.h"
+#include "MapEditorPreferences.h"
+#include "PointLightDbInfo.h"
+#include "Model.h"
+#include "BoundingBox.h"
 
 MapEditorControl::MapEditorControl(MapEditorViewModel* mapEditorViewModel, std::vector<StaticGameObject*>* visibleSgos, Camera* camera)
 {
@@ -37,7 +46,7 @@ void MapEditorControl::EditSgoOnMap(int id)
 {
   SGOOnMapDbInfo gameObject = m_mapEditorViewModel->GetSGOOnMapTM()->GetEntityByKey(id);
   AddOrEditSGOOnMapDialog dialog;
-  dialog.setSGOOnMap(gameObject);
+  dialog.SetSGOOnMap(gameObject);
 
   if (dialog.exec() == QDialog::Accepted) {
     SGOOnMapDbInfo editedGameObject = dialog.GetSGOOnMap();
@@ -116,7 +125,7 @@ void MapEditorControl::CloneSgo(int id)
     gameObject.instanceName = gameObject.staticGameObjectDbInfo.name + QString::number(gameObject.staticGameObjectDbInfo.countOnMap);
 
   AddOrEditSGOOnMapDialog dialog;
-  dialog.setSGOOnMap(gameObject);
+  dialog.SetSGOOnMap(gameObject);
 
   if (dialog.exec() == QDialog::Accepted) {
     SGOOnMapDbInfo clonedGameObject = dialog.GetSGOOnMap();
@@ -700,7 +709,7 @@ void MapEditorControl::Delete()
   Delete(selectedIdsVector);
 }
 
-void MapEditorControl::AddSgoToMap(StaticGameObjectDbInfo& sgo)
+void MapEditorControl::AddSgoToMap(const StaticGameObjectDbInfo& sgo)
 {
   AddOrEditSGOOnMapDialog dialog; //TODO FHolod: посылался родительский виджет в конструктор
   SGOOnMapDbInfo sgoOnMap;
@@ -711,7 +720,7 @@ void MapEditorControl::AddSgoToMap(StaticGameObjectDbInfo& sgo)
     sgoOnMap.instanceName += QString::number(sgo.countOnMap);
 
   //TODO FHolod: установить позицию и поворот в зависимости от координат камеры редакторы карты
-  dialog.setSGOOnMap(sgoOnMap);
+  dialog.SetSGOOnMap(sgoOnMap);
 
   if (dialog.exec() == QDialog::Accepted) {
     sgoOnMap = dialog.GetSGOOnMap();

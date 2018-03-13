@@ -12,8 +12,8 @@ private:
   SGOOnMapDbInfo m_SGOOnMap;
 public:
   AddOrEditSGOOnMapDialog(QWidget *parent = Q_NULLPTR);
-  ~AddOrEditSGOOnMapDialog();
-  void setSGOOnMap(SGOOnMapDbInfo gameObject);
+  ~AddOrEditSGOOnMapDialog() = default;
+  void SetSGOOnMap(const SGOOnMapDbInfo& gameObject);
   SGOOnMapDbInfo GetSGOOnMap();
   void done(int result) override;
 };

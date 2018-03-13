@@ -1,13 +1,26 @@
 #include "PointLightTableWidget.h"
+#include "PointLightWidgetToolBox.h"
+#include "PointLightTM.h"
+#include "QtGEPaginator.h"
+#include "AddOrEditPointLightDialog.h"
+#include "MapEditorPreferences.h"
+#include "ConfigurePLRelativePosWidget.h"
+#include "PathesToShaderSet.h"
 
-PointLightTableWidget::PointLightTableWidget(MapEditorPreferences* mapEditorPreferences, QString& pathToModels, QString& pathToMaterials, QWidget *parent)
-    : QWidget(parent)
+PointLightTableWidget::PointLightTableWidget(
+  MapEditorPreferences* mapEditorPreferences,
+  const std::string& pathToModels, 
+  const std::string& pathToMaterials,
+  const PathesToShaderSet& pathesToShaderSet,
+  QWidget *parent)
+    : QWidget(parent),
+    m_toolBox(new PointLightWidgetToolBox),
+    m_table (new QTableView),
+    m_tableModel(new PointLightTM(10)),
+    m_paginator(new QtGEPaginator),
+    m_configurePLRelativePosWidget(new ConfigurePLRelativePosWidget(mapEditorPreferences, pathToModels, pathToMaterials, pathesToShaderSet, this)),
+    m_pointLightService(DependencyResolver::GetPointLightService())
 {
-  m_mapEditorPreferences = mapEditorPreferences;
-  m_pathToModels = pathToModels;
-  m_pathToMaterials = pathToMaterials;
-  m_pointLightService = DependencyResolver::GetPointLightService();
-
   setupUi(this);
   configureUI();
 }
@@ -18,9 +31,6 @@ PointLightTableWidget::~PointLightTableWidget()
 
 void PointLightTableWidget::configureUI()
 {
-  m_paginator = std::unique_ptr<QtGEPaginator>(new QtGEPaginator);
-  m_toolBox = std::unique_ptr<PointLightWidgetToolBox>(new PointLightWidgetToolBox);
-
   configureTable();
   configurePaginator();
   QVBoxLayout* vertToolBoxLayout = new QVBoxLayout;
@@ -39,8 +49,6 @@ void PointLightTableWidget::configureUI()
 
   connect(m_toolBox.get(), SIGNAL(FilterChanged()), this, SLOT(UpdateTable()));
 
-  m_configurePLRelativePosWidget = std::unique_ptr<ConfigurePLRelativePosWidget>(new ConfigurePLRelativePosWidget(m_mapEditorPreferences, m_pathToModels, m_pathToMaterials, this));
-
   connect(m_configurePLRelativePosWidget.get(), SIGNAL(PointLightPositionChanged(int, float, float, float)), this, SLOT(PointLightPositionChanged(int, float, float, float)));
 }
 
@@ -57,9 +65,6 @@ void PointLightTableWidget::PointLightPositionChanged(int id, float x, float y, 
 
 void PointLightTableWidget::configureTable()
 {
-  m_table = std::unique_ptr<QTableView>(new QTableView);
-  m_tableModel = std::unique_ptr<PointLightTM>(new PointLightTM(10));
-
   m_table->setModel(m_tableModel.get());
 
   m_table->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -89,7 +94,6 @@ void PointLightTableWidget::configurePaginator()
 {
   connect(m_tableModel.get(), SIGNAL(PagingInfoChanged(PagingInfo)), m_paginator.get(), SLOT(UpdatePagingInfo(PagingInfo)));
   m_paginator->UpdatePagingInfo(m_tableModel->GetPagingInfo());
-
   connect(m_paginator.get(), SIGNAL(PageChanged(int, int)), this, SLOT(PaginatorPageChanged(int, int)));
 }
 

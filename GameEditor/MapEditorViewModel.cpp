@@ -3,22 +3,19 @@
 #include "LightininigSystem.h"
 #include "AxisAlignedBBHelper.h"
 #include "D3DConfigurer.h"
+#include "ModelFactory.h"
 
-MapEditorViewModel::MapEditorViewModel()
+MapEditorViewModel::MapEditorViewModel(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences, D3DConfigurer* d3dConfigurer)
+  : m_d3dConfigurer(d3dConfigurer),
+    m_pathToModels(pathToModels),
+    m_modelFactory(modelFactory),
+    m_mapEditorPreferences(mapEditorPreferences),
+    m_pointLightOnMapService(DependencyResolver::GetPointLightOnMapService())
 {
   connect(&m_sgoOnMapTM, SIGNAL(FreezeSgoSignal(int)), this, SLOT(FreezeSgo(int)));
   connect(&m_sgoOnMapTM, SIGNAL(UnfreezeSgoSignal(int)), this, SLOT(UnfreezeSgo(int)));
   connect(&m_sgoOnMapTM, SIGNAL(SelectionChanged(std::vector<int>)), this, SLOT(SelectionChanged(std::vector<int>)));
-}
 
-void MapEditorViewModel::Initialize(const std::string& pathToModels, ModelFactory* modelFactory, MapEditorPreferences* mapEditorPreferences, D3DConfigurer* d3dConfigurer)
-{
-  m_d3dConfigurer = d3dConfigurer;
-  m_pathToModels = pathToModels;
-  m_modelFactory = modelFactory;
-  m_mapEditorPreferences = mapEditorPreferences;
-
-  m_pointLightOnMapService = DependencyResolver::GetPointLightOnMapService();
   InitializeSgos();
   InitializePointLights();
 }
@@ -26,7 +23,6 @@ void MapEditorViewModel::Initialize(const std::string& pathToModels, ModelFactor
 MapEditorViewModel::~MapEditorViewModel()
 {
 }
-
 
 void MapEditorViewModel::InitializeSgos()
 {

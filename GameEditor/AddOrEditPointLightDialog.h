@@ -3,9 +3,11 @@
 #include <QDialog>
 #include "ui_AddOrEditPointLightDialog.h"
 #include "PointLightDbInfo.h"
+#include "SGOMetadata.h"
 #include "qcompleter.h"
-#include "BLLDependencyResolver.h"
-#include "DependencyResolver.h"
+
+class BLLDependencyResolver;
+class DependencyResolver;
 
 class AddOrEditPointLightDialog : public QDialog, public Ui::AddOrEditPointLightDialog
 {
@@ -18,7 +20,7 @@ private:
 public:
   AddOrEditPointLightDialog(QWidget *parent = Q_NULLPTR);
   ~AddOrEditPointLightDialog();
-  void SetPointLight(PointLightDbInfo pointLight);
+  void SetPointLight(const PointLightDbInfo& pointLight);
   PointLightDbInfo GetPointLight();
   void done(int result) override;
 };

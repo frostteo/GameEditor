@@ -1,19 +1,25 @@
 #include "ObjConverterDialog.h"
+#include "ObjMeshConverter.h"
+#include "MtlMatLibConverter.h"
 
-ObjConverterDialog::ObjConverterDialog(QWidget *parent)
-    : QDialog(parent)
+ObjConverterDialog::ObjConverterDialog(
+  const std::string& pathToObjModels, 
+  const std::string& pathToGEModels, 
+  const std::string& pathTOGEMaterials,
+  QWidget *parent
+  )
+    : QDialog(parent),
+    m_pathToObjModels(pathToObjModels),
+    m_pathToGEModels(pathToGEModels),
+    m_pathToGEMaterials(pathTOGEMaterials)
 {
-    setupUi(this);
-}
-
-ObjConverterDialog::~ObjConverterDialog()
-{
+  setupUi(this);
 }
 
 void ObjConverterDialog::on_selectObjFileBtn_clicked()
 {
   QString objModelFileName = QFileDialog::getOpenFileName(this,
-    tr("Open obj model file name"), m_pathToObjModels, tr("Obj Files (*.obj)"));
+    tr("Open obj model file name"), QString::fromStdString(m_pathToObjModels), tr("Obj Files (*.obj)"));
 
   this->objFileNameTxt->setText(objModelFileName);
 }
@@ -51,7 +57,7 @@ void ObjConverterDialog::done(int result)
       MtlMatLibConverter mtlMatLibConverter(m_pathToGEMaterials);
 
       objectModelFileName = this->objFileNameTxt->text().toStdString();
-      txtModelFileName = m_pathToGEModels.toStdString() + FileProcessor::FILE_SEPARATOR + this->meshFileNameTxt->text().toStdString() + ".txt";
+      txtModelFileName = m_pathToGEModels + FileProcessor::FILE_SEPARATOR + this->meshFileNameTxt->text().toStdString() + ".txt";
 
       objConverter.ConvertModel(objectModelFileName, txtModelFileName);
       mtlMatLibConverter.ConvertMtlMaterials(mtlLibFileName, this->needReplaceMaterialIfExistsFlag->isChecked());

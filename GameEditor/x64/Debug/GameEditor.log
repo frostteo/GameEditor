@@ -1,16 +1,52 @@
-﻿Build started 13.03.2018 9:23:57.
+﻿Build started 13.03.2018 19:50:28.
      1>Project "C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\GameEditor\GameEditor.vcxproj" on node 2 (Build target(s)).
      1>CustomBuild:
-         Moc'ing QtGameFrameworkTest.h...
+         Moc'ing AddOrEditPointLightDialog.h...
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\5.9\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\5.9\msvc2013_64\include\QtCore /IC:\Qt\5.9\msvc2013_64\include\QtGui /IC:\Qt\5.9\msvc2013_64\include\QtWidgets /IC:\Qt\5.9\msvc2013_64\include\QtSql /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /D QT_SQL_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ConfigurePLRelPosControl.cpp GeneratedFiles\Debug\moc_QtGameFrameworkTest.cpp main.cpp QtGameFrameworkTest.cpp
-         ConfigurePLRelPosControl.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\5.9\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\5.9\msvc2013_64\include\QtCore /IC:\Qt\5.9\msvc2013_64\include\QtGui /IC:\Qt\5.9\msvc2013_64\include\QtWidgets /IC:\Qt\5.9\msvc2013_64\include\QtSql /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /D QT_SQL_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt AddOrEditPointLightDialog.cpp AddOrEditPointLightOnMapDialog.cpp GameEditor.cpp GeneratedFiles\Debug\moc_AddOrEditPointLightDialog.cpp GeneratedFiles\Debug\moc_AddOrEditPointLightOnMapDialog.cpp GeneratedFiles\Debug\moc_GameEditor.cpp GeneratedFiles\Debug\moc_MapEditorData.cpp GeneratedFiles\Debug\moc_MapEditorViewModel.cpp GeneratedFiles\Debug\moc_SGOOnMapTM.cpp GeneratedFiles\Debug\moc_SGOOnMapTableWidget.cpp GeneratedFiles\Debug\moc_StaticGameObjectTM.cpp MapEditor.cpp MapEditorControl.cpp MapEditorData.cpp MapEditorViewModel.cpp PointLightTM.cpp PointLightTableWidget.cpp SGOOnMapTM.cpp SGOOnMapTableWidget.cpp SGOTableWidget.cpp StaticGameObjectTM.cpp main.cpp
+         AddOrEditPointLightDialog.cpp
+         AddOrEditPointLightOnMapDialog.cpp
+         GameEditor.cpp
          C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         moc_QtGameFrameworkTest.cpp
+         moc_AddOrEditPointLightDialog.cpp
+         moc_AddOrEditPointLightOnMapDialog.cpp
+         moc_GameEditor.cpp
          C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_MapEditorData.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_MapEditorViewModel.cpp
+         moc_SGOOnMapTM.cpp
+         moc_SGOOnMapTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_StaticGameObjectTM.cpp
+         MapEditor.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         MapEditorControl.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         MapEditorData.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         MapEditorViewModel.cpp
+         PointLightTM.cpp
+     1>PointLightTM.cpp(50): warning C4927: illegal conversion; more than one user-defined conversion has been implicitly applied
+                 while calling the constructor 'QVariant::QVariant(int)'
+                 C:\Qt\5.9\msvc2013_64\include\QtCore/qvariant.h(210) : see declaration of 'QVariant::QVariant'
+         PointLightTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         SGOOnMapTM.cpp
+     1>SGOOnMapTM.cpp(61): warning C4927: illegal conversion; more than one user-defined conversion has been implicitly applied
+                 while calling the constructor 'QVariant::QVariant(int)'
+                 C:\Qt\5.9\msvc2013_64\include\QtCore/qvariant.h(210) : see declaration of 'QVariant::QVariant'
+         SGOOnMapTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         SGOTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         Generating Code...
+         Compiling...
+         StaticGameObjectTM.cpp
+     1>StaticGameObjectTM.cpp(46): warning C4927: illegal conversion; more than one user-defined conversion has been implicitly applied
+                 while calling the constructor 'QVariant::QVariant(int)'
+                 C:\Qt\5.9\msvc2013_64\include\QtCore/qvariant.h(210) : see declaration of 'QVariant::QVariant'
          main.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         QtGameFrameworkTest.cpp
          C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
          Generating Code...
        Link:
@@ -105,7 +141,6 @@
          x64\Debug\moc_ObjConverterDialog.obj
          x64\Debug\moc_PreviewStaticGOWidget.obj
          x64\Debug\moc_QtDirectXWidget.obj
-         x64\Debug\moc_QtGameFrameworkTest.obj
          x64\Debug\qrc_GameEditor.obj
          x64\Debug\GraphicSystem.obj
          x64\Debug\GridShader.obj
@@ -167,4 +202,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:01:38.23
+Time Elapsed 00:04:30.78

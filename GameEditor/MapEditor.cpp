@@ -4,30 +4,35 @@
 #include "PointLightVolumeGridObject.h"
 #include "UnfrozenDrawableBBFactory.h"
 #include "FrozenDrawableBBFactory.h"
+#include "MapEditorViewModel.h"
+#include "PathesToShaderSet.h"
 
-MapEditor::MapEditor(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent)
-  : QtDirectXWidget(pathToModels, pathToMaterials, parent),
+MapEditor::MapEditor(
+  MapEditorPreferences* mapEditorPreferences, 
+  const std::string& pathToModels, 
+  const std::string& pathToMaterials,
+  const PathesToShaderSet& pathesToShaderSet, 
+  QWidget *parent
+  )
+  : QtDirectXWidget(pathToModels, pathToMaterials, pathesToShaderSet, parent),
+  m_visibleSgos(),
+  m_selectedSgos(),
   m_pointLightVolumeGridObject(new PointLightVolumeGridObject(m_graphicSystem->GetDevice())),
   m_unfrozedDrawableBBFactory(new UnfrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory())),
-  m_frozedDrawableBBFactory(new FrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory()))
+  m_frozedDrawableBBFactory(new FrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory())),
+  m_mapEditorViewModel(new MapEditorViewModel(pathToModels, m_graphicSystem->GetModelFactory(), mapEditorPreferences, m_graphicSystem->GetD3dConfigurer())),
+  m_mapEditorControl(new MapEditorControl(m_mapEditorViewModel.get(), &m_visibleSgos, m_Camera.get()))
 {
   this->setWindowFlags(Qt::Sheet | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::CustomizeWindowHint);
   this->setWindowTitle("Map editor");
   m_Camera->SetPosition(0.0f, 0.0f, -500.0f);
   m_Camera->SetRotation(0.0f, 0.0f, 0.0f);
 
-  m_mapEditorViewModel = std::make_unique<MapEditorViewModel>();
-  m_mapEditorViewModel->Initialize(pathToModels.toStdString(), m_graphicSystem->GetModelFactory(), mapEditorPreferences, m_graphicSystem->GetD3dConfigurer());
-  m_mapEditorControl = std::shared_ptr<MapEditorControl>(new MapEditorControl(m_mapEditorViewModel.get(), &m_visibleSgos, m_Camera.get()));
   m_inputSystem->AddInputListener(m_mapEditorControl);
 
   EnableTestLightining(mapEditorPreferences->GetUseTestLightiningFlag());
 
-  //m_pointLightVolumeGridObject = std::unique_ptr<PointLightVolumeGridObject>());
   SetAmbientLight(mapEditorPreferences->GetRedAmbientLightColor(), mapEditorPreferences->GetBlueAmbientLightColor(), mapEditorPreferences->GetBlueAmbientLightColor());
-
-  /*m_unfrozedDrawableBBFactory = std::unique_ptr<UnfrozenDrawableBBFactory>(new UnfrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory()));*/
-  //m_frozedDrawableBBFactory = std::unique_ptr<FrozenDrawableBBFactory>(new FrozenDrawableBBFactory(m_graphicSystem->GetDevice(), m_graphicSystem->GetModelFactory()));
 }
 
 MapEditor::~MapEditor()
@@ -103,7 +108,7 @@ void MapEditor::paintEvent(QPaintEvent* pEvent)
   update();
 }
 
-GridObject* MapEditor::GetSGODrawableBB(const std::string& modelName, bool isFrozen)
+const GridObject* MapEditor::GetSGODrawableBB(const std::string& modelName, bool isFrozen)
 {
   if (isFrozen)
     return m_frozedDrawableBBFactory->GetResource(modelName);

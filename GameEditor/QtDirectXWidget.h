@@ -6,12 +6,13 @@
 #include <QMessageBox>
 #include <string>
 #include <memory>
-#include "InputSystem.h"
-#include "ShaderConfiguration.h"
 #include "GraphicSystem.h"
+#include "InputSystem.h"
 
 class LightininigSystem;
 class Camera;
+class PathesToShaderSet;
+class ShaderConfiguration;
 
 class QtDirectXWidget : public QWidget, public Ui::QtDirectXWidget
 {
@@ -39,7 +40,7 @@ protected:
   virtual void paintEvent(QPaintEvent* pEvent);
   Model* GetModel(const std::string& modelName);
 public:
-  QtDirectXWidget(const QString& pathToModels, const QString& pathToMaterials, QWidget *parent = Q_NULLPTR);
+  QtDirectXWidget(const std::string& pathToModels, const std::string& pathToMaterials, const PathesToShaderSet& pathesToShaderSet, QWidget *parent = Q_NULLPTR);
   ~QtDirectXWidget();
   
   bool Initialize(int screenWidth, int screenHeight, HWND hwnd);

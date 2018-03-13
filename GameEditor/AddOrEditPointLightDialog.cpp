@@ -1,4 +1,6 @@
 #include "AddOrEditPointLightDialog.h"
+#include "BLLDependencyResolver.h"
+#include "DependencyResolver.h"
 
 AddOrEditPointLightDialog::AddOrEditPointLightDialog(QWidget *parent)
     : QDialog(parent)
@@ -40,7 +42,7 @@ AddOrEditPointLightDialog::~AddOrEditPointLightDialog()
 {
 }
 
-void AddOrEditPointLightDialog::SetPointLight(PointLightDbInfo pointLight)
+void AddOrEditPointLightDialog::SetPointLight(const PointLightDbInfo& pointLight)
 {
   m_pointLight = pointLight;
   this->nameTxt->setText(pointLight.name);

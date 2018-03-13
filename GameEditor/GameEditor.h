@@ -5,26 +5,30 @@
 #include <QAction>
 #include <memory>
 #include "ui_GameEditor.h"
-#include "QtUtils.h"
-#include "ObjConverterDialog.h"
 #include "MapEditorData.h"
 #include "MapEditor.h"
 #include "SGOTableWidget.h"
 #include "MapEditorPreferencesDialog.h"
 #include "MapEditorPreferences.h"
 #include "PointLightTableWidget.h"
+#include "PathesToShaderSet.h"
+
+class ObjConverterDialog;
 
 class GameEditor : public QMainWindow
 {
     Q_OBJECT
 private:
+  static const std::string pathesFileName;
+
   Ui::GameEditorClass ui;
-  std::string m_hostName = "hostName";
-  std::string m_databaseName = "../GameEditor/database/gameEditor.db";
-  std::string m_connectionName = "gameEditorDBConnection";
-  QString m_pathToModels = "../GameEditor/models";
-  QString m_pathToMaterials = "../GameEditor/materials";
-  QString m_pathToObjModels = "../GameEditor/obj models";
+  std::string m_hostName;
+  std::string m_databaseName;
+  std::string m_connectionName;
+  std::string m_pathToModels;
+  std::string m_pathToMaterials;
+  std::string m_pathToObjModels;
+  PathesToShaderSet m_pathesToShaderSet;
 
   std::unique_ptr<SGOTableWidget> m_SGOTableWidget;
   std::unique_ptr<PointLightTableWidget> m_pointLightTableWidget;
@@ -35,6 +39,7 @@ private:
   float m_oldRadiusOfAddingLightSourcesToRender = 0.0f;
 private:
   void configureUI();
+  void ReadPathesFromFile();
 private slots:
   void on_actionObjConverter_triggered();
   void AddSGOToMap(StaticGameObjectDbInfo& gameObject);

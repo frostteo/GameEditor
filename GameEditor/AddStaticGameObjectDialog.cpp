@@ -1,13 +1,11 @@
 #include "AddStaticGameObjectDialog.h"
 
-AddStaticGameObjectDialog::AddStaticGameObjectDialog(QWidget *parent)
-    : QDialog(parent)
+AddStaticGameObjectDialog::AddStaticGameObjectDialog(const std::string& pathToModels, QWidget *parent)
+    : QDialog(parent),
+    m_pathToModels(QString::fromStdString(pathToModels)),
+    m_gameObject()
 {
     setupUi(this);
-}
-
-AddStaticGameObjectDialog::~AddStaticGameObjectDialog()
-{
 }
 
 void AddStaticGameObjectDialog::on_chooseModelFileBtn_clicked()
@@ -41,7 +39,7 @@ void AddStaticGameObjectDialog::done(int result)
 }
 
 
-void AddStaticGameObjectDialog::SetStaticGameObject(StaticGameObjectDbInfo gameObject)
+void AddStaticGameObjectDialog::SetStaticGameObject(const StaticGameObjectDbInfo& gameObject)
 {
   m_gameObject = gameObject;
   this->staticGONameEdit->setText(m_gameObject.name);

@@ -1,13 +1,16 @@
 #include "ShaderConfiguration.h"
+#include "PathesToShaderSet.h"
 
-
-ShaderConfiguration::ShaderConfiguration()
+ShaderConfiguration::ShaderConfiguration(const PathesToShaderSet& pathesToShaderSet)
+  : m_shaderNameMap(),
+    m_pathToVertexShader(pathesToShaderSet.pathToVertexShader.begin(), pathesToShaderSet.pathToVertexShader.end()),
+    m_pathToGeometricShader(pathesToShaderSet.pathToGeometricShader.begin(), pathesToShaderSet.pathToGeometricShader.end()),
+    m_pathToHullShader(pathesToShaderSet.pathToHullShader.begin(), pathesToShaderSet.pathToHullShader.end()),
+    m_pathToDomainShader(pathesToShaderSet.pathToDomainShader.begin(), pathesToShaderSet.pathToDomainShader.end()),
+    m_pathToPixelShader(pathesToShaderSet.pathToPixelShader.begin(), pathesToShaderSet.pathToPixelShader.end()),
+    m_shaderNameParam(pathesToShaderSet.shaderNameParam.begin(), pathesToShaderSet.shaderNameParam.end())
 {
-  m_pathToVertexShader = L"../GameEditor/shaders/[shadername].vs";
-  m_pathToGeometricShader = L"../GameEditor/shaders/[shadername].gs";
-  m_pathToHullShader = L"../GameEditor/shaders/[shadername].hs";
-  m_pathToDomainShader = L"../GameEditor/shaders/[shadername].ds";
-  m_pathToPixelShader = L"../GameEditor/shaders/[shadername].ps";
+  
 }
 
 

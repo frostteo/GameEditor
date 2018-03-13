@@ -4,26 +4,34 @@
 #include "ui_PreviewStaticGOWidget.h"
 #include <QMessageBox>
 #include <memory>
-#include "PreviewGameObject.h"
-#include "StaticGameObjectDbInfo.h"
-#include "QtUtils.h"
 #include "QtDirectXWidget.h"
-#include "GEMath.h"
-#include "StaticGameObject.h"
+
+class GEMath;
+class PreviewGameObject;
+class StaticGameObject;
+class StaticGameObjectDbInfo;
+class MapEditorPreferences;
+class PathesToShaderSet;
 
 class PreviewStaticGOWidget : public QtDirectXWidget, public Ui::PreviewStaticGOWidget
 {
     Q_OBJECT
 private:
   MapEditorPreferences* m_mapEditorPreferences;
-  StaticGameObject m_sgo;
+  std::unique_ptr<StaticGameObject> m_sgo;
 protected:
-  /** paints the scene */
   virtual void paintEvent(QPaintEvent* pEvent) override;
 public:
-  PreviewStaticGOWidget(MapEditorPreferences* mapEditorPreferences, QString pathToModels, QString pathToMaterials, QWidget *parent = Q_NULLPTR);
+  PreviewStaticGOWidget(
+    MapEditorPreferences* mapEditorPreferences,
+    const std::string& pathToModels,
+    const std::string& pathToMaterials,
+    const PathesToShaderSet& pathesToShaderSet,
+    QWidget *parent = Q_NULLPTR
+    );
+
   ~PreviewStaticGOWidget();
-  /** Initialized the D3D environment */
+
   bool Initialize(int screenWidth, int screenHeight, HWND hwnd);
-  void SetStaticGameObject(StaticGameObjectDbInfo staticGameObject);
+  void SetStaticGameObject(const StaticGameObjectDbInfo& staticGameObject);
 };

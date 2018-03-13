@@ -1,12 +1,41 @@
 #include "GameEditor.h"
+#include "ObjConverterDialog.h"
+#include "MapEditorControl.h"
+#include "MapEditorViewModel.h"
+#include "SGOOnMapTM.h"
+
+const std::string GameEditor::pathesFileName = "pathes.ini";
 
 GameEditor::GameEditor(QWidget *parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);
+  ReadPathesFromFile();
+  ui.setupUi(this);
 
-    BLLDependencyResolver::GetUnitOfWork()->Initialize(m_hostName, m_databaseName, m_connectionName);
-    this->configureUI();
+  BLLDependencyResolver::GetUnitOfWork()->Initialize(m_hostName, m_databaseName, m_connectionName);
+  this->configureUI();
+}
+
+void GameEditor::ReadPathesFromFile()
+{
+  std::string pathFileStr;
+  FileProcessor::GetFileAsString(pathesFileName, pathFileStr);
+
+  std::string place;
+  std::stringstream ss(pathFileStr);
+
+  ss >> place >> m_hostName;
+  ss >> place >> m_databaseName;
+  ss >> place >> m_connectionName;
+  ss >> place >> m_pathToModels;
+  ss >> place >> m_pathToMaterials;
+  ss >> place >> m_pathToObjModels;
+  ss >> place >> m_pathesToShaderSet.pathToVertexShader;
+  ss >> place >> m_pathesToShaderSet.pathToGeometricShader;
+  ss >> place >> m_pathesToShaderSet.pathToHullShader;
+  ss >> place >> m_pathesToShaderSet.pathToDomainShader;
+  ss >> place >> m_pathesToShaderSet.pathToPixelShader;
+  ss >> place >> m_pathesToShaderSet.shaderNameParam;
 }
 
 void GameEditor::configureUI()
@@ -17,11 +46,13 @@ void GameEditor::configureUI()
   this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
   this->ui.actionShowShadows->setChecked(m_mapEditorPreferences->GetShowShadows());
 
-  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
+  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, m_pathesToShaderSet, this));
   m_mapEditor->show();
 
-  m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
-  m_pointLightTableWidget = std::unique_ptr<PointLightTableWidget>(new PointLightTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, this));
+  m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, m_pathesToShaderSet, this));
+
+  m_pointLightTableWidget = std::unique_ptr<PointLightTableWidget>(new PointLightTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, m_pathesToShaderSet, this));
+
   ui.tabWidget->clear();
   ui.tabWidget->addTab(m_SGOTableWidget.get(), "static game objects"); 
   ui.tabWidget->addTab(m_pointLightTableWidget.get(), "point lights");
@@ -47,11 +78,7 @@ void GameEditor::configureUI()
 
 void GameEditor::on_actionObjConverter_triggered()
 {
-  ObjConverterDialog objConverterDialog;
-  objConverterDialog.SetPathToGEModels(m_pathToModels);
-  objConverterDialog.SetPathToObjModels(m_pathToObjModels);
-  objConverterDialog.SetPathToGEMaterials(m_pathToMaterials.toStdString());
-
+  ObjConverterDialog objConverterDialog(m_pathToObjModels, m_pathToModels, m_pathToMaterials);
   objConverterDialog.exec();
 }
 

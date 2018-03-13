@@ -1,18 +1,22 @@
 #pragma once
+
+#include <set>
+#include <map>
 #include <math.h>
 #include <algorithm>
 #include <iterator>
 #include "InputListener.h"
-
-
-#include "MapEditorViewModel.h"
-#include "AddOrEditSGOOnMapDialog.h"
-#include "StaticGameObjectDbInfo.h"
-#include "GEMath.h"
-#include "AddOrEditPointLightOnMapDialog.h"
+#include "StaticGameObject.h"
 
 class Logger;
 class Camera;
+class AddOrEditSGOOnMapDialog;
+class AddOrEditPointLightOnMapDialog;
+class GEMath;
+class MapEditorViewModel;
+class StaticGameObjectDbInfo;
+class MapEditorPreferences;
+class PointLightDbInfo;
 
 class MapEditorControl :
   public InputListener
@@ -78,7 +82,7 @@ public:
 
   MapEditorViewModel* GetMapEditorViewModel() { return m_mapEditorViewModel; }
 
-  void AddSgoToMap(StaticGameObjectDbInfo& sgo);
+  void AddSgoToMap(const StaticGameObjectDbInfo& sgo);
   void AddPointLightToMap(PointLightDbInfo& pointLight);
   void EditGameObject(int id);
   void Delete(std::vector<int>& ids);
