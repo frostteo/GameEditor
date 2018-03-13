@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/cavalery1.tga
+normalMap: maps/Map__93_Normal Bump.tga
+bumpDepth: 1.0f

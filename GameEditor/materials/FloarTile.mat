@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/floor4Production.tga
+normalMap: maps/floorNM.tga
+bumpDepth: 1.0f

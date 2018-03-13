@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/wallProducttion.tga
+normalMap: maps/wallProductionNM2.tga
+bumpDepth: 1.0f

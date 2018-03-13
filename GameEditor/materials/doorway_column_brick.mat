@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/stella brick.tga
+normalMap: maps/stella brickNM.tga
+bumpDepth: 1.0f

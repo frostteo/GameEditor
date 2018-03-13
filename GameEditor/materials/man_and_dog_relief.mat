@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/man and dog.tga
+normalMap: maps/Map__11_Normal Bump.tga
+bumpDepth: 1.0f

@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/blue baner textile.tga
+normalMap: maps/Map__74_Normal Bump.tga
+bumpDepth: 1.0f

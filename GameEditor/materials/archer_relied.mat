@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/archers.tga
+normalMap: maps/Map__8_Normal Bump.tga
+bumpDepth: 1.0f

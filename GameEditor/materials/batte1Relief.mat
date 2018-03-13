@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/battle1.tga
+normalMap: maps/Map__84_Normal Bump.tga
+bumpDepth: 1.0f

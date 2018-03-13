@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/up big doorway.tga
+normalMap: maps/Map__31_Normal Bump.tga
+bumpDepth: 1.0f

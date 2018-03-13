@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/blue chair textile 2.tga
+normalMap: maps/Map__67_Normal Bump.tga
+bumpDepth: 1.0f

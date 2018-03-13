@@ -1,0 +1,62 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 19.11.2017 14:48:32
+
+newmtl peschanil
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka maps\peschanic prod.tga
+	map_Kd maps\peschanic prod.tga
+	map_bump -bm 0.3000 maps\Map__46_Normal Bump.tga
+
+newmtl ornament_pilar_top_
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka maps\pilar ornament flowers.tga
+	map_Kd maps\pilar ornament flowers.tga
+	map_bump -bm 0.3000 maps\Map__49_Normal Bump.tga
+
+newmtl lord_and_klinopis
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka maps\lord and klinopis.tga
+	map_Kd maps\lord and klinopis.tga
+	map_bump -bm 0.3000 maps\Map__52_Normal Bump.tga
+
+newmtl ornament_leaves_pilar_bottom
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka maps\ornament leaves.tga
+	map_Kd maps\ornament leaves.tga
+	map_bump -bm 0.3000 maps\Map__55_Normal Bump.tga

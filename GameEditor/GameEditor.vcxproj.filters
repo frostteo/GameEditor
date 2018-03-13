@@ -1,0 +1,1194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{1b186745-b714-48c3-a0b2-5c6ffbf4b680}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{834cc510-5c4a-46f4-aaa1-422248d91929}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="GameFramework">
+      <UniqueIdentifier>{24873a52-4d35-40e9-b625-98a4ce112e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework\Header Files">
+      <UniqueIdentifier>{861011bf-7904-4ab6-9e2d-5180919108f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{87e4ce4d-6e23-429f-8846-e749ec570ad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Header Files">
+      <UniqueIdentifier>{caab9449-5ce7-42fc-b149-e3deb74251f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Source Files">
+      <UniqueIdentifier>{8ffe09a5-8338-4705-a28c-1b3a395910ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorDAL">
+      <UniqueIdentifier>{7e83a445-fb2d-4157-ab67-b855bb9d6e1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorDAL\Header Files">
+      <UniqueIdentifier>{f1a5c1c5-dacd-494d-9024-3011d7d88c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorDAL\Source Files">
+      <UniqueIdentifier>{aa352e08-83f8-4d1b-9993-aa509f7808a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorDAL\Header Files\Interfaces">
+      <UniqueIdentifier>{25caa75e-6cf1-4534-9e4d-ec5d3e7712bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorDAL\Models">
+      <UniqueIdentifier>{453c7bc5-0a79-4f01-8cdb-b409f6ac1b8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorBLL">
+      <UniqueIdentifier>{1ed09fb3-21c5-401d-919a-6a3d7c8b94e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorBLL\Header Files">
+      <UniqueIdentifier>{0b85a28d-d681-490b-81d7-dc66b0a59613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorBLL\SourceFiles">
+      <UniqueIdentifier>{8b39f3d2-3cbc-494f-a1c1-d25a2780b313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorBLL\Header Files\Interface">
+      <UniqueIdentifier>{2702285e-68bf-4da8-95ea-1fcface75ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorBLL\Models">
+      <UniqueIdentifier>{a63df23d-6ccc-4029-ba67-0fdfa5d66ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameEditorDAL\Metadata">
+      <UniqueIdentifier>{90a1c7f2-d698-47f9-9d06-f834d0d5dfb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFramework\SourceFiles">
+      <UniqueIdentifier>{8db192c8-c902-4b68-9632-bc5148c5b0f4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GameEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GameEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_GameEditor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtGameFrameworkTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QtGameFrameworkTest.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_QtGameFrameworkTest.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DConfigurer.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjMeshConverter.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="FileProcessor.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureFactory.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="IShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="IShaderCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderConfiguration.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderFactory.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="IMaterialCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureMaterial.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialFactory.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureMaterialCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightininigSystem.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleDirectLightShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecularMaterial.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecularMaterialCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecularSingleDirLightShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpMaterialCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSingleDirLightShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecMapMaterial.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecMapMaterialCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecMapShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecMaterial.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecMaterialCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecSingleLightSh.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpMaterial.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PreviewGameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicSystem.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="HighPerformanceTimer.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="InputListener.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="QtLoggerPart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticGORepository.cpp">
+      <Filter>GameEditorDAL\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtUnitOfWork.cpp">
+      <Filter>GameEditorDAL\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DALDependencyResolver.cpp">
+      <Filter>GameEditorDAL\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BLLDependencyResolver.cpp">
+      <Filter>GameEditorBLL\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticGOService.cpp">
+      <Filter>GameEditorBLL\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticGameObjectTM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DependencyResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AddStaticGameObjectDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AddStaticGameObjectDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="AddStaticGameObjectDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_PreviewStaticGOWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_PreviewStaticGOWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="PreviewStaticGOWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ObjConverterDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ObjConverterDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjConverterDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IConverter.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="MtlMatLibConverter.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelFactory.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorMaterial.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorMaterialCreator.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GridShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditor.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapEditor.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QtDirectXWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_QtDirectXWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="QtDirectXWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOOnMapRepository.cpp">
+      <Filter>GameEditorDAL\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOOnMapService.cpp">
+      <Filter>GameEditorBLL\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOMetadata.cpp">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOOnMapMetadata.cpp">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QtGEPaginator.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_QtGEPaginator.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="QtGEPaginator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_StaticGameObjectTM.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_StaticGameObjectTM.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SGOTableWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SGOTableWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOTableWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SGOWidgetToolBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SGOWidgetToolBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOWidgetToolBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AddOrEditSGOOnMapDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AddOrEditSGOOnMapDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="AddOrEditSGOOnMapDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SGOOnMapTM.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SGOOnMapTM.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOOnMapTM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorData.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorData.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GETableSignals.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GETableSignals.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GETableSignals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SGOOnMapTableWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SGOOnMapTableWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOOnMapTableWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SGOOnMapToolBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SGOOnMapToolBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SGOOnMapToolBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticGameObject.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorPreferencesDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorPreferencesDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorPreferencesDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorPreferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GEMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraFrustrum.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="OctoTreeNode.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="OctoTree.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="AxisAlignedBBHelper.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorViewModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorViewModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightMetadata.cpp">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightRepository.cpp">
+      <Filter>GameEditorDAL\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightService.cpp">
+      <Filter>GameEditorBLL\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightOnMapMetadata.cpp">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightOnMapRepository.cpp">
+      <Filter>GameEditorDAL\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightOnMapService.cpp">
+      <Filter>GameEditorBLL\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightTM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_PointLightWidgetToolBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_PointLightWidgetToolBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightWidgetToolBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightTableWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_PointLightTableWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_PointLightTableWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AddOrEditPointLightDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AddOrEditPointLightDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="AddOrEditPointLightDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurePLRelPosControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurePLRelativePosWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurePLRelativePosWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurePLRelativePosWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AddOrEditPointLightOnMapDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AddOrEditPointLightOnMapDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="AddOrEditPointLightOnMapDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AmbientDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BumpSpecMapDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GBuffer.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightVolumeGridObject.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecularDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureDefferedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightDefferedParameters.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthBufferShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightTesselatedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PLShadowGenerationShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="PLShadowedTesselatedShader.cpp">
+      <Filter>GameFramework\SourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TwoColoredDrawableBB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrozenDrawableBB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnfrozenDrawableBB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrozenDrawableBBFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnfrozenDrawableBBFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="GameEditor.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GameEditor.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QtGameFrameworkTest.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QtGameFrameworkTest.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GameEditor.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddStaticGameObjectDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddStaticGameObjectDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PreviewStaticGOWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PreviewStaticGOWidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ObjConverterDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ObjConverterDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditor.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditor.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QtDirectXWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QtDirectXWidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QtGEPaginator.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QtGEPaginator.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOTableWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOTableWidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOWidgetToolBox.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOWidgetToolBox.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddOrEditSGOOnMapDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddOrEditSGOOnMapDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOOnMapTM.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorData.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorData.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GETableSignals.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GETable.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOOnMapTableWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOOnMapTableWidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOOnMapToolBox.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SGOOnMapToolBox.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorPreferencesDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorPreferencesDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorControl.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorViewModel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PointLightWidgetToolBox.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PointLightWidgetToolBox.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PointLightTableWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PointLightTableWidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddOrEditPointLightDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddOrEditPointLightDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ConfigurePLRelativePosWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ConfigurePLRelativePosWidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddOrEditPointLightOnMapDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddOrEditPointLightOnMapDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="StaticGameObjectTM.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_GameEditor.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_QtGameFrameworkTest.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMeshConverter.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DConfigurer.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjMeshConverter.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileProcessor.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedResourcesFactory.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureFactory.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IShaderCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderConfiguration.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderFactory.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMaterial.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMaterialCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialFactory.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureMaterial.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureMaterialCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QtLoggerPart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPlatformDependentLoggerPart.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightininigSystem.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleDirectLightShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecularMaterial.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecularMaterialCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecularSingleDirLightShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpMaterial.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpMaterialCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSingleDirLightShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecMapMaterial.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecMapMaterialCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecMapShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecMaterial.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecMaterialCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecSingleLightSh.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PreviewGameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicSystem.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HighPerformanceTimer.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputListener.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputState.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QtUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRepository.h">
+      <Filter>GameEditorDAL\Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnitOfWork.h">
+      <Filter>GameEditorDAL\Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="QtRepository.h">
+      <Filter>GameEditorDAL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticGORepository.h">
+      <Filter>GameEditorDAL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QtUnitOfWork.h">
+      <Filter>GameEditorDAL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DALDependencyResolver.h">
+      <Filter>GameEditorDAL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BLLDependencyResolver.h">
+      <Filter>GameEditorBLL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticGOService.h">
+      <Filter>GameEditorBLL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IStaticGOService.h">
+      <Filter>GameEditorBLL\Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="DependencyResolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_AddStaticGameObjectDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_PreviewStaticGOWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_ObjConverterDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PagingInfo.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="GetParameters.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderDirection.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IConverter.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MtlMatLibConverter.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticGameObjectDbInfo.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelFactory.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorMaterial.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorMaterialCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridObject.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexTxt.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MapEditor.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_QtDirectXWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SGOOnMapDbInfo.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="SGOOnMapRepository.h">
+      <Filter>GameEditorDAL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISGOOnMapService.h">
+      <Filter>GameEditorBLL\Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SGOOnMapService.h">
+      <Filter>GameEditorBLL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DbTableMetadata.h">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClInclude>
+    <ClInclude Include="SGOMetadata.h">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClInclude>
+    <ClInclude Include="SGOOnMapMetadata.h">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_QtGEPaginator.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SGOTableWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SGOWidgetToolBox.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_AddOrEditSGOOnMapDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MapEditorData.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SGOOnMapTableWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SGOOnMapToolBox.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticGameObject.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MapEditorPreferencesDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorPreferences.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GEMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraFrustrum.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AxisAlignedBBHelper.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OctoTree.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OctoTreeNode.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightDbInfo.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightMetadata.h">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightRepository.h">
+      <Filter>GameEditorDAL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPointLightService.h">
+      <Filter>GameEditorBLL\Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightService.h">
+      <Filter>GameEditorBLL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightOnMapDbInfo.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightOnMapMetadata.h">
+      <Filter>GameEditorDAL\Metadata</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightOnMapRepository.h">
+      <Filter>GameEditorDAL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPointLightOnMapService.h">
+      <Filter>GameEditorBLL\Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightOnMapService.h">
+      <Filter>GameEditorBLL\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightTM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_PointLightWidgetToolBox.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_PointLightTableWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_AddOrEditPointLightDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorMaterialSubType.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurePLRelPosControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_ConfigurePLRelativePosWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_AddOrEditPointLightOnMapDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectType.h">
+      <Filter>GameEditorDAL\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecMapDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpSpecDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BumpDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AmbientDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GBuffer.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightVolumeGridObject.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecularDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TemplateShaderCreator.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureDefferedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightDefferedParameters.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthBufferShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightTesselatedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PLShadowedTesselatedShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PLShadowGenerationShader.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightShadowDirection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Uncopyable.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawableIndexed.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXDeleter.h">
+      <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TwoColoredDrawableBB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrozenDrawableBB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnfrozenDrawableBB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrozenDrawableBBFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnfrozenDrawableBBFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

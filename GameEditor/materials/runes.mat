@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/runes.tga
+normalMap: maps/Map__23_Normal Bump.tga
+bumpDepth: 1.0f

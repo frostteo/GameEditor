@@ -1,0 +1,7 @@
+type: color
+diffuseColor: 0.9922 1 0.4275 1
+specularColor: 0.333 0.333 0.333 1
+selfIluminationColor: 0 0 0 1
+specularPower: 32
+opacity: 0.55
+subType: 5

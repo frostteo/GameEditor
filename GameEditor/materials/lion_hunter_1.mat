@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/ohota na lvov.tga
+normalMap: maps/Map__14_Normal Bump.tga
+bumpDepth: 1.0f

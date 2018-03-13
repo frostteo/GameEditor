@@ -1,0 +1,4 @@
+type: specular
+textureFileName: maps/gold prod.tga
+specularColor: 0.7975 0.82 0.2058 1
+specularPower: 33

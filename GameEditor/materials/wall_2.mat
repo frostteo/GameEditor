@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/mosaic2 prod.tga
+normalMap: maps/mosaicNM.tga
+bumpDepth: 1.0f

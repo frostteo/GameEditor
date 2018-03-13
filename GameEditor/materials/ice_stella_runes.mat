@@ -1,0 +1,4 @@
+type: bump
+textureFileName: maps/runes ice obelisk.tga
+normalMap: maps/Map__40_Normal Bump.tga
+bumpDepth: 1.0f
