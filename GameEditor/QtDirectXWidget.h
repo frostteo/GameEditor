@@ -26,8 +26,8 @@ protected:
   float m_screenDepth = 20000.0f;
   float m_screenNear = 0.1f;
 
-  int m_minWidth = 800;
-  int m_minHeight = 600;
+  int m_minWidth;
+  int m_minHeight;
 
   std::unique_ptr<InputSystem> m_inputSystem;
   std::unique_ptr<Camera> m_Camera;
@@ -40,7 +40,13 @@ protected:
   virtual void paintEvent(QPaintEvent* pEvent);
   Model* GetModel(const std::string& modelName);
 public:
-  QtDirectXWidget(const std::string& pathToModels, const std::string& pathToMaterials, const PathesToShaderSet& pathesToShaderSet, QWidget *parent = Q_NULLPTR);
+  QtDirectXWidget(
+    const std::string& pathToModels,
+    const std::string& pathToMaterials,
+    const PathesToShaderSet& pathesToShaderSet, 
+    QWidget *parent = Q_NULLPTR,
+    int width = 800,
+    int height = 600);
   ~QtDirectXWidget();
   
   bool Initialize(int screenWidth, int screenHeight, HWND hwnd);

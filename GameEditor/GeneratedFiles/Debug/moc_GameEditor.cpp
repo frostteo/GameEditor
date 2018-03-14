@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GameEditor_t {
-    QByteArrayData data[15];
-    char stringdata0[307];
+    QByteArrayData data[16];
+    char stringdata0[334];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -45,7 +45,8 @@ QT_MOC_LITERAL(10, 174, 30), // "on_actionSnap_to_angle_toggled"
 QT_MOC_LITERAL(11, 205, 7), // "checked"
 QT_MOC_LITERAL(12, 213, 29), // "on_actionSnap_to_grid_toggled"
 QT_MOC_LITERAL(13, 243, 34), // "on_actionUseTestLightining_to..."
-QT_MOC_LITERAL(14, 278, 28) // "on_actionShowShadows_toggled"
+QT_MOC_LITERAL(14, 278, 28), // "on_actionShowShadows_toggled"
+QT_MOC_LITERAL(15, 307, 26) // "on_actionControl_triggered"
 
     },
     "GameEditor\0on_actionObjConverter_triggered\0"
@@ -56,7 +57,8 @@ QT_MOC_LITERAL(14, 278, 28) // "on_actionShowShadows_toggled"
     "on_actionSnap_to_angle_toggled\0checked\0"
     "on_actionSnap_to_grid_toggled\0"
     "on_actionUseTestLightining_toggled\0"
-    "on_actionShowShadows_toggled"
+    "on_actionShowShadows_toggled\0"
+    "on_actionControl_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -66,7 +68,7 @@ static const uint qt_meta_data_GameEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,14 +76,15 @@ static const uint qt_meta_data_GameEditor[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   54,    2, 0x08 /* Private */,
-       3,    1,   55,    2, 0x08 /* Private */,
-       6,    1,   58,    2, 0x08 /* Private */,
-       9,    0,   61,    2, 0x08 /* Private */,
-      10,    1,   62,    2, 0x08 /* Private */,
-      12,    1,   65,    2, 0x08 /* Private */,
-      13,    1,   68,    2, 0x08 /* Private */,
-      14,    1,   71,    2, 0x08 /* Private */,
+       1,    0,   59,    2, 0x08 /* Private */,
+       3,    1,   60,    2, 0x08 /* Private */,
+       6,    1,   63,    2, 0x08 /* Private */,
+       9,    0,   66,    2, 0x08 /* Private */,
+      10,    1,   67,    2, 0x08 /* Private */,
+      12,    1,   70,    2, 0x08 /* Private */,
+      13,    1,   73,    2, 0x08 /* Private */,
+      14,    1,   76,    2, 0x08 /* Private */,
+      15,    0,   79,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -92,6 +95,7 @@ static const uint qt_meta_data_GameEditor[] = {
     QMetaType::Void, QMetaType::Bool,   11,
     QMetaType::Void, QMetaType::Bool,   11,
     QMetaType::Void, QMetaType::Bool,   11,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -110,6 +114,7 @@ void GameEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 5: _t->on_actionSnap_to_grid_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 6: _t->on_actionUseTestLightining_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 7: _t->on_actionShowShadows_toggled((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 8: _t->on_actionControl_triggered(); break;
         default: ;
         }
     }
@@ -140,13 +145,13 @@ int GameEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

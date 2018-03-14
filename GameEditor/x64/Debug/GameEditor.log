@@ -1,8 +1,82 @@
-﻿Build started 14.03.2018 9:04:38.
+﻿Build started 14.03.2018 21:29:53.
      1>Project "C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\GameEditor\GameEditor.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\5.9\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\5.9\msvc2013_64\include\QtCore /IC:\Qt\5.9\msvc2013_64\include\QtGui /IC:\Qt\5.9\msvc2013_64\include\QtWidgets /IC:\Qt\5.9\msvc2013_64\include\QtSql /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /D QT_SQL_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Camera.cpp
-         Camera.cpp
+     1>CustomBuild:
+         Moc'ing GameEditor.h...
+         Moc'ing ControlDialog.h...
+         Moc'ing MapEditor.h...
+         Moc'ing QtDirectXWidget.h...
+         Uic'ing ControlDialog.ui...
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\5.9\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\5.9\msvc2013_64\include\QtCore /IC:\Qt\5.9\msvc2013_64\include\QtGui /IC:\Qt\5.9\msvc2013_64\include\QtWidgets /IC:\Qt\5.9\msvc2013_64\include\QtSql /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /D QT_SQL_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt AddOrEditPointLightDialog.cpp AddOrEditPointLightOnMapDialog.cpp AddOrEditSGOOnMapDialog.cpp AddStaticGameObjectDialog.cpp ConfigurePLRelativePosWidget.cpp ConfigurePLRelPosControl.cpp ControlDialog.cpp GameEditor.cpp GeneratedFiles\Debug\moc_AddOrEditPointLightDialog.cpp GeneratedFiles\Debug\moc_AddOrEditPointLightOnMapDialog.cpp GeneratedFiles\Debug\moc_AddOrEditSGOOnMapDialog.cpp GeneratedFiles\Debug\moc_ConfigurePLRelativePosWidget.cpp GeneratedFiles\Debug\moc_ControlDialog.cpp GeneratedFiles\Debug\moc_MapEditorData.cpp GeneratedFiles\Debug\moc_MapEditorPreferencesDialog.cpp GeneratedFiles\Debug\moc_PointLightTableWidget.cpp GeneratedFiles\Debug\moc_PointLightWidgetToolBox.cpp GeneratedFiles\Debug\moc_QtGEPaginator.cpp GeneratedFiles\Debug\moc_SGOOnMapTableWidget.cpp GeneratedFiles\Debug\moc_SGOOnMapToolBox.cpp GeneratedFiles\Debug\moc_SGOTableWidget.cpp GeneratedFiles\Debug\moc_SGOWidgetToolBox.cpp MapEditorControl.cpp MapEditorData.cpp MapEditorPreferencesDialog.cpp PointLightTableWidget.cpp PointLightWidgetToolBox.cpp QtGEPaginator.cpp GeneratedFiles\Debug\moc_AddStaticGameObjectDialog.cpp GeneratedFiles\Debug\moc_GameEditor.cpp GeneratedFiles\Debug\moc_MapEditor.cpp GeneratedFiles\Debug\moc_ObjConverterDialog.cpp GeneratedFiles\Debug\moc_PreviewStaticGOWidget.cpp GeneratedFiles\Debug\moc_QtDirectXWidget.cpp main.cpp MapEditor.cpp ObjConverterDialog.cpp PreviewStaticGOWidget.cpp QtDirectXWidget.cpp SGOOnMapTableWidget.cpp SGOOnMapToolBox.cpp SGOTableWidget.cpp SGOWidgetToolBox.cpp
+         AddOrEditPointLightDialog.cpp
+         AddOrEditPointLightOnMapDialog.cpp
+         AddOrEditSGOOnMapDialog.cpp
+         AddStaticGameObjectDialog.cpp
+         ConfigurePLRelativePosWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         ConfigurePLRelPosControl.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         ControlDialog.cpp
+         GameEditor.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_AddOrEditPointLightDialog.cpp
+         moc_AddOrEditPointLightOnMapDialog.cpp
+         moc_AddOrEditSGOOnMapDialog.cpp
+         moc_ConfigurePLRelativePosWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_ControlDialog.cpp
+         moc_MapEditorData.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_MapEditorPreferencesDialog.cpp
+         moc_PointLightTableWidget.cpp
+         moc_PointLightWidgetToolBox.cpp
+         moc_QtGEPaginator.cpp
+         moc_SGOOnMapTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_SGOOnMapToolBox.cpp
+         Generating Code...
+         Compiling...
+         moc_SGOTableWidget.cpp
+         moc_SGOWidgetToolBox.cpp
+         MapEditorControl.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         MapEditorData.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         MapEditorPreferencesDialog.cpp
+         PointLightTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         PointLightWidgetToolBox.cpp
+         QtGEPaginator.cpp
+         moc_AddStaticGameObjectDialog.cpp
+         moc_GameEditor.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_MapEditor.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_ObjConverterDialog.cpp
+         moc_PreviewStaticGOWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         moc_QtDirectXWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         main.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         MapEditor.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         ObjConverterDialog.cpp
+         PreviewStaticGOWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         QtDirectXWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         SGOOnMapTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         Generating Code...
+         Compiling...
+         SGOOnMapToolBox.cpp
+         SGOTableWidget.cpp
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+         SGOWidgetToolBox.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\5.9\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\5.9\msvc2013_64\include\QtCore /IC:\Qt\5.9\msvc2013_64\include\QtGui /IC:\Qt\5.9\msvc2013_64\include\QtWidgets /IC:\Qt\5.9\msvc2013_64\include\QtSql /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /D QT_SQL_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt GeneratedFiles\qrc_GameEditor.cpp
+         qrc_GameEditor.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\\GameEditor.exe" /NOLOGO /LIBPATH:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\QtClassLibrary1.lib" /LIBPATH:C:\Qt\5.9\msvc2013_64\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib "C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\QtClassLibrary1.lib" Qt5Sqld.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\GameEditor.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\GameEditor.lib" /MACHINE:X64 x64\Debug\AddOrEditPointLightDialog.obj
          x64\Debug\AddOrEditPointLightOnMapDialog.obj
@@ -32,6 +106,7 @@
          x64\Debug\ColorShader.obj
          x64\Debug\ConfigurePLRelativePosWidget.obj
          x64\Debug\ConfigurePLRelPosControl.obj
+         x64\Debug\ControlDialog.obj
          x64\Debug\D3DConfigurer.obj
          x64\Debug\DALDependencyResolver.obj
          x64\Debug\DependencyResolver.obj
@@ -47,6 +122,7 @@
          x64\Debug\moc_AddOrEditPointLightOnMapDialog.obj
          x64\Debug\moc_AddOrEditSGOOnMapDialog.obj
          x64\Debug\moc_ConfigurePLRelativePosWidget.obj
+         x64\Debug\moc_ControlDialog.obj
          x64\Debug\moc_GETableSignals.obj
          x64\Debug\moc_MapEditorData.obj
          x64\Debug\moc_MapEditorPreferencesDialog.obj
@@ -156,4 +232,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:09.85
+Time Elapsed 00:07:17.88

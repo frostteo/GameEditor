@@ -39,6 +39,8 @@ public:
     const std::string& pathToModels,
     const std::string& pathToMaterials, 
     const PathesToShaderSet& pathesToShaderSet,
+    int width, 
+    int height,
     QWidget *parent = Q_NULLPTR
     );
 

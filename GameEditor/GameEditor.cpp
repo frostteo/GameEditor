@@ -37,6 +37,8 @@ void GameEditor::ReadPathesFromFile()
   ss >> place >> m_pathesToShaderSet.pathToDomainShader;
   ss >> place >> m_pathesToShaderSet.pathToPixelShader;
   ss >> place >> m_pathesToShaderSet.shaderNameParam;
+  ss >> place >> m_mapEditorWidth;
+  ss >> place >> m_mapEditorHeight;
 }
 
 void GameEditor::configureUI()
@@ -47,7 +49,7 @@ void GameEditor::configureUI()
   this->ui.actionUseTestLightining->setChecked(m_mapEditorPreferences->GetUseTestLightiningFlag());
   this->ui.actionShowShadows->setChecked(m_mapEditorPreferences->GetShowShadows());
 
-  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, m_pathesToShaderSet, this));
+  m_mapEditor = std::unique_ptr<MapEditor>(new MapEditor(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, m_pathesToShaderSet, m_mapEditorWidth, m_mapEditorHeight, this));
   m_mapEditor->show();
 
   m_SGOTableWidget = std::unique_ptr<SGOTableWidget>(new SGOTableWidget(m_mapEditorPreferences.get(), m_pathToModels, m_pathToMaterials, m_pathesToShaderSet, this));

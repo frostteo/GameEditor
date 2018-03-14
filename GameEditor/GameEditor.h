@@ -40,6 +40,9 @@ private:
   std::unique_ptr<ControlDialog> m_controlsDialog;
 
   float m_oldRadiusOfAddingLightSourcesToRender = 0.0f;
+
+  int m_mapEditorWidth;
+  int m_mapEditorHeight;
 private:
   void configureUI();
   void ReadPathesFromFile();

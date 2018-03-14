@@ -12,9 +12,11 @@ MapEditor::MapEditor(
   const std::string& pathToModels, 
   const std::string& pathToMaterials,
   const PathesToShaderSet& pathesToShaderSet, 
+  int width,
+  int height,
   QWidget *parent
   )
-  : QtDirectXWidget(pathToModels, pathToMaterials, pathesToShaderSet, parent),
+  : QtDirectXWidget(pathToModels, pathToMaterials, pathesToShaderSet, parent, width, height),
   m_visibleSgos(),
   m_selectedSgos(),
   m_pointLightVolumeGridObject(new PointLightVolumeGridObject(m_graphicSystem->GetDevice())),

@@ -8,10 +8,14 @@ QtDirectXWidget::QtDirectXWidget(
   const std::string& pathToModels,
   const std::string& pathToMaterials, 
   const PathesToShaderSet& pathesToShaderSet,
-  QWidget *parent)
+  QWidget *parent,
+  int width,
+  int height)
   : QWidget(parent),
   m_pathToModels(pathToModels), 
   m_pathToMaterials(pathToMaterials),
+  m_minWidth(width),
+  m_minHeight(height),
   m_inputSystem(nullptr),
   m_Camera(nullptr),
   m_shaderConfiguration(new ShaderConfiguration(pathesToShaderSet)),
@@ -29,7 +33,7 @@ QtDirectXWidget::QtDirectXWidget(
   setAttribute(Qt::WA_PaintOnScreen, true);
   setAttribute(Qt::WA_NativeWindow, true);
 
-  bool result = Initialize(width(), height(), (HWND)winId());
+  bool result = Initialize(this->width(), this->height(), (HWND)winId());
   if (!result) {
     QMessageBox::critical(this,
       "ERROR",
