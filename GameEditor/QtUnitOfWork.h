@@ -20,18 +20,18 @@ class QtUnitOfWork :
 protected:
   std::string m_connectionName;
   QSqlDatabase m_db;
-  std::unique_ptr<IRepository<StaticGameObjectDbInfo>> m_staticGORepository;
-  std::unique_ptr<IRepository<SGOOnMapDbInfo>> m_SGOOnMapRepository;
-  std::unique_ptr<IRepository<PointLightDbInfo>> m_pointLightRepository;
-  std::unique_ptr<IRepository<PointLightOnMapDbInfo>> m_pointLightOnMapRepository;
+  std::shared_ptr< IRepository<StaticGameObjectDbInfo> > m_staticGORepository;
+  std::shared_ptr< IRepository<SGOOnMapDbInfo> > m_SGOOnMapRepository;
+  std::shared_ptr< IRepository<PointLightDbInfo> > m_pointLightRepository;
+  std::shared_ptr< IRepository<PointLightOnMapDbInfo> > m_pointLightOnMapRepository;
 public:
   QtUnitOfWork();
   virtual ~QtUnitOfWork();
   virtual void Initialize(std::string hostName, std::string databaseName, std::string connectionName) override;
-  virtual IRepository<StaticGameObjectDbInfo>* GetStaticGORepository() override;
-  virtual IRepository<SGOOnMapDbInfo>* GetSGOOnMapRepository() override;
-  virtual IRepository<PointLightDbInfo>* GetPointLightRepository() override;
-  virtual IRepository<PointLightOnMapDbInfo>* GetPointLightOnMapRepository() override;
+  virtual std::shared_ptr< IRepository<StaticGameObjectDbInfo> > GetStaticGORepository() override;
+  virtual std::shared_ptr< IRepository<SGOOnMapDbInfo> > GetSGOOnMapRepository() override;
+  virtual std::shared_ptr< IRepository<PointLightDbInfo> > GetPointLightRepository() override;
+  virtual std::shared_ptr< IRepository<PointLightOnMapDbInfo> > GetPointLightOnMapRepository() override;
   virtual QSqlDatabase GetDatabase() override;
 };
 

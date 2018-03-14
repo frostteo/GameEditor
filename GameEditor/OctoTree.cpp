@@ -396,7 +396,7 @@ void OctoTree::GetVisibleSgo(const Camera& camera, std::vector<StaticGameObject*
 
 void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, const Camera& camera, std::vector<StaticGameObject*>* sgosToRender)
 {
-  if (camera.IsCameraFrustrumIntersectsAABB(node->boundingBox))
+  if (camera.IsCameraFrustrumIntersectsAABB(node->boundingBox) || AxisAlignedBBHelper::TwoAABBIntersects(*camera.GetBBInWorldCoords(), node->boundingBox))
   {
     for (auto& sgo : node->staticGameObjects)
     {
@@ -405,10 +405,10 @@ void OctoTree::GetVisibleSgoHelper(OctoTreeNode* node, const Camera& camera, std
 
       if (isAABB)
       {
-        if (camera.IsCameraFrustrumIntersectsAABB(*sgo.second->GetBBInWorldCoords()))
+        if (camera.IsCameraFrustrumIntersectsAABB(*sgo.second->GetBBInWorldCoords()) || AxisAlignedBBHelper::TwoAABBIntersects(*camera.GetBBInWorldCoords(), *sgo.second->GetBBInWorldCoords()))
           sgosToRender->push_back(sgo.second);
       }
-      else if (camera.IsCameraFrustrumIntersectsBB(*sgo.second->GetBBInWorldCoords()))
+      else if (camera.IsCameraFrustrumIntersectsBB(*sgo.second->GetBBInWorldCoords()) || AxisAlignedBBHelper::AABBIntersectsBB(*camera.GetBBInWorldCoords(), *sgo.second->GetBBInWorldCoords()))
       {
         sgosToRender->push_back(sgo.second);
       }

@@ -27,7 +27,7 @@ AddOrEditPointLightDialog::AddOrEditPointLightDialog(QWidget *parent)
     this->linearAttenuationTxt->setValidator(linearAttenuationValidator);
     this->quadraticAttenuationTxt->setValidator(quadraticAttenuationValidator);
 
-    QSqlTableModel * model = new QSqlTableModel(this, ((QtUnitOfWork *)BLLDependencyResolver::GetUnitOfWork())->GetDatabase());
+    QSqlTableModel * model = new QSqlTableModel(this, BLLDependencyResolver::GetUnitOfWork()->GetDatabase());
     model->setTable(m_sgoMetadata.GetTableName());
     model->select();
 

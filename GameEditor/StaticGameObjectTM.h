@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <algorithm>
 #include "IStaticGOService.h"
 #include "QtUtils.h"
@@ -11,7 +12,7 @@ class StaticGameObjectTM
 {
   Q_OBJECT
 protected:
-  IStaticGOService* m_staticGOService;
+  std::shared_ptr<IStaticGOService> m_staticGOService;
 
   std::string m_SGONameFilter = "";
   std::string m_modelFileNameFilter = "";

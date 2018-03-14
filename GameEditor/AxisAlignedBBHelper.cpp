@@ -43,3 +43,14 @@ bool AxisAlignedBBHelper::TwoAABBIntersects(const BoundingBox& firstAabb, const 
     (firstMinPoint.z <= secondMaxPoint.z && firstMaxPoint.z >= secondMinPoint.z);
   return test;
 }
+
+bool AxisAlignedBBHelper::AABBIntersectsBB(const BoundingBox& aabb, const BoundingBox& bb)
+{
+  for (auto& vertex : *bb.GetVertices())
+  {
+    if (AxisAlignedBBHelper::PointContains(aabb, vertex))
+      return true;
+  }
+  
+  return false;
+}

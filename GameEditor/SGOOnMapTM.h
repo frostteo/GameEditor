@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <algorithm>
 #include "GETable.h"
 #include "ISGOOnMapService.h"
@@ -9,7 +10,7 @@ class SGOOnMapTM : public GETable<SGOOnMapDbInfo>
 {
   Q_OBJECT
 protected:
-  ISGOOnMapService* m_SGOOnMapService;
+  std::shared_ptr<ISGOOnMapService>m_SGOOnMapService;
   std::string m_SGONameFilter = "";
   std::string m_instanceNameFilter = "";
   GameObjectType m_gameObjectTypeFilter = GameObjectType::ALL;

@@ -10,26 +10,26 @@ DependencyResolver::~DependencyResolver()
 {
 }
 
-IStaticGOService* DependencyResolver::GetStaticGOService()
+std::shared_ptr<IStaticGOService> DependencyResolver::GetStaticGOService()
 {
-  static std::unique_ptr<IStaticGOService> sgoService = std::unique_ptr<IStaticGOService>(new StaticGOService());
-  return sgoService.get();
+  static auto sgoService = std::make_shared<StaticGOService>();
+  return sgoService;
 }
 
-ISGOOnMapService* DependencyResolver::GetSGOOnMapService()
+std::shared_ptr<ISGOOnMapService> DependencyResolver::GetSGOOnMapService()
 {
-  static std::unique_ptr<ISGOOnMapService> sgoOnMapService = std::unique_ptr<ISGOOnMapService>(new SGOOnMapService());
-  return sgoOnMapService.get();
+  static auto sgoOnMapService = std::make_shared<SGOOnMapService>();
+  return sgoOnMapService;
 }
 
-IPointLightService* DependencyResolver::GetPointLightService()
+std::shared_ptr<IPointLightService> DependencyResolver::GetPointLightService()
 {
-  static std::unique_ptr<IPointLightService> pointLightService = std::unique_ptr<IPointLightService>(new PointLightService());
-  return pointLightService.get();
+  static auto pointLightService = std::make_shared<PointLightService>();
+  return pointLightService;
 }
 
-IPointLightOnMapService* DependencyResolver::GetPointLightOnMapService()
+std::shared_ptr<IPointLightOnMapService> DependencyResolver::GetPointLightOnMapService()
 {
-  static std::unique_ptr<IPointLightOnMapService> pointLightOnMapService = std::unique_ptr<IPointLightOnMapService>(new PointLightOnMapService());
-  return pointLightOnMapService.get();
+  static auto pointLightOnMapService = std::make_shared<PointLightOnMapService>();
+  return pointLightOnMapService;
 }

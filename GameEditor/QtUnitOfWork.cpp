@@ -20,41 +20,37 @@ void QtUnitOfWork::Initialize(std::string hostName, std::string databaseName, st
   if (!m_db.open())
     RUNTIME_ERROR(m_db.lastError().text().toStdString());
 
-  m_staticGORepository = std::unique_ptr<IRepository<StaticGameObjectDbInfo>>(
-    DALDependencyResolver::GetStaticGameObjectRepository()->Initialize(connectionName)
-    );
+  m_staticGORepository = std::shared_ptr<IRepository<StaticGameObjectDbInfo> >(DALDependencyResolver::GetStaticGameObjectRepository());
+  m_staticGORepository->Initialize(connectionName);
 
-  m_SGOOnMapRepository = std::unique_ptr<IRepository<SGOOnMapDbInfo>>(
-    DALDependencyResolver::GetSGOOnMapRepository()->Initialize(connectionName)
-    );
+  m_SGOOnMapRepository = std::shared_ptr<IRepository<SGOOnMapDbInfo> >(DALDependencyResolver::GetSGOOnMapRepository());
+  m_SGOOnMapRepository->Initialize(connectionName);
 
-  m_pointLightRepository = std::unique_ptr<IRepository<PointLightDbInfo>>(
-    DALDependencyResolver::GetPointLightRepository()->Initialize(connectionName)
-    );
+  m_pointLightRepository = std::shared_ptr<IRepository<PointLightDbInfo> >(DALDependencyResolver::GetPointLightRepository());
+  m_pointLightRepository->Initialize(connectionName);
 
-  m_pointLightOnMapRepository = std::unique_ptr<IRepository<PointLightOnMapDbInfo>>(
-    DALDependencyResolver::GetPointLightOnMapRepository()->Initialize(connectionName)
-    );
+  m_pointLightOnMapRepository = std::shared_ptr<IRepository<PointLightOnMapDbInfo> >(DALDependencyResolver::GetPointLightOnMapRepository());
+  m_pointLightOnMapRepository->Initialize(connectionName);
 }
 
-IRepository<StaticGameObjectDbInfo>* QtUnitOfWork::GetStaticGORepository()
+std::shared_ptr<IRepository<StaticGameObjectDbInfo> > QtUnitOfWork::GetStaticGORepository()
 {
-  return m_staticGORepository.get();
+  return m_staticGORepository;
 }
 
-IRepository<SGOOnMapDbInfo>* QtUnitOfWork::GetSGOOnMapRepository()
+std::shared_ptr<IRepository<SGOOnMapDbInfo> > QtUnitOfWork::GetSGOOnMapRepository()
 {
-  return m_SGOOnMapRepository.get();
+  return m_SGOOnMapRepository;
 }
 
-IRepository<PointLightDbInfo>* QtUnitOfWork::GetPointLightRepository()
+std::shared_ptr<IRepository<PointLightDbInfo> > QtUnitOfWork::GetPointLightRepository()
 {
-  return m_pointLightRepository.get();
+  return m_pointLightRepository;
 }
 
-IRepository<PointLightOnMapDbInfo>* QtUnitOfWork::GetPointLightOnMapRepository()
+std::shared_ptr<IRepository<PointLightOnMapDbInfo> > QtUnitOfWork::GetPointLightOnMapRepository()
 {
-  return m_pointLightOnMapRepository.get();
+  return m_pointLightOnMapRepository;
 }
 
 QSqlDatabase QtUnitOfWork::GetDatabase()

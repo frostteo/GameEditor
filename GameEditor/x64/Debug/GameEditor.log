@@ -1,54 +1,8 @@
-﻿Build started 13.03.2018 19:50:28.
+﻿Build started 14.03.2018 9:04:38.
      1>Project "C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\GameEditor\GameEditor.vcxproj" on node 2 (Build target(s)).
-     1>CustomBuild:
-         Moc'ing AddOrEditPointLightDialog.h...
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\5.9\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\5.9\msvc2013_64\include\QtCore /IC:\Qt\5.9\msvc2013_64\include\QtGui /IC:\Qt\5.9\msvc2013_64\include\QtWidgets /IC:\Qt\5.9\msvc2013_64\include\QtSql /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /D QT_SQL_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt AddOrEditPointLightDialog.cpp AddOrEditPointLightOnMapDialog.cpp GameEditor.cpp GeneratedFiles\Debug\moc_AddOrEditPointLightDialog.cpp GeneratedFiles\Debug\moc_AddOrEditPointLightOnMapDialog.cpp GeneratedFiles\Debug\moc_GameEditor.cpp GeneratedFiles\Debug\moc_MapEditorData.cpp GeneratedFiles\Debug\moc_MapEditorViewModel.cpp GeneratedFiles\Debug\moc_SGOOnMapTM.cpp GeneratedFiles\Debug\moc_SGOOnMapTableWidget.cpp GeneratedFiles\Debug\moc_StaticGameObjectTM.cpp MapEditor.cpp MapEditorControl.cpp MapEditorData.cpp MapEditorViewModel.cpp PointLightTM.cpp PointLightTableWidget.cpp SGOOnMapTM.cpp SGOOnMapTableWidget.cpp SGOTableWidget.cpp StaticGameObjectTM.cpp main.cpp
-         AddOrEditPointLightDialog.cpp
-         AddOrEditPointLightOnMapDialog.cpp
-         GameEditor.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         moc_AddOrEditPointLightDialog.cpp
-         moc_AddOrEditPointLightOnMapDialog.cpp
-         moc_GameEditor.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         moc_MapEditorData.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         moc_MapEditorViewModel.cpp
-         moc_SGOOnMapTM.cpp
-         moc_SGOOnMapTableWidget.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         moc_StaticGameObjectTM.cpp
-         MapEditor.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         MapEditorControl.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         MapEditorData.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         MapEditorViewModel.cpp
-         PointLightTM.cpp
-     1>PointLightTM.cpp(50): warning C4927: illegal conversion; more than one user-defined conversion has been implicitly applied
-                 while calling the constructor 'QVariant::QVariant(int)'
-                 C:\Qt\5.9\msvc2013_64\include\QtCore/qvariant.h(210) : see declaration of 'QVariant::QVariant'
-         PointLightTableWidget.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         SGOOnMapTM.cpp
-     1>SGOOnMapTM.cpp(61): warning C4927: illegal conversion; more than one user-defined conversion has been implicitly applied
-                 while calling the constructor 'QVariant::QVariant(int)'
-                 C:\Qt\5.9\msvc2013_64\include\QtCore/qvariant.h(210) : see declaration of 'QVariant::QVariant'
-         SGOOnMapTableWidget.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         SGOTableWidget.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         Generating Code...
-         Compiling...
-         StaticGameObjectTM.cpp
-     1>StaticGameObjectTM.cpp(46): warning C4927: illegal conversion; more than one user-defined conversion has been implicitly applied
-                 while calling the constructor 'QVariant::QVariant(int)'
-                 C:\Qt\5.9\msvc2013_64\include\QtCore/qvariant.h(210) : see declaration of 'QVariant::QVariant'
-         main.cpp
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         Generating Code...
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I.\GeneratedFiles /I. /IC:\Qt\5.9\msvc2013_64\include /I.\GeneratedFiles\Debug /IC:\Qt\5.9\msvc2013_64\include\QtCore /IC:\Qt\5.9\msvc2013_64\include\QtGui /IC:\Qt\5.9\msvc2013_64\include\QtWidgets /IC:\Qt\5.9\msvc2013_64\include\QtSql /Zi /nologo /W1 /WX- /Od /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /D QT_SQL_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt Camera.cpp
+         Camera.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\\GameEditor.exe" /NOLOGO /LIBPATH:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\QtClassLibrary1.lib" /LIBPATH:C:\Qt\5.9\msvc2013_64\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib "C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\QtClassLibrary1.lib" Qt5Sqld.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\GameEditor.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Fedor\Documents\Visual Studio 2013\Projects\GameEditor\x64\Debug\GameEditor.lib" /MACHINE:X64 x64\Debug\AddOrEditPointLightDialog.obj
          x64\Debug\AddOrEditPointLightOnMapDialog.obj
@@ -202,4 +156,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:04:30.78
+Time Elapsed 00:00:09.85

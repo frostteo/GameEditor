@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 #include <algorithm>
 #include "IStaticGOService.h"
@@ -11,7 +12,7 @@ class StaticGOService
   : public IStaticGOService
 {
 protected:
-  IUnitOfWork* m_unitOfWork;
+  std::shared_ptr<IUnitOfWork> m_unitOfWork;
   SGOMetadata m_metadata;
 public:
   StaticGOService();

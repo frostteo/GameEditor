@@ -1,8 +1,9 @@
 #include "PointLightTM.h"
 
-PointLightTM::PointLightTM(int onPage, QObject * parent) : GETable<PointLightDbInfo>(parent)
+PointLightTM::PointLightTM(int onPage, QObject * parent) 
+  : GETable<PointLightDbInfo>(parent),
+  m_pointLightService(DependencyResolver::GetPointLightService())
 {
-  m_pointLightService = DependencyResolver::GetPointLightService();
   Initialize(onPage);
 }
 

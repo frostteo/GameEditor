@@ -15,9 +15,9 @@ class DependencyResolver
 public:
   DependencyResolver();
   virtual ~DependencyResolver();
-  static IStaticGOService* GetStaticGOService();
-  static ISGOOnMapService* GetSGOOnMapService();
-  static IPointLightService* GetPointLightService();
-  static IPointLightOnMapService* GetPointLightOnMapService();
+  static std::shared_ptr<IStaticGOService> GetStaticGOService();
+  static std::shared_ptr<ISGOOnMapService> GetSGOOnMapService();
+  static std::shared_ptr<IPointLightService> GetPointLightService();
+  static std::shared_ptr<IPointLightOnMapService> GetPointLightOnMapService();
 };
 

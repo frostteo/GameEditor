@@ -14,5 +14,6 @@ public:
   static bool IsCompletelyInside(const BoundingBox& aabb, const BoundingBox& bb);
   static bool PointContains(const BoundingBox& aabb, XMFLOAT3 point);
   static bool TwoAABBIntersects(const BoundingBox& firstAabb, const BoundingBox& secondAabb);
+  static bool AABBIntersectsBB(const BoundingBox& aabb, const BoundingBox& bb);
 };
 

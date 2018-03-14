@@ -1,9 +1,9 @@
 #include "PointLightOnMapService.h"
 
 
-PointLightOnMapService::PointLightOnMapService()
+PointLightOnMapService::PointLightOnMapService() 
+  : m_unitOfWork(BLLDependencyResolver::GetUnitOfWork())
 {
-  m_unitOfWork = BLLDependencyResolver::GetUnitOfWork();
 }
 
 

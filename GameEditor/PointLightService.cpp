@@ -2,8 +2,8 @@
 
 
 PointLightService::PointLightService()
+  : m_unitOfWork(BLLDependencyResolver::GetUnitOfWork())
 {
-  m_unitOfWork = BLLDependencyResolver::GetUnitOfWork();
 }
 
 

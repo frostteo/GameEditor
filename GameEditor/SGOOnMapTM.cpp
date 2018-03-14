@@ -1,9 +1,9 @@
 #include "SGOOnMapTM.h"
 
 SGOOnMapTM::SGOOnMapTM(int onPage, QObject *parent)
-  : GETable<SGOOnMapDbInfo>(parent)
+  : GETable<SGOOnMapDbInfo>(parent),
+  m_SGOOnMapService(DependencyResolver::GetSGOOnMapService())
 {
-  m_SGOOnMapService = DependencyResolver::GetSGOOnMapService();
   Initialize(onPage);
 }
 

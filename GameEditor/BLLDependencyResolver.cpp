@@ -10,8 +10,8 @@ BLLDependencyResolver::~BLLDependencyResolver()
 {
 }
 
-IUnitOfWork* BLLDependencyResolver::GetUnitOfWork()
+std::shared_ptr<IUnitOfWork> BLLDependencyResolver::GetUnitOfWork()
 {
-  static std::unique_ptr<IUnitOfWork> unitOfWork = std::unique_ptr<IUnitOfWork>(new QtUnitOfWork());
-  return unitOfWork.get();
+  static auto unitOfWork = std::make_shared<QtUnitOfWork>();;
+  return unitOfWork;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qobject.h>
+#include <memory>
 #include <map>
 #include <set>
 #include <string>
@@ -30,7 +31,7 @@ private:
   std::string m_pathToModels;
   ModelFactory* m_modelFactory;
   SGOOnMapTM m_sgoOnMapTM;
-  IPointLightOnMapService* m_pointLightOnMapService;
+  std::shared_ptr<IPointLightOnMapService> m_pointLightOnMapService;
 
   BoundingBox m_aabbForPointLight;
 
@@ -61,7 +62,7 @@ public:
 
   MapEditorPreferences* GetMapEditorPreferences() { return m_mapEditorPreferences; }
   SGOOnMapTM* GetSGOOnMapTM() { return &m_sgoOnMapTM; }
-  IPointLightOnMapService* GetPointLightOnMapService() { return m_pointLightOnMapService; }
+  std::shared_ptr<IPointLightOnMapService> GetPointLightOnMapService() { return m_pointLightOnMapService; }
   std::map<int, StaticGameObject>* GetSgoMap() { return &m_staticGameObjectMap; }
   std::set<int>* GetSelectedSgoIds() { return &m_selectedObjectIds; }
 

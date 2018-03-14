@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "IPointLightService.h"
 #include "IUnitOfWork.h"
 #include "BLLDependencyResolver.h"
@@ -10,7 +11,7 @@ class PointLightService :
   public IPointLightService
 {
 protected:
-  IUnitOfWork* m_unitOfWork;
+  std::shared_ptr<IUnitOfWork> m_unitOfWork;
   SGOMetadata m_SGOMetadata;
   PointLightMetadata m_pointLightMetadata;
 public:

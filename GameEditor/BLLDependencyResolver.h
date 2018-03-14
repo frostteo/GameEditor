@@ -9,6 +9,6 @@ class BLLDependencyResolver
 public:
   BLLDependencyResolver();
   virtual ~BLLDependencyResolver();
-  static IUnitOfWork* GetUnitOfWork();
+  static std::shared_ptr<IUnitOfWork> GetUnitOfWork();
 };
 

@@ -1,9 +1,10 @@
 #include "StaticGOService.h"
 
 
-StaticGOService::StaticGOService()
+StaticGOService::StaticGOService() 
+  : m_unitOfWork(BLLDependencyResolver::GetUnitOfWork())
 {
-  m_unitOfWork = BLLDependencyResolver::GetUnitOfWork();
+  
 }
 
 

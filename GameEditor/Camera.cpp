@@ -49,5 +49,16 @@ void Camera::RebuildWorldMatrix() const
 
 void Camera::RebuildBBInWorldCoord() const
 {
-  RUNTIME_ERROR("There is no bounding box in camera object");
+  // Это хак для правки исчезания ближайших объектов из теста октодерева
+  const float radius = 500.0f;
+  XMFLOAT3 cameraPosition = GetPosition();
+
+  m_bbInWorldCoord.Initialize(
+    cameraPosition.x - radius,
+    cameraPosition.y - radius,
+    cameraPosition.z - radius,
+    cameraPosition.x + radius,
+    cameraPosition.y + radius,
+    cameraPosition.z + radius
+    );
 }

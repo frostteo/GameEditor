@@ -14,8 +14,8 @@ class DALDependencyResolver
 public:
   DALDependencyResolver();
   virtual ~DALDependencyResolver();
-  static IRepository<StaticGameObjectDbInfo>* GetStaticGameObjectRepository() { return new StaticGORepository(); }
-  static IRepository<SGOOnMapDbInfo>* GetSGOOnMapRepository() { return new SGOOnMapRepository(); }
-  static IRepository<PointLightDbInfo>* GetPointLightRepository() { return new PointLightRepository(); }
-  static IRepository<PointLightOnMapDbInfo>* GetPointLightOnMapRepository() { return new PointLightOnMapRepository(); }
+  static std::shared_ptr< IRepository<StaticGameObjectDbInfo> > GetStaticGameObjectRepository();
+  static std::shared_ptr< IRepository<SGOOnMapDbInfo> > GetSGOOnMapRepository();
+  static std::shared_ptr< IRepository<PointLightDbInfo> > GetPointLightRepository();
+  static std::shared_ptr< IRepository<PointLightOnMapDbInfo> > GetPointLightOnMapRepository();
 };

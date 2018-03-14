@@ -1,9 +1,10 @@
 #include "StaticGameObjectTM.h"
 
 
-StaticGameObjectTM::StaticGameObjectTM(int onPage, QObject * parent) : GETable<StaticGameObjectDbInfo>(parent)
+StaticGameObjectTM::StaticGameObjectTM(int onPage, QObject * parent)
+  : GETable<StaticGameObjectDbInfo>(parent),
+  m_staticGOService(DependencyResolver::GetStaticGOService())
 {
-  m_staticGOService = DependencyResolver::GetStaticGOService();
   Initialize(onPage);
 }
 

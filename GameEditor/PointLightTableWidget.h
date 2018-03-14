@@ -27,7 +27,7 @@ private:
   std::unique_ptr<QtGEPaginator> m_paginator;
   std::unique_ptr<ConfigurePLRelativePosWidget> m_configurePLRelativePosWidget;
 
-  IPointLightService* m_pointLightService;
+  std::shared_ptr<IPointLightService> m_pointLightService;
 protected slots:
   void on_addPointLightBtn_clicked();
   void on_editPointLightBtn_clicked();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 #include "IPointLightService.h"
 #include "QtUtils.h"
 #include "PointLightMetadata.h"
@@ -11,7 +12,7 @@ class PointLightTM
   : public GETable<PointLightDbInfo>
 {
 protected:
-  IPointLightService* m_pointLightService;
+  std::shared_ptr<IPointLightService> m_pointLightService;
 
   std::string m_nameFilter = "";
   std::string m_sgoNameFilter = "";
