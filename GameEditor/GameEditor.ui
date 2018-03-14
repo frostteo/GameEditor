@@ -65,8 +65,15 @@
     </property>
     <addaction name="actionObjConverter"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionControl"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMeshConverter"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
@@ -160,6 +167,11 @@
    </property>
    <property name="toolTip">
     <string>Show shadows</string>
+   </property>
+  </action>
+  <action name="actionControl">
+   <property name="text">
+    <string>Control</string>
    </property>
   </action>
  </widget>

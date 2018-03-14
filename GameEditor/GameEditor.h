@@ -12,6 +12,7 @@
 #include "MapEditorPreferences.h"
 #include "PointLightTableWidget.h"
 #include "PathesToShaderSet.h"
+#include "ControlDialog.h"
 
 class ObjConverterDialog;
 
@@ -36,6 +37,8 @@ private:
   std::unique_ptr<MapEditor> m_mapEditor;
   std::unique_ptr<MapEditorPreferences> m_mapEditorPreferences;
 
+  std::unique_ptr<ControlDialog> m_controlsDialog;
+
   float m_oldRadiusOfAddingLightSourcesToRender = 0.0f;
 private:
   void configureUI();
@@ -49,6 +52,7 @@ private slots:
   void on_actionSnap_to_grid_toggled(bool checked);
   void on_actionUseTestLightining_toggled(bool checked);
   void on_actionShowShadows_toggled(bool checked);
+  void on_actionControl_triggered();
 public:
     GameEditor(QWidget *parent = Q_NULLPTR);
     ~GameEditor() { }

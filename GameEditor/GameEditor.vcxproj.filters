@@ -601,6 +601,15 @@
     <ClCompile Include="UnfrozenDrawableBBFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ControlDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ControlDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="GameEditor.ui">
@@ -743,6 +752,12 @@
     </CustomBuild>
     <CustomBuild Include="StaticGameObjectTM.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ControlDialog.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ControlDialog.ui">
+      <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -1186,6 +1201,9 @@
     </ClInclude>
     <ClInclude Include="PathesToShaderSet.h">
       <Filter>GameFramework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_ControlDialog.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,7 +7,8 @@
 const std::string GameEditor::pathesFileName = "pathes.ini";
 
 GameEditor::GameEditor(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+    m_controlsDialog(new ControlDialog)
 {
   ReadPathesFromFile();
   ui.setupUi(this);
@@ -136,4 +137,9 @@ void GameEditor::on_actionUseTestLightining_toggled(bool checked)
 void GameEditor::on_actionShowShadows_toggled(bool checked)
 {
   m_mapEditorPreferences->SetShowShadows(checked);
+}
+
+void GameEditor::on_actionControl_triggered()
+{
+  m_controlsDialog->show();
 }

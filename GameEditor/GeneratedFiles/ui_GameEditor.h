@@ -34,6 +34,7 @@ public:
     QAction *actionSnap_to_grid;
     QAction *actionUseTestLightining;
     QAction *actionShowShadows;
+    QAction *actionControl;
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QGridLayout *gridLayout_3;
@@ -45,6 +46,7 @@ public:
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuMeshConverter;
+    QMenu *menuHelp;
     QStatusBar *statusBar;
     QToolBar *mainToolBar;
 
@@ -85,6 +87,8 @@ public:
         QIcon icon4;
         icon4.addFile(QStringLiteral(":/GameEditor/enableShadows.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionShowShadows->setIcon(icon4);
+        actionControl = new QAction(GameEditorClass);
+        actionControl->setObjectName(QStringLiteral("actionControl"));
         centralWidget = new QWidget(GameEditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout = new QGridLayout(centralWidget);
@@ -126,6 +130,8 @@ public:
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuMeshConverter = new QMenu(menuBar);
         menuMeshConverter->setObjectName(QStringLiteral("menuMeshConverter"));
+        menuHelp = new QMenu(menuBar);
+        menuHelp->setObjectName(QStringLiteral("menuHelp"));
         GameEditorClass->setMenuBar(menuBar);
         statusBar = new QStatusBar(GameEditorClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -136,7 +142,9 @@ public:
 
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuMeshConverter->menuAction());
+        menuBar->addAction(menuHelp->menuAction());
         menuMeshConverter->addAction(actionObjConverter);
+        menuHelp->addAction(actionControl);
         mainToolBar->addAction(editPreferencesAction);
         mainToolBar->addAction(actionSnap_to_angle);
         mainToolBar->addAction(actionSnap_to_grid);
@@ -175,10 +183,12 @@ public:
 #ifndef QT_NO_TOOLTIP
         actionShowShadows->setToolTip(QApplication::translate("GameEditorClass", "Show shadows", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
+        actionControl->setText(QApplication::translate("GameEditorClass", "Control", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_11), QApplication::translate("GameEditorClass", "\320\241\321\202\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\270\320\265 \320\270\320\263\321\200\320\276\320\262\321\213\320\265 \320\276\320\261\321\212\320\265\320\272\321\202\321\213", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_12), QApplication::translate("GameEditorClass", "Tab 2", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("GameEditorClass", "File", Q_NULLPTR));
         menuMeshConverter->setTitle(QApplication::translate("GameEditorClass", "Model converter", Q_NULLPTR));
+        menuHelp->setTitle(QApplication::translate("GameEditorClass", "Help", Q_NULLPTR));
     } // retranslateUi
 
 };
