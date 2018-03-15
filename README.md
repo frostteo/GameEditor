@@ -1,6 +1,6 @@
 # GameEditor
 
-Simple game editor written for learning. Technologies: C++, DirectX 11, Qt. User can load 3D .obj models with .tga textures 256x256. Place them on map. User can also add point lights on map. Graphic system: phong lighting, deffered shading, omnidirectional shadow mapping, normal mapping.
+Simple game editor written for learning. Technologies: C++, DirectX 11, Qt. The count of visible static game objects is limited by a dynamically rebuildable octree. User can load 3D .obj models with .tga textures 256x256. Place them on map. User can also add point lights on map. Graphic system: phong lighting, deffered shading, omnidirectional shadow mapping, normal mapping.
 
 <h3>System requirements</h3>
 <p>For use this program you must have installed directx 11 om your computer</p>
