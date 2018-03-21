@@ -40,7 +40,7 @@ void PreviewGameObject::ProcessUserInput(const InputState* inputState)
 
   if (m_autoRotateSwicher)
   {
-    m_sgo->ChangeYRotation(m_autoRotateYAngle);
+    m_sgo->ChangeYRotation(m_autoRotateYAngle * m_timeInSecondsBetweenFrames);
     return;
   }
 

@@ -14,7 +14,7 @@ class PreviewGameObject :
 {
 protected:
   const float m_rotateCoef = 0.01f;
-  const float m_autoRotateYAngle = 0.5f;
+  const float m_autoRotateYAngle = 50.0f;
   MapEditorPreferences* m_preferences;
   Camera* m_camera;
   StaticGameObject* m_sgo;
